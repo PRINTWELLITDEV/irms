@@ -1,0 +1,30 @@
+{
+  "resources/bootstrap-5.0.2-dist/css/bootstrap.css": {
+    "file": "assets/bootstrap-CmmGXrED.css",
+    "src": "resources/bootstrap-5.0.2-dist/css/bootstrap.css",
+    "isEntry": true,
+    "names": [
+      "bootstrap.css"
+    ]
+  },
+  "resources/bootstrap-5.0.2-dist/js/bootstrap.js": {
+    "file": "assets/bootstrap-Dly1orjz.js",
+    "name": "bootstrap",
+    "src": "resources/bootstrap-5.0.2-dist/js/bootstrap.js",
+    "isEntry": true
+  },
+  "resources/css/app.css": {
+    "file": "assets/app-uCj3-P0n.css",
+    "src": "resources/css/app.css",
+    "isEntry": true,
+    "names": [
+      "app.css"
+    ]
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-C0G0cght.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true
+  }
+}
