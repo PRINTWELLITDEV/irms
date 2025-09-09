@@ -4,16 +4,14 @@
 
 @section('content')
 
-
-
     <div class="container mt-5">
+
         <h1>Welcome to IRMS</h1>
         <p>This is the main content of the IRMS.</p>
+        <a href="{{ url('/login') }}" class="nav-link">
+            Log In
+        </a>
+
     </div>
 
-
-
-
-
-    
 @endsection

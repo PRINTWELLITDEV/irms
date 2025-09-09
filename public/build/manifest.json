@@ -21,6 +21,14 @@
       "app.css"
     ]
   },
+  "resources/css/irms.css": {
+    "file": "assets/irms-nlvk8V4A.css",
+    "src": "resources/css/irms.css",
+    "isEntry": true,
+    "names": [
+      "irms.css"
+    ]
+  },
   "resources/js/app.js": {
     "file": "assets/app-C0G0cght.js",
     "name": "app",

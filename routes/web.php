@@ -1,38 +1,31 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 
-//Home Route
+// Home Route
 Route::get('/', function () {
     return view('home');
 });
 
-Route::get('/Login', function () {
-    return view('/Login');
-});
-Route::redirect('/login', '/Login');
+// Login Route
+Route::get('/login', function () {
+    return view('/login');
+})->name('login.page');
 
-//IRMS Route
+// Handle login (AJAX POST) and logout
+Route::post('/login', [AuthController::class, 'login'])->name('login');
+Route::get('/login', [AuthController::class, 'showLoginPage'])->name('login.page');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+
+// IRMS Dashboard
 Route::get('/irms', function () {
-    return view('/irms/home');
+    return view('irms/irms-layouts/dashboard');
+})->name('irms.dashboard')->middleware('check.session');
+
+Route::prefix('irms')->middleware('check.session')->group(function () {
+    Route::get('/manage-users', fn() => view('irms/irms-layouts/manage-users'))->name('irms.manage-users');
+    Route::get('/warehouse', fn() => view('irms/irms-layouts/warehouse'))->name('irms.warehouse');
+    Route::get('/rack-locations', fn() => view('irms/irms-layouts/rack-locations'))->name('irms.locations');
 });
-
-Route::prefix("irms")->group(function () {
-    Route::get('/dashboard', function () {
-        return view('/irms/dashboard');
-    });
-
-    Route::get('/manage-users', function () {
-        return view('/irms/manage-users');
-    });
-
-    Route::get('/warehouse', function () {
-        return view('/irms/warehouse');
-    });
-
-});
-
-
-// Route::get('/users/{userid}', function ($userid) {
-//     return $userid;
-// });
