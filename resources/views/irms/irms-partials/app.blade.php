@@ -7,16 +7,17 @@
     <!-- <link rel="stylesheet" href="../css/app.css"> -->
     <!-- <link rel="stylesheet" href="../bootstrap-5.0.2-dist/css/bootstrap.css"> -->
     @vite([
-        'resources/css/app.css',
+        'resources/css/irms.css',
         'resources/bootstrap-5.0.2-dist/css/bootstrap.css',
         'resources/js/app.js',
         'resources/bootstrap-5.0.2-dist/js/bootstrap.js',
     ])
+
 </head>
 <body>
     <header>
-        @include('partials.header')
-        @yield('header')
+        @include('irms/irms-partials.aside')
+        @yield('aside')
     </header>
 
     <main>
@@ -24,7 +25,7 @@
     </main>
     
     <footer>
-        @include('partials.footer')
+        
     </footer>
 </body>
 </html>

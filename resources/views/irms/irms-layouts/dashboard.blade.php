@@ -1,6 +1,6 @@
 @extends('irms/irms-partials.app')
 
-@section('title', 'IRMS')
+@section('title', 'IRMS Dashboard')
 
 @section('content')
 
@@ -8,8 +8,9 @@
         @include('irms.irms-partials.aside')
         <!-- Content Wrapper -->
         <div class="content-wrapper">
+            @include('irms.irms-partials.nav')
             <div class="content-header">
-                <h1>Welcome to IRMS</h1>
+                <h1>Welcome to IRMS Dashboard</h1>
             </div>
             <div class="content-body">
                 <p>This is the main content of the IRMS.</p>
@@ -18,5 +19,6 @@
 
     </div>
 
-
 @endsection
+
+
