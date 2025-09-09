@@ -8,6 +8,7 @@
         @include('irms.irms-partials.aside')
         <!-- Content Wrapper -->
         <div class="content-wrapper">
+            @include('irms.irms-partials.nav')
             <div class="content-header">
                 <h1>Welcome to IRMS</h1>
             </div>
