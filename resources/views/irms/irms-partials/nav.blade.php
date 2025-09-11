@@ -50,20 +50,20 @@
             <!-- User Dropdown -->
             <li class="nav-item dropdown user-menu">
                 <a href="#" class="nav-link dropdown-toggle" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="{{ $user && $user->profile_pic_url 
-                                    ? asset($user->profile_pic_url) 
-                                    : asset('uploads/user-profile/guest.png') }}" 
-                        class="user-image rounded-circle" 
+                    <img src="{{ $user && $user->profile_pic_url
+                                    ? asset($user->profile_pic_url)
+                                    : asset('uploads/user-profile/guest.png') }}"
+                        class="user-image rounded-circle"
                         alt="{{ $user->userid ?? 'Guest User' }}-img"
                         width="30" height="30">
                     <span class="d-none d-md-inline">{{ $user->name ?? 'Guest' }}</span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                     <li class="dropdown-header text-center">
-                        <img src="{{ $user && $user->profile_pic_url 
-                                        ? asset($user->profile_pic_url) 
-                                        : asset('uploads/user-profile/guest.png') }}" 
-                             class="user-image rounded-circle" 
+                        <img src="{{ $user && $user->profile_pic_url
+                                        ? asset($user->profile_pic_url)
+                                        : asset('uploads/user-profile/guest.png') }}"
+                             class="user-image rounded-circle"
                              alt="{{ $user->userid ?? 'Guest User' }}-img"
                              width="100" height="100">
                         <p class="mb-0">
@@ -73,7 +73,7 @@
                         </p>
                     </li>
                     <li><hr class="dropdown-divider"></li>
-                    <li class="d-flex justify-content-between px-3">
+                    <li class="d-flex justify-content-center gap-5 pb-2">
                         <a href="#" class="btn btn-outline-primary btn-sm">Profile</a>
                         @auth
                             <a href="{{ route('logout') }}" class="btn btn-outline-danger btn-sm"
