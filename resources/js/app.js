@@ -2,16 +2,6 @@ import './bootstrap';
 
 import 'bootstrap'; // ✅ This pulls in bootstrap.js + Popper
 
-document.addEventListener('DOMContentLoaded', function() {
-    const wrapper = document.querySelector('.app-main');
-    if(wrapper) {
-        wrapper.style.opacity = 0;
-        setTimeout(() => {
-            wrapper.style.opacity = 1;
-        }, 50);
-    }
-});
-
 document.addEventListener('DOMContentLoaded', function () {
     const fullscreenBtn = document.querySelector('[data-lte-toggle="fullscreen"]');
     if (fullscreenBtn) {

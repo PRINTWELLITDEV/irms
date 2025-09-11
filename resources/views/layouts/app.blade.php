@@ -17,10 +17,8 @@
     <!-- @vite(['resources/sass/app.scss', 'resources/js/app.js']) -->
     @vite([
         'resources/sass/app.scss',
-        'resources/css/app.css',
-        'resources/bootstrap-5.0.2-dist/css/bootstrap.css',
+        'resources/css/irms.css',
         'resources/js/app.js',
-        'resources/bootstrap-5.0.2-dist/js/bootstrap.js',
     ])
 </head>
 <body>
@@ -83,5 +81,6 @@
             @yield('content')
         </main>
     </div>
+    @include('partials.footer')
 </body>
 </html>

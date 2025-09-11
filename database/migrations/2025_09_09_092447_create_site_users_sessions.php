@@ -31,27 +31,12 @@ return new class extends Migration
             $table->string('user_type', 10)->nullable();
             $table->string('gender', 10)->nullable();
             $table->text('profile_pic_url')->nullable();
+            $table->rememberToken()->nullable();
 
             $table->primary(['rssite', 'userid'], 'rsusers_rssite_userid_primary');
         });
         // Trigger to auto-update updated_date and updated_by on rsusers table
-        DB::unprepared('
-            CREATE TRIGGER trg_rsusers_update
-            ON dbo.rsusers
-            AFTER UPDATE
-            AS
-            BEGIN
-                SET NOCOUNT ON;
-                UPDATE u
-                SET 
-                    updated_date = GETDATE(),
-                    updated_by_sql = SUSER_SNAME()
-                FROM rsusers u
-                INNER JOIN inserted i
-                    ON u.rssite = i.rssite
-                AND u.userid = i.userid;
-            END
-        ');
+        
 
 
 
@@ -59,7 +44,6 @@ return new class extends Migration
         Schema::create('sessions', function (Blueprint $table) {
             $table->string('id', 255);
             $table->string('rssite', 8)->nullable();
-            $table->string('rsuserid', 8)->nullable();
             $table->string('user_id', 8)->nullable();
             $table->string('ip_address', 45)->nullable();
             $table->text('user_agent')->nullable();
@@ -80,7 +64,6 @@ return new class extends Migration
     {
         Schema::dropIfExists('sessions');
         Schema::dropIfExists('rsusers');
-        DB::unprepared('DROP TRIGGER IF EXISTS trg_rsusers_update');
         Schema::dropIfExists('irms_site');
     }
 };

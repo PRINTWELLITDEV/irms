@@ -14,12 +14,12 @@
                         </div>
                     @endif
 
-                    {{ __('You are logged in!') }}
+                    <!-- {{ __('You are logged in!') }} -->
                 </div>
-                <div>
+                <div class="card-body">
                     <h1>Welcome to IRMS</h1>
-                    <p>This is the main content of the IRMS.</p>
-                    <a href="{{ url('/login') }}" class="nav-link">
+                    <p>This is the home page of the IRMS.</p>
+                    <a href="{{ url('/login') }}" class="btn btn-primary">
                         Log In
                     </a>
                 </div>
