@@ -1,6 +1,6 @@
 @extends('irms.irms-partials.app')
 @section('title', 'IRMS Dashboard')
- 
+
 @section('content')
     <div class="wrapper">
         <!-- Content Wrapper -->
@@ -22,8 +22,8 @@
                                         </button>
                                         <ul class="dropdown-menu">
                                             <li><a href="#" class="dropdown-item">Name</a></li>
-                                            <li><a href="#" class="dropdown-item">UserID</a></li>
-                                            <li><a href="#" class="dropdown-item">Modified Date</a></li>
+                                            <li><a href="#" class="dropdown-item">User ID</a></li>
+                                            <li><a href="#" class="dropdown-item">Recently Added</a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -36,7 +36,7 @@
                                     </form>
                                 </div>
                                 <div class="col text-end">
-                                    <button type="button" class="btn btn-info">
+                                    <button type="button" id="btnAddUsername" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#btnAddUser">
                                         Add User
                                     </button>
                                 </div>
@@ -51,6 +51,7 @@
                                             <th scope="col">User ID</th>
                                             <th scope="col">Name</th>
                                             <th scope="col">Email</th>
+                                            <th scope="col">User Type</th>
                                             <th scope="col">Level</th>
                                             <th scope="col">Action</th>
                                         </tr>
@@ -62,6 +63,7 @@
                                                 <td>{{ $user->userid }}</td>
                                                 <td>{{ $user->name }}</td>
                                                 <td>{{ $user->email }}</td>
+                                                <td>{{ $user->user_type }}</td>
                                                 <td>{{ $user->level }}</td>
                                                 <td>
                                                     <button class="btn btn-sm btn-primary">Edit</button>
@@ -70,7 +72,7 @@
                                             </tr>
                                         @empty
                                             <tr>
-                                                <td colspan="6" class="text-center text-muted">No data available</td>
+                                                <td colspan="7" class="text-center text-muted">No data available</td>
                                             </tr>
                                         @endforelse
                                     </tbody>
@@ -79,7 +81,7 @@
                                             <div class="col"></div>
                                             <div class="col"></div>
                                             <div class="col">
- 
+
                                             </div>
                                         </div>
                                     </tfoot>
@@ -91,7 +93,47 @@
             </div>
         </div>
     </div>
+
+    <!-- Modals -->
+
+    <div class="modal fade" id="btnAddUser" aria-labelledby="addUserLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="addUserLabel">Add Users</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <!-- Modal Body -->
+                <div class="modal-body">
+
+                </div>
+
+                <!-- Modal Footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-success">Add Users</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
+
+
+        //Modals Script Event Listener
+        const btnTriggerModals = document.getElementById('btnAddUsername');
+        const AddUserModals = document.getElementById('btnAddUser');
+
+        btnTriggerModals.addEventListener('shown.bs.modal', () => {
+            AddUserModals.focus()
+        }
+    )
+
+
+        //Ajax for the Search Function
         function debounce(fn, delay) {
             let timer = null;
             return function(...args) {
@@ -99,11 +141,11 @@
                 timer = setTimeout(() => fn.apply(this, args), delay);
             };
         }
- 
+
         const searchInput = document.getElementById('search');
         const usersTableBody = document.getElementById('users-table-body');
         const searchForm = document.getElementById('searchForm');
- 
+
         function fetchUsers(query) {
             fetch(`{{ route('rsusers.index') }}?search=${encodeURIComponent(query)}`, {
                 headers: {
@@ -137,13 +179,13 @@
                 usersTableBody.innerHTML = html;
             });
         }
- 
+
         if (searchInput && usersTableBody) {
             searchInput.addEventListener('input', debounce(function() {
                 fetchUsers(this.value);
             }, 400));
         }
- 
+
         // Optional: prevent form submit on enter
         if (searchForm) {
             searchForm.addEventListener('submit', function(e) {
@@ -153,5 +195,4 @@
         }
     </script>
 @endsection
- 
- 
+
