@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Validation\ValidationException;
 use App\Models\RsUser;
-use App\Models\IrmsSite;
+use Illuminate\Support\Facades\Hash;
 
 class LoginController extends Controller
 {
@@ -49,7 +49,7 @@ class LoginController extends Controller
         // Find user by userid
         $user = RsUser::where('userid', $credentials['userid'])->first();
 
-        if ($user && $user->password === $credentials['password']) {
+        if ($user && Hash::check($credentials['password'], $user->password)) {
             return $this->doLogin($request, $user);
         }
 

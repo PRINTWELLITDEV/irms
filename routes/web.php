@@ -30,3 +30,7 @@ Route::prefix('irms')->middleware('check.session')->group(function () {
     Route::get('/rack-locations', fn() => view('irms/irms-layouts/rack-locations'))->name('irms.racklocations');
 
 });
+
+
+// Save Add User in Management-User
+Route::post('irms/manage-users/store', [RsUserController::class, 'store'])->name('RsUserController.store');
