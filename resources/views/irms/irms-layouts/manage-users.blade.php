@@ -18,6 +18,7 @@
                                     <div class="dropdown">
                                         <button type="button" class="btn btn-secondary dropdown-toggle"
                                             data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="bi bi-funnel-fill"></i>
                                             Order By
                                         </button>
                                         <ul class="dropdown-menu">
@@ -28,15 +29,22 @@
                                     </div>
                                 </div>
                                 <div class="col">
-                                    <form id="searchForm" method="GET" action="{{ route('rsusers.index') }}" class="input-group d-flex justify-content-center align-items-center">
+                                    <form id="searchForm" method="GET" action="{{ route('rsusers.index') }}"
+                                        class="input-group d-flex justify-content-center align-items-center gap-0">
                                         <div class="w-50">
-                                            <input id="search" name="search" type="text" class="form-control" value="{{ request('search') }}" autocomplete="off" />
+                                            <input id="search" name="search" type="text" class="form-control"
+                                                value="{{ request('search') }}" autocomplete="off" />
                                         </div>
-                                        <button type="submit" class="btn btn-warning ms-2">Search</button>
+                                        <button type="submit" class="btn btn-warning form-label mt-2">
+                                            <i class="bi bi-search"></i>
+                                            Search
+                                        </button>
                                     </form>
                                 </div>
                                 <div class="col text-end">
-                                    <button type="button" id="btnAddUsername" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#btnAddUser">
+                                    <button type="button" id="btnAddUsername" class="btn btn-success" data-bs-toggle="modal"
+                                        data-bs-target="#btnAddUser">
+                                        <i class="bi bi-person-plus-fill"></i>
                                         Add User
                                     </button>
                                 </div>
@@ -76,15 +84,6 @@
                                             </tr>
                                         @endforelse
                                     </tbody>
-                                    <tfoot>
-                                        <div class="row">
-                                            <div class="col"></div>
-                                            <div class="col"></div>
-                                            <div class="col">
-
-                                            </div>
-                                        </div>
-                                    </tfoot>
                                 </table>
                             </div>
                         </div>
@@ -96,25 +95,66 @@
 
     <!-- Modals -->
 
-    <div class="modal fade" id="btnAddUser" aria-labelledby="addUserLabel" aria-hidden="true">
-        <div class="modal-dialog">
+    <div class="modal fade" id="btnAddUser" tabindex="-1" aria-labelledby="addUserLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
 
                 <!-- Modal Header -->
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="addUserLabel">Add Users</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-header bg-success text-white">
+                    <h1 class="modal-title fs-5" id="addUserLabel">Add User</h1>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
                 </div>
 
                 <!-- Modal Body -->
                 <div class="modal-body">
-
+                    <form action="{{ route('RsUserController.store') }}" method="POST">
+                        @csrf
+                        <div class="mb-3">
+                            <label for="site" class="form-label" value="{{  }}">Site</label>
+                            <select name="site" id="site" class="form-select" required>
+                                <option disabled selected>Select Site</option>
+                                <option value="FP-SP">Fortune Packaging, Inc.</option>
+                                <option value="PI-SP">Printwell, Inc.</option>
+                                <option value="PIGRP">Printwell Packaging Company</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="userid" class="form-label">User ID</label>
+                            <input type="text" value="{{  }}" class="form-control" id="userid" name="userid" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="name" name="name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" name="email">
+                        </div>
+                        <div class="mb-3">
+                            <label for="user_type" class="form-label">User Type</label>
+                            <select name="user_type" id="user_type" required="required" class="form-select">
+                                <option disabled selected>Select User Type</option>
+                                <option value="user">User</option>
+                                <option value="admin">Admin</option>
+                                <option value="superadmin">Super Admin</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="level" class="form-label">Level</label>
+                            <input type="text" class="form-control" id="level" name="level">
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+                    </form>
                 </div>
 
                 <!-- Modal Footer -->
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-success">Add Users</button>
+                    <button type="button" class="btn btn-success">Save</button>
                 </div>
             </div>
         </div>
@@ -130,13 +170,13 @@
         btnTriggerModals.addEventListener('shown.bs.modal', () => {
             AddUserModals.focus()
         }
-    )
+        )
 
 
         //Ajax for the Search Function
         function debounce(fn, delay) {
             let timer = null;
-            return function(...args) {
+            return function (...args) {
                 clearTimeout(timer);
                 timer = setTimeout(() => fn.apply(this, args), delay);
             };
@@ -152,47 +192,47 @@
                     'X-Requested-With': 'XMLHttpRequest'
                 }
             })
-            .then(response => response.json())
-            .then(data => {
-                let html = '';
-                if (data.users.length > 0) {
-                    data.users.forEach(user => {
-                        html += `
-                            <tr>
-                                <td>${user.rssite}</td>
-                                <td>${user.userid}</td>
-                                <td>${user.name}</td>
-                                <td>${user.email}</td>
-                                <td>${user.level}</td>
-                                <td>
-                                    <button class="btn btn-sm btn-primary">Edit</button>
-                                    <button class="btn btn-sm btn-danger">Delete</button>
-                                </td>
-                            </tr>
-                        `;
-                    });
-                } else {
-                    html = `<tr>
-                        <td colspan="6" class="text-center text-muted">No data available</td>
-                    </tr>`;
-                }
-                usersTableBody.innerHTML = html;
-            });
+                .then(response => response.json())
+                .then(data => {
+                    let html = '';
+                    if (data.users.length > 0) {
+                        data.users.forEach(user => {
+                            html += `
+                                        <tr>
+                                            <td>${user.rssite}</td>
+                                            <td>${user.userid}</td>
+                                            <td>${user.name}</td>
+                                            <td>${user.email}</td>
+                                            <td>${user.user_type}</td>
+                                            <td>${user.level}</td>
+                                            <td>
+                                                <button class="btn btn-sm btn-primary">Edit</button>
+                                                <button class="btn btn-sm btn-danger">Delete</button>
+                                            </td>
+                                        </tr>
+                                    `;
+                        });
+                    } else {
+                        html = `<tr>
+                                    <td colspan="6" class="text-center text-muted">No data available</td>
+                                </tr>`;
+                    }
+                    usersTableBody.innerHTML = html;
+                });
         }
 
         if (searchInput && usersTableBody) {
-            searchInput.addEventListener('input', debounce(function() {
+            searchInput.addEventListener('input', debounce(function () {
                 fetchUsers(this.value);
             }, 400));
         }
 
         // Optional: prevent form submit on enter
         if (searchForm) {
-            searchForm.addEventListener('submit', function(e) {
+            searchForm.addEventListener('submit', function (e) {
                 e.preventDefault();
                 fetchUsers(searchInput.value);
             });
         }
     </script>
 @endsection
-
