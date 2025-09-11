@@ -33,15 +33,4 @@
         @include('irms.irms-partials.footer')
     </div>
 </body>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const wrapper = document.querySelector('.content-wrapper');
-        if(wrapper) {
-            wrapper.style.opacity = 0;
-            setTimeout(() => {
-                wrapper.style.opacity = 1;
-            }, 50);
-        }
-    });
-</script>
 </html>

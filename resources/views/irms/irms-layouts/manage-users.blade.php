@@ -108,7 +108,7 @@
 
                 <!-- Modal Body -->
                 <div class="modal-body">
-                    <form action="{{ route('RsUserController.store') }}" method="POST">
+                    <form action="" method="POST">
                         @csrf
                         <div class="mb-3">
                             <label for="prof_pic" class="form-label">Profile Picture</label>
@@ -167,80 +167,4 @@
             </div>
         </div>
     </div>
-
-    <script>
-
-
-        //Modals Script Event Listener
-        const btnTriggerModals = document.getElementById('btnAddUsername');
-        const AddUserModals = document.getElementById('btnAddUser');
-
-        btnTriggerModals.addEventListener('shown.bs.modal', () => {
-            AddUserModals.focus()
-        }
-        )
-
-
-        //Ajax for the Search Function
-        function debounce(fn, delay) {
-            let timer = null;
-            return function (...args) {
-                clearTimeout(timer);
-                timer = setTimeout(() => fn.apply(this, args), delay);
-            };
-        }
-
-        const searchInput = document.getElementById('search');
-        const usersTableBody = document.getElementById('users-table-body');
-        const searchForm = document.getElementById('searchForm');
-
-        function fetchUsers(query) {
-            fetch(`{{ route('rsusers.index') }}?search=${encodeURIComponent(query)}`, {
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
-            })
-                .then(response => response.json())
-                .then(data => {
-                    let html = '';
-                    if (data.users.length > 0) {
-                        data.users.forEach(user => {
-                            html += `
-                                        <tr>
-                                            <td>${user.rssite}</td>
-                                            <td>${user.userid}</td>
-                                            <td>${user.name}</td>
-                                            <td>${user.email}</td>
-                                            <td>${user.user_type}</td>
-                                            <td>${user.level}</td>
-                                            <td>
-                                                <button class="btn btn-sm btn-primary">Edit</button>
-                                                <button class="btn btn-sm btn-danger">Delete</button>
-                                            </td>
-                                        </tr>
-                                    `;
-                        });
-                    } else {
-                        html = `<tr>
-                                    <td colspan="6" class="text-center text-muted">No data available</td>
-                                </tr>`;
-                    }
-                    usersTableBody.innerHTML = html;
-                });
-        }
-
-        if (searchInput && usersTableBody) {
-            searchInput.addEventListener('input', debounce(function () {
-                fetchUsers(this.value);
-            }, 400));
-        }
-
-        // Optional: prevent form submit on enter
-        if (searchForm) {
-            searchForm.addEventListener('submit', function (e) {
-                e.preventDefault();
-                fetchUsers(searchInput.value);
-            });
-        }
-    </script>
 @endsection

@@ -25,5 +25,8 @@ Route::get('/irms', function () {
 Route::prefix('irms')->middleware('check.session')->group(function () {
     Route::get('/manage-users', [RsUserController::class, 'index'])->name('rsusers.index');
     Route::get('/warehouse', fn() => view('irms/irms-layouts/warehouse'))->name('irms.warehouse');
-    Route::get('/rack-locations', fn() => view('irms/irms-layouts/rack-locations'))->name('irms.locations');
+    Route::get('/whse-goodreceiving', fn() => view('irms/irms-layouts/whse-goodreceiving'))->name('irms.whse-goodreceiving');
+    Route::get('/bay-location', fn() => view('irms/irms-layouts/bay-location'))->name('irms.baylocation');
+    Route::get('/rack-locations', fn() => view('irms/irms-layouts/rack-locations'))->name('irms.racklocations');
+
 });
