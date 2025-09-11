@@ -111,7 +111,11 @@
                     <form action="{{ route('RsUserController.store') }}" method="POST">
                         @csrf
                         <div class="mb-3">
-                            <label for="site" class="form-label" value="{{  }}">Site</label>
+                            <label for="prof_pic" class="form-label">Profile Picture</label>
+                            <input type="file" name="prof_pic" id="prof_pic" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="site" class="form-label" >Site</label>
                             <select name="site" id="site" class="form-select" required>
                                 <option disabled selected>Select Site</option>
                                 <option value="FP-SP">Fortune Packaging, Inc.</option>
@@ -121,11 +125,15 @@
                         </div>
                         <div class="mb-3">
                             <label for="userid" class="form-label">User ID</label>
-                            <input type="text" value="{{  }}" class="form-control" id="userid" name="userid" required>
+                            <input type="text" class="form-control" id="userid" name="userid" required>
                         </div>
                         <div class="mb-3">
                             <label for="name" class="form-label">Name</label>
                             <input type="text" class="form-control" id="name" name="name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" name="email">
                         </div>
                         <div class="mb-3">
                             <label for="email" class="form-label">Email</label>
