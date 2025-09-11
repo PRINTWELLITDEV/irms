@@ -26,7 +26,7 @@ class RsusersSeeder extends Seeder
                 'updated_date' => '2025-09-09 12:04:16',
                 'updated_by' => null,          // set later by Laravel model
                 'updated_by_sql' => null,      // set later by SQL trigger
-                'user_type' => null,
+                // 'user_type' => null,
                 'gender' => 'male',
                 'profile_pic_url' => 'uploads/user-profile/ppc1181.png',
                 'remember_token' => NULL,
@@ -43,7 +43,7 @@ class RsusersSeeder extends Seeder
                 'updated_date' => '2025-09-09 11:29:02',
                 'updated_by' => null,
                 'updated_by_sql' => null,
-                'user_type' => null,
+                // 'user_type' => null,
                 'gender' => 'male',
                 'profile_pic_url' => null,
                 'remember_token' => Null,
