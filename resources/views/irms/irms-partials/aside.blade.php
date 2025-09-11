@@ -10,46 +10,46 @@
         <nav class="mt-2">
             <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="navigation" aria-label="Main navigation" data-accordion="false" id="navigation">
                 <li class="nav-item">
-                    <a href="{{ url('/irms') }}" class="nav-link {{ request()->is('irms') ? 'active' : '' }}">
+                    <a href="{{ url('/irms') }}" class="nav-link">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>Dashboard</p>
                     </a>
                 </li>
                 <li class="nav-header">Manage Users</li>
                 <li class="nav-item">
-                    <a href="{{ url('/irms/manage-users') }}" class="nav-link {{ request()->is('irms/manage-users*') ? 'active' : '' }}">
+                    <a href="{{ url('/irms/manage-users') }}" class="nav-link">
                         <i class="nav-icon fas fa-users"></i>
                         <p>Users</p>
                     </a>
                 </li>
                 <li class="nav-header">Warehouse</li>
                 <li class="nav-item">
-                    <a href="{{ url('/irms/warehouse') }}" class="nav-link {{ request()->is('irms/warehouse*') ? 'active' : '' }}">
+                    <a href="{{ url('/irms/warehouse') }}" class="nav-link">
                         <i class="nav-icon fas fa-warehouse"></i>
                         <p>Warehouse</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ url('/irms/whse-goodreceiving') }}" class="nav-link {{ request()->is('irms/whse-goodreceiving*') ? 'active' : '' }}">
+                    <a href="{{ url('/irms/whse-goodreceiving') }}" class="nav-link">
                         <i class="nav-icon fas fa-truck"></i>
                         <p>Warehouse Good Receiving</p>
                     </a>
                 </li>
                 <li class="nav-header">Location</li>
                 <li class="nav-item">
-                    <a href="{{ url('/irms/bay-location') }}" class="nav-link {{ request()->is('irms/bay-location*') ? 'active' : '' }}">
+                    <a href="{{ url('/irms/bay-location') }}" class="nav-link">
                         <i class="nav-icon fas fa-map-marker-alt"></i>
                         <p>Bay Location</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ url('/irms/rack-locations') }}" class="nav-link {{ request()->is('irms/rack-locations*') ? 'active' : '' }}">
+                    <a href="{{ url('/irms/rack-locations') }}" class="nav-link">
                         <i class="nav-icon fas fa-th"></i>
                         <p>Rack Locations</p>
                     </a>
                 </li>
                 <li class="nav-item nav-logout">
-                    <a href="" class="nav-link">
+                    <a href="" class="nav-link" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                         <i class="nav-icon fas fa-sign-out-alt"></i>
                         <p>Log Out</p>
                     </a>
@@ -57,7 +57,7 @@
                         @csrf
                     </form>
                 </li>
-            </ul>
+            </ul> 
         </nav>
     </div>
 
