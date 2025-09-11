@@ -1,11 +1,12 @@
-/* Layout Wrapper */
-.wrapper {
-    display: flex;
-    min-height: 100vh;
-}
+
+/* Import Bootstrap 5 */
+@import url('../bootstrap-5.0.2-dist/css/bootstrap.css');
+
+/* Import AdminLTE CSS */
+@import url('adminlte_css/adminlte.css');
 
 /* Sidebar */
-.main-sidebar {
+.app-sidebar {
     width: 250px;
     background: #343a40;
     color: #fff;
@@ -15,6 +16,9 @@
     top: 0;
     left: 0;
     overflow-y: auto;
+}
+.main-header.navbar {
+    background: transparent !important;
 }
 
 .sidebar {
@@ -34,12 +38,12 @@
     margin: 0;
 }
 
-.nav-item {
-    margin: 0.5rem 0;
+.nav-logout {
+    border-top: 2px solid rgba(255, 255, 255, 0.2);
 }
 
 .nav-link {
-    color: #c2c7d0;
+    color: #818181;
     text-decoration: none;
     display: block;
     padding: 0.5rem 1rem;
@@ -50,18 +54,74 @@
 .nav-link:hover {
     background: #495057;
     color: #fff;
+} */
+
+/* Layout Wrapper */
+.wrapper {
+    display: flex;
+    min-height: 100vh;
 }
 
 /* Content Wrapper */
 .content-wrapper {
-    margin-left: 250px; /* same as sidebar width */
     flex: 1;
     background: #f4f6f9;
     padding: 2rem;
-    min-height: 100vh;
+    transition: opacity 0.4s ease;
+    opacity: 1;
 }
 
 .content-header h1 {
     margin-bottom: 1rem;
     font-size: 1.5rem;
 }
+
+/* Optional: class to trigger fade out/in */
+.content-wrapper.fade-out {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* --- Navbar Consistency --- */
+.main-header.navbar {
+    min-height: 56px;
+    height: 56px;
+    padding-top: 0;
+    padding-bottom: 0;
+    background: #fff;
+    border-bottom: 1px solid #dee2e6;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.01);
+}
+
+.main-header .navbar-nav > .nav-item > .nav-link,
+.main-header .navbar-nav > .nav-item > .dropdown-toggle {
+    height: 56px;
+    display: flex;
+    align-items: center;
+    padding-top: 0;
+    padding-bottom: 0;
+    font-size: 1rem;
+}
+
+.main-header .navbar-nav .dropdown-menu {
+    margin-top: 0.5rem;
+    min-width: 220px;
+}
+
+.main-header .user-image {
+    object-fit: cover;
+    border: 2px solid #ffc107;
+}
+
+@media (max-width: 767.98px) {
+    .main-header.navbar {
+        min-height: 48px;
+        height: 48px;
+    }
+    .main-header .navbar-nav > .nav-item > .nav-link,
+    .main-header .navbar-nav > .nav-item > .dropdown-toggle {
+        height: 48px;
+        font-size: 0.95rem;
+    }
+}
+

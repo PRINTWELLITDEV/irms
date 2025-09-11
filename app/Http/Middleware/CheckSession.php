@@ -10,7 +10,7 @@ class CheckSession
     public function handle(Request $request, Closure $next)
     {
         if (!session()->has('user')) {
-            return redirect()->route('login.page');
+            return redirect()->route('login');
         }
 
         return $next($request);
