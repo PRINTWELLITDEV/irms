@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class RsusersSeeder extends Seeder
 {
@@ -17,7 +18,7 @@ class RsusersSeeder extends Seeder
                 'rssite' => 'FP-SP',
                 'userid' => 'PPC1181',
                 'name' => 'Trick Torres',
-                'password' => 'PPC1181', // ⚠️ raw password from SQL dump
+                'password' => 'PPC1181', // ⚠️ raw password (not recommended for production)
                 'email' => 'trick@gmail.com',
                 'email_verified_at' => null,
                 'level' => 1,
@@ -28,12 +29,13 @@ class RsusersSeeder extends Seeder
                 'user_type' => null,
                 'gender' => 'male',
                 'profile_pic_url' => 'uploads/user-profile/ppc1181.png',
+                'remember_token' => NULL,
             ],
             [
                 'rssite' => 'PI-SP',
                 'userid' => 'PPC1187',
                 'name' => 'Aron Suarnaba',
-                'password' => 'PPC1187',
+                'password' => 'PPC1187', // ⚠️ raw password
                 'email' => 'aron@gmail.com',
                 'email_verified_at' => null,
                 'level' => 1,
@@ -44,6 +46,7 @@ class RsusersSeeder extends Seeder
                 'user_type' => null,
                 'gender' => 'male',
                 'profile_pic_url' => null,
+                'remember_token' => Null,
             ],
         ]);
     }

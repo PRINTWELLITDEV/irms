@@ -29,4 +29,8 @@ class RsUserController extends Controller
  
         return view('irms.irms-layouts.manage-users', compact('users'));
     }
+    public function getRememberTokenName()
+    {
+        return null; // disables remember_token usage
+    }
 }
