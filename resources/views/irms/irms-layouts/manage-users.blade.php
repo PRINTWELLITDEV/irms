@@ -98,25 +98,24 @@
     <div class="modal fade" id="btnAddUser" tabindex="-1" aria-labelledby="addUserLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
+                <form action="{{ route('RsUserController.store') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <!-- Modal Header -->
+                    <div class="modal-header bg-success text-white">
+                        <h1 class="modal-title fs-5" id="addUserLabel">Add User</h1>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close">
+                        </button>
+                    </div>
 
-                <!-- Modal Header -->
-                <div class="modal-header bg-success text-white">
-                    <h1 class="modal-title fs-5" id="addUserLabel">Add User</h1>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close">
-                    </button>
-                </div>
-
-                <!-- Modal Body -->
-                <div class="modal-body">
-                    <form action="{{ route('RsUserController.store') }}" method="POST">
-                        @csrf
+                    <!-- Modal Body -->
+                    <div class="modal-body">
                         <div class="mb-3">
-                            <label for="prof_pic" class="form-label">Profile Picture</label>
-                            <input type="file" name="prof_pic" id="prof_pic" class="form-control">
+                            <label for="prof_pic_url" class="form-label">Profile Picture</label>
+                            <input type="file" name="prof_pic_url" id="prof_pic_url" class="form-control">
                         </div>
                         <div class="mb-3">
-                            <label for="site" class="form-label" >Site</label>
-                            <select name="site" id="site" class="form-select" required>
+                            <label for="rssite" class="form-label">Site</label>
+                            <select name="rssite" id="rssite" class="form-select" required>
                                 <option disabled selected>Select Site</option>
                                 <option value="FP-SP">Fortune Packaging, Inc.</option>
                                 <option value="PI-SP">Printwell, Inc.</option>
@@ -132,16 +131,20 @@
                             <input type="text" class="form-control" id="name" name="name" required>
                         </div>
                         <div class="mb-3">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="email" name="email">
+                            <label for="gender" class="form-label">Email</label>
+                            <select name="gender" id="gender" class="form-select">
+                                <option disabled selected>Select a gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                            </select>
                         </div>
                         <div class="mb-3">
                             <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="email" name="email">
+                            <input type="text" class="form-control" id="email" name="email">
                         </div>
                         <div class="mb-3">
                             <label for="user_type" class="form-label">User Type</label>
-                            <select name="user_type" id="user_type" required="required" class="form-select">
+                            <select name="user_type" id="user_type" required class="form-select">
                                 <option disabled selected>Select User Type</option>
                                 <option value="user">User</option>
                                 <option value="admin">Admin</option>
@@ -156,14 +159,14 @@
                             <label for="password" class="form-label">Password</label>
                             <input type="password" class="form-control" id="password" name="password" required>
                         </div>
-                    </form>
-                </div>
+                    </div>
 
-                <!-- Modal Footer -->
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-success">Save</button>
-                </div>
+                    <!-- Modal Footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-success">Save</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -206,24 +209,24 @@
                     if (data.users.length > 0) {
                         data.users.forEach(user => {
                             html += `
-                                        <tr>
-                                            <td>${user.rssite}</td>
-                                            <td>${user.userid}</td>
-                                            <td>${user.name}</td>
-                                            <td>${user.email}</td>
-                                            <td>${user.user_type}</td>
-                                            <td>${user.level}</td>
-                                            <td>
-                                                <button class="btn btn-sm btn-primary">Edit</button>
-                                                <button class="btn btn-sm btn-danger">Delete</button>
-                                            </td>
-                                        </tr>
-                                    `;
+                                                    <tr>
+                                                        <td>${user.rssite}</td>
+                                                        <td>${user.userid}</td>
+                                                        <td>${user.name}</td>
+                                                        <td>${user.email}</td>
+                                                        <td>${user.user_type}</td>
+                                                        <td>${user.level}</td>
+                                                        <td>
+                                                            <button class="btn btn-sm btn-primary">Edit</button>
+                                                            <button class="btn btn-sm btn-danger">Delete</button>
+                                                        </td>
+                                                    </tr>
+                                                `;
                         });
                     } else {
                         html = `<tr>
-                                    <td colspan="6" class="text-center text-muted">No data available</td>
-                                </tr>`;
+                                                <td colspan="7" class="text-center text-muted">No data available</td>
+                                            </tr>`;
                     }
                     usersTableBody.innerHTML = html;
                 });

@@ -43,7 +43,7 @@ return new class extends Migration
             BEGIN
                 SET NOCOUNT ON;
                 UPDATE u
-                SET 
+                SET
                     updated_date = GETDATE(),
                     updated_by_sql = SUSER_SNAME()
                 FROM rsusers u
@@ -59,7 +59,7 @@ return new class extends Migration
         Schema::create('sessions', function (Blueprint $table) {
             $table->string('id', 255);
             $table->string('rssite', 8)->nullable();
-            $table->string('rsuserid', 8)->nullable();
+            // $table->string('rsuserid', 8)->nullable();
             $table->string('user_id', 8)->nullable();
             $table->string('ip_address', 45)->nullable();
             $table->text('user_agent')->nullable();
