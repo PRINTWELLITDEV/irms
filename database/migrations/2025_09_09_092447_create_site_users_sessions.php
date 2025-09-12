@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('password', 255);
             $table->string('email', 255);
             $table->timestamp('email_verified_at')->nullable();
-            $table->integer('level')->default(1);
+            $table->integer('level')->default(0);
             $table->dateTime('create_date')->nullable();
             $table->dateTime('updated_date')->nullable();
             $table->string('updated_by', 8)->nullable();
@@ -34,6 +34,8 @@ return new class extends Migration
 
             $table->primary(['rssite', 'userid']);
         });
+        // Trigger to auto-set create_date on insert
+        // DB::unprepared('DROP TRIGGER IF EXISTS trg_rsusers_update');
         // Trigger to auto-update updated_date and updated_by on rsusers table
         DB::unprepared('
             CREATE TRIGGER trg_rsusers_update
@@ -80,7 +82,7 @@ return new class extends Migration
     {
         Schema::dropIfExists('sessions');
         Schema::dropIfExists('rsusers');
-        DB::unprepared('DROP TRIGGER IF EXISTS trg_rsusers_update');
+        // DB::unprepared('DROP TRIGGER IF EXISTS trg_rsusers_update');
         Schema::dropIfExists('irms_site');
     }
 };
