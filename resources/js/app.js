@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (wrapper) {
         setTimeout(() => {
             wrapper.classList.add('visible');
-        }, 200); // slight delay for effect
+        }, 100); // slight delay for effect
     }
 
     //Modals Script Event Listener
