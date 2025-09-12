@@ -50,8 +50,10 @@
             <!-- User Dropdown -->
             <li class="nav-item dropdown user-menu">
                 <a href="#" class="nav-link dropdown-toggle" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="{{ $user && $user->profile_pic_url
-                                    ? asset($user->profile_pic_url)
+                    <img src="{{ $user
+                                    ? ($user->profile_pic_url
+                                        ? asset($user->profile_pic_url)
+                                        : asset('uploads/user-profile/noprofile.png'))
                                     : asset('uploads/user-profile/guest.png') }}"
                         class="user-image rounded-circle"
                         alt="{{ $user->userid ?? 'Guest User' }}-img"
@@ -60,8 +62,10 @@
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                     <li class="dropdown-header text-center">
-                        <img src="{{ $user && $user->profile_pic_url
-                                        ? asset($user->profile_pic_url)
+                        <img src="{{ $user
+                                        ? ($user->profile_pic_url
+                                            ? asset($user->profile_pic_url)
+                                            : asset('uploads/user-profile/noprofile.png'))
                                         : asset('uploads/user-profile/guest.png') }}"
                              class="user-image rounded-circle"
                              alt="{{ $user->userid ?? 'Guest User' }}-img"
