@@ -25,9 +25,7 @@
         @include('irms.irms-partials.aside')
 
         {{-- Main Content --}}
-        <main class="app-main">
-            @yield('content')
-        </main>
+        @yield('content')
 
         {{-- Footer --}}
         @include('irms.irms-partials.footer')

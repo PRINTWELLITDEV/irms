@@ -3,6 +3,13 @@ import './bootstrap';
 import 'bootstrap'; // ✅ This pulls in bootstrap.js + Popper
 
 document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('[data-lte-toggle="sidebar"]').forEach(function (btn) {
+        btn.addEventListener('click', function (e) {
+            e.preventDefault();
+            document.querySelector('.app-wrapper').classList.toggle('sidebar-collapsed');
+        });
+    });
+
     // Fullscreen toggle
     const fullscreenBtn = document.querySelector('[data-lte-toggle="fullscreen"]');
     if (fullscreenBtn) {
