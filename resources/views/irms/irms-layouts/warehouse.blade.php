@@ -10,11 +10,11 @@
                     <div class="row align-items-center">
                         <div class="col mb-3">
                             <h1 class="d-inline-block mb-0">Warehouse</h1>
-                            <button type="button" id="btnAddWarehouse" class="btn btn-success ms-3" data-bs-toggle="modal"
+                            <!-- <button type="button" id="btnAddWarehouse" class="btn btn-success ms-3" data-bs-toggle="modal"
                                 data-bs-target="#addWarehouseModal">
                                 <i class="bi bi-plus-circle-fill"></i>
                                 Add Warehouse
-                            </button>
+                            </button> -->
                         </div>
                     </div>
                 </div>
@@ -26,7 +26,12 @@
                         <div class="card">
                             <!-- Card Body -->
                             <div class="card-body">
-                                <div class="d-flex justify-content-end mb-3">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <button type="button" id="btnAddWarehouse" class="btn btn-success" data-bs-toggle="modal"
+                                        data-bs-target="#addWarehouseModal">
+                                        <i class="bi bi-plus-circle-fill"></i>
+                                        Add Warehouse
+                                    </button>
                                     <div class="input-group" style="max-width: 300px;">
                                         <input type="text" id="whseSearch" class="form-control"
                                             placeholder="Search warehouse...">
