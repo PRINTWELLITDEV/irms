@@ -64,7 +64,8 @@ class RsUserController extends Controller
         // Handle profile picture upload
         if($request->hasFile('profile_pic_url')){
             $file = $request->file('profile_pic_url');
-            $filename = uniqid() . '_' . $file->getClientOriginalName();
+            // $filename = $validated['userid'] . '.png';
+            $filename = uniqid() . '_' . $validated['userid'] . '.png';
             $file->move(public_path('uploads/user-profile'), $filename);
             $profile_pic_url = 'uploads/user-profile/' . $filename;
         } else {

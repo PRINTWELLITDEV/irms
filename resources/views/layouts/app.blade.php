@@ -16,7 +16,7 @@
     <!-- Scripts -->
     <!-- @vite(['resources/sass/app.scss', 'resources/js/app.js']) -->
     @vite([
-        'resources/sass/app.scss',
+        'resources/css/app.css',
         'resources/css/irms.css',
         'resources/js/app.js',
     ])

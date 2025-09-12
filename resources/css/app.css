@@ -1,5 +1,5 @@
 /* Import Bootstrap 5 */
-@import url('../bootstrap-5.0.2-dist/css/bootstrap.css');
+@import "bootstrap/dist/css/bootstrap.css";
 
-/* Import AdminLTE CSS */
-@import url('adminlte_css/adminlte.css');
+/* Import AdminLTE */
+@import "admin-lte/dist/css/adminlte.css";

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'IRMS')</title>
     @vite([
-        'resources/sass/app.scss',
+        'resources/css/app.css',
         'resources/css/irms.css',
         'resources/js/app.js',
     ])
