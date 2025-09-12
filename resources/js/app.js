@@ -1,6 +1,26 @@
 import './bootstrap';
 
-import 'bootstrap'; // ✅ This pulls in bootstrap.js + Popper
+// import $ from 'jquery';
+
+// window.$ = window.jQuery = $;
+
+$(document).ready(function () {
+    const table = $('#warehouse-table').DataTable({
+        paging: true,
+        info: true,
+        lengthChange: false,
+        searching: true, // Keep this true for API, hide UI with CSS
+        pageLength: 10,
+        language: {
+            emptyTable: "No warehouses found"
+        },
+    });
+    $('.dataTables_filter').hide();
+
+    $('#whseSearch').on('keyup', function () {
+        table.search(this.value).draw();
+    });
+});
 
 document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('[data-lte-toggle="sidebar"]').forEach(function (btn) {

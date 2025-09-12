@@ -4,12 +4,29 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class rswhse extends Model
+class Rswhse extends Model
 {
+    protected $table = 'rswhse';
+    public $timestamps = false;
+
+    protected $primaryKey = ['rssite', 'rswhse'];
+    public $incrementing = false;
+
     protected $fillable = [
         'rssite',
         'rswhse',
         'name',
-        'addr'
+        'addr',
+        'createdate',
+        'createdby',
     ];
+
+    // Optionally, set createdate automatically
+    public static function boot()
+    {
+        parent::boot();
+        static::creating(function ($model) {
+            $model->createdate = now();
+        });
+    }
 }

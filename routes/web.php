@@ -38,3 +38,4 @@ Route::post('irms/manage-users/store', [RsUserController::class, 'store'])->name
 
 // Route for the RsWhseController.php
 Route::get('irms/warehouse', [RsWhseController::class, 'index'])->name('warehouse.index');
+Route::post('irms/warehouse/store', [RsWhseController::class, 'store'])->name('warehouse.store');

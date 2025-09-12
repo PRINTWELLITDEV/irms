@@ -7,9 +7,14 @@
         <div class="content-wrapper">
             <div class="content-header">
                 <div class="container-fluid">
-                    <div class="row">
-                        <div class="col">
-                            <h1>Warehouse</h1>
+                    <div class="row align-items-center">
+                        <div class="col mb-3">
+                            <h1 class="d-inline-block mb-0">Warehouse</h1>
+                            <button type="button" id="btnAddWarehouse" class="btn btn-success ms-3" data-bs-toggle="modal"
+                                data-bs-target="#addWarehouseModal">
+                                <i class="bi bi-plus-circle-fill"></i>
+                                Add Warehouse
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -19,17 +24,17 @@
                 <div class="row">
                     <div class="col">
                         <div class="card">
-                            <!-- Card Header -->
-                            <div class="card-header d-flex justify-content-between align-items-center">
-                                <div class="w-50">
-                                    <input type="text" id="searchWarehouseInput" class="form-control"
-                                        placeholder="Search Warehouse">
-                                </div>
-                            </div>
-
                             <!-- Card Body -->
                             <div class="card-body">
-                                <table id="warehouse-table" class="table table-striped table-bordered table-hover">
+                                <div class="d-flex justify-content-end mb-3">
+                                    <div class="input-group" style="max-width: 300px;">
+                                        <input type="text" id="whseSearch" class="form-control"
+                                            placeholder="Search warehouse...">
+                                        <span class="input-group-text"><i class="bi bi-search"></i></span>
+                                    </div>
+                                </div>
+                                <table id="warehouse-table" class="table table-striped table-bordered table-hover align-middle">
+                                    
                                     <thead class="table-dark text-center">
                                         <tr>
                                             <th>Site</th>
@@ -42,10 +47,10 @@
                                     <tbody>
                                         @forelse($warehouses as $whse)
                                             <tr>
-                                                <td class="align-middle" style="width: 4rem;">{{ $whse->rssite }}</td>
-                                                <td class="align-middle" style="width: 7rem;">{{ $whse->rswhse }}</td>
-                                                <td class="align-middle">{{ $whse->name }}</td>
-                                                <td class="align-middle">{{ $whse->addr }}</td>
+                                                <td>{{ $whse->rssite }}</td>
+                                                <td>{{ $whse->rswhse }}</td>
+                                                <td>{{ $whse->name }}</td>
+                                                <td>{{ $whse->addr }}</td>
                                                 <td class="text-center">
                                                     <button type="button" class="btn btn-info btn-sm" title="Settings">
                                                         <i class="bi bi-gear"></i>
@@ -68,28 +73,47 @@
         </div>
     </div>
 
-    <!-- Include DataTables CSS -->
-    @push('styles')
-        <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
-    @endpush
-
-    <!-- Include jQuery and DataTables JS -->
-    @push('scripts')
-        <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-        <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
-        <script>
-            $(document).ready(function () {
-                const table = $('#warehouse-table').DataTable({
-                    paging: true,
-                    info: true,
-                    lengthChange: false
-                });
-
-                // Bind custom search input
-                $('#searchWarehouseInput').on('keyup', function () {
-                    table.search(this.value).draw();
-                });
-            });
-        </script>
-    @endpush
+    <!-- Add Warehouse Modal -->
+    <div class="modal fade" id="addWarehouseModal" tabindex="-1" aria-labelledby="addWarehouseLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <form action="{{ route('warehouse.store') }}" method="POST">
+                    @csrf
+                    <div class="modal-header bg-success text-white">
+                        <h1 class="modal-title fs-5" id="addWarehouseLabel">Add Warehouse</h1>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close">
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="rssite" class="form-label">Site</label>
+                            <select name="rssite" id="rssite" class="form-select" required>
+                                <option disabled selected>Select Site</option>
+                                <option value="FP-SP">Fortune Packaging, Inc.</option>
+                                <option value="PI-SP">Printwell, Inc.</option>
+                                <option value="PIGRP">Printwell Packaging Company</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="rswhse" class="form-label">Warehouse Code</label>
+                            <input type="text" class="form-control" id="rswhse" name="rswhse" maxlength="10" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Description</label>
+                            <input type="text" class="form-control" id="name" name="name" maxlength="30" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="addr" class="form-label">Address</label>
+                            <input type="text" class="form-control" id="addr" name="addr" maxlength="60">
+                        </div>
+                        <!-- createdby is set automatically in backend -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-success">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection
