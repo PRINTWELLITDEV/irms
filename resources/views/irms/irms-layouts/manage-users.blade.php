@@ -11,10 +11,12 @@
         <div class="content-body">
             <div class="container-fluid">
                 <div class="row justify-content-center align-items-center">
-                    <div class="col-12 text-center mt-2 mb-5">
+                    <div class="col-12 text-center mt-1 mb-31">
                         <!-- Header Row (3 columns) -->
-                        <div class="row text-start d-flex justify-center align-items-center flex-wrap py-3">
+                        <div class="row text-start d-flex justify-center align-items-center flex-wrap pb-3">
                             <div class="col">
+
+                                <!-- Button Dropdown -->
                                 <div class="dropdown">
                                     <button type="button" class="btn btn-secondary dropdown-toggle"
                                         data-bs-toggle="dropdown" aria-expanded="false">
@@ -28,19 +30,22 @@
                                     </ul>
                                 </div>
                             </div>
+
                             <div class="col">
+                                <!-- Search -->
                                 <form id="searchForm" method="GET" action="{{ route('rsusers.index') }}"
                                     class="input-group d-flex justify-content-center align-items-center gap-0">
                                     <div class="w-50">
                                         <input id="search" name="search" type="text" class="form-control"
-                                            value="{{ request('search') }}" autocomplete="off" />
+                                            value="{{ request('search') }}" autocomplete="off" placeholder="Search Users"/>
                                     </div>
                                     <button type="submit" class="btn btn-warning form-label mt-2">
                                         <i class="bi bi-search"></i>
-                                        Search
                                     </button>
                                 </form>
                             </div>
+
+                            <!-- Add Users -->
                             <div class="col text-end">
                                 <button type="button" id="btnAddUsername" class="btn btn-success" data-bs-toggle="modal"
                                     data-bs-target="#btnAddUser">
@@ -50,9 +55,11 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Table -->
                     <div class="col-12">
                         <div class="table-responsive">
-                            <table class="table table-striped table-hover">
+                            <table class="table table-striped table-hover table-bordered text-center">
                                 <thead class="table-dark">
                                     <tr>
                                         <th scope="col" class="align-middle">Profile</th>

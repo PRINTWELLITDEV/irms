@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\RsUserController;
+use App\Http\Controllers\RsWhseController;
 
 // Home route
 Route::get('/', function () {
@@ -34,3 +35,6 @@ Route::prefix('irms')->middleware('check.session')->group(function () {
 
 // Save Add User in Management-User
 Route::post('irms/manage-users/store', [RsUserController::class, 'store'])->name('RsUserController.store');
+
+// Route for the RsWhseController.php
+Route::get('irms/warehouse', [RsWhseController::class, 'index'])->name('warehouse.index');
