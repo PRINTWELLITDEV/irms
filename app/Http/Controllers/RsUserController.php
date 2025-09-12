@@ -9,14 +9,19 @@ class RsUserController extends Controller
 {
     public function index()
     {
-        $query = RsUser::query();
+        $query = RsUser::query()
+            ->leftJoin('irms_site', 'rsusers.rssite', '=', 'irms_site.rssite')
+            ->select(
+                'rsusers.*',
+                'irms_site.rssite_desc'
+            );
 
         if (request()->has('search') && request('search') !== null) {
             $search = request('search');
             $query->where(function($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('userid', 'like', "%{$search}%")
-                  ->orWhere('email', 'like', "%{$search}%");
+                $q->where('rsusers.name', 'like', "%{$search}%")
+                  ->orWhere('rsusers.userid', 'like', "%{$search}%")
+                  ->orWhere('rsusers.email', 'like', "%{$search}%");
             });
         }
 
@@ -44,23 +49,25 @@ class RsUserController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-                'rssite' => 'required|max:8',
-                'userid' => 'required|unique:rsusers|max:8',
-                'name' => 'nullable|max:255',
-                'password' => 'required|max:255',
-                'email' => 'required|max:255',
-                'user_type' => 'nullable|max:10',
-                'gender' => 'nullable|max:10',
-                'profile_pic_url' => 'nullable|file|max:255'
-            ]);
+            'rssite' => 'required|max:8',
+            'userid' => 'required|unique:rsusers,userid|max:8',
+            'name' => 'nullable|max:255',
+            'password' => 'required|max:255',
+            'email' => 'required|email|max:255',
+            'gender' => 'nullable|max:10',
+            'profile_pic_url' => 'nullable|file|mimes:jpg,jpeg,png|max:2048'
+        ]);
 
         if($request->hasFile('profile_pic_url')){
             $file = $request->file('profile_pic_url');
-            $path = $file->store('profile_pics', 'public');
-            $validated['profile_pic_url'] = $path;
+            $filename = $validated['userid'] . '.png';
+            $file->move(public_path('uploads/user-profile'), $filename);
+            $validated['profile_pic_url'] = 'uploads/user-profile/' . $filename;
+        } else {
+            $validated['profile_pic_url'] = 'uploads/user-profile/noprofile.png';
         }
 
-        $validated['password'] = bcrypt(($validated['password']));
+        $validated['password'] = bcrypt($validated['password']);
 
         RsUser::create($validated);
 

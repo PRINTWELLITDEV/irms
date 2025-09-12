@@ -19,21 +19,20 @@ return new class extends Migration
         Schema::create('rsusers', function (Blueprint $table) {
             $table->string('rssite', 8);
             $table->string('userid', 8);
-            $table->text('name')->nullable();
+            $table->string('name')->nullable();
             $table->string('password', 255);
             $table->string('email', 255);
-            $table->dateTime('email_verified_at')->nullable();
-            $table->integer('level')->nullable();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->integer('level')->default(1);
             $table->dateTime('create_date')->nullable();
             $table->dateTime('updated_date')->nullable();
-            $table->string('updated_by', 8)->nullable();        // Laravel user
-            $table->string('updated_by_sql', 128)->nullable();  // SQL Server login
-            // $table->string('user_type', 10)->nullable();
+            $table->string('updated_by', 8)->nullable();
+            $table->string('updated_by_sql', 128)->nullable();
             $table->string('gender', 10)->nullable();
             $table->text('profile_pic_url')->nullable();
-            $table->rememberToken()->nullable();
+            $table->rememberToken(); // varchar(100) nullable
 
-            $table->primary(['rssite', 'userid'], 'rsusers_rssite_userid_primary');
+            $table->primary(['rssite', 'userid']);
         });
         // Trigger to auto-update updated_date and updated_by on rsusers table
         DB::unprepared('
@@ -81,7 +80,7 @@ return new class extends Migration
     {
         Schema::dropIfExists('sessions');
         Schema::dropIfExists('rsusers');
-        // DB::unprepared('DROP TRIGGER IF EXISTS trg_rsusers_update');
+        DB::unprepared('DROP TRIGGER IF EXISTS trg_rsusers_update');
         Schema::dropIfExists('irms_site');
     }
 };

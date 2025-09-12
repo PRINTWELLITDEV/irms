@@ -49,8 +49,13 @@ class LoginController extends Controller
         // Find user by userid
         $user = RsUser::where('userid', $credentials['userid'])->first();
 
-        if ($user && Hash::check($credentials['password'], $user->password)) {
-            return $this->doLogin($request, $user);
+        try {
+            if ($user && Hash::check($credentials['password'], $user->password)) {
+                return $this->doLogin($request, $user);
+            }
+        } catch (\RuntimeException $e) {
+            // Optionally log the error: \Log::error($e);
+            // Fall through to show the same error as invalid credentials
         }
 
         // ❌ Login failed
