@@ -3,165 +3,141 @@
 
 @section('content')
 <div class="wrapper">
-    <!-- Content Wrapper -->
     <div class="content-wrapper">
         <div class="content-header">
-            <h1>Manage Users</h1>
-        </div>
-        <div class="content-body">
             <div class="container-fluid">
-                <div class="row justify-content-center align-items-center">
-                    <div class="col-12 text-center mt-1 mb-31">
-                        <!-- Header Row (3 columns) -->
-                        <div class="row text-start d-flex justify-center align-items-center flex-wrap pb-3">
-                            <div class="col">
+                <div class="row align-items-center">
+                    <div class="col mb-3">
+                        <h1 class="d-inline-block mb-0">Manage Users</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-                                <!-- Button Dropdown -->
-                                <div class="dropdown">
-                                    <button type="button" class="btn btn-secondary dropdown-toggle"
-                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class="bi bi-funnel-fill"></i>
-                                        Sort
-                                    </button>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="#" class="dropdown-item">10</a></li>
-                                        <li><a href="#" class="dropdown-item">20</a></li>
-                                        <li><a href="#" class="dropdown-item">50</a></li>
-                                    </ul>
-                                </div>
-                            </div>
+        <div class="content-body">
+            <div class="row">
+                <div class="col">
+                    <div class="card">
 
-                            <div class="col">
-                                <!-- Search -->
-                                <form id="searchForm" method="GET" action="{{ route('rsusers.index') }}"
-                                    class="input-group d-flex justify-content-center align-items-center gap-0">
-                                    <div class="w-50">
-                                        <input id="search" name="search" type="text" class="form-control"
-                                            value="{{ request('search') }}" autocomplete="off" placeholder="Search Users"/>
-                                    </div>
-                                    <button type="submit" class="btn btn-warning form-label mt-2">
-                                        <i class="bi bi-search"></i>
-                                    </button>
-                                </form>
-                            </div>
-
-                            <!-- Add Users -->
-                            <div class="col text-end">
-                                <button type="button" id="btnAddUsername" class="btn btn-success" data-bs-toggle="modal"
-                                    data-bs-target="#btnAddUser">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <button type="button" id="btnAddUser" class="btn btn-success" data-bs-toggle="modal"
+                                    data-bs-target="#addUserModal">
                                     <i class="bi bi-person-plus-fill"></i>
                                     Add User
                                 </button>
-                            </div>
-                        </div>
-                    </div>
 
-                    <!-- Table -->
-                    <div class="col-12">
-                        <div class="table-responsive">
-                            <table class="table table-striped table-hover table-bordered text-center">
-                                <thead class="table-dark">
-                                    <tr>
-                                        <th scope="col" class="align-middle">Profile</th>
-                                        <th scope="col" class="align-middle">User ID</th>
-                                        <th scope="col" class="align-middle">Name</th>
-                                        <th scope="col" class="align-middle">Email</th>
-                                        <th scope="col" class="align-middle">Site</th>
-                                        <th scope="col" class="align-middle">Level</th>
-                                        <th scope="col" class="align-middle">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="users-table-body">
-                                    @forelse($users as $user)
+                                <div class="input-group" style="max-width: 300px;">
+                                    <input type="text" id="userSearch" class="form-control" placeholder="Search users...">
+                                    <span class="input-group-text"><i class="bi bi-search"></i></span>
+                                </div>
+                            </div>
+
+                            <div class="table-responsive">
+                                <table id="users-table" class="table table-striped table-bordered table-hover align-middle text-center">
+                                    <thead class="table-dark">
                                         <tr>
-                                            <td class="align-middle">
-                                                <img src="{{ $user->profile_pic_url ? asset($user->profile_pic_url) : asset('uploads/user-profile/noprofile.png') }}"
-                                                        alt="profile"
-                                                        class="rounded-circle"
-                                                        width="50" height="50">
-                                            </td>
-                                            <td class="align-middle">{{ $user->userid }}</td>
-                                            <td class="align-middle">{{ $user->name }}</td>
-                                            <td class="align-middle">{{ $user->email }}</td>
-                                            <td class="align-middle">{{ $user->rssite_desc ?? $user->rssite }}</td>
-                                            <td class="align-middle">{{ $user->level }}</td>
-                                            <td class="align-middle">
-                                                <button class="btn btn-sm btn-secondary" title="Settings">
-                                                    <i class="bi bi-gear-fill"></i>
-                                                </button>
-                                            </td>
+                                            <th>Profile</th>
+                                            <th>User ID</th>
+                                            <th>Name</th>
+                                            <th>Email</th>
+                                            <th>Site</th>
+                                            <th>Level</th>
+                                            <th>Action</th>
                                         </tr>
-                                    @empty
-                                        <tr>
-                                            <td colspan="7" class="text-center text-muted">No data available</td>
-                                        </tr>
-                                    @endforelse
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                                    </thead>
+                                    <tbody>
+                                        @forelse($users as $user)
+                                            <tr>
+                                                <td class="align-middle">
+                                                    <img src="{{ $user->profile_pic_url ? asset($user->profile_pic_url) : asset('uploads/user-profile/noprofile.png') }}"
+                                                        alt="profile" class="rounded-circle" width="50" height="50">
+                                                </td>
+                                                <td class="align-middle">{{ $user->userid }}</td>
+                                                <td class="align-middle">{{ $user->name }}</td>
+                                                <td class="align-middle">{{ $user->email }}</td>
+                                                <td class="align-middle">{{ $user->rssite_desc ?? $user->rssite }}</td>
+                                                <td class="align-middle">{{ $user->level }}</td>
+                                                <td class="align-middle text-center">
+                                                    <button type="button" class="btn btn-sm btn-secondary btn-settings"
+                                                            data-userid="{{ $user->userid }}" title="Settings">
+                                                        <i class="bi bi-gear-fill"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        @empty
+                                            <tr>
+                                                <td colspan="7" class="text-center text-muted">No data available</td>
+                                            </tr>
+                                        @endforelse
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div> <!-- /.card-body -->
+                    </div> <!-- /.card -->
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Modals -->
-
-<div class="modal fade" id="btnAddUser" tabindex="-1" aria-labelledby="addUserLabel" aria-hidden="true">
+<!-- Add User Modal (structure same as warehouse modal) -->
+<div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <form action="{{ route('RsUserController.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                <!-- Modal Header -->
                 <div class="modal-header bg-success text-white">
                     <h1 class="modal-title fs-5" id="addUserLabel">Add User</h1>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close">
-                    </button>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <!-- Modal Body -->
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="profile_pic_url" class="form-label">Profile Picture</label>
                         <input type="file" name="profile_pic_url" id="profile_pic_url" class="form-control">
+                        @error('profile_pic_url') <div class="text-danger small">{{ $message }}</div> @enderror
                     </div>
                     <div class="mb-3">
                         <label for="rssite" class="form-label">Site</label>
                         <select name="rssite" id="rssite" class="form-select" required>
                             <option disabled selected>Select Site</option>
-                            <option value="FP-SP">Fortune Packaging, Inc.</option>
-                            <option value="PI-SP">Printwell, Inc.</option>
-                            <option value="PIGRP">Printwell Packaging Company</option>
+                            <option value="FP-SP" {{ old('rssite') == 'FP-SP' ? 'selected' : '' }}>Fortune Packaging, Inc.</option>
+                            <option value="PI-SP" {{ old('rssite') == 'PI-SP' ? 'selected' : '' }}>Printwell, Inc.</option>
+                            <option value="PIGRP" {{ old('rssite') == 'PIGRP' ? 'selected' : '' }}>Printwell Packaging Company</option>
                         </select>
+                        @error('rssite') <div class="text-danger small">{{ $message }}</div> @enderror
                     </div>
                     <div class="mb-3">
                         <label for="userid" class="form-label">User ID</label>
-                        <input type="text" class="form-control" id="userid" name="userid" required maxlength="8">
+                        <input type="text" class="form-control" id="userid" name="userid" value="{{ old('userid') }}" required maxlength="8">
+                        @error('userid') <div class="text-danger small">{{ $message }}</div> @enderror
                     </div>
                     <div class="mb-3">
                         <label for="name" class="form-label">Name</label>
-                        <input type="text" class="form-control" id="name" name="name" maxlength="255">
+                        <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}" maxlength="255">
+                        @error('name') <div class="text-danger small">{{ $message }}</div> @enderror
                     </div>
                     <div class="mb-3">
                         <label for="email" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="email" name="email" maxlength="255" required>
+                        <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}" maxlength="255" required>
+                        @error('email') <div class="text-danger small">{{ $message }}</div> @enderror
                     </div>
                     <div class="mb-3">
                         <label for="gender" class="form-label">Gender</label>
                         <select name="gender" id="gender" class="form-select">
                             <option disabled selected>Select a gender</option>
-                            <option value="male">Male</option>
-                            <option value="female">Female</option>
+                            <option value="male" {{ old('gender')=='male' ? 'selected' : '' }}>Male</option>
+                            <option value="female" {{ old('gender')=='female' ? 'selected' : '' }}>Female</option>
                         </select>
+                        @error('gender') <div class="text-danger small">{{ $message }}</div> @enderror
                     </div>
                     <div class="mb-3">
                         <label for="password" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="password" name="password" required
-                            maxlength="255">
+                        <input type="password" class="form-control" id="password" name="password" required maxlength="255">
+                        @error('password') <div class="text-danger small">{{ $message }}</div> @enderror
                     </div>
                 </div>
-
-                <!-- Modal Footer -->
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                     <button type="submit" class="btn btn-success">Save</button>
@@ -170,4 +146,51 @@
         </div>
     </div>
 </div>
+
+<!-- Settings Modal (sibling to add modal) -->
+<div class="modal fade" id="settingsModals" tabindex="-1" aria-labelledby="label_settings" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="label_settings">Settings</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- populate dynamically if needed -->
+                <div id="settings-modal-content">Select a user to view settings.</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Scripts: DataTables optional and modal trigger for settings buttons -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // DataTable (optional)
+    var table = $('#users-table').DataTable({ "paging": true, "info": true, "lengthChange": false });
+
+    // external search input
+    document.getElementById('userSearch')?.addEventListener('keyup', function () {
+        table.search(this.value).draw();
+    });
+
+    // settings buttons (multiple) - show modal and populate
+    document.querySelectorAll('.btn-settings').forEach(function(btn) {
+        btn.addEventListener('click', function () {
+            var userid = this.dataset.userid;
+            var content = document.getElementById('settings-modal-content');
+            content.textContent = 'Loading settings for ' + userid + '...';
+            // load dynamic content via AJAX if needed, then show modal
+            var modal = new bootstrap.Modal(document.getElementById('settingsModals'));
+            modal.show();
+        });
+    });
+});
+</script>
 @endsection
