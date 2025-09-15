@@ -11,9 +11,9 @@ class RsWhseController extends Controller
 {
     public function index()
     {
-        $warehouses = \DB::select('EXEC sp_view_whse');
-        $sites = \App\Models\IrmsSite::all(); // Add this line
-        return view('irms.irms-layouts.warehouse', compact('warehouses', 'sites')); // Pass $sites to the view
+        $warehouses = Rswhse::with('site')->get();
+        $sites = IrmsSite::all();
+        return view('irms.irms-layouts.warehouse', compact('warehouses', 'sites'));
     }
 
     public function store(Request $request)

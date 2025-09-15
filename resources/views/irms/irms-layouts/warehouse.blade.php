@@ -55,10 +55,9 @@
                                             @forelse($warehouses as $whse)
                                                 <tr>
                                                     <td class="text-center align-middle">
-                                                        @if(!empty($whse->logo_pic_url))
-                                                        <img src="{{ asset($whse->logo_pic_url) }}" alt="logo" class="me-1" width="40" height="40" style="object-fit:contain;vertical-align:middle;">
+                                                        @if(!empty($whse->site) && !empty($whse->site->logo_pic_url))
+                                                            <img src="{{ asset($whse->site->logo_pic_url) }}" class="me-1" width="40" height="40" style="object-fit:contain;vertical-align:middle;">
                                                         @endif
-                                                        <!-- {{ $whse->rssite }} -->
                                                     </td>
                                                     <td>{{ $whse->rswhse }}</td>
                                                     <td>{{ $whse->name }}</td>
@@ -70,6 +69,7 @@
                                                             data-bs-toggle="modal"
                                                             data-bs-target="#warehouseSettingsModal"
                                                             data-rssite="{{ $whse->rssite }}"
+                                                            data-rssite_desc="{{ $whse->site->rssite_desc ?? $whse->rssite }}"
                                                             data-rswhse="{{ $whse->rswhse }}"
                                                             data-name="{{ $whse->name }}"
                                                             data-addr="{{ $whse->addr }}">

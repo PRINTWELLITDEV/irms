@@ -50,20 +50,19 @@ $(document).ready(function () {
 
     // When settings button is clicked
     $('#warehouse-table').on('click', '.btn-settings', function () {
-        const rssite = $(this).data('rssite');
+        const rssiteDesc = $(this).data('rssite_desc');
         const rswhse = $(this).data('rswhse');
         const name = $(this).data('name');
         const addr = $(this).data('addr');
 
-        // Fill settings modal
-        $('#ws-site').text(rssite || '');
+        $('#ws-site').text(rssiteDesc || '');
         $('#ws-whse').text(rswhse || '');
         $('#ws-name').text(name || '');
         $('#ws-addr').text(addr || '');
 
-        // Store data for edit modal on the Edit button
+        // Store data for edit modal on the Edit button if needed
         $('#editWarehouseBtn')
-            .data('rssite', rssite)
+            .data('rssite', $(this).data('rssite'))
             .data('rswhse', rswhse)
             .data('name', name)
             .data('addr', addr);
