@@ -152,7 +152,7 @@
         </div>
     </div>
 
-    {{-- Edit Warehouse Modal --}}
+    <!-- {{-- Edit Warehouse Modal --}} -->
     <div class="modal fade" id="editWarehouseModal" tabindex="-1" aria-labelledby="editWarehouseLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -177,7 +177,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="edit-rswhse" class="form-label">Warehouse Code</label>
-                            <input type="text" class="form-control" id="edit-rswhse" name="rswhse" value="{{  }}" maxlength="10" required>
+                            <input type="text" class="form-control" id="edit-rswhse" name="rswhse" value="" maxlength="10" required>
                         </div>
                         <div class="mb-3">
                             <label for="edit-name" class="form-label">Description</label>
