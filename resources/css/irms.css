@@ -1,8 +1,11 @@
 /* Import Bootstrap 5 */
-@import url('../bootstrap-5.0.2-dist/css/bootstrap.css');
+
 
 /* Import AdminLTE CSS */
-@import url('adminlte_css/adminlte.css');
+/* @import url('adminlte_css/adminlte.css'); */
+
+
+
 
 /* Layout Wrapper */
 .wrapper {
