@@ -29,10 +29,11 @@
                                     <div class="alert alert-danger">{{ $errors->first() }}</div>
                                 @endif
                                 <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <button type="button" id="btnAddWarehouse" class="btn btn-success" data-bs-toggle="modal"
+                                    <button type="button" id="btnAddWarehouse" class="btn btn-success d-flex align-items-center" data-bs-toggle="modal"
                                         data-bs-target="#addWarehouseModal">
-                                        <i class="bi bi-plus-circle-fill"></i>
-                                        Add Warehouse
+                                        <i class="bi bi-plus-circle-fill d-inline d-sm-inline me-2"></i>
+                                        <span class="d-none d-sm-inline">Add Warehouse</span>
+                                        <i class="bi bi-plus-circle-fill d-inline d-sm-none"></i>
                                     </button>
                                     <div class="input-group" style="max-width: 300px;">
                                         <input type="text" id="whseSearch" class="form-control"
