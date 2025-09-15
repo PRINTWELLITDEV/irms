@@ -10,7 +10,7 @@
 /* Layout Wrapper */
 .wrapper {
     display: flex;
-    min-height: 100vh;
+    min-height: 90vh;
 }
 
 /* Content Wrapper */
@@ -19,7 +19,7 @@
     background: #f4f6f9;
     padding: 2rem;
     opacity: 0;
-    transition: opacity 0.4s ease;   
+    transition: opacity 0.4s ease;
 }
 .content-wrapper.visible {
     opacity: 1;

@@ -1,5 +1,5 @@
 @extends('irms.irms-partials.app')
-@section('title', 'Rack Locations')
+@section('title', 'Manage Users - Frontend Demo')
 
 @section('content')
 <div class="wrapper">
@@ -8,7 +8,7 @@
             <div class="container-fluid">
                 <div class="row align-items-center">
                     <div class="col mb-3">
-                        <h1 class="d-inline-block mb-0">Rack Location</h1>
+                        <h1 class="d-inline-block mb-0">Manage Users (Frontend Demo)</h1>
                     </div>
                 </div>
             </div>
@@ -35,12 +35,12 @@
                                 <table id="users-table" class="table table-striped table-bordered table-hover align-middle text-center">
                                     <thead class="table-dark">
                                         <tr>
+                                            <th>Profile</th>
+                                            <th>User ID</th>
+                                            <th>Name</th>
+                                            <th>Email</th>
                                             <th>Site</th>
-                                            <th>Warehouse</th>
-                                            <th>Bay No.</th>
-                                            <th>Location</th>
-                                            <th>Description</th>
-                                            <th>Quantity</th>
+                                            <th>Level</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -63,6 +63,39 @@
                                             </td>
                                         </tr>
 
+                                        <tr>
+                                            <td class="align-middle">
+                                                <img src="https://via.placeholder.com/50" alt="profile" class="rounded-circle" width="50" height="50">
+                                            </td>
+                                            <td class="align-middle">JDOE01</td>
+                                            <td class="align-middle">John Doe</td>
+                                            <td class="align-middle">john.doe@example.com</td>
+                                            <td class="align-middle">Fortune Packaging</td>
+                                            <td class="align-middle">User</td>
+                                            <td class="align-middle text-center">
+                                                <button type="button" class="btn btn-sm btn-secondary btn-settings"
+                                                        data-userid="JDOE01" data-name="John Doe" title="Settings">
+                                                    <i class="bi bi-gear-fill"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="align-middle">
+                                                <img src="https://via.placeholder.com/50" alt="profile" class="rounded-circle" width="50" height="50">
+                                            </td>
+                                            <td class="align-middle">ASMI01</td>
+                                            <td class="align-middle">Asha Smith</td>
+                                            <td class="align-middle">asha.smith@example.com</td>
+                                            <td class="align-middle">Printwell Packaging</td>
+                                            <td class="align-middle">Manager</td>
+                                            <td class="align-middle text-center">
+                                                <button type="button" class="btn btn-sm btn-secondary btn-settings"
+                                                        data-userid="ASMI01" data-name="Asha Smith" title="Settings">
+                                                    <i class="bi bi-gear-fill"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -81,51 +114,64 @@
         <div class="modal-content">
             <form onsubmit="event.preventDefault(); alert('This is a frontend demo — no backend call.');">
                 <div class="modal-header bg-success text-white">
-                    <h5 class="modal-title" id="addUserLabel">Add Rack Location</h5>
+                    <h5 class="modal-title" id="addUserLabel">Add User (Demo)</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
                         <label class="form-label">Site</label>
                         <select class="form-select">
-                            <option value="FP-SP">Fortune Packaging Corp.</option>
-                            <option value="PI-SP">Printwell, Inc.</option>
-                            <option value="PIGRP">Printwell Packaging Corp.</option>
+                            <option>FP-SP</option>
+                            <option>PI-SP</option>
+                            <option>PIGRP</option>
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Warehouse</label>
+                        <label class="form-label">User ID</label>
                         <input class="form-control" />
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Bay No.</label>
+                        <label class="form-label">Name</label>
                         <input class="form-control" />
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Location</label>
+                        <label class="form-label">Email</label>
                         <input type="email" class="form-control" />
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Description</label>
-                        <input type="password" class="form-control" />
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Quantity</label>
+                        <label class="form-label">Password</label>
                         <input type="password" class="form-control" />
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-success">Save</button>
+                    <button type="submit" class="btn btn-success">Save (Demo)</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
 
+<!-- Settings Modal (frontend) -->
+<div class="modal fade" id="settingsModals" tabindex="-1" aria-labelledby="label_settings" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Settings</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="settings-modal-content">Select a user to view settings.</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- DataTables + Bootstrap CDN (frontend-only) -->
-<!-- <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
@@ -163,5 +209,5 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
-</script> -->
+</script>
 @endsection

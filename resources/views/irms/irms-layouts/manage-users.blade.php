@@ -34,7 +34,7 @@
 
                             <div class="table-responsive">
                                 <table id="users-table" class="table table-striped table-bordered table-hover align-middle text-center">
-                                    <thead class="table-dark">
+                                    <thead class="table-dark text-center">
                                         <tr>
                                             <th>Profile</th>
                                             <th>User ID</th>
@@ -52,11 +52,11 @@
                                                     <img src="{{ $user->profile_pic_url ? asset($user->profile_pic_url) : asset('uploads/user-profile/noprofile.png') }}"
                                                         alt="profile" class="rounded-circle" width="50" height="50">
                                                 </td>
-                                                <td class="align-middle">{{ $user->userid }}</td>
-                                                <td class="align-middle">{{ $user->name }}</td>
-                                                <td class="align-middle">{{ $user->email }}</td>
-                                                <td class="align-middle">{{ $user->rssite_desc ?? $user->rssite }}</td>
-                                                <td class="align-middle">{{ $user->level }}</td>
+                                                <td>{{ $user->userid }}</td>
+                                                <td>{{ $user->name }}</td>
+                                                <td>{{ $user->email }}</td>
+                                                <td>{{ $user->rssite_desc ?? $user->rssite }}</td>
+                                                <td>{{ $user->level }}</td>
                                                 <td class="align-middle text-center">
                                                     <button type="button" class="btn btn-sm btn-secondary btn-settings"
                                                             data-userid="{{ $user->userid }}" title="Settings">
@@ -98,7 +98,7 @@
                         @error('profile_pic_url') <div class="text-danger small">{{ $message }}</div> @enderror
                     </div>
                     <div class="mb-3">
-                        <label for="rssite" class="form-label">Site</label>
+                        <label for="rssite" class="form-label">Site<i class="text-danger">*</i></label>
                         <select name="rssite" id="rssite" class="form-select" required>
                             <option disabled selected>Select Site</option>
                             <option value="FP-SP" {{ old('rssite') == 'FP-SP' ? 'selected' : '' }}>Fortune Packaging, Inc.</option>
@@ -108,7 +108,7 @@
                         @error('rssite') <div class="text-danger small">{{ $message }}</div> @enderror
                     </div>
                     <div class="mb-3">
-                        <label for="userid" class="form-label">User ID</label>
+                        <label for="userid" class="form-label">User ID<i class="text-danger">*</i></label>
                         <input type="text" class="form-control" id="userid" name="userid" value="{{ old('userid') }}" required maxlength="8">
                         @error('userid') <div class="text-danger small">{{ $message }}</div> @enderror
                     </div>
@@ -118,7 +118,7 @@
                         @error('name') <div class="text-danger small">{{ $message }}</div> @enderror
                     </div>
                     <div class="mb-3">
-                        <label for="email" class="form-label">Email</label>
+                        <label for="email" class="form-label">Email<i class="text-danger">*</i></label>
                         <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}" maxlength="255" required>
                         @error('email') <div class="text-danger small">{{ $message }}</div> @enderror
                     </div>
@@ -132,7 +132,7 @@
                         @error('gender') <div class="text-danger small">{{ $message }}</div> @enderror
                     </div>
                     <div class="mb-3">
-                        <label for="password" class="form-label">Password</label>
+                        <label for="password" class="form-label">Password<i class="text-danger">*</i></label>
                         <input type="password" class="form-control" id="password" name="password" required maxlength="255">
                         @error('password') <div class="text-danger small">{{ $message }}</div> @enderror
                     </div>
