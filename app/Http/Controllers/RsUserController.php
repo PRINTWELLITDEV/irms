@@ -27,7 +27,7 @@ class RsUserController extends Controller
 
         // $users = $query->get();
         // Call the stored procedure to get users
-        $users = \DB::select('EXEC sp_get_users');
+        $users = \DB::select('EXEC sp_view_users');
 
         // If you want to support AJAX, you may need to convert $users to an array
         if (request()->ajax()) {

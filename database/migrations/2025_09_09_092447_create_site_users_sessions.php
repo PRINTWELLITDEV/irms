@@ -13,6 +13,7 @@ return new class extends Migration
             $table->string('rssite', 8)->primary();
             $table->string('rssite_desc', 50);
             $table->text('address')->nullable();
+            $table->text('logo_pic_url')->nullable();
         });
 
         // rsusers table

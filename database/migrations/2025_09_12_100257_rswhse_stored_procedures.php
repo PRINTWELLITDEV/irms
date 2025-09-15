@@ -10,6 +10,8 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // Drop procedures if they exist before creating (SQL Server syntax)
+        DB::unprepared("IF OBJECT_ID('sp_add_whse', 'P') IS NOT NULL DROP PROCEDURE sp_add_whse;");
         DB::unprepared('
             CREATE PROCEDURE sp_add_whse
                 @p_rssite VARCHAR(8),
@@ -31,11 +33,15 @@ return new class extends Migration
             END
         ');
 
+        DB::unprepared("IF OBJECT_ID('sp_view_whse', 'P') IS NOT NULL DROP PROCEDURE sp_view_whse;");
         DB::unprepared('
             CREATE PROCEDURE sp_view_whse
             AS
             BEGIN
-                SELECT rssite, rswhse, name, addr FROM rswhse
+                SELECT w.rssite, rswhse, name, addr, logo_pic_url
+				FROM 
+				rswhse w
+				INNER JOIN irms_site s ON s.rssite = w.rssite
             END
         ');
     }
@@ -45,7 +51,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        DB::unprepared('DROP PROCEDURE IF EXISTS sp_add_whse');
-        DB::unprepared('DROP PROCEDURE IF EXISTS sp_view_whse');
+        DB::unprepared("IF OBJECT_ID('sp_add_whse', 'P') IS NOT NULL DROP PROCEDURE sp_add_whse;");
+        DB::unprepared("IF OBJECT_ID('sp_view_whse', 'P') IS NOT NULL DROP PROCEDURE sp_view_whse;");
     }
 };

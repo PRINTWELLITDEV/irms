@@ -10,13 +10,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // Drop procedures if they exist (SQL Server syntax)
-        DB::unprepared("IF OBJECT_ID('sp_get_users', 'P') IS NOT NULL DROP PROCEDURE sp_get_users");
-        DB::unprepared("IF OBJECT_ID('sp_add_user', 'P') IS NOT NULL DROP PROCEDURE sp_add_user");
-
-        // Create sp_get_users (no parentheses, no BEGIN/END needed for single statement)
+        DB::unprepared("IF OBJECT_ID('sp_view_users', 'P') IS NOT NULL DROP PROCEDURE sp_get_users");
+        // Create sp_view_users (no parentheses, no BEGIN/END needed for single statement)
         DB::unprepared('
-            CREATE PROCEDURE sp_get_users
+            CREATE PROCEDURE sp_view_users
             AS
             SELECT 
                 u.profile_pic_url,
@@ -24,12 +21,14 @@ return new class extends Migration
                 u.name,
                 u.email,
                 u.level,
-                s.rssite_desc
+                s.rssite_desc,
+                s.logo_pic_url
             FROM rsusers u
-            LEFT JOIN irms_site s ON u.rssite = s.rssite;
+            INNER JOIN irms_site s ON u.rssite = s.rssite;
         ');
 
         // Create sp_add_user (use @param, no IN, and use NVARCHAR for Unicode support)
+        DB::unprepared("IF OBJECT_ID('sp_add_user', 'P') IS NOT NULL DROP PROCEDURE sp_add_user");
         DB::unprepared('
             CREATE PROCEDURE sp_add_user
                 @rssite NVARCHAR(8),
@@ -50,7 +49,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        DB::unprepared("IF OBJECT_ID('sp_get_users', 'P') IS NOT NULL DROP PROCEDURE sp_get_users");
+        DB::unprepared("IF OBJECT_ID('sp_view_users', 'P') IS NOT NULL DROP PROCEDURE sp_view_users");
         DB::unprepared("IF OBJECT_ID('sp_add_user', 'P') IS NOT NULL DROP PROCEDURE sp_add_user");
     }
 };
