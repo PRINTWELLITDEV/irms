@@ -20,6 +20,14 @@
                     <div class="col">
                         <div class="card">
                             <div class="card-body">
+                                @if(session('success'))
+                                    <div id="success-alert" class="alert alert-success" style="transition: opacity 0.7s;">
+                                        {{ session('success') }}
+                                    </div>
+                                @endif
+                                @if($errors->any())
+                                    <div class="alert alert-danger">{{ $errors->first() }}</div>
+                                @endif
                                 <div class="d-flex justify-content-between align-items-center mb-3">
                                     <button type="button" id="btnAddWarehouse" class="btn btn-success" data-bs-toggle="modal"
                                         data-bs-target="#addWarehouseModal">
@@ -50,19 +58,24 @@
                                                         @if(!empty($whse->logo_pic_url))
                                                         <img src="{{ asset($whse->logo_pic_url) }}" alt="logo" class="me-1" width="40" height="40" style="object-fit:contain;vertical-align:middle;">
                                                         @endif
-                                                        <!-- {{ $whse->logo_pic_url }} -->
+                                                        <!-- {{ $whse->rssite }} -->
                                                     </td>
                                                     <td>{{ $whse->rswhse }}</td>
                                                     <td>{{ $whse->name }}</td>
                                                     <td>{{ $whse->addr }}</td>
                                                     <td class="text-center">
-                                                        {{-- The corrected button with Bootstrap attributes and data-whse-id --}}
-                                                        <button type="button" class="btn btn-secondary btn-sm btn-settings"
+                                                        <!-- The corrected button with Bootstrap attributes and data-whse-id -->
+                                                        <button type="button"
+                                                            class="btn btn-secondary btn-sm btn-settings"
                                                             data-bs-toggle="modal"
                                                             data-bs-target="#warehouseSettingsModal"
-                                                            title="Settings">
+                                                            data-rssite="{{ $whse->rssite }}"
+                                                            data-rswhse="{{ $whse->rswhse }}"
+                                                            data-name="{{ $whse->name }}"
+                                                            data-addr="{{ $whse->addr }}">
                                                             <i class="bi bi-gear-fill"></i>
                                                         </button>
+                                                        
                                                     </td>
                                                 </tr>
                                             @empty
@@ -150,7 +163,12 @@
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-danger">Delete</button>
-                    <button type="button" class="btn btn-warning" data-bs-target="#editWarehouseModal" data-bs-toggle="modal">Edit</button>
+                    <button type="button" class="btn btn-warning"
+                            data-bs-target="#editWarehouseModal"
+                            data-bs-toggle="modal"
+                            id="editWarehouseBtn">
+                            Edit
+                    </button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
@@ -161,7 +179,7 @@
     <div class="modal fade" id="editWarehouseModal" tabindex="-1" aria-labelledby="editWarehouseLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <form id="editWarehouseForm" method="POST" action="">
+                <form id="editWarehouseForm" method="POST" action="{{ route('warehouse.update') }}">
                     @csrf
                     @method('PUT')
                     <div class="modal-header bg-warning text-white">
@@ -170,7 +188,8 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        {{-- <input type="hidden" id="edit-whse-id" name="id"> --}}
+                        <input type="hidden" id="edit-orig-rssite" name="orig_rssite">
+                        <input type="hidden" id="edit-orig-rswhse" name="orig_rswhse">
                         <div class="mb-3">
                             <label for="edit-rssite" class="form-label">Site</label>
                             <select name="rssite" id="edit-rssite" class="form-select" required>
@@ -201,55 +220,4 @@
             </div>
         </div>
     </div>
-
-
-    <script>
-        // Warehouse settings and edit modal functionality
-
-        // document.addEventListener("DOMContentLoaded", function () {
-        //     // Listener for the main table's settings buttons
-        //     document.querySelectorAll(".btn-settings").forEach(function (btn) {
-        //         btn.addEventListener("click", function () {
-        //             const site = this.dataset.rssite || "";
-        //             const whse = this.dataset.rswhse || "";
-        //             const name = this.dataset.name || "";
-        //             const addr = this.dataset.addr || "";
-
-        //             // Populate the settings modal
-        //             document.getElementById("ws-site").textContent = site;
-        //             document.getElementById("ws-whse").textContent = whse;
-        //             document.getElementById("ws-name").textContent = name;
-        //             document.getElementById("ws-addr").textContent = addr;
-
-        //             // Set data attributes on the edit and delete buttons in the settings modal
-        //             const editBtn = document.querySelector("#warehouseSettingsModal .btn-warning");
-        //             editBtn.dataset.rssite = site;
-        //             editBtn.dataset.rswhse = whse;
-        //             editBtn.dataset.name = name;
-        //             editBtn.dataset.addr = addr;
-        //         });
-        //     });
-
-        //     // Listener for the "Edit" button inside the settings modal
-        //     document.querySelector("#warehouseSettingsModal .btn-warning").addEventListener("click", function() {
-        //         // Get data from the clicked edit button
-        //         const whseId = this.dataset.whseId;
-        //         const site = this.dataset.rssite;
-        //         const whse = this.dataset.rswhse;
-        //         const name = this.dataset.name;
-        //         const addr = this.dataset.addr;
-
-        //         // Populate the edit modal form fields
-        //         document.getElementById("edit-rssite").value = site;
-        //         document.getElementById("edit-rswhse").value = whse;
-        //         document.getElementById("edit-name").value = name;
-        //         document.getElementById("edit-addr").value = addr;
-
-        //         // Update the form action URL dynamically
-        //         const editForm = document.getElementById("editWarehouseForm");
-        //         // Assuming your update route looks something like '/warehouse/123'
-        //         editForm.action = `/warehouse/${whseId}`;
-        //     });
-        // });
-    </script>
 @endsection

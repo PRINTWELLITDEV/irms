@@ -11,9 +11,9 @@ class RsWhseController extends Controller
 {
     public function index()
     {
-        $warehouses = Rswhse::all();
-        $sites = \DB::table('irms_site')->get(); // Or use IrmsSite::all() if you have a model
-        return view('irms.irms-layouts.warehouse', compact('warehouses', 'sites'));
+        $warehouses = \DB::select('EXEC sp_view_whse');
+        $sites = \App\Models\IrmsSite::all(); // Add this line
+        return view('irms.irms-layouts.warehouse', compact('warehouses', 'sites')); // Pass $sites to the view
     }
 
     public function store(Request $request)
@@ -37,6 +37,33 @@ class RsWhseController extends Controller
                 $createdby,
             ]);
             return redirect()->route('warehouse.index')->with('success', 'Warehouse added successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->withErrors(['error' => $e->getMessage()]);
+        }
+    }
+
+    public function update(Request $request)
+    {
+        $validated = $request->validate([
+            'orig_rssite' => 'required|string|max:8',
+            'orig_rswhse' => 'required|string|max:10',
+            'rssite'      => 'required|string|max:8',
+            'rswhse'      => 'required|string|max:10',
+            'name'        => 'required|string|max:30',
+            'addr'        => 'nullable|string|max:60',
+        ]);
+
+        try {
+            \DB::statement('EXEC sp_update_whse ?, ?, ?, ?, ?, ?', [
+                $validated['orig_rssite'],
+                $validated['orig_rswhse'],
+                $validated['rssite'],
+                $validated['rswhse'],
+                $validated['name'],
+                $validated['addr'],
+            ]);
+            return redirect()->route('warehouse.index')
+                ->with('success', 'Warehouse: ' . $validated['rswhse'] . ' updated successfully');
         } catch (\Exception $e) {
             return redirect()->back()->withInput()->withErrors(['error' => $e->getMessage()]);
         }

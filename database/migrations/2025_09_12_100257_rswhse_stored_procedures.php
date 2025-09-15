@@ -39,15 +39,16 @@ return new class extends Migration
             AS
             BEGIN
                 SELECT w.rssite, rswhse, name, addr, logo_pic_url
-				FROM 
-				rswhse w
-				INNER JOIN irms_site s ON s.rssite = w.rssite
+                FROM rswhse w
+                INNER JOIN irms_site s ON s.rssite = w.rssite;
             END
         ');
 
         DB::unprepared("IF OBJECT_ID('sp_update_whse', 'P') IS NOT NULL DROP PROCEDURE sp_update_whse;");
         DB::unprepared('
             CREATE PROCEDURE sp_update_whse
+                @orig_rssite VARCHAR(8),
+                @orig_rswhse VARCHAR(10),
                 @p_rssite VARCHAR(8),
                 @p_rswhse VARCHAR(10),
                 @p_name VARCHAR(30),
@@ -55,11 +56,14 @@ return new class extends Migration
             AS
             BEGIN
                 UPDATE rswhse
-                SET name = @p_name,
+                SET rssite = @p_rssite,
+                    rswhse = @p_rswhse,
+                    name = @p_name,
                     addr = @p_addr
-                WHERE rssite = @p_rssite AND rswhse = @p_rswhse;
+                WHERE rssite = @orig_rssite AND rswhse = @orig_rswhse;
             END
         ');
+
     }
 
     /**
