@@ -25,17 +25,14 @@ Route::get('/irms', function () {
 })->name('dashboard')->middleware('auth');
 Route::prefix('irms')->middleware('check.session')->group(function () {
     Route::get('/manage-users', [RsUserController::class, 'index'])->name('rsusers.index');
-    Route::get('/warehouse', fn() => view('irms/irms-layouts/warehouse'))->name('irms.warehouse');
+    Route::get('/warehouse', [RsWhseController::class, 'index'])->name('warehouse.index');
+    // Route::get('/warehouse', fn() => view('irms/irms-layouts/warehouse'))->name('irms.warehouse');
     Route::get('/whse-goodreceiving', fn() => view('irms/irms-layouts/whse-goodreceiving'))->name('irms.whse-goodreceiving');
     Route::get('/bay-location', fn() => view('irms/irms-layouts/bay-location'))->name('irms.baylocation');
     Route::get('/rack-locations', fn() => view('irms/irms-layouts/rack-locations'))->name('irms.racklocations');
 
+    //Save Add User
+    Route::post('/manage-users/store', [RsUserController::class, 'store'])->name('RsUserController.store');
+    Route::post('/warehouse/store', [RsWhseController::class, 'store'])->name('warehouse.store');
 });
 
-
-// Save Add User in Management-User
-Route::post('irms/manage-users/store', [RsUserController::class, 'store'])->name('RsUserController.store');
-
-// Route for the RsWhseController.php
-Route::get('irms/warehouse', [RsWhseController::class, 'index'])->name('warehouse.index');
-Route::post('irms/warehouse/store', [RsWhseController::class, 'store'])->name('warehouse.store');
