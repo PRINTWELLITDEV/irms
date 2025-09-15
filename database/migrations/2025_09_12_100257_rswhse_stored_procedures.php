@@ -44,6 +44,22 @@ return new class extends Migration
 				INNER JOIN irms_site s ON s.rssite = w.rssite
             END
         ');
+
+        DB::unprepared("IF OBJECT_ID('sp_update_whse', 'P') IS NOT NULL DROP PROCEDURE sp_update_whse;");
+        DB::unprepared('
+            CREATE PROCEDURE sp_update_whse
+                @p_rssite VARCHAR(8),
+                @p_rswhse VARCHAR(10),
+                @p_name VARCHAR(30),
+                @p_addr VARCHAR(60)
+            AS
+            BEGIN
+                UPDATE rswhse
+                SET name = @p_name,
+                    addr = @p_addr
+                WHERE rssite = @p_rssite AND rswhse = @p_rswhse;
+            END
+        ');
     }
 
     /**
@@ -53,5 +69,6 @@ return new class extends Migration
     {
         DB::unprepared("IF OBJECT_ID('sp_add_whse', 'P') IS NOT NULL DROP PROCEDURE sp_add_whse;");
         DB::unprepared("IF OBJECT_ID('sp_view_whse', 'P') IS NOT NULL DROP PROCEDURE sp_view_whse;");
+        DB::unprepared("IF OBJECT_ID('sp_update_whse', 'P') IS NOT NULL DROP PROCEDURE sp_update_whse;");
     }
 };
