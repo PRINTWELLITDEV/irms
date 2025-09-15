@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\RsUser;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 class RsUserController extends Controller

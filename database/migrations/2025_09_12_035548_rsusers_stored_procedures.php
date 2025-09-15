@@ -10,7 +10,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        DB::unprepared("IF OBJECT_ID('sp_view_users', 'P') IS NOT NULL DROP PROCEDURE sp_get_users");
+        DB::unprepared("IF OBJECT_ID('sp_view_users', 'P') IS NOT NULL DROP PROCEDURE sp_view_users");
         // Create sp_view_users (no parentheses, no BEGIN/END needed for single statement)
         DB::unprepared('
             CREATE PROCEDURE sp_view_users

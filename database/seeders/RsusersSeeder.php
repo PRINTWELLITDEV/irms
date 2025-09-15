@@ -43,7 +43,7 @@ class RsusersSeeder extends Seeder
                 'updated_by' => null,
                 'updated_by_sql' => null,
                 'gender' => 'male',
-                'profile_pic_url' => null,
+                'profile_pic_url' => 'uploads/user-profile/PPC1187.png',
                 'remember_token' => null,
             ],
             [

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\RsUserController;
 use App\Http\Controllers\RsWhseController;
+use App\Http\Controllers\RsBayLocController;
 
 // Home route
 Route::get('/', function () {
@@ -28,11 +29,13 @@ Route::prefix('irms')->middleware('check.session')->group(function () {
     Route::get('/warehouse', [RsWhseController::class, 'index'])->name('warehouse.index');
     // Route::get('/warehouse', fn() => view('irms/irms-layouts/warehouse'))->name('irms.warehouse');
     Route::get('/whse-goodreceiving', fn() => view('irms/irms-layouts/whse-goodreceiving'))->name('irms.whse-goodreceiving');
-    Route::get('/bay-location', fn() => view('irms/irms-layouts/bay-location'))->name('irms.baylocation');
+    Route::get('/bay-location', [RsBayLocController::class, 'index'])->name('bay-location.index');
     Route::get('/rack-locations', fn() => view('irms/irms-layouts/rack-locations'))->name('irms.racklocations');
 
     //Save Add User
     Route::post('/manage-users/store', [RsUserController::class, 'store'])->name('RsUserController.store');
     Route::post('/warehouse/store', [RsWhseController::class, 'store'])->name('warehouse.store');
+    Route::post('/bay-location/store', [RsBayLocController::class, 'store'])->name('bay-location.store');
+    // Route::resource('bay-location', \App\Http\Controllers\RsBayLocController::class)->only(['index', 'store']);
 });
 
