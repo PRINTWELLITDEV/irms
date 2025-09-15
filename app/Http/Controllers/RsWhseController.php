@@ -5,13 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Rswhse; // Add this at the top
+use App\Models\IrmsSite; // Make sure you have this model
 
 class RsWhseController extends Controller
 {
     public function index()
     {
-        $warehouses = \DB::select('EXEC sp_view_whse');
-        return view('irms.irms-layouts.warehouse', compact('warehouses'));
+        $warehouses = Rswhse::all();
+        $sites = \DB::table('irms_site')->get(); // Or use IrmsSite::all() if you have a model
+        return view('irms.irms-layouts.warehouse', compact('warehouses', 'sites'));
     }
 
     public function store(Request $request)

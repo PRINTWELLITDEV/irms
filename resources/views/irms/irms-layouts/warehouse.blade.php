@@ -54,8 +54,6 @@
                                                     <button type="button" class="btn btn-secondary btn-sm btn-settings"
                                                         data-bs-toggle="modal"
                                                         data-bs-target="#warehouseSettingsModal"
-                                                        data-rssite="{{ $whse->rssite }}" data-rswhse="{{ $whse->rswhse }}"
-                                                        data-name="{{ $whse->name }}" data-addr="{{ $whse->addr }}"
                                                         title="Settings">
                                                         <i class="bi bi-gear-fill"></i>
                                                     </button>
@@ -76,7 +74,7 @@
         </div>
     </div>
 
-    {{-- Add Warehouse Modal --}}
+    <!-- Add Warehouse Modal -->
     <div class="modal fade" id="addWarehouseModal" tabindex="-1" aria-labelledby="addWarehouseLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -92,9 +90,9 @@
                             <label for="rssite" class="form-label">Site</label>
                             <select name="rssite" id="rssite" class="form-select" required>
                                 <option disabled selected>Select Site</option>
-                                <option value="FP-SP">Fortune Packaging, Inc.</option>
-                                <option value="PI-SP">Printwell, Inc.</option>
-                                <option value="PIGRP">Printwell Packaging Company</option>
+                                @foreach($sites as $site)
+                                    <option value="{{ $site->rssite }}">{{ $site->rssite_desc }}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="mb-3">
@@ -120,7 +118,7 @@
     </div>
 
 
-    {{-- Warehouse Settings Modal --}}
+    <!-- Warehouse Settings Modal -->
     <div class="modal fade" id="warehouseSettingsModal" tabindex="-1" aria-labelledby="warehouseSettingsLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
@@ -169,10 +167,10 @@
                         <div class="mb-3">
                             <label for="edit-rssite" class="form-label">Site</label>
                             <select name="rssite" id="edit-rssite" class="form-select" required>
-                                <option disabled>Select Site</option>
-                                <option value="FP-SP">Fortune Packaging, Inc.</option>
-                                <option value="PI-SP">Printwell, Inc.</option>
-                                <option value="PIGRP">Printwell Packaging Company</option>
+                                <option selected disabled>Select Site</option>
+                                @foreach($sites as $site)
+                                    <option value="{{ $site->rssite }}">{{ $site->rssite_desc }}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="mb-3">
@@ -201,50 +199,50 @@
     <script>
         // Warehouse settings and edit modal functionality
 
-        document.addEventListener("DOMContentLoaded", function () {
-            // Listener for the main table's settings buttons
-            document.querySelectorAll(".btn-settings").forEach(function (btn) {
-                btn.addEventListener("click", function () {
-                    const site = this.dataset.rssite || "";
-                    const whse = this.dataset.rswhse || "";
-                    const name = this.dataset.name || "";
-                    const addr = this.dataset.addr || "";
+        // document.addEventListener("DOMContentLoaded", function () {
+        //     // Listener for the main table's settings buttons
+        //     document.querySelectorAll(".btn-settings").forEach(function (btn) {
+        //         btn.addEventListener("click", function () {
+        //             const site = this.dataset.rssite || "";
+        //             const whse = this.dataset.rswhse || "";
+        //             const name = this.dataset.name || "";
+        //             const addr = this.dataset.addr || "";
 
-                    // Populate the settings modal
-                    document.getElementById("ws-site").textContent = site;
-                    document.getElementById("ws-whse").textContent = whse;
-                    document.getElementById("ws-name").textContent = name;
-                    document.getElementById("ws-addr").textContent = addr;
+        //             // Populate the settings modal
+        //             document.getElementById("ws-site").textContent = site;
+        //             document.getElementById("ws-whse").textContent = whse;
+        //             document.getElementById("ws-name").textContent = name;
+        //             document.getElementById("ws-addr").textContent = addr;
 
-                    // Set data attributes on the edit and delete buttons in the settings modal
-                    const editBtn = document.querySelector("#warehouseSettingsModal .btn-warning");
-                    editBtn.dataset.rssite = site;
-                    editBtn.dataset.rswhse = whse;
-                    editBtn.dataset.name = name;
-                    editBtn.dataset.addr = addr;
-                });
-            });
+        //             // Set data attributes on the edit and delete buttons in the settings modal
+        //             const editBtn = document.querySelector("#warehouseSettingsModal .btn-warning");
+        //             editBtn.dataset.rssite = site;
+        //             editBtn.dataset.rswhse = whse;
+        //             editBtn.dataset.name = name;
+        //             editBtn.dataset.addr = addr;
+        //         });
+        //     });
 
-            // Listener for the "Edit" button inside the settings modal
-            document.querySelector("#warehouseSettingsModal .btn-warning").addEventListener("click", function() {
-                // Get data from the clicked edit button
-                const whseId = this.dataset.whseId;
-                const site = this.dataset.rssite;
-                const whse = this.dataset.rswhse;
-                const name = this.dataset.name;
-                const addr = this.dataset.addr;
+        //     // Listener for the "Edit" button inside the settings modal
+        //     document.querySelector("#warehouseSettingsModal .btn-warning").addEventListener("click", function() {
+        //         // Get data from the clicked edit button
+        //         const whseId = this.dataset.whseId;
+        //         const site = this.dataset.rssite;
+        //         const whse = this.dataset.rswhse;
+        //         const name = this.dataset.name;
+        //         const addr = this.dataset.addr;
 
-                // Populate the edit modal form fields
-                document.getElementById("edit-rssite").value = site;
-                document.getElementById("edit-rswhse").value = whse;
-                document.getElementById("edit-name").value = name;
-                document.getElementById("edit-addr").value = addr;
+        //         // Populate the edit modal form fields
+        //         document.getElementById("edit-rssite").value = site;
+        //         document.getElementById("edit-rswhse").value = whse;
+        //         document.getElementById("edit-name").value = name;
+        //         document.getElementById("edit-addr").value = addr;
 
-                // Update the form action URL dynamically
-                const editForm = document.getElementById("editWarehouseForm");
-                // Assuming your update route looks something like '/warehouse/123'
-                editForm.action = `/warehouse/${whseId}`;
-            });
-        });
+        //         // Update the form action URL dynamically
+        //         const editForm = document.getElementById("editWarehouseForm");
+        //         // Assuming your update route looks something like '/warehouse/123'
+        //         editForm.action = `/warehouse/${whseId}`;
+        //     });
+        // });
     </script>
 @endsection
