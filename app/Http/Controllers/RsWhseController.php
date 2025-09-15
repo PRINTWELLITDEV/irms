@@ -39,4 +39,9 @@ class RsWhseController extends Controller
             return redirect()->back()->withInput()->withErrors(['error' => $e->getMessage()]);
         }
     }
+
+    // public function edit($name){
+    //     $item = Item::findOrFail($name);
+    //     return view('items.edit', compact('item'))
+    // }
 }
