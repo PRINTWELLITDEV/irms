@@ -33,6 +33,21 @@ $(document).ready(function () {
         warehouseTable.search(this.value).draw();
     });
 
+    // Bay Location table
+    const bayLocationTable = $('#bayloc-table').DataTable({
+        paging: true,
+        info: true,
+        lengthChange: false,
+        searching: true,
+        pageLength: 10,
+        language: {
+            emptyTable: "No bay locations found"
+        },
+    });
+    $('#baylocSearch').on('keyup', function () {
+        bayLocationTable.search(this.value).draw();
+    });
+
     $('.dataTables_filter').hide();
 });
 
