@@ -10,11 +10,6 @@
                     <div class="row align-items-center">
                         <div class="col mb-3">
                             <h1 class="d-inline-block mb-0">Warehouse</h1>
-                            <!-- <button type="button" id="btnAddWarehouse" class="btn btn-success ms-3" data-bs-toggle="modal"
-                                data-bs-target="#addWarehouseModal">
-                                <i class="bi bi-plus-circle-fill"></i>
-                                Add Warehouse
-                            </button> -->
                         </div>
                     </div>
                 </div>
@@ -24,14 +19,20 @@
                 <div class="row">
                     <div class="col">
                         <div class="card">
-                            <!-- Card Body -->
                             <div class="card-body">
+                                @if(session('success'))
+                                    <div id="success-alert" class="alert alert-success" style="transition: opacity 0.7s;">
+                                        {{ session('success') }}
+                                    </div>
+                                @endif
+                                @if($errors->any())
+                                    <div class="alert alert-danger">{{ $errors->first() }}</div>
+                                @endif
                                 <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <button type="button" id="btnAddWarehouse" class="btn btn-success d-flex align-items-center"
-                                        data-bs-toggle="modal" data-bs-target="#addWarehouseModal">
-                                        <i class="bi bi-plus-circle-fill d-none d-sm-inline me-2"></i>
-                                        <span class="d-none d-sm-inline">Add Warehouse</span>
-                                        <i class="bi bi-plus-circle-fill d-inline d-sm-none"></i>
+                                    <button type="button" id="btnAddWarehouse" class="btn btn-success" data-bs-toggle="modal"
+                                        data-bs-target="#addWarehouseModal">
+                                        <i class="bi bi-plus-circle-fill"></i>
+                                        Add Warehouse
                                     </button>
                                     <div class="input-group" style="max-width: 300px;">
                                         <input type="text" id="whseSearch" class="form-control"
@@ -41,7 +42,6 @@
                                 </div>
                                 <div class="table-responsive">
                                     <table id="warehouse-table" class="table table-striped table-bordered table-hover align-middle">
-
                                         <thead class="table-dark text-center">
                                             <tr>
                                                 <th width="5%">Site</th>
@@ -58,15 +58,24 @@
                                                         @if(!empty($whse->logo_pic_url))
                                                         <img src="{{ asset($whse->logo_pic_url) }}" alt="logo" class="me-1" width="40" height="40" style="object-fit:contain;vertical-align:middle;">
                                                         @endif
-                                                        <!-- {{ $whse->logo_pic_url }} -->
+                                                        <!-- {{ $whse->rssite }} -->
                                                     </td>
                                                     <td>{{ $whse->rswhse }}</td>
                                                     <td>{{ $whse->name }}</td>
                                                     <td>{{ $whse->addr }}</td>
                                                     <td class="text-center">
-                                                        <button type="button" class="btn btn-info btn-sm" title="Settings">
+                                                        <!-- The corrected button with Bootstrap attributes and data-whse-id -->
+                                                        <button type="button"
+                                                            class="btn btn-secondary btn-sm btn-settings"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#warehouseSettingsModal"
+                                                            data-rssite="{{ $whse->rssite }}"
+                                                            data-rswhse="{{ $whse->rswhse }}"
+                                                            data-name="{{ $whse->name }}"
+                                                            data-addr="{{ $whse->addr }}">
                                                             <i class="bi bi-gear-fill"></i>
                                                         </button>
+                                                        
                                                     </td>
                                                 </tr>
                                             @empty
@@ -75,10 +84,9 @@
                                                 </tr>
                                             @endforelse
                                         </tbody>
-                                </table>
+                                    </table>
                                 </div>
                             </div>
-                            <!-- End Card Body -->
                         </div>
                     </div>
                 </div>
@@ -102,9 +110,9 @@
                             <label for="rssite" class="form-label">Site</label>
                             <select name="rssite" id="rssite" class="form-select" required>
                                 <option disabled selected>Select Site</option>
-                                <option value="FP-SP">Fortune Packaging, Inc.</option>
-                                <option value="PI-SP">Printwell, Inc.</option>
-                                <option value="PIGRP">Printwell Packaging Company</option>
+                                @foreach($sites as $site)
+                                    <option value="{{ $site->rssite }}">{{ $site->rssite_desc }}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="mb-3">
@@ -119,11 +127,94 @@
                             <label for="addr" class="form-label">Address</label>
                             <input type="text" class="form-control" id="addr" name="addr" maxlength="60">
                         </div>
-                        <!-- createdby is set automatically in backend -->
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                         <button type="submit" class="btn btn-success">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Warehouse Settings Modal -->
+    <div class="modal fade" id="warehouseSettingsModal" tabindex="-1" aria-labelledby="warehouseSettingsLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="warehouseSettingsLabel">Warehouse Settings</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <dl class="row mb-0">
+                        <dt class="col-sm-4">Site</dt>
+                        <dd class="col-sm-8" id="ws-site"></dd>
+
+                        <dt class="col-sm-4">Warehouse</dt>
+                        <dd class="col-sm-8" id="ws-whse"></dd>
+
+                        <dt class="col-sm-4">Description</dt>
+                        <dd class="col-sm-8" id="ws-name"></dd>
+
+                        <dt class="col-sm-4">Address</dt>
+                        <dd class="col-sm-8" id="ws-addr"></dd>
+                    </dl>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-danger">Delete</button>
+                    <button type="button" class="btn btn-warning"
+                            data-bs-target="#editWarehouseModal"
+                            data-bs-toggle="modal"
+                            id="editWarehouseBtn">
+                            Edit
+                    </button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- {{-- Edit Warehouse Modal --}} -->
+    <div class="modal fade" id="editWarehouseModal" tabindex="-1" aria-labelledby="editWarehouseLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <form id="editWarehouseForm" method="POST" action="{{ route('warehouse.update') }}">
+                    @csrf
+                    @method('PUT')
+                    <div class="modal-header bg-warning text-white">
+                        <h1 class="modal-title fs-5" id="editWarehouseLabel">Edit Warehouse</h1>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close">
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" id="edit-orig-rssite" name="orig_rssite">
+                        <input type="hidden" id="edit-orig-rswhse" name="orig_rswhse">
+                        <div class="mb-3">
+                            <label for="edit-rssite" class="form-label">Site</label>
+                            <select name="rssite" id="edit-rssite" class="form-select" required>
+                                <option selected disabled>Select Site</option>
+                                @foreach($sites as $site)
+                                    <option value="{{ $site->rssite }}">{{ $site->rssite_desc }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit-rswhse" class="form-label">Warehouse Code</label>
+                            <input type="text" class="form-control" id="edit-rswhse" name="rswhse" value="" maxlength="10" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit-name" class="form-label">Description</label>
+                            <input type="text" class="form-control" id="edit-name" name="name" maxlength="30" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit-addr" class="form-label">Address</label>
+                            <input type="text" class="form-control" id="edit-addr" name="addr" maxlength="60">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-warning">Update</button>
                     </div>
                 </form>
             </div>
