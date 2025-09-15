@@ -1,16 +1,14 @@
 /* Import Bootstrap 5 */
+@import "bootstrap/dist/css/bootstrap.css";
 
-
-/* Import AdminLTE CSS */
-/* @import url('adminlte_css/adminlte.css'); */
-
-
-
+/* Import AdminLTE */
+@import "admin-lte/dist/css/adminlte.css";
 
 /* Layout Wrapper */
 .wrapper {
+    flex-direction: column;
     display: flex;
-    min-height: 100vh;
+    min-height: 90vh;
 }
 
 /* Content Wrapper */
@@ -29,3 +27,112 @@
     margin-bottom: 1rem;
     font-size: 1.5rem;
 }
+
+/* Table */
+.table-responsive {
+    margin-bottom: 1.5rem;
+}
+table.table th, table.table td {
+    white-space: nowrap;
+    padding: 0.75rem 0.5rem;
+}
+table.table td img {
+    width: 50px;
+    height: 50px;
+}
+.content-header h1 {
+    font-size: 1.5rem;
+}
+
+/* Responsive table tweaks for mobile */
+@media (max-width: 1200px) {
+    .table-responsive {
+        margin-bottom: 1rem;
+    }
+    table.table th, table.table td {
+        white-space: nowrap;
+        font-size: 1rem;
+        padding: 0.5rem 0.25rem;
+    }
+    table.table td img {
+        width: 45px;
+        height: 45px;
+    }
+    .content-header h1 {
+        font-size: 1.4rem;
+    }
+}
+
+@media (max-width: 992px) {
+    #fullscreenToggle {
+        display: none;
+    }
+    .content-wrapper {
+        padding: 1rem;
+    }
+    .table-responsive {
+        margin-bottom: 1rem;
+    }
+    table.table th, table.table td {
+        white-space: nowrap;
+        font-size: 1rem;
+        padding: 0.5rem 0.25rem;
+    }
+    table.table td img {
+        width: 40px;
+        height: 40px;
+    }
+    .content-header h1 {
+        font-size: 1.3rem;
+    }
+}
+
+@media (max-width: 768px) {
+    #fullscreenToggle {
+        display: none;
+    }
+    .content-wrapper {
+        padding: 1rem;
+    }
+    .table-responsive {
+        margin-bottom: 1rem;
+    }
+    table.table th, table.table td {
+        white-space: nowrap;
+        font-size: 0.9rem;
+        padding: 0.5rem 0.25rem;
+    }
+    table.table td img {
+        width: 35px;
+        height: 35px;
+    }
+    .content-header h1 {
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 576px) {
+    #fullscreenToggle {
+        display: none;
+    }
+
+    .content-wrapper {
+        padding: 1rem;
+    }
+    .table-responsive {
+        margin-bottom: 1rem;
+    }
+    table.table th, table.table td {
+        white-space: nowrap;
+        font-size: 0.8rem;
+        padding: 0.5rem 0.25rem;
+    }
+    table.table td img {
+        width: 30px;
+        height: 30px;
+    }
+    .content-header h1 {
+        font-size: 1.1rem;
+    }
+}
+

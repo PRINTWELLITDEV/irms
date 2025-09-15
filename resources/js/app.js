@@ -3,21 +3,6 @@ import 'bootstrap';
 import 'admin-lte';
 
 $(document).ready(function () {
-    // Warehouse table
-    const warehouseTable = $('#warehouse-table').DataTable({
-        paging: true,
-        info: true,
-        lengthChange: false,
-        searching: true,
-        pageLength: 10,
-        language: {
-            emptyTable: "No warehouses found"
-        },
-    });
-    $('#whseSearch').on('keyup', function () {
-        warehouseTable.search(this.value).draw();
-    });
-
     // Users table
     const usersTable = $('#users-table').DataTable({
         paging: true,
@@ -33,7 +18,22 @@ $(document).ready(function () {
         usersTable.search(this.value).draw();
     });
 
-    $('.dataTables_filter').hide(); // Hide all default search boxes
+    // Warehouse table
+    const warehouseTable = $('#warehouse-table').DataTable({
+        paging: true,
+        info: true,
+        lengthChange: false,
+        searching: true,
+        pageLength: 10,
+        language: {
+            emptyTable: "No warehouses found"
+        },
+    });
+    $('#whseSearch').on('keyup', function () {
+        warehouseTable.search(this.value).draw();
+    });
+
+    $('.dataTables_filter').hide();
 });
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -93,58 +93,58 @@ document.addEventListener('DOMContentLoaded', function () {
         };
     }
 
-    const searchInput = document.getElementById('search');
-    const usersTableBody = document.getElementById('users-table-body');
-    const searchForm = document.getElementById('searchForm');
+    // const searchInput = document.getElementById('search');
+    // const usersTableBody = document.getElementById('users-table-body');
+    // const searchForm = document.getElementById('searchForm');
 
-    function fetchUsers(query) {
-        fetch(`{{ route('rsusers.index') }}?search=${encodeURIComponent(query)}`, {
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest'
-            }
-        })
-            .then(response => response.json())
-            .then(data => {
-                let html = '';
-                if (data.users.length > 0) {
-                    data.users.forEach(user => {
-                        html += `
-                                    <tr>
-                                        <td>${user.rssite}</td>
-                                        <td>${user.userid}</td>
-                                        <td>${user.name}</td>
-                                        <td>${user.email}</td>
-                                        <td>${user.user_type}</td>
-                                        <td>${user.level}</td>
-                                        <td>
-                                            <button class="btn btn-sm btn-primary">Edit</button>
-                                            <button class="btn btn-sm btn-danger">Delete</button>
-                                        </td>
-                                    </tr>
-                                `;
-                    });
-                } else {
-                    html = `<tr>
-                                <td colspan="6" class="text-center text-muted">No data available</td>
-                            </tr>`;
-                }
-                usersTableBody.innerHTML = html;
-            });
-    }
+    // function fetchUsers(query) {
+    //     fetch(`{{ route('rsusers.index') }}?search=${encodeURIComponent(query)}`, {
+    //         headers: {
+    //             'X-Requested-With': 'XMLHttpRequest'
+    //         }
+    //     })
+    //         .then(response => response.json())
+    //         .then(data => {
+    //             let html = '';
+    //             if (data.users.length > 0) {
+    //                 data.users.forEach(user => {
+    //                     html += `
+    //                                 <tr>
+    //                                     <td>${user.rssite}</td>
+    //                                     <td>${user.userid}</td>
+    //                                     <td>${user.name}</td>
+    //                                     <td>${user.email}</td>
+    //                                     <td>${user.user_type}</td>
+    //                                     <td>${user.level}</td>
+    //                                     <td>
+    //                                         <button class="btn btn-sm btn-primary">Edit</button>
+    //                                         <button class="btn btn-sm btn-danger">Delete</button>
+    //                                     </td>
+    //                                 </tr>
+    //                             `;
+    //                 });
+    //             } else {
+    //                 html = `<tr>
+    //                             <td colspan="6" class="text-center text-muted">No data available</td>
+    //                         </tr>`;
+    //             }
+    //             usersTableBody.innerHTML = html;
+    //         });
+    // }
 
-    if (searchInput && usersTableBody) {
-        searchInput.addEventListener('input', debounce(function () {
-            fetchUsers(this.value);
-        }, 400));
-    }
+    // if (searchInput && usersTableBody) {
+    //     searchInput.addEventListener('input', debounce(function () {
+    //         fetchUsers(this.value);
+    //     }, 400));
+    // }
 
-    // Optional: prevent form submit on enter
-    if (searchForm) {
-        searchForm.addEventListener('submit', function (e) {
-            e.preventDefault();
-            fetchUsers(searchInput.value);
-        });
-    }
+    // // Optional: prevent form submit on enter
+    // if (searchForm) {
+    //     searchForm.addEventListener('submit', function (e) {
+    //         e.preventDefault();
+    //         fetchUsers(searchInput.value);
+    //     });
+    // }
 });
 
 

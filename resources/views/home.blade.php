@@ -13,10 +13,6 @@
                             {{ session('status') }}
                         </div>
                     @endif
-
-                    <!-- {{ __('You are logged in!') }} -->
-                </div>
-                <div class="card-body">
                     <h1>Welcome to IRMS</h1>
                     <p>This is the home page of the IRMS.</p>
                     <a href="{{ url('/login') }}" class="btn btn-primary">

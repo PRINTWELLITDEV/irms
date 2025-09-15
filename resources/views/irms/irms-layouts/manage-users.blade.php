@@ -20,10 +20,11 @@
 
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-center mb-3">
-                                <button type="button" id="btnAddUser" class="btn btn-success" data-bs-toggle="modal"
-                                    data-bs-target="#addUserModal">
-                                    <i class="bi bi-person-plus-fill"></i>
-                                    Add User
+                                <button type="button" id="btnAddUser" class="btn btn-success d-flex align-items-center"
+                                    data-bs-toggle="modal" data-bs-target="#addUserModal">
+                                    <i class="bi bi-person-plus-fill d-none d-sm-inline me-2"></i>
+                                    <span class="d-none d-sm-inline">Add User</span>
+                                    <i class="bi bi-person-plus-fill d-inline d-sm-none"></i>
                                 </button>
 
                                 <div class="input-group" style="max-width: 300px;">
@@ -33,29 +34,34 @@
                             </div>
 
                             <div class="table-responsive">
-                                <table id="users-table" class="table table-striped table-bordered table-hover align-middle text-center">
-                                    <thead class="table-dark">
-                                        <tr>
-                                            <th>Profile</th>
-                                            <th>User ID</th>
-                                            <th>Name</th>
-                                            <th>Email</th>
-                                            <th>Site</th>
-                                            <th>Level</th>
-                                            <th>Action</th>
+                                <table id="users-table" class="table table-striped table-bordered table-hover align-middle">
+                                    <thead class="table-dark text-center">
+                                        <tr class="">
+                                            <th width="5%">Profile</th>
+                                            <th width="10%">User ID</th>
+                                            <th width="15%">Name</th>
+                                            <th width="20%">Email</th>
+                                            <th width="5%">Site</th>
+                                            <th width="5%">Level</th>
+                                            <th width="5%">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @forelse($users as $user)
                                             <tr>
-                                                <td class="align-middle">
+                                                <td class="text-center align-middle">
                                                     <img src="{{ $user->profile_pic_url ? asset($user->profile_pic_url) : asset('uploads/user-profile/noprofile.png') }}"
                                                         alt="profile" class="rounded-circle" width="50" height="50">
                                                 </td>
                                                 <td class="align-middle">{{ $user->userid }}</td>
                                                 <td class="align-middle">{{ $user->name }}</td>
                                                 <td class="align-middle">{{ $user->email }}</td>
-                                                <td class="align-middle">{{ $user->rssite_desc ?? $user->rssite }}</td>
+                                                <td class="align-middle">
+                                                    @if(!empty($user->logo_pic_url))
+                                                        <img src="{{ asset($user->logo_pic_url) }}" alt="logo" class="me-1" width="50" height="50" style="object-fit:contain;vertical-align:middle;">
+                                                    @endif
+                                                    <!-- {{ $user->rssite_desc ?? $user->rssite }} -->
+                                                </td>
                                                 <td class="align-middle">{{ $user->level }}</td>
                                                 <td class="align-middle text-center">
                                                     <button type="button" class="btn btn-sm btn-secondary btn-settings"
