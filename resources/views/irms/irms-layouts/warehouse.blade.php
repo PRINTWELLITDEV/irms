@@ -177,7 +177,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="edit-rswhse" class="form-label">Warehouse Code</label>
-                            <input type="text" class="form-control" id="edit-rswhse" name="rswhse" value="{{  }}" maxlength="10" required>
+                            <input type="text" class="form-control" id="edit-rswhse" name="rswhse" maxlength="10" required>
                         </div>
                         <div class="mb-3">
                             <label for="edit-name" class="form-label">Description</label>
@@ -228,7 +228,6 @@
             // Listener for the "Edit" button inside the settings modal
             document.querySelector("#warehouseSettingsModal .btn-warning").addEventListener("click", function() {
                 // Get data from the clicked edit button
-                const whseId = this.dataset.whseId;
                 const site = this.dataset.rssite;
                 const whse = this.dataset.rswhse;
                 const name = this.dataset.name;
