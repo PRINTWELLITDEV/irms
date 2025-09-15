@@ -39,7 +39,7 @@
                                     </div>
                                 </div>
                                 <table id="warehouse-table" class="table table-striped table-bordered table-hover align-middle">
-                                    
+
                                     <thead class="table-dark text-center">
                                         <tr>
                                             <th>Site</th>
@@ -58,7 +58,7 @@
                                                 <td>{{ $whse->addr }}</td>
                                                 <td class="text-center">
                                                     <button type="button" class="btn btn-info btn-sm" title="Settings">
-                                                        <i class="bi bi-gear"></i>
+                                                        <i class="bi bi-gear-fill"></i>
                                                     </button>
                                                 </td>
                                             </tr>
