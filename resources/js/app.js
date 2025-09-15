@@ -2,26 +2,38 @@ import 'bootstrap';
 
 import 'admin-lte';
 
-// import $ from 'jquery';
-
-// window.$ = window.jQuery = $;
-
 $(document).ready(function () {
-    const table = $('#warehouse-table').DataTable({
+    // Warehouse table
+    const warehouseTable = $('#warehouse-table').DataTable({
         paging: true,
         info: true,
         lengthChange: false,
-        searching: true, // Keep this true for API, hide UI with CSS
+        searching: true,
         pageLength: 10,
         language: {
             emptyTable: "No warehouses found"
         },
     });
-    $('.dataTables_filter').hide();
-
     $('#whseSearch').on('keyup', function () {
-        table.search(this.value).draw();
+        warehouseTable.search(this.value).draw();
     });
+
+    // Users table
+    const usersTable = $('#users-table').DataTable({
+        paging: true,
+        info: true,
+        lengthChange: false,
+        searching: true,
+        pageLength: 10,
+        language: {
+            emptyTable: "No data available"
+        },
+    });
+    $('#userSearch').on('keyup', function () {
+        usersTable.search(this.value).draw();
+    });
+
+    $('.dataTables_filter').hide(); // Hide all default search boxes
 });
 
 document.addEventListener('DOMContentLoaded', function () {

@@ -1,6 +1,5 @@
 @extends('irms.irms-partials.app')
 @section('title', 'IRMS Dashboard')
-
 @section('content')
 <div class="wrapper">
     <div class="content-wrapper">
@@ -165,32 +164,4 @@
         </div>
     </div>
 </div>
-
-<!-- Scripts: DataTables optional and modal trigger for settings buttons -->
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
-<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    // DataTable (optional)
-    var table = $('#users-table').DataTable({ "paging": true, "info": true, "lengthChange": false });
-
-    // external search input
-    document.getElementById('userSearch')?.addEventListener('keyup', function () {
-        table.search(this.value).draw();
-    });
-
-    // settings buttons (multiple) - show modal and populate
-    document.querySelectorAll('.btn-settings').forEach(function(btn) {
-        btn.addEventListener('click', function () {
-            var userid = this.dataset.userid;
-            var content = document.getElementById('settings-modal-content');
-            content.textContent = 'Loading settings for ' + userid + '...';
-            // load dynamic content via AJAX if needed, then show modal
-            var modal = new bootstrap.Modal(document.getElementById('settingsModals'));
-            modal.show();
-        });
-    });
-});
-</script>
 @endsection
