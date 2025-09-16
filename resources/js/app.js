@@ -13,6 +13,9 @@ $(document).ready(function () {
         language: {
             emptyTable: "No data available"
         },
+        // columnDefs: [
+        //     { orderable: false, targets: [4] } // 0: Profile, 6: Action
+        // ],
     });
     $('#userSearch').on('keyup', function () {
         usersTable.search(this.value).draw();
@@ -28,6 +31,9 @@ $(document).ready(function () {
         language: {
             emptyTable: "No warehouses found"
         },
+        columnDefs: [
+            { orderable: false, targets: [0, 4] }
+        ]
     });
     $('#whseSearch').on('keyup', function () {
         warehouseTable.search(this.value).draw();
@@ -43,6 +49,9 @@ $(document).ready(function () {
         language: {
             emptyTable: "No bay locations found"
         },
+        columnDefs: [
+            { orderable: false, targets: [0, 4] }
+        ]
     });
     $('#baylocSearch').on('keyup', function () {
         bayLocationTable.search(this.value).draw();
@@ -89,7 +98,28 @@ $(document).ready(function () {
         $('#edit-orig-rswhse').val(rswhse);
     });
 
+    // Hide filter boxes initially
     $('.dataTables_filter').hide();
+
+    // Show user view modal when a row is clicked
+    $('#users-table tbody').on('click', 'tr', function () {
+        const $row = $(this);
+        $('#view-user-profile').attr('src', $row.data('profile'));
+        $('#view-user-name').text($row.data('name'));
+        $('#view-user-id').text($row.data('userid'));
+        $('#view-user-email').text($row.data('email'));
+        $('#view-user-site').text($row.data('site'));
+        $('#view-user-site_desc').text($row.data('site_desc') || '-');
+        $('#view-user-level').text($row.data('level'));
+        const gender = $row.data('gender');
+        $('#view-user-gender').text(
+            gender ? gender.charAt(0).toUpperCase() + gender.slice(1).toLowerCase() : '-'
+        );
+        $('#view-user-create_date').text($row.data('create_date'));
+        $('#view-user-label-name').text($row.data('name'));
+        $('#viewUserModal').modal('show');
+    });
+
 });
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -101,7 +131,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }, 100);
     }
 
-    
+
     const alert = document.getElementById('success-alert');
     if (alert) {
         setTimeout(() => {

@@ -34,41 +34,54 @@
                             </div>
 
                             <div class="table-responsive">
-                                <table id="users-table" class="table table-striped table-bordered table-hover align-middle">
+                                <table id="users-table" class="table table-responsive table-striped table-bordered table-hover align-middle">
                                     <thead class="table-dark text-center">
                                         <tr class="">
-                                            <th width="5%">Profile</th>
-                                            <th width="10%">User ID</th>
-                                            <th width="15%">Name</th>
-                                            <th width="20%">Email</th>
-                                            <th width="5%">Site</th>
-                                            <th width="5%">Level</th>
-                                            <th width="5%">Action</th>
+                                            <!-- <th width="5%">Profile</th> -->
+                                            <th>Users</th>
+                                            <th>User ID</th>
+                                            <!-- <th width="40%">Email</th> -->
+                                            <th>Site</th>
+                                            <th>Level</th>
+                                            <!-- <th width="5%">Action</th> -->
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @forelse($users as $user)
-                                            <tr>
-                                                <td class="text-center align-middle">
+                                            <tr 
+                                                data-userid="{{ $user->userid }}"
+                                                data-name="{{ $user->name }}"
+                                                data-email="{{ $user->email }}"
+                                                data-site="{{ $user->rssite }}"
+                                                data-site_desc="{{ $user->rssite_desc }}"
+                                                data-level="{{ $user->level }}"
+                                                data-gender="{{ $user->gender }}"
+                                                data-profile="{{ $user->profile_pic_url ? asset($user->profile_pic_url) : asset('uploads/user-profile/noprofile.png') }}"
+                                                data-create_date="{{ date('d, F Y', strtotime($user->create_date)) }}">
+                                                <!-- <td class="text-center align-middle">
                                                     <img src="{{ $user->profile_pic_url ? asset($user->profile_pic_url) : asset('uploads/user-profile/noprofile.png') }}"
                                                         alt="profile" class="rounded-circle" width="50" height="50">
+                                                </td> -->
+                                                <td class="align-middle">
+                                                    <img src="{{ $user->profile_pic_url ? asset($user->profile_pic_url) : asset('uploads/user-profile/noprofile.png') }}"
+                                                        alt="profile" class="rounded-circle">
+                                                    {{ $user->name }}
                                                 </td>
                                                 <td class="align-middle">{{ $user->userid }}</td>
-                                                <td class="align-middle">{{ $user->name }}</td>
-                                                <td class="align-middle">{{ $user->email }}</td>
-                                                <td class="align-middle">
+                                                <!-- <td class="align-middle">{{ $user->email }}</td> -->
+                                                <td class="align-middle text-center">
                                                     @if(!empty($user->logo_pic_url))
-                                                        <img src="{{ asset($user->logo_pic_url) }}" alt="logo" class="me-1" width="50" height="50" style="object-fit:contain;vertical-align:middle;">
+                                                        <img src="{{ asset($user->logo_pic_url) }}" alt="logo" class="me-1">
                                                     @endif
                                                     <!-- {{ $user->rssite_desc ?? $user->rssite }} -->
                                                 </td>
-                                                <td class="align-middle">{{ $user->level }}</td>
-                                                <td class="align-middle text-center">
+                                                <td class="align-middle text-center">{{ $user->level }}</td>
+                                                <!-- <td class="align-middle text-center">
                                                     <button type="button" class="btn btn-sm btn-secondary btn-settings"
                                                             data-userid="{{ $user->userid }}" title="Settings">
                                                         <i class="bi bi-gear-fill"></i>
                                                     </button>
-                                                </td>
+                                                </td> -->
                                             </tr>
                                         @empty
                                             <tr>
@@ -152,19 +165,76 @@
     </div>
 </div>
 
-<!-- Settings Modal (sibling to add modal) -->
-<div class="modal fade" id="settingsModals" tabindex="-1" aria-labelledby="label_settings" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="label_settings">Settings</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+<!-- User View Modal -->
+<div class="modal fade" id="viewUserModal" tabindex="-1" aria-labelledby="viewUserLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content"> 
+            <div class="modal-header bg-primary text-white">
+                <h1 class="modal-title fs-5" id="viewUserLabel"><span id="view-user-label-name">-</span></h1>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <!-- populate dynamically if needed -->
-                <div id="settings-modal-content">Select a user to view settings.</div>
+                <div class="row align-items-center">
+                    <div class="col-12 col-md-4 text-center mb-3 mb-md-0">
+                        <img id="view-user-profile" src="{{ asset('uploads/user-profile/noprofile.png') }}" alt="profile" class="profile-pic rounded-circle mb-2">
+                    </div>
+                    <div class="col-12 col-md-8">
+                        <table class="table table-responsive mb-0 table-borderless">
+                            <tbody>
+                                <tr>
+                                    <th>Site:</th>
+                                    <td id="view-user-site-detail">
+                                        <span id="view-user-site_desc">-</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>User ID:</th>
+                                    <td id="view-user-userid">
+                                        <span id="view-user-id">-</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Name:</th>
+                                    <td id="view-user-name-detail">
+                                        <span id="view-user-name">-</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Email:</th>
+                                    <td id="view-user-email-detail">
+                                        <span id="view-user-email">-</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Level:</th>
+                                    <td id="view-user-level-detail">
+                                        <span id="view-user-level">-</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Gender:</th>
+                                    <td id="view-user-gender-detail">
+                                        <span id="view-user-gender">-</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Date Created:</th>
+                                    <td id="view-user-create-date-detail">
+                                        <span id="view-user-create_date">-</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer d-flex justify-content-between">
+                <button type="button" class="btn btn-danger" id="btnDeleteUser">
+                    <i class="bi bi-trash"></i> Delete
+                </button>
+                <button type="button" class="btn btn-warning" id="btnEditUser">
+                    <i class="bi bi-pencil-square"></i> Edit
+                </button>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>

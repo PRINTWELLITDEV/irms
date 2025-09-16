@@ -3,30 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\RsUser;
+use App\Models\IrmsSite;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+
 
 class RsUserController extends Controller
 {
     public function index()
     {
-        // $query = RsUser::query()
-        //     ->leftJoin('irms_site', 'rsusers.rssite', '=', 'irms_site.rssite')
-        //     ->select(
-        //         'rsusers.*',
-        //         'irms_site.rssite_desc'
-        //     );
-
-        // if (request()->has('search') && request('search') !== null) {
-        //     $search = request('search');
-        //     $query->where(function($q) use ($search) {
-        //         $q->where('rsusers.name', 'like', "%{$search}%")
-        //           ->orWhere('rsusers.userid', 'like', "%{$search}%")
-        //           ->orWhere('rsusers.email', 'like', "%{$search}%");
-        //     });
-        // }
-
-        // $users = $query->get();
         // Call the stored procedure to get users
         $users = \DB::select('EXEC sp_view_users');
 
@@ -36,9 +21,18 @@ class RsUserController extends Controller
                 'users' => $users
             ]);
         }
-
         return view('irms.irms-layouts.manage-users', compact('users'));
     }
+    
+    public function show($userid)
+    {
+        $user = \DB::select('EXEC sp_show_user ?', [$userid]);
+        if (!$user) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+        return response()->json($user[0]);
+    }
+
     public function getRememberTokenName()
     {
         return null; // disables remember_token usage
@@ -89,4 +83,5 @@ class RsUserController extends Controller
 
         return redirect('/irms/manage-users')->with('Success', 'Add users successfully!');
     }
+    
 }
