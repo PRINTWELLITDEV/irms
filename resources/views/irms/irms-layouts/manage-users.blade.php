@@ -36,9 +36,9 @@
 
                                 <div class="table-responsive">
                                     <table id="users-table"
-                                        class="table table-striped table-bordered table-hover align-middle">
+                                        class="table table-striped table-hover align-middle">
                                         <thead class="table-dark text-center">
-                                            <tr class="">
+                                            <tr>
                                                 <th width="5%">Profile</th>
                                                 <th width="10%">User ID</th>
                                                 <th width="15%">Name</th>

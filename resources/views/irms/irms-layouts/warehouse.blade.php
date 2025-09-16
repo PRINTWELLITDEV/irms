@@ -32,13 +32,13 @@
                                         <span class="input-group-text"><i class="bi bi-search"></i></span>
                                     </div>
                                 </div>
-                                <table id="warehouse-table" class="table table-striped table-bordered table-hover align-middle">
+                                <table id="warehouse-table" class="table table-striped table-hover align-middle">
                                     <thead class="table-dark text-center">
                                         <tr>
-                                            <th>Site</th>
-                                            <th>Warehouse</th>
-                                            <th>Description</th>
-                                            <th>Address</th>
+                                            <th class="text-center">Site</th>
+                                            <th class="text-center">Warehouse</th>
+                                            <th class="text-center">Description</th>
+                                            <th class="text-center">Address</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
