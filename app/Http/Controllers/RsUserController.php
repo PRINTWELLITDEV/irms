@@ -26,7 +26,7 @@ class RsUserController extends Controller
     
     public function show($userid)
     {
-        $user = \DB::select('EXEC sp_show_user ?', [$userid]);
+        $user = \DB::select('EXEC sp_select_user ?', [$userid]);
         if (!$user) {
             return response()->json(['error' => 'User not found'], 404);
         }
@@ -84,4 +84,12 @@ class RsUserController extends Controller
         return redirect('/irms/manage-users')->with('Success', 'Add users successfully!');
     }
     
+    public function view($userid)
+    {
+        $user = \DB::select('EXEC sp_select_user ?', [$userid]);
+        if (!$user) {
+            abort(404);
+        }
+        return view('irms.irms-layouts.manage-users-view', ['user' => $user[0]]);
+    }
 }

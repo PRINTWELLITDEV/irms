@@ -1,5 +1,5 @@
 @extends('irms.irms-partials.app')
-@section('title', 'IRMS Dashboard')
+@section('title', 'IRMS Manage Users')
 @section('content')
 <div class="wrapper">
     <div class="content-wrapper">
@@ -122,7 +122,7 @@
                             <option disabled selected>Select Site</option>
                             <option value="FP-SP" {{ old('rssite') == 'FP-SP' ? 'selected' : '' }}>Fortune Packaging, Inc.</option>
                             <option value="PI-SP" {{ old('rssite') == 'PI-SP' ? 'selected' : '' }}>Printwell, Inc.</option>
-                            <option value="PIGRP" {{ old('rssite') == 'PIGRP' ? 'selected' : '' }}>Printwell Packaging Company</option>
+                            <option value="PIGRP-SP" {{ old('rssite') == 'PIGRP-SP' ? 'selected' : '' }}>Printwell Packaging Company</option>
                         </select>
                         @error('rssite') <div class="text-danger small">{{ $message }}</div> @enderror
                     </div>
@@ -235,7 +235,7 @@
                 <button type="button" class="btn btn-warning" id="btnEditUser">
                     <i class="bi bi-pencil-square"></i> Edit
                 </button>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
             </div>
         </div>
     </div>

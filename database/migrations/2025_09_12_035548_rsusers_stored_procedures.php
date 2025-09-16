@@ -15,13 +15,20 @@ return new class extends Migration
         DB::unprepared('
             CREATE PROCEDURE sp_view_users
             AS
-            SELECT 
-                u.*,
+            SELECT
+				u.rssite,
+				u.userid,
+				u.name,
+				u.email,
+				u.level,
+				u.gender,
+				u.create_date,
+				u.profile_pic_url,
                 s.rssite_desc,
                 s.address,
 				s.logo_pic_url
             FROM rsusers u
-            INNER JOIN irms_site s ON u.rssite = s.rssite;
+            INNER JOIN irms_site s ON s.rssite = u.rssite;
         ');
 
         // Create sp_add_user (use @param, no IN, and use NVARCHAR for Unicode support)
@@ -41,13 +48,20 @@ return new class extends Migration
         ');
 
         // Create sp_show_user
-        DB::unprepared("IF OBJECT_ID('sp_show_user', 'P') IS NOT NULL DROP PROCEDURE sp_show_user");
+        DB::unprepared("IF OBJECT_ID('sp_select_user', 'P') IS NOT NULL DROP PROCEDURE sp_select_user");
         DB::unprepared('
-            CREATE PROCEDURE sp_show_user
+            CREATE PROCEDURE sp_select_user
                 @userid NVARCHAR(8)
             AS
-            SELECT 
-                u.*,
+            SELECT
+				u.rssite,
+				u.userid,
+				u.name,
+				u.email,
+				u.level,
+				u.gender,
+				u.create_date,
+				u.profile_pic_url,
                 s.rssite_desc,
                 s.address,
 				s.logo_pic_url
@@ -64,6 +78,6 @@ return new class extends Migration
     {
         DB::unprepared("IF OBJECT_ID('sp_view_users', 'P') IS NOT NULL DROP PROCEDURE sp_view_users");
         DB::unprepared("IF OBJECT_ID('sp_add_user', 'P') IS NOT NULL DROP PROCEDURE sp_add_user");
-        DB::unprepared("IF OBJECT_ID('sp_show_user', 'P') IS NOT NULL DROP PROCEDURE sp_show_user");
+        DB::unprepared("IF OBJECT_ID('sp_select_user', 'P') IS NOT NULL DROP PROCEDURE sp_select_user");
     }
 };

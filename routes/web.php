@@ -28,7 +28,7 @@ Route::prefix('irms')->middleware('check.session')->group(function () {
     // User management
     Route::get('/manage-users', [RsUserController::class, 'index'])->name('rsusers.index');
     Route::post('/manage-users/store', [RsUserController::class, 'store'])->name('RsUserController.store');
-    Route::get('/manage-users/{userid}', [RsUserController::class, 'show']);
+    Route::get('/manage-users/{userid}', [RsUserController::class, 'view'])->name('rsusers.view');
 
     // Warehouse
     Route::get('/warehouse', [RsWhseController::class, 'index'])->name('warehouse.index');
