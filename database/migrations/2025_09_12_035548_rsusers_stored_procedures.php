@@ -41,10 +41,17 @@ return new class extends Migration
                 @password NVARCHAR(255),
                 @email NVARCHAR(255),
                 @gender NVARCHAR(10),
-                @profile_pic_url NVARCHAR(255)
+                @profile_pic_url NVARCHAR(255),
+                @create_date DATETIME,
+                @created_by NVARCHAR(8)
             AS
-            INSERT INTO rsusers (rssite, userid, name, password, email, gender, profile_pic_url)
-            VALUES (@rssite, @userid, @name, @password, @email, @gender, @profile_pic_url);
+            BEGIN
+                INSERT INTO rsusers (
+                    rssite, userid, name, password, email, gender, profile_pic_url, create_date, updated_by
+                ) VALUES (
+                    @rssite, @userid, @name, @password, @email, @gender, @profile_pic_url, @create_date, @created_by
+                );
+            END
         ');
 
         // Create sp_show_user
