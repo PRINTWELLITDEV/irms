@@ -120,6 +120,17 @@ $(document).ready(function () {
         $('#viewUserModal').modal('show');
     });
 
+    // Show warehouse view modal when a row is clicked
+    $('#warehouse-table tbody').on('click', 'tr', function () {
+        const $row = $(this);
+        $('#view-warehouse-site-desc').text($row.data('rssite_desc') || '-');
+        $('#view-warehouse-code').text($row.data('rswhse') || '-');
+        $('#view-warehouse-name').text($row.data('name') || '-');
+        $('#view-warehouse-addr').text($row.data('addr') || '-');
+        $('#view-warehouse-label-name').text($row.data('name') || '-');
+        $('#viewWarehouseModal').modal('show');
+    });
+
 });
 
 document.addEventListener('DOMContentLoaded', function () {

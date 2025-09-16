@@ -55,7 +55,13 @@
                                         </thead>
                                         <tbody>
                                             @forelse($warehouses as $whse)
-                                                <tr>
+                                                <tr
+                                                    data-rssite="{{ $whse->rssite }}"
+                                                    data-rssite_desc="{{ $whse->site->rssite_desc ?? $whse->rssite }}"
+                                                    data-rswhse="{{ $whse->rswhse }}"
+                                                    data-name="{{ $whse->name }}"
+                                                    data-addr="{{ $whse->addr }}"
+                                                >
                                                     <td class="text-center align-middle">
                                                         @if(!empty($whse->site) && !empty($whse->site->logo_pic_url))
                                                             <img src="{{ asset($whse->site->logo_pic_url) }}" class="me-1" width="40" height="40" style="object-fit:contain;vertical-align:middle;">
@@ -65,8 +71,7 @@
                                                     <td>{{ $whse->name }}</td>
                                                     <td>{{ $whse->addr }}</td>
                                                     <td class="text-center">
-                                                        <!-- The corrected button with Bootstrap attributes and data-whse-id -->
-                                                        <button type="button"
+                                                        <!-- <button type="button"
                                                             class="btn btn-secondary btn-sm btn-settings"
                                                             data-bs-toggle="modal"
                                                             data-bs-target="#warehouseSettingsModal"
@@ -76,7 +81,7 @@
                                                             data-name="{{ $whse->name }}"
                                                             data-addr="{{ $whse->addr }}">
                                                             <i class="bi bi-gear-fill"></i>
-                                                        </button>
+                                                        </button> -->
                                                         
                                                     </td>
                                                 </tr>
@@ -219,6 +224,57 @@
                         <button type="submit" class="btn btn-warning">Update</button>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Warehouse View Modal -->
+    <div class="modal fade" id="viewWarehouseModal" tabindex="-1" aria-labelledby="viewWarehouseLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h1 class="modal-title fs-5" id="viewWarehouseLabel">
+                        <span id="view-warehouse-label-name">-</span>
+                    </h1>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row align-items-center">
+                        <!-- <div class="col-12 col-md-4 text-center mb-3 mb-md-0">
+                            <img id="view-warehouse-site-logo" src="" alt="site logo" class="profile-pic rounded mb-2" style="display:none;">
+                        </div> -->
+                        <div class="col-12 col-md-8">
+                            <table class="table table-responsive mb-0 table-borderless">
+                                <tbody>
+                                    <tr>
+                                        <th>Site:</th>
+                                        <td><span id="view-warehouse-site-desc">-</span></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Warehouse Code:</th>
+                                        <td><span id="view-warehouse-code">-</span></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Description:</th>
+                                        <td><span id="view-warehouse-name">-</span></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Address:</th>
+                                        <td><span id="view-warehouse-addr">-</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-between">
+                    <button type="button" class="btn btn-danger" id="btnDeleteWarehouse">
+                        <i class="bi bi-trash"></i> Delete
+                    </button>
+                    <button type="button" class="btn btn-warning" id="btnEditWarehouse">
+                        <i class="bi bi-pencil-square"></i> Edit
+                    </button>
+                </div>
             </div>
         </div>
     </div>
