@@ -4,11 +4,12 @@
 /* Import AdminLTE */
 @import "admin-lte/dist/css/adminlte.css";
 
+
 /* Layout Wrapper */
 .wrapper {
     flex-direction: column;
     display: flex;
-    min-height: 90vh;
+    min-height: 80vh;
 }
 
 /* Content Wrapper */

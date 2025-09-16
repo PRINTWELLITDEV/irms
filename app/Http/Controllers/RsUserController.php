@@ -86,10 +86,11 @@ class RsUserController extends Controller
     
     public function view($userid)
     {
-        $user = \DB::select('EXEC sp_select_user ?', [$userid]);
-        if (!$user) {
-            abort(404);
-        }
-        return view('irms.irms-layouts.manage-users-view', ['user' => $user[0]]);
+        $users = \DB::select('EXEC sp_view_users');
+        $selectedUser = \DB::select('EXEC sp_select_user ?', [$userid]);
+        return view('irms.irms-layouts.manage-users', [
+            'users' => $users,
+            'selectedUser' => $selectedUser ? $selectedUser[0] : null,
+        ]);
     }
 }

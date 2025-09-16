@@ -29,7 +29,7 @@
                                     <div class="alert alert-danger">{{ $errors->first() }}</div>
                                 @endif
                                 <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <button type="button" id="btnAddWarehouse" class="btn btn-success d-flex align-items-center" 
+                                    <button type="button" id="btnAddWarehouse" class="btn btn-success d-flex align-items-center"
                                         data-bs-toggle="modal"
                                         data-bs-target="#addWarehouseModal">
                                         <i class="bi bi-plus-circle-fill d-none d-inline d-sm-inline me-2"></i>
@@ -50,7 +50,7 @@
                                                 <th width="7%">Warehouse</th>
                                                 <th width="10%">Description</th>
                                                 <th>Address</th>
-                                                <th width="5%">Action</th>
+                                                <!-- <th width="5%">Action</th> -->
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -70,8 +70,8 @@
                                                     <td>{{ $whse->rswhse }}</td>
                                                     <td>{{ $whse->name }}</td>
                                                     <td>{{ $whse->addr }}</td>
-                                                    <td class="text-center">
-                                                        <!-- <button type="button"
+                                                    <!-- <td class="text-center">
+                                                        <button type="button"
                                                             class="btn btn-secondary btn-sm btn-settings"
                                                             data-bs-toggle="modal"
                                                             data-bs-target="#warehouseSettingsModal"
@@ -81,9 +81,8 @@
                                                             data-name="{{ $whse->name }}"
                                                             data-addr="{{ $whse->addr }}">
                                                             <i class="bi bi-gear-fill"></i>
-                                                        </button> -->
-                                                        
-                                                    </td>
+                                                        </button>
+                                                    </td> -->
                                                 </tr>
                                             @empty
                                                 <tr>
@@ -146,7 +145,7 @@
 
 
     <!-- Warehouse Settings Modal -->
-    <div class="modal fade" id="warehouseSettingsModal" tabindex="-1" aria-labelledby="warehouseSettingsLabel" aria-hidden="true">
+    <!-- <div class="modal fade" id="warehouseSettingsModal" tabindex="-1" aria-labelledby="warehouseSettingsLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
@@ -180,7 +179,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <!-- {{-- Edit Warehouse Modal --}} -->
     <div class="modal fade" id="editWarehouseModal" tabindex="-1" aria-labelledby="editWarehouseLabel" aria-hidden="true">
@@ -271,7 +270,11 @@
                     <button type="button" class="btn btn-danger" id="btnDeleteWarehouse">
                         <i class="bi bi-trash"></i> Delete
                     </button>
-                    <button type="button" class="btn btn-warning" id="btnEditWarehouse">
+                    <!-- <button type="button" class="btn btn-warning" id="btnEditWarehouse"> -->
+                    <button type="button" class="btn btn-warning"
+                            data-bs-target="#editWarehouseModal"
+                            data-bs-toggle="modal"
+                            id="editWarehouseBtn">
                         <i class="bi bi-pencil-square"></i> Edit
                     </button>
                 </div>

@@ -104,7 +104,7 @@
 <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <form action="{{ route('RsUserController.store') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('rsusers.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-header bg-success text-white">
                     <h1 class="modal-title fs-5" id="addUserLabel">Add User</h1>
@@ -240,4 +240,21 @@
         </div>
     </div>
 </div>
+
+<!-- @if(isset($selectedUser))
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        $('#view-user-profile').attr('src', '{{ asset($selectedUser->profile_pic_url) }}');
+        $('#view-user-label-name').text('{{ $selectedUser->userid }}');
+        $('#view-user-id').text('{{ $selectedUser->userid }}');
+        $('#view-user-name').text('{{ $selectedUser->name }}');
+        $('#view-user-email').text('{{ $selectedUser->email }}');
+        $('#view-user-site_desc').text('{{ $selectedUser->rssite_desc }}');
+        $('#view-user-level').text('{{ $selectedUser->level }}');
+        $('#view-user-gender').text('{{ ucfirst($selectedUser->gender) }}');
+        $('#view-user-create_date').text('{{ date('d F Y', strtotime($selectedUser->create_date)) }}');
+        $('#viewUserModal').modal('show');
+    });
+</script>
+@endif -->
 @endsection

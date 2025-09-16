@@ -36,7 +36,7 @@
                                                 <th>Bay Number</th>
                                                 <th>Created Date</th>
                                                 <th width="10%">Created By</th>
-                                                <th width="8%">Action</th> <!-- Added Action column -->
+                                                <!-- <th width="8%">Action</th>  -->
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -50,12 +50,12 @@
                                                     <td>{{ $bay->rsbaynum }}</td>
                                                     <td>{{ \Carbon\Carbon::parse($bay->createdate)->format('d-M-Y h:i A') }}</td>
                                                     <td>{{ $bay->createdby }}</td>
-                                                    <td class="align-middle text-center">
+                                                    <!-- <td class="align-middle text-center">
                                                         <button type="button" class="btn btn-sm btn-secondary btn-settings"
                                                                 data-baynum="{{ $bay->rsbaynum }}" title="Settings">
                                                             <i class="bi bi-gear-fill"></i>
                                                         </button>
-                                                    </td>
+                                                    </td> -->
                                                 </tr>
                                             @empty
                                                 <tr>

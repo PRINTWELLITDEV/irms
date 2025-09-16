@@ -31,9 +31,9 @@ $(document).ready(function () {
         language: {
             emptyTable: "No warehouses found"
         },
-        columnDefs: [
-            { orderable: false, targets: [0, 4] }
-        ]
+        // columnDefs: [
+        //     { orderable: false, targets: [0] }
+        // ]
     });
     $('#whseSearch').on('keyup', function () {
         warehouseTable.search(this.value).draw();
@@ -49,9 +49,9 @@ $(document).ready(function () {
         language: {
             emptyTable: "No bay locations found"
         },
-        columnDefs: [
-            { orderable: false, targets: [0, 4] }
-        ]
+        // columnDefs: [
+        //     { orderable: false, targets: [0, 4] }
+        // ]
     });
     $('#baylocSearch').on('keyup', function () {
         bayLocationTable.search(this.value).draw();
@@ -123,12 +123,36 @@ $(document).ready(function () {
     // Show warehouse view modal when a row is clicked
     $('#warehouse-table tbody').on('click', 'tr', function () {
         const $row = $(this);
+        // Store current row data for use in edit modal
+        $('#editWarehouseBtn')
+            .data('rssite', $row.data('rssite'))
+            .data('rswhse', $row.data('rswhse'))
+            .data('name', $row.data('name'))
+            .data('addr', $row.data('addr'));
+        // Fill view modal
         $('#view-warehouse-site-desc').text($row.data('rssite_desc') || '-');
         $('#view-warehouse-code').text($row.data('rswhse') || '-');
         $('#view-warehouse-name').text($row.data('name') || '-');
         $('#view-warehouse-addr').text($row.data('addr') || '-');
         $('#view-warehouse-label-name').text($row.data('name') || '-');
         $('#viewWarehouseModal').modal('show');
+    });
+
+    // When Edit button in view modal is clicked, show edit modal with values
+    $('#editWarehouseBtn').on('click', function () {
+        const rssite = $(this).data('rssite');
+        const rswhse = $(this).data('rswhse');
+        const name = $(this).data('name');
+        const addr = $(this).data('addr');
+        // Set select value for site
+        $('#edit-rssite').val(rssite);
+        // Set input values
+        $('#edit-rswhse').val(rswhse);
+        $('#edit-name').val(name);
+        $('#edit-addr').val(addr);
+        // Set hidden original keys
+        $('#edit-orig-rssite').val(rssite);
+        $('#edit-orig-rswhse').val(rswhse);
     });
 
 });
@@ -142,7 +166,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }, 100);
     }
 
-
     const alert = document.getElementById('success-alert');
     if (alert) {
         setTimeout(() => {
@@ -152,6 +175,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }, 700); // matches the transition duration
         }, 3000); // show for 3 seconds
     }
+
 
 });
 

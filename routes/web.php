@@ -27,14 +27,14 @@ Route::get('/irms', function () {
 Route::prefix('irms')->middleware('check.session')->group(function () {
     // User management
     Route::get('/manage-users', [RsUserController::class, 'index'])->name('rsusers.index');
-    Route::post('/manage-users/store', [RsUserController::class, 'store'])->name('RsUserController.store');
-    Route::get('/manage-users/{userid}', [RsUserController::class, 'view'])->name('rsusers.view');
+    Route::post('/manage-users/store', [RsUserController::class, 'store'])->name('rsusers.store');
+    // Route::get('/manage-users/{userid}', [RsUserController::class, 'view'])->name('rsusers.view');
 
     // Warehouse
     Route::get('/warehouse', [RsWhseController::class, 'index'])->name('warehouse.index');
     Route::post('/warehouse/store', [RsWhseController::class, 'store'])->name('warehouse.store');
-    Route::put('/irms/warehouse/update', [RsWhseController::class, 'update'])->name('warehouse.update');
-    Route::get('/irms/warehouse/{rswhse}', [RsWhseController::class, 'getWarehouseInfo']);
+    Route::put('/warehouse/update', [RsWhseController::class, 'update'])->name('warehouse.update');
+    Route::get('/warehouse/{rswhse}', [RsWhseController::class, 'getWarehouseInfo']);
     
     // Bay location
     Route::get('/bay-location', [RsBayLocController::class, 'index'])->name('bay-location.index');
