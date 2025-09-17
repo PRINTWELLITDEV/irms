@@ -172,9 +172,6 @@ $(document).ready(function () {
         $('#edit-orig-rssite').val(rssite);
         $('#edit-orig-rswhse').val(rswhse);
     });
-
-
-
 });
 
 document.addEventListener('DOMContentLoaded', function () {

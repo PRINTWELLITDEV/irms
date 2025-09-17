@@ -37,9 +37,9 @@
                 </li>
                 <li class="nav-header">Location</li>
                 <li class="nav-item">
-                    <a href="{{ url('/irms/bay-location') }}" class="nav-link{{ request()->is('irms/bay-location') ? ' active' : '' }}">
+                    <a href="{{ url('/irms/bay-locations') }}" class="nav-link{{ request()->is('irms/bay-locations') ? ' active' : '' }}">
                         <i class="nav-icon bi bi-box-seam"></i>
-                        <p>Bay Location</p>
+                        <p>Bay Locations</p>
                     </a>
                 </li>
                 <li class="nav-item">
