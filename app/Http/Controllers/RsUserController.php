@@ -56,10 +56,8 @@ class RsUserController extends Controller
             'profile_pic_url' => 'nullable|file|mimes:jpg,jpeg,png|max:2048'
         ]);
 
-        // Handle profile picture upload
         if($request->hasFile('profile_pic_url')){
             $file = $request->file('profile_pic_url');
-            // $filename = $validated['userid'] . '.png';
             $filename = uniqid() . '_' . $validated['userid'] . '.png';
             $file->move(public_path('uploads/user-profile'), $filename);
             $profile_pic_url = 'uploads/user-profile/' . $filename;
@@ -67,18 +65,23 @@ class RsUserController extends Controller
             $profile_pic_url = 'uploads/user-profile/noprofile.png';
         }
 
-        // Hash the password
         $hashedPassword = bcrypt($validated['password']);
+        $create_date = now();
+        $created_by = auth()->user()->userid ?? 'system';
 
-        // Call the stored procedure to add user
-        \DB::statement('EXEC sp_add_user ?, ?, ?, ?, ?, ?, ?', [
+        // Debug: Uncomment to check values
+        // dd($validated, $profile_pic_url, $create_date, $created_by);
+
+        \DB::statement('EXEC sp_add_user ?, ?, ?, ?, ?, ?, ?, ?, ?', [
             $validated['rssite'],
             $validated['userid'],
             $validated['name'],
             $hashedPassword,
             $validated['email'],
             $validated['gender'],
-            $profile_pic_url
+            $profile_pic_url,
+            $create_date,
+            $created_by
         ]);
 
         return redirect('/irms/manage-users')->with('Success', 'Add users successfully!');
