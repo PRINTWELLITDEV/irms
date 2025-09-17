@@ -62,9 +62,9 @@ System Analyst Programmer - L1
 **Aron Kyle Suarnaba**
 System Analyst Programmer - Trainee
 
-## License
+<!-- ## License
 
-This project is licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This project is licensed under the [MIT license](https://opensource.org/licenses/MIT). -->
 
 ---
 <a href="http://www.printwell.com.ph" > Printwell, Inc. IRMS &copy; 2025 </a>
