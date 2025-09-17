@@ -62,6 +62,22 @@ class RsusersSeeder extends Seeder
                 'profile_pic_url' => null,
                 'remember_token' => null,
             ],
+            [
+                'rssite' => 'PI-SP',
+                'userid' => 'guest',
+                'name' => 'Guest User',
+                'password' => '$2y$12$tf0CU.Gp5eYDHyT2m7vSEumFMpzVzYw4W5IIRLH9vobKDKtd1KABy',
+                'email' => 'guest@email.com',
+                'email_verified_at' => null,
+                'level' => 0,
+                'create_date' => '2025-09-16 11:42:57.577',
+                'updated_date' => null,
+                'updated_by' => null,
+                'updated_by_sql' => null,
+                'gender' => null,
+                'profile_pic_url' => 'uploads/user-profile/68c94d415febc_guest.png',
+                'remember_token' => null,
+            ],
         ]);
     }
 }
