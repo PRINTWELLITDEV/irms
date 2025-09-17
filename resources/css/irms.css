@@ -18,7 +18,7 @@
     background: #f4f6f9;
     padding: 2rem;
     opacity: 0;
-    transition: opacity 0.4s ease;   
+    transition: opacity 0.4s ease;
 }
 .content-wrapper.visible {
     opacity: 1;
@@ -36,7 +36,7 @@
 table.table th, table.table td {
     white-space: nowrap;
     padding: 0.75rem 0.5rem;
-    
+
 }
 table.table td img {
     width: 50px;

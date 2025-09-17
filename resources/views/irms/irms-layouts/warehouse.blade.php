@@ -46,9 +46,9 @@
                                     <table id="warehouse-table" class="table table-striped table-bordered table-hover align-middle">
                                         <thead class="table-dark text-center">
                                             <tr>
-                                                <th width="5%">Site</th>
-                                                <th width="7%">Warehouse</th>
-                                                <th width="10%">Description</th>
+                                                <th width="10%">Site</th>
+                                                <th width="17%">Warehouse</th>
+                                                <th width="20%">Description</th>
                                                 <th>Address</th>
                                                 <!-- <th width="5%">Action</th> -->
                                             </tr>
@@ -100,7 +100,7 @@
         </div>
     </div>
 
-    <!-- Add Warehouse Modal -->
+    {{-- Add Warehouse Modal --}}
     <div class="modal fade" id="addWarehouseModal" tabindex="-1" aria-labelledby="addWarehouseLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">

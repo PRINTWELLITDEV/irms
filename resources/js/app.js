@@ -39,6 +39,8 @@ $(document).ready(function () {
         warehouseTable.search(this.value).draw();
     });
 
+
+
     // Bay Location table
     const bayLocationTable = $('#bayloc-table').DataTable({
         paging: true,
