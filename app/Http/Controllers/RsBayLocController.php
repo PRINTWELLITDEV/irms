@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\RsBayLoc;
+use App\Models\IrmsSite;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
@@ -13,10 +14,9 @@ class RsBayLocController extends Controller
      */
     public function index()
     {
-        // Call the stored procedure to get bay locations with site logo
-        $baylocs = DB::select('EXEC sp_view_bayloc');
-
-        return view('irms.irms-layouts.bay-location', compact('baylocs'));
+        $baylocs = \DB::select('EXEC sp_view_baylocs');
+        $sites = \DB::table('irms_site')->get();
+        return view('irms.irms-layouts.bay-locations', compact('baylocs', 'sites'));
     }
 
     /**
@@ -27,20 +27,18 @@ class RsBayLocController extends Controller
         $validated = $request->validate([
             'rssite' => 'required|max:8',
             'rsbaynum' => 'required|max:5',
-            'createdby' => 'required|max:30',
         ]);
 
-        // Use current datetime for createdate
+        $createdby = auth()->user()->userid ?? 'system';
         $createdate = now();
 
-        // Call the stored procedure to add bay location
-        DB::statement('EXEC sp_add_bayloc ?, ?, ?, ?', [
+        DB::statement('EXEC sp_add_baylocs ?, ?, ?, ?', [
             $validated['rssite'],
             $validated['rsbaynum'],
             $createdate,
-            $validated['createdby'],
+            $createdby,
         ]);
 
-        return redirect()->route('bay-location.index')->with('success', 'Bay location added successfully!');
+        return redirect()->route('baylocs.index')->with('success', 'Bay location added successfully!');
     }
 }
