@@ -28,7 +28,8 @@ return new class extends Migration
                 s.address,
 				s.logo_pic_url
             FROM rsusers u
-            INNER JOIN irms_site s ON s.rssite = u.rssite;
+            INNER JOIN irms_site s ON s.rssite = u.rssite
+			WHERE u.userid <> \'sa\';
         ');
 
         // Create sp_add_user (use @param, no IN, and use NVARCHAR for Unicode support)
@@ -43,13 +44,14 @@ return new class extends Migration
                 @gender NVARCHAR(10),
                 @profile_pic_url NVARCHAR(255),
                 @create_date DATETIME,
-                @created_by NVARCHAR(8)
+                @created_by NVARCHAR(8),
+                @level INT
             AS
             BEGIN
                 INSERT INTO rsusers (
-                    rssite, userid, name, password, email, gender, profile_pic_url, create_date, updated_by
+                    rssite, userid, name, password, email, gender, profile_pic_url, create_date, updated_by, level
                 ) VALUES (
-                    @rssite, @userid, @name, @password, @email, @gender, @profile_pic_url, @create_date, @created_by
+                    @rssite, @userid, @name, @password, @email, @gender, @profile_pic_url, @create_date, @created_by, @level
                 );
             END
         ');

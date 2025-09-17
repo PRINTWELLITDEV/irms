@@ -6,8 +6,13 @@
             <div class="content-header">
                 <div class="container-fluid">
                     <div class="row align-items-center">
-                        <div class="col mb-3">
+                        <div class="col mb-3 d-flex align-items-center">
                             <h1 class="d-inline-block mb-0">Manage Users</h1>
+                            @if(session('success'))
+                                <div id="success-alert" class="alert alert-success py-1 px-3 mb-0" style="transition: opacity 0.7s;">
+                                    {{ session('success') }}
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>

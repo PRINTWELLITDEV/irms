@@ -66,14 +66,13 @@ class RsUserController extends Controller
             $profile_pic_url = 'uploads/user-profile/noprofile.png';
         }
 
+        $userid = $validated['userid'];
         $hashedPassword = bcrypt($validated['password']);
         $create_date = now();
         $created_by = auth()->user()->userid ?? 'system';
+        $level = 1; // Set default level to 1
 
-        // Debug: Uncomment to check values
-        // dd($validated, $profile_pic_url, $create_date, $created_by);
-
-        \DB::statement('EXEC sp_add_user ?, ?, ?, ?, ?, ?, ?, ?, ?', [
+        \DB::statement('EXEC sp_add_user ?, ?, ?, ?, ?, ?, ?, ?, ?, ?', [
             $validated['rssite'],
             $validated['userid'],
             $validated['name'],
@@ -82,10 +81,11 @@ class RsUserController extends Controller
             $validated['gender'],
             $profile_pic_url,
             $create_date,
-            $created_by
+            $created_by,
+            $level
         ]);
 
-        return redirect('/irms/manage-users')->with('Success', 'Add users successfully!');
+        return redirect('/irms/manage-users')->with('success', "$userid user successfully!");
     }
     
     public function view($userid)
