@@ -49,10 +49,12 @@
                     </a>
                 </li>
                 <li class="nav-item nav-logout">
-                    <a href="" class="nav-link" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    @auth
+                    <a href="{{ route('logout') }}" class="nav-link" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                         <i class="nav-icon fas fa-sign-out-alt"></i>
                         <p>Log Out</p>
                     </a>
+                    @endauth
                     <form id="logout-form" method="POST" action="{{ route('logout') }}" class="d-none">
                         @csrf
                     </form>

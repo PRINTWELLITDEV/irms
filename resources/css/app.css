@@ -3,3 +3,24 @@
 
 /* Import AdminLTE */
 @import "admin-lte/dist/css/adminlte.css";
+
+/* Footer */
+.app-footer {
+    background: #f8f9fa;
+    padding: 1rem 0;
+}
+.app-footer a{
+    text-decoration: none;
+    font-weight: bold;
+    color:#0e2b96;
+}
+.app-footer .pi-link {
+    color: #0e2b96;
+    font-family: 'Century Schoolbook', serif;
+    font-weight: bold;
+    font-style: italic;
+    text-decoration: none;
+}
+.app-footer .pi-link:hover {
+    text-decoration: underline;
+}
