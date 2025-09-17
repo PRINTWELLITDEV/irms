@@ -59,7 +59,7 @@
                                                         @endif
                                                     </td>
                                                     <td>{{ $bay->rsbaynum }}</td>
-                                                    <td>{{ \Carbon\Carbon::parse($bay->createdate)->format('d-M-Y h:i A') }}</td>
+                                                    <td>{{ \Carbon\Carbon::parse($bay->createdate)->format('d M Y | h:i A') }}</td>
                                                     <td>{{ $bay->name }}</td>
                                                     <!-- <td class="align-middle text-center">
                                                         <button type="button" class="btn btn-sm btn-secondary btn-settings"
