@@ -1,5 +1,6 @@
 @extends('irms.irms-partials.app')
-@section('title', 'Rack Locations')
+
+@section('title', 'IRMS Rack Locations')
 
 @section('content')
 <div class="wrapper">
@@ -8,7 +9,7 @@
             <div class="container-fluid">
                 <div class="row align-items-center">
                     <div class="col mb-3">
-                        <h1 class="d-inline-block mb-0">Rack Location</h1>
+                        <h1 class="d-inline-block mb-0">Rack Locations</h1>
                     </div>
                 </div>
             </div>
@@ -19,149 +20,154 @@
                 <div class="col">
                     <div class="card">
                         <div class="card-body">
-
                             <div class="d-flex justify-content-between align-items-center mb-3">
-                                <button type="button" id="btnAddUser" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addUserModal">
-                                    <i class="bi bi-person-plus-fill"></i> Add User
+                                <button type="button" id="btnAddRack" class="btn btn-success d-flex align-items-center"
+                                        data-bs-toggle="modal" data-bs-target="#addRackModal">
+                                    <i class="bi bi-plus-circle-fill d-none d-sm-inline me-2"></i>
+                                    <span class="d-none d-sm-inline">Add Rack</span>
+                                    <i class="bi bi-plus-circle-fill d-inline d-sm-none"></i>
                                 </button>
 
-                                <div class="input-group" style="max-width:300px;">
-                                    <input type="text" id="userSearch" class="form-control" placeholder="Search users...">
+                                <div class="input-group" style="max-width: 300px;">
+                                    <input type="text" id="rackSearch" class="form-control" placeholder="Search rack locations...">
                                     <span class="input-group-text"><i class="bi bi-search"></i></span>
                                 </div>
                             </div>
 
                             <div class="table-responsive">
-                                <table id="users-table" class="table table-striped table-bordered table-hover align-middle text-center">
+                                <table class="table table-striped table-hover" id="rackTable">
                                     <thead class="table-dark">
-                                        <tr>
-                                            <th>Site</th>
-                                            <th>Warehouse</th>
-                                            <th>Bay No.</th>
-                                            <th>Location</th>
-                                            <th>Description</th>
-                                            <th>Quantity</th>
-                                            <th>Action</th>
-                                        </tr>
+                                    <tr>
+                                        <th>Site</th>
+                                        <th>Warehouse</th>
+                                        <th>Bay No.</th>
+                                        <th>Location</th>
+                                        <th>Description</th>
+                                        <th>Quantity</th>
+                                        <th>Date</th>
+                                    </tr>
                                     </thead>
                                     <tbody>
-                                        <!-- Static demo rows -->
-                                        <tr>
-                                            <td class="align-middle">
-                                                <img src="https://via.placeholder.com/50" alt="profile" class="rounded-circle" width="50" height="50">
-                                            </td>
-                                            <td class="align-middle">PPC1190</td>
-                                            <td class="align-middle">Mico Limbanganon</td>
-                                            <td class="align-middle">mico.limbanganon@printwell.com.ph</td>
-                                            <td class="align-middle">Printwell, Inc.</td>
-                                            <td class="align-middle">Admin</td>
-                                            <td class="align-middle text-center">
-                                                <button type="button" class="btn btn-sm btn-secondary btn-settings"
-                                                        data-userid="PPC1190" data-name="Mico Limbanganon" title="Settings">
-                                                    <i class="bi bi-gear-fill"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-
+                                    <tr>
+                                        <td>FPC</td>
+                                        <td>FBIC-BLDG#2</td>
+                                        <td>2</td>
+                                        <td>Mandaluyong City</td>
+                                        <td>sdadsa</td>
+                                        <td>dasdas</td>
+                                        <td>sads</td>
+                                    </tr>
                                     </tbody>
                                 </table>
                             </div>
-
-                        </div> <!-- /.card-body -->
-                    </div> <!-- /.card -->
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Add User Modal (frontend only) -->
-<div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+<!-- Add Rack Modal -->
+<div class="modal fade" id="addRackModal" tabindex="-1" aria-labelledby="addRackModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
         <div class="modal-content">
-            <form onsubmit="event.preventDefault(); alert('This is a frontend demo — no backend call.');">
-                <div class="modal-header bg-success text-white">
-                    <h5 class="modal-title" id="addUserLabel">Add Rack Location</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addRackModalLabel">Add Rack Location</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addRackForm">
                     <div class="mb-3">
-                        <label class="form-label">Site</label>
-                        <select class="form-select">
-                            <option value="FP-SP">Fortune Packaging Corp.</option>
-                            <option value="PI-SP">Printwell, Inc.</option>
-                            <option value="PIGRP">Printwell Packaging Corp.</option>
-                        </select>
+                        <label for="rackLocation" class="form-label">Rack Location</label>
+                        <input type="text" class="form-control" id="rackLocation" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Warehouse</label>
-                        <input class="form-control" />
+                        <label for="rackCapacity" class="form-label">Rack Capacity</label>
+                        <input type="number" class="form-control" id="rackCapacity" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Bay No.</label>
-                        <input class="form-control" />
+                        <label for="rackDescription" class="form-label">Description</label>
+                        <textarea class="form-control" id="rackDescription" rows="3"></textarea>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">Location</label>
-                        <input type="email" class="form-control" />
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Description</label>
-                        <input type="password" class="form-control" />
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Quantity</label>
-                        <input type="password" class="form-control" />
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-success">Save</button>
-                </div>
-            </form>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-success">Add Rack</button>
+            </div>
         </div>
     </div>
 </div>
 
+@endsection
 
-<!-- DataTables + Bootstrap CDN (frontend-only) -->
-<!-- <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
+@section('scripts')
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-    // init DataTable
-    var table = $('#users-table').DataTable({
-        paging: true,
-        info: true,
-        lengthChange: false,
-        pageLength: 10,
-        language: { emptyTable: "No data available" }
-    });
+    // JavaScript code for handling rack locations
 
-    // external search
-    document.getElementById('userSearch')?.addEventListener('keyup', function () {
-        table.search(this.value).draw();
-    });
+    document.addEventListener('DOMContentLoaded', function () {
+        const rackTable = document.getElementById('rackTable').getElementsByTagName('tbody')[0];
 
-    // settings buttons: populate modal content and show
-    document.querySelectorAll('.btn-settings').forEach(function (btn) {
-        btn.addEventListener('click', function () {
-            var userid = this.dataset.userid || '';
-            var name = this.dataset.name || '';
-            var content = document.getElementById('settings-modal-content');
-            content.innerHTML = `
-                <p><strong>User ID:</strong> ${userid}</p>
-                <p><strong>Name:</strong> ${name}</p>
-                <p>This is a frontend demo. Replace with AJAX to load real settings.</p>
-            `;
-            var modal = new bootstrap.Modal(document.getElementById('settingsModals'));
-            modal.show();
+        // Function to fetch and display rack locations
+        function loadRackLocations() {
+            // Clear the table body
+            rackTable.innerHTML = '';
+
+            // Fetch rack locations data (replace with your actual data source)
+            const rackLocations = [
+                { id: 1, location: 'Rack 1', capacity: 42 },
+                { id: 2, location: 'Rack 2', capacity: 36 },
+                { id: 3, location: 'Rack 3', capacity: 48 }
+            ];
+
+            // Populate the table with data
+            rackLocations.forEach(rack => {
+                const row = rackTable.insertRow();
+                row.innerHTML = `
+                    <td>${rack.id}</td>
+                    <td>${rack.location}</td>
+                    <td>${rack.capacity}</td>
+                    <td>
+                        <button class="btn btn-sm btn-primary" onclick="editRack(${rack.id})">Edit</button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteRack(${rack.id})">Delete</button>
+                    </td>
+                `;
+            });
+        }
+
+        // Call the function to load rack locations on page load
+        loadRackLocations();
+
+        // Handle form submission for adding a new rack
+        document.getElementById('addRackForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            // Get form data
+            const location = document.getElementById('rackLocation').value;
+            const capacity = document.getElementById('rackCapacity').value;
+            const description = document.getElementById('rackDescription').value;
+
+            // TODO: Add code to save the new rack location (e.g., send to server)
+
+            // Close the modal
+            const modal = bootstrap.Modal.getInstance(document.getElementById('addRackModal'));
+            modal.hide();
+
+            // Reload the rack locations
+            loadRackLocations();
         });
     });
-});
-</script> -->
+
+    // Edit and delete functions (to be implemented)
+    function editRack(id) {
+        alert('Edit rack with ID: ' + id);
+    }
+
+    function deleteRack(id) {
+        if (confirm('Are you sure you want to delete this rack location?')) {
+            alert('Delete rack with ID: ' + id);
+        }
+    }
+</script>
 @endsection
