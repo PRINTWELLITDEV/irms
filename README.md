@@ -66,5 +66,5 @@ System Analyst Programmer Trainee
 This project is licensed under the [MIT license](https://opensource.org/licenses/MIT). -->
 
 ---
-<a href="http://www.printwell.com.ph" > <img src="http://www.printwell.com.ph/images/printwell.png" width="400" alt="IRMS Logo"></a>
+<a href="http://www.printwell.com.ph" > <img src="http://www.printwell.com.ph/images/printwell.png" width="400" alt="IRMS Logo"></a> <br>
 IRMS &copy; 2025
