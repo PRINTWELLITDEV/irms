@@ -1,10 +1,10 @@
 <p align="center">
 <a href="#">
-<img src="/public/uploads/img/logo-irms.png" width="120" alt="IRMS Logo">
+<img src="/public/uploads/img/logo-irms-transparent.png" width="400" alt="IRMS Logo">
 </a>
-</p>
 
 # IRMS - Inventory Rack Management System
+</p>
 
 IRMS is a web-based application designed to efficiently manage inventory racks, users, warehouses, and site information for Printwell, Inc. and its affiliates.
 
