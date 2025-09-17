@@ -24,7 +24,7 @@ class RsWhseController extends Controller
             'name'      => 'required|string|max:30',
             'addr'      => 'nullable|string|max:60',
         ]);
-
+        $whse = $validated['rswhse'];
         $createdby = auth()->user()->userid ?? 'system';
 
         try {
@@ -36,7 +36,7 @@ class RsWhseController extends Controller
                 $validated['addr'],
                 $createdby,
             ]);
-            return redirect()->route('warehouse.index')->with('success', 'Warehouse added successfully.');
+            return redirect()->route('warehouse.index')->with('success', "$whse added successfully.");
         } catch (\Exception $e) {
             return redirect()->back()->withInput()->withErrors(['error' => $e->getMessage()]);
         }

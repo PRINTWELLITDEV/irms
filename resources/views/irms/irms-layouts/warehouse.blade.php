@@ -8,8 +8,13 @@
             <div class="content-header">
                 <div class="container-fluid">
                     <div class="row align-items-center">
-                        <div class="col mb-3">
-                            <h1 class="d-inline-block mb-0">Warehouse</h1>
+                        <div class="col mb-3 d-flex align-items-center">
+                            <h1 class="d-inline-block mb-0 me-3">Warehouse</h1>
+                            @if(session('success'))
+                                <div id="success-alert" class="alert alert-success py-1 px-3 mb-0" style="transition: opacity 0.7s;">
+                                    {{ session('success') }}
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -20,11 +25,6 @@
                     <div class="col">
                         <div class="card">
                             <div class="card-body">
-                                @if(session('success'))
-                                    <div id="success-alert" class="alert alert-success" style="transition: opacity 0.7s;">
-                                        {{ session('success') }}
-                                    </div>
-                                @endif
                                 @if($errors->any())
                                     <div class="alert alert-danger">{{ $errors->first() }}</div>
                                 @endif
@@ -229,7 +229,7 @@
 
     <!-- Warehouse View Modal -->
     <div class="modal fade" id="viewWarehouseModal" tabindex="-1" aria-labelledby="viewWarehouseLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-dialog modal-dialog-centered modal-l">
             <div class="modal-content">
                 <div class="modal-header bg-primary text-white">
                     <h1 class="modal-title fs-5" id="viewWarehouseLabel">
