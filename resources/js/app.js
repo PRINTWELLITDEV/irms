@@ -2,6 +2,21 @@ import "bootstrap";
 
 import "admin-lte";
 
+setInterval(function() {
+    // Get current path
+    const currentPath = window.location.pathname;
+    // Only run session check if current path contains /irms
+    if (currentPath.indexOf('/irms') !== -1) {
+        fetch(window.sessionCheckUrl)
+            .then(response => response.json())
+            .then(data => {
+                if (!data.valid) {
+                    window.location.href = '/login';
+                }
+            });
+    }
+}, 5000);
+
 $(document).ready(function () {
     // Users table
     const usersTable = $('#users-table').DataTable({
