@@ -38,13 +38,13 @@
                 <li class="nav-header">Location</li>
                 <li class="nav-item">
                     <a href="{{ url('/irms/bay-location') }}" class="nav-link{{ request()->is('irms/bay-location') ? ' active' : '' }}">
-                        <i class="nav-icon fas fa-map-marker-alt"></i>
+                        <i class="nav-icon bi bi-box-seam"></i>
                         <p>Bay Location</p>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="{{ url('/irms/rack-locations') }}" class="nav-link{{ request()->is('irms/rack-locations') ? ' active' : '' }}">
-                        <i class="nav-icon fas fa-th"></i>
+                        <i class="nav-icon bi bi-grid-3x3"></i>
                         <p>Rack Locations</p>
                     </a>
                 </li>
