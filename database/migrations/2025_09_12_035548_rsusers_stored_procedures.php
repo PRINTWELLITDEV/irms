@@ -10,26 +10,29 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // Drop procedures if they exist (SQL Server syntax)
-        DB::unprepared("IF OBJECT_ID('sp_get_users', 'P') IS NOT NULL DROP PROCEDURE sp_get_users");
-        DB::unprepared("IF OBJECT_ID('sp_add_user', 'P') IS NOT NULL DROP PROCEDURE sp_add_user");
-
-        // Create sp_get_users (no parentheses, no BEGIN/END needed for single statement)
+        DB::unprepared("IF OBJECT_ID('sp_view_users', 'P') IS NOT NULL DROP PROCEDURE sp_view_users");
+        // Create sp_view_users (no parentheses, no BEGIN/END needed for single statement)
         DB::unprepared('
-            CREATE PROCEDURE sp_get_users
+            CREATE PROCEDURE sp_view_users
             AS
-            SELECT 
-                u.profile_pic_url,
-                u.userid,
-                u.name,
-                u.email,
-                u.level,
-                s.rssite_desc
+            SELECT
+				u.rssite,
+				u.userid,
+				u.name,
+				u.email,
+				u.level,
+				u.gender,
+				u.create_date,
+				u.profile_pic_url,
+                s.rssite_desc,
+                s.address,
+				s.logo_pic_url
             FROM rsusers u
-            LEFT JOIN irms_site s ON u.rssite = s.rssite;
+            INNER JOIN irms_site s ON s.rssite = u.rssite;
         ');
 
         // Create sp_add_user (use @param, no IN, and use NVARCHAR for Unicode support)
+        DB::unprepared("IF OBJECT_ID('sp_add_user', 'P') IS NOT NULL DROP PROCEDURE sp_add_user");
         DB::unprepared('
             CREATE PROCEDURE sp_add_user
                 @rssite NVARCHAR(8),
@@ -43,6 +46,29 @@ return new class extends Migration
             INSERT INTO rsusers (rssite, userid, name, password, email, gender, profile_pic_url)
             VALUES (@rssite, @userid, @name, @password, @email, @gender, @profile_pic_url);
         ');
+
+        // Create sp_show_user
+        DB::unprepared("IF OBJECT_ID('sp_select_user', 'P') IS NOT NULL DROP PROCEDURE sp_select_user");
+        DB::unprepared('
+            CREATE PROCEDURE sp_select_user
+                @userid NVARCHAR(8)
+            AS
+            SELECT
+				u.rssite,
+				u.userid,
+				u.name,
+				u.email,
+				u.level,
+				u.gender,
+				u.create_date,
+				u.profile_pic_url,
+                s.rssite_desc,
+                s.address,
+				s.logo_pic_url
+            FROM rsusers u
+            INNER JOIN irms_site s ON s.rssite = u.rssite
+            WHERE u.userid = @userid;
+        ');
     }
 
     /**
@@ -50,7 +76,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        DB::unprepared("IF OBJECT_ID('sp_get_users', 'P') IS NOT NULL DROP PROCEDURE sp_get_users");
+        DB::unprepared("IF OBJECT_ID('sp_view_users', 'P') IS NOT NULL DROP PROCEDURE sp_view_users");
         DB::unprepared("IF OBJECT_ID('sp_add_user', 'P') IS NOT NULL DROP PROCEDURE sp_add_user");
+        DB::unprepared("IF OBJECT_ID('sp_select_user', 'P') IS NOT NULL DROP PROCEDURE sp_select_user");
     }
 };

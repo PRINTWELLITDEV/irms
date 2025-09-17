@@ -10,6 +10,8 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // Drop procedures if they exist before creating (SQL Server syntax)
+        DB::unprepared("IF OBJECT_ID('sp_add_whse', 'P') IS NOT NULL DROP PROCEDURE sp_add_whse;");
         DB::unprepared('
             CREATE PROCEDURE sp_add_whse
                 @p_rssite VARCHAR(8),
@@ -31,13 +33,37 @@ return new class extends Migration
             END
         ');
 
+        DB::unprepared("IF OBJECT_ID('sp_view_whse', 'P') IS NOT NULL DROP PROCEDURE sp_view_whse;");
         DB::unprepared('
             CREATE PROCEDURE sp_view_whse
             AS
             BEGIN
-                SELECT rssite, rswhse, name, addr FROM rswhse
+                SELECT w.rssite, rswhse, name, addr, logo_pic_url
+                FROM rswhse w
+                INNER JOIN irms_site s ON s.rssite = w.rssite;
             END
         ');
+
+        DB::unprepared("IF OBJECT_ID('sp_update_whse', 'P') IS NOT NULL DROP PROCEDURE sp_update_whse;");
+        DB::unprepared('
+            CREATE PROCEDURE sp_update_whse
+                @orig_rssite VARCHAR(8),
+                @orig_rswhse VARCHAR(10),
+                @p_rssite VARCHAR(8),
+                @p_rswhse VARCHAR(10),
+                @p_name VARCHAR(30),
+                @p_addr VARCHAR(60)
+            AS
+            BEGIN
+                UPDATE rswhse
+                SET rssite = @p_rssite,
+                    rswhse = @p_rswhse,
+                    name = @p_name,
+                    addr = @p_addr
+                WHERE rssite = @orig_rssite AND rswhse = @orig_rswhse;
+            END
+        ');
+
     }
 
     /**
@@ -45,7 +71,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        DB::unprepared('DROP PROCEDURE IF EXISTS sp_add_whse');
-        DB::unprepared('DROP PROCEDURE IF EXISTS sp_view_whse');
+        DB::unprepared("IF OBJECT_ID('sp_add_whse', 'P') IS NOT NULL DROP PROCEDURE sp_add_whse;");
+        DB::unprepared("IF OBJECT_ID('sp_view_whse', 'P') IS NOT NULL DROP PROCEDURE sp_view_whse;");
+        DB::unprepared("IF OBJECT_ID('sp_update_whse', 'P') IS NOT NULL DROP PROCEDURE sp_update_whse;");
     }
 };

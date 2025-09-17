@@ -29,4 +29,9 @@ class Rswhse extends Model
             $model->createdate = now();
         });
     }
+
+    public function site()
+    {
+        return $this->belongsTo(IrmsSite::class, 'rssite', 'rssite');
+    }
 }
