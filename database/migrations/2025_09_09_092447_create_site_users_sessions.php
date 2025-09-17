@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -24,14 +25,14 @@ return new class extends Migration
             $table->string('password', 255);
             $table->string('email', 255);
             $table->timestamp('email_verified_at')->nullable();
-            $table->integer('level')->default(0);
+            $table->integer('level')->nullable();
             $table->dateTime('create_date')->nullable();
             $table->dateTime('updated_date')->nullable();
             $table->string('updated_by', 8)->nullable();
             $table->string('updated_by_sql', 128)->nullable();
             $table->string('gender', 10)->nullable();
             $table->text('profile_pic_url')->nullable();
-            $table->rememberToken(); // varchar(100) nullable
+            $table->rememberToken();
 
             $table->primary(['rssite', 'userid']);
         });
