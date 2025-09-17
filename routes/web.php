@@ -37,8 +37,8 @@ Route::prefix('irms')->middleware('check.session')->group(function () {
     Route::get('/warehouse/{rswhse}', [RsWhseController::class, 'getWarehouseInfo']);
     
     // Bay location
-    Route::get('/bay-location', [RsBayLocController::class, 'index'])->name('bay-location.index');
-    Route::post('/bay-location/store', [RsBayLocController::class, 'store'])->name('bay-location.store');
+    Route::get('/bay-locations', [RsBayLocController::class, 'index'])->name('baylocs.index');
+    Route::post('/bay-locations/store', [RsBayLocController::class, 'store'])->name('baylocs.store');
 
     // Others
     Route::get('/whse-goodreceiving', fn() => view('irms/irms-layouts/whse-goodreceiving'))->name('irms.whse-goodreceiving');
