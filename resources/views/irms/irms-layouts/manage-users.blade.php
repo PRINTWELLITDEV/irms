@@ -42,7 +42,7 @@
                                             <th>User ID</th>
                                             <!-- <th width="40%">Email</th> -->
                                             <th>Site</th>
-                                            <th>Level</th>
+                                            <th width="5%">Level</th>
                                             <!-- <th width="5%">Action</th> -->
                                         </tr>
                                     </thead>
@@ -100,9 +100,9 @@
     </div>
 </div>
 
-<!-- Add User Modal (structure same as warehouse modal) -->
+<!-- Add User Modal (update the profile picture input section) -->
 <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
             <form action="{{ route('rsusers.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
@@ -111,49 +111,75 @@
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="profile_pic_url" class="form-label">Profile Picture</label>
-                        <input type="file" name="profile_pic_url" id="profile_pic_url" class="form-control">
-                        @error('profile_pic_url') <div class="text-danger small">{{ $message }}</div> @enderror
-                    </div>
-                    <div class="mb-3">
-                        <label for="rssite" class="form-label">Site</label>
-                        <select name="rssite" id="rssite" class="form-select" required>
-                            <option disabled selected>Select Site</option>
-                            <option value="FP-SP" {{ old('rssite') == 'FP-SP' ? 'selected' : '' }}>Fortune Packaging, Inc.</option>
-                            <option value="PI-SP" {{ old('rssite') == 'PI-SP' ? 'selected' : '' }}>Printwell, Inc.</option>
-                            <option value="PIGRP-SP" {{ old('rssite') == 'PIGRP-SP' ? 'selected' : '' }}>Printwell Packaging Company</option>
-                        </select>
-                        @error('rssite') <div class="text-danger small">{{ $message }}</div> @enderror
-                    </div>
-                    <div class="mb-3">
-                        <label for="userid" class="form-label">User ID</label>
-                        <input type="text" class="form-control" id="userid" name="userid" value="{{ old('userid') }}" required maxlength="8">
-                        @error('userid') <div class="text-danger small">{{ $message }}</div> @enderror
-                    </div>
-                    <div class="mb-3">
-                        <label for="name" class="form-label">Name</label>
-                        <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}" maxlength="255">
-                        @error('name') <div class="text-danger small">{{ $message }}</div> @enderror
-                    </div>
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}" maxlength="255" required>
-                        @error('email') <div class="text-danger small">{{ $message }}</div> @enderror
-                    </div>
-                    <div class="mb-3">
-                        <label for="gender" class="form-label">Gender</label>
-                        <select name="gender" id="gender" class="form-select">
-                            <option disabled selected>Select a gender</option>
-                            <option value="male" {{ old('gender')=='male' ? 'selected' : '' }}>Male</option>
-                            <option value="female" {{ old('gender')=='female' ? 'selected' : '' }}>Female</option>
-                        </select>
-                        @error('gender') <div class="text-danger small">{{ $message }}</div> @enderror
-                    </div>
-                    <div class="mb-3">
-                        <label for="password" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="password" name="password" required maxlength="255">
-                        @error('password') <div class="text-danger small">{{ $message }}</div> @enderror
+                    <div class="row">
+                        <div class="col-12 col-md-4 text-center mb-3 mb-md-0 align-self-center">
+                            <div class="mb-3 text-center" id="add-user-profile-preview-container">
+                                <img id="add-user-profile-preview" src="{{ asset('uploads/user-profile/noprofile.png') }}" alt="profile preview" class="rounded-circle mb-2 border" width="150" height="150">
+                            </div>
+                            <div class="mb-3 align-bottom">
+                                <label for="profile_pic_url" class="form-label">Profile Picture</label>
+                                <input type="file" name="profile_pic_url" id="profile_pic_url" class="form-control" accept="image/png, image/jpeg, image/jpg, image/webp">
+                                @error('profile_pic_url') <div class="text-danger small">{{ $message }}</div> @enderror
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-8">
+                            <div class="mb-3">
+                                <!-- <label for="rssite" class="form-label">Site</label> -->
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-building"></i></span>
+                                    <select name="rssite" id="rssite" class="form-select" required>
+                                        <option disabled selected>Select Site</option>
+                                        <option value="FP-SP" {{ old('rssite') == 'FP-SP' ? 'selected' : '' }}>Fortune Packaging Corp.</option>
+                                        <option value="PI-SP" {{ old('rssite') == 'PI-SP' ? 'selected' : '' }}>Printwell, Inc.</option>
+                                        <option value="PIGRP-SP" {{ old('rssite') == 'PIGRP-SP' ? 'selected' : '' }}>Printwell Packaging Corp.</option>
+                                    </select>
+                                </div>
+                                @error('rssite') <div class="text-danger small">{{ $message }}</div> @enderror
+                            </div>
+                            <div class="mb-3">
+                                <!-- <label for="userid" class="form-label">User ID</label> -->
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-person-badge"></i></span>
+                                    <input type="text" class="form-control" id="userid" name="userid" value="{{ old('userid') }}" required maxlength="8" placeholder="User ID">
+                            </div>
+                            @error('userid') <div class="text-danger small">{{ $message }}</div> @enderror
+                        </div>
+                        <div class="mb-3">
+                            <!-- <label for="name" class="form-label">Name</label> -->
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}" maxlength="255" placeholder="Name">
+                            </div>
+                            @error('name') <div class="text-danger small">{{ $message }}</div> @enderror
+                        </div>
+                        <div class="mb-3">
+                            <!-- <label for="email" class="form-label">Email</label> -->
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                                <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}" maxlength="255" required placeholder="Email">
+                            </div>
+                            @error('email') <div class="text-danger small">{{ $message }}</div> @enderror
+                        </div>
+                        <div class="mb-3">
+                            <!-- <label for="gender" class="form-label">Gender</label> -->
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-gender-ambiguous"></i></span>
+                                <select name="gender" id="gender" class="form-select" placeholder="Gender">
+                                    <option disabled selected>Select a gender</option>
+                                    <option value="male" {{ old('gender')=='male' ? 'selected' : '' }}>Male</option>
+                                    <option value="female" {{ old('gender')=='female' ? 'selected' : '' }}>Female</option>
+                                </select>
+                            </div>
+                            @error('gender') <div class="text-danger small">{{ $message }}</div> @enderror
+                        </div>
+                        <div class="mb-3">
+                            <!-- <label for="password" class="form-label">Password</label> -->
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                                <input type="password" class="form-control" id="password" name="password" required maxlength="255" placeholder="Password">
+                            </div>
+                            @error('password') <div class="text-danger small">{{ $message }}</div> @enderror
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -168,15 +194,17 @@
 <!-- User View Modal -->
 <div class="modal fade" id="viewUserModal" tabindex="-1" aria-labelledby="viewUserLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-xl">
-        <div class="modal-content"> 
+        <div class="modal-content">
             <div class="modal-header bg-primary text-white">
                 <h1 class="modal-title fs-5" id="viewUserLabel"><span id="view-user-label-name">-</span></h1>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="row align-items-center">
-                    <div class="col-12 col-md-4 text-center mb-3 mb-md-0">
-                        <img id="view-user-profile" src="{{ asset('uploads/user-profile/noprofile.png') }}" alt="profile" class="profile-pic rounded-circle mb-2">
+                    <div class="col-12 col-md-4 text-center mb-3 mb-md-0 border border-2 p-2">
+                        <img id="view-user-profile" src="{{ asset('uploads/user-profile/noprofile.png') }}"
+                            alt="profile" class="profile-pic rounded-circle m-5">
                     </div>
                     <div class="col-12 col-md-8">
                         <table class="table table-responsive mb-0 table-borderless">
@@ -242,19 +270,19 @@
 </div>
 
 <!-- @if(isset($selectedUser))
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        $('#view-user-profile').attr('src', '{{ asset($selectedUser->profile_pic_url) }}');
-        $('#view-user-label-name').text('{{ $selectedUser->userid }}');
-        $('#view-user-id').text('{{ $selectedUser->userid }}');
-        $('#view-user-name').text('{{ $selectedUser->name }}');
-        $('#view-user-email').text('{{ $selectedUser->email }}');
-        $('#view-user-site_desc').text('{{ $selectedUser->rssite_desc }}');
-        $('#view-user-level').text('{{ $selectedUser->level }}');
-        $('#view-user-gender').text('{{ ucfirst($selectedUser->gender) }}');
-        $('#view-user-create_date').text('{{ date('d F Y', strtotime($selectedUser->create_date)) }}');
-        $('#viewUserModal').modal('show');
-    });
-</script>
-@endif -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            $('#view-user-profile').attr('src', '{{ asset($selectedUser->profile_pic_url) }}');
+            $('#view-user-label-name').text('{{ $selectedUser->userid }}');
+            $('#view-user-id').text('{{ $selectedUser->userid }}');
+            $('#view-user-name').text('{{ $selectedUser->name }}');
+            $('#view-user-email').text('{{ $selectedUser->email }}');
+            $('#view-user-site_desc').text('{{ $selectedUser->rssite_desc }}');
+            $('#view-user-level').text('{{ $selectedUser->level }}');
+            $('#view-user-gender').text('{{ ucfirst($selectedUser->gender) }}');
+            $('#view-user-create_date').text('{{ date('d F Y', strtotime($selectedUser->create_date)) }}');
+            $('#viewUserModal').modal('show');
+        });
+    </script>
+    @endif -->
 @endsection
