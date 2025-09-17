@@ -68,7 +68,8 @@ This project is licensed under the [MIT license](https://opensource.org/licenses
 ---
 <p align="center" style="font-family: 'Century Schoolbook', serif; font-weight: bold; font-style: italic; font-size: 2rem;">
     <a href="http://www.printwell.com.ph" style="text-decoration: none; color: inherit;">
-        Printwell, Inc
+        <img src="/public/uploads/img/printwell.png" width="400" alt="IRMS Logo">
     </a>
-</p> <br>
+</p>
+<br>
 IRMS &copy; 2025
