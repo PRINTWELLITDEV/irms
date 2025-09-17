@@ -14,6 +14,7 @@ class RsUserController extends Controller
     {
         // Call the stored procedure to get users
         $users = \DB::select('EXEC sp_view_users');
+        $sites = \DB::table('irms_site')->get();
 
         // If you want to support AJAX, you may need to convert $users to an array
         if (request()->ajax()) {
@@ -21,7 +22,7 @@ class RsUserController extends Controller
                 'users' => $users
             ]);
         }
-        return view('irms.irms-layouts.manage-users', compact('users'));
+        return view('irms.irms-layouts.manage-users', compact('users', 'sites'));
     }
     
     public function show($userid)
@@ -91,9 +92,11 @@ class RsUserController extends Controller
     {
         $users = \DB::select('EXEC sp_view_users');
         $selectedUser = \DB::select('EXEC sp_select_user ?', [$userid]);
+        $sites = \DB::table('irms_site')->get();
         return view('irms.irms-layouts.manage-users', [
             'users' => $users,
             'selectedUser' => $selectedUser ? $selectedUser[0] : null,
+            'sites' => $sites,
         ]);
     }
 }
