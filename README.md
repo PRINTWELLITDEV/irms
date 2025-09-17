@@ -53,14 +53,13 @@ IRMS is a web-based application designed to efficiently manage inventory racks, 
 - Add, edit, and delete records using modals
 - Search and filter data in tables
 
-## Creators
+## Creators <br>
 
-Lead Developer: 
-**Jhon Patrick M. Torres**
-System Analyst Programmer - L1
+**Jhon Patrick M. Torres**  <br>
+Lead Developer / System Analyst Programmer <br>
 
-**Aron Kyle Suarnaba**
-System Analyst Programmer - Trainee
+**Aron Kyle Suarnaba**  <br>
+System Analyst Programmer Trainee
 
 <!-- ## License
 
