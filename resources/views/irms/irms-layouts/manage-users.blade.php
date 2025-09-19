@@ -42,7 +42,7 @@
                                 <div class="table-responsive">
                                     <table id="users-table"
                                         class="table table-responsive table-striped table-bordered table-hover align-middle">
-                                        <thead class="table-dark text-center">
+                                        <thead class="text-center">
                                             <tr>
                                                 <!-- <th width="5%">Profile</th> -->
                                                 <th class="text-center">Users</th>
@@ -113,7 +113,7 @@
                         <h1 class="modal-title fs-5" id="addUserLabel">Add User</h1>
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    
+
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-12 col-md-4 text-center mb-3 mb-md-0 align-self-center">
@@ -277,20 +277,109 @@
         </div>
     </div>
 
-    <!-- @if(isset($selectedUser))
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            $('#view-user-profile').attr('src', '{{ asset($selectedUser->profile_pic_url) }}');
-            $('#view-user-label-name').text('{{ $selectedUser->userid }}');
-            $('#view-user-id').text('{{ $selectedUser->userid }}');
-            $('#view-user-name').text('{{ $selectedUser->name }}');
-            $('#view-user-email').text('{{ $selectedUser->email }}');
-            $('#view-user-site_desc').text('{{ $selectedUser->rssite_desc }}');
-            $('#view-user-level').text('{{ $selectedUser->level }}');
-            $('#view-user-gender').text('{{ ucfirst($selectedUser->gender) }}');
-            $('#view-user-create_date').text('{{ date('d F Y', strtotime($selectedUser->create_date)) }}');
-            $('#viewUserModal').modal('show');
-        });
-    </script>
-    @endif -->
+    <!-- Edit User Modal (finished) -->
+    <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content">
+                <form id="editUserForm" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT')
+                    <div class="modal-header bg-warning text-dark">
+                        <h1 class="modal-title fs-5" id="editUserLabel">Edit User - <span id="edit-user-label-name">-</span></h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="row g-3">
+                            <div class="col-12 col-md-4 text-center align-self-center">
+                                <div class="mb-3">
+                                    <img id="edit-user-profile-preview" src="{{ asset('uploads/user-profile/noprofile.png') }}" alt="profile preview" class="rounded-circle mb-2 border" width="150" height="150">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="edit_profile_pic" class="form-label">Profile Picture</label>
+                                    <input type="file" name="profile_pic_url" id="edit_profile_pic" class="form-control" accept="image/png, image/jpeg, image/jpg, image/webp">
+                                    <div class="form-text small">Leave empty to keep existing picture.</div>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-md-8">
+                                <input type="hidden" id="edit-userid-hidden" name="userid">
+                                <div class="mb-3">
+                                    <label class="form-label">Site</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-building"></i></span>
+                                        <select name="rssite" id="edit-rssite" class="form-select" required>
+                                            <option disabled>Select Site</option>
+                                            @foreach($sites as $site)
+                                                <option value="{{ $site->rssite }}">{{ $site->rssite_desc }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">User ID</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-person-badge"></i></span>
+                                        <input type="text" id="edit-userid" class="form-control" readonly>
+                                    </div>
+                                    <div class="form-text small">User ID cannot be changed.</div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Name</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                        <input type="text" id="edit-name" name="name" class="form-control" maxlength="255">
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Email</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                                        <input type="email" id="edit-email" name="email" class="form-control" maxlength="255" required>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3 row">
+                                    <div class="col">
+                                        <label class="form-label">Gender</label>
+                                        <select name="gender" id="edit-gender" class="form-select">
+                                            <option disabled>Select a gender</option>
+                                            <option value="male">Male</option>
+                                            <option value="female">Female</option>
+                                        </select>
+                                    </div>
+                                    <div class="col">
+                                        <label class="form-label">Level</label>
+                                        <select name="level" id="edit-level" class="form-select" required>
+                                            <option disabled>Select level</option>
+                                            <option value="admin">Admin</option>
+                                            <option value="user">User</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Password (optional)</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                                        <input type="password" id="edit-password" name="password" class="form-control" placeholder="Leave blank to keep current password">
+                                    </div>
+                                </div>
+                            </div>
+                        </div> <!-- /.row -->
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" id="submitEditUser" class="btn btn-warning">Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
 @endsection

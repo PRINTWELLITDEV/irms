@@ -35,8 +35,8 @@
                             </div>
 
                             <div class="table-responsive">
-                                <table class="table table-striped table-hover" id="rackTable">
-                                    <thead class="table-dark">
+                                <table class="table display compact cell-border hover stripe ui celled table" id="users-table">
+                                    <thead>
                                     <tr>
                                         <th>Site</th>
                                         <th>Warehouse</th>

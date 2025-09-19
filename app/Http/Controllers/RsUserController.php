@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\RsUser;
 use App\Models\IrmsSite;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 
 
@@ -24,7 +25,7 @@ class RsUserController extends Controller
         }
         return view('irms.irms-layouts.manage-users', compact('users', 'sites'));
     }
-    
+
     public function show($userid)
     {
         $user = \DB::select('EXEC sp_select_user ?', [$userid]);
@@ -87,7 +88,7 @@ class RsUserController extends Controller
 
         return redirect('/irms/manage-users')->with('success', "$userid user successfully!");
     }
-    
+
     public function view($userid)
     {
         $users = \DB::select('EXEC sp_view_users');
@@ -98,5 +99,10 @@ class RsUserController extends Controller
             'selectedUser' => $selectedUser ? $selectedUser[0] : null,
             'sites' => $sites,
         ]);
+    }
+
+    public function edit(Request $request)
+    {
+        return view('users.edit', compact('rsUser'));
     }
 }
