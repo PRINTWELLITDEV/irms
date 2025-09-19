@@ -11,7 +11,7 @@ setInterval(function() {
             .then(response => response.json())
             .then(data => {
                 if (!data.valid) {
-                    window.location.href = '/login';
+                    window.location.href = "{{ url('/login') }}";
                 }
             });
     }
@@ -72,6 +72,27 @@ $(document).ready(function () {
     });
     $('#baylocSearch').on('keyup', function () {
         bayLocationTable.search(this.value).draw();
+    });
+
+    const rackTable = $('#rackTable').DataTable({
+        paging: true,
+        info: true,
+        lengthChange: false,
+        searching: true,
+        pageLength: 10,
+        language: {
+            emptyTable: "No rack locations found"
+        },
+        responsive: true,
+        stripeClasses: []
+    });
+    $('#rackSearch').on('keyup', function () {
+        rackTable.search(this.value).draw();
+    });
+
+    $('#rackTable').on('draw.dt', function() {
+        // Hide the manual empty row if DataTables is active
+        $('#no-rack-row').hide();
     });
 
     // Hide filter boxes initially
@@ -187,6 +208,8 @@ $(document).ready(function () {
         $('#edit-orig-rssite').val(rssite);
         $('#edit-orig-rswhse').val(rswhse);
     });
+
+    
 });
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -208,5 +231,31 @@ document.addEventListener('DOMContentLoaded', function () {
         }, 3000); // show for 3 seconds
     }
 
+    //Rack Location Add Form - Filter Warehouse and Bay Number based on selected Site
+    const siteSelect = document.getElementById('rssite');
+    const whseSelect = document.getElementById('rswhse');
+    const baySelect = document.getElementById('rsbaynum');
 
+    function filterOptions(select, siteValue) {
+        Array.from(select.options).forEach(option => {
+            if (!option.value) return; // skip placeholder
+            option.style.display = option.getAttribute('data-site') === siteValue ? '' : 'none';
+        });
+        // Reset selection if current value is not visible
+        if (select.selectedIndex > 0 && select.options[select.selectedIndex].style.display === 'none') {
+            select.selectedIndex = 0;
+        }
+    }
+
+    siteSelect.addEventListener('change', function () {
+        const siteValue = this.value;
+        filterOptions(whseSelect, siteValue);
+        filterOptions(baySelect, siteValue);
+    });
+
+    // Initial filter on page load if old value exists
+    if (siteSelect.value) {
+        filterOptions(whseSelect, siteSelect.value);
+        filterOptions(baySelect, siteSelect.value);
+    }
 });
