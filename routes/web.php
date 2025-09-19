@@ -23,7 +23,9 @@ Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 
 // Session check route
 Route::get('/irms/session', function () {
-    return response()->json(['valid' => auth()->check()]);
+    $sessionId = request()->cookie(config('session.cookie'));
+    $sessionExists = \DB::table('sessions')->where('id', $sessionId)->exists();
+    return response()->json(['valid' => $sessionExists && auth()->check()]);
 });
 
 // Dashboard (protected)

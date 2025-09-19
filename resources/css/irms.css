@@ -28,10 +28,10 @@
     font-size: 1.5rem;
 }
 
-.input-group-text {
-    min-width: 140px; /* or your preferred width */
+/* .input-group-text {
+    min-width: 140px;
     justify-content: left;
-}
+} */
 
 /* Footer */
 .app-footer {
@@ -192,10 +192,6 @@ table.table td img {
     .profile-pic {
         width: 150px !important;
         height: 150px !important;
-    }
-    .input-group-text {
-        min-width: 130px; /* or your preferred width */
-        justify-content: left;
     }
     
 }

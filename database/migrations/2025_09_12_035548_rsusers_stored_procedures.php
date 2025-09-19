@@ -78,10 +78,10 @@ return new class extends Migration
             INNER JOIN irms_site s ON s.rssite = u.rssite
             WHERE u.userid = @userid;
         ');
-        // Create sp_edit_user
-        DB::unprepared("IF OBJECT_ID('sp_edit_user', 'P') IS NOT NULL DROP PROCEDURE sp_edit_user");
+        // Create sp_update_user
+        DB::unprepared("IF OBJECT_ID('sp_update_user', 'P') IS NOT NULL DROP PROCEDURE sp_update_user");
         DB::unprepared("
-            CREATE PROCEDURE sp_edit_user
+            CREATE PROCEDURE sp_update_user
                 @rssite NVARCHAR(8),
                 @userid NVARCHAR(8),
                 @name NVARCHAR(255),

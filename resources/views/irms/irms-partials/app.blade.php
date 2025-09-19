@@ -42,6 +42,7 @@
 
     <script>
         window.sessionCheckUrl =  "{{ url('/irms/session') }}";
+        window.loginUrl = "{{ route('login') }}";
     </script>
 
     <!-- jQuery CDN -->

@@ -128,7 +128,6 @@
                                     <div class="input-group">
                                         <span class="input-group-text">
                                             <i class="bi bi-building"></i>
-                                            <span class="ms-2">Site:</span>
                                         </span>
                                         <select name="rssite" id="rssite" class="form-select" required>
                                             <option disabled selected>Select Site</option>
@@ -146,7 +145,6 @@
                                     <div class="input-group">
                                         <span class="input-group-text">
                                             <i class="bi bi-person-badge"></i>
-                                            <span class="ms-2">User ID:</span>
                                         </span>
                                         <input type="text" class="form-control" id="userid" name="userid" value="{{ old('userid') }}" required maxlength="8" placeholder="User ID" autocomplete="off">
                                     </div>
@@ -157,7 +155,6 @@
                                     <div class="input-group">
                                         <span class="input-group-text">
                                             <i class="bi bi-person"></i>
-                                            <span class="ms-2">Name:</span>
                                         </span>
                                         <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}" maxlength="255" placeholder="Name" autocomplete="off">
                                     </div>
@@ -168,7 +165,6 @@
                                     <div class="input-group">
                                         <span class="input-group-text">
                                             <i class="bi bi-envelope"></i>
-                                            <span class="ms-2">Email:</span>
                                         </span>
                                         <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}" maxlength="255" required placeholder="Email" autocomplete="off">
                                     </div>
@@ -179,7 +175,6 @@
                                     <div class="input-group">
                                         <span class="input-group-text py-2">
                                             <i class="bi bi-gender-ambiguous"></i>
-                                            <span class="ms-2">Gender:</span>
                                         </span>
                                         <select name="gender" id="gender" class="form-select" placeholder="Gender">
                                             <option disabled selected>Select a gender</option>
@@ -194,7 +189,6 @@
                                     <div class="input-group">
                                         <span class="input-group-text">
                                             <i class="bi bi-lock"></i>
-                                            <span class="ms-2">Password:</span>
                                         </span>
                                         <input type="password" class="form-control" id="password" name="password" required maxlength="255" placeholder="Password" autocomplete="off">
                                     </div>
@@ -307,6 +301,7 @@
 
                     <div class="modal-body">
                         <div class="row g-3">
+                            <!-- Profile Picture Column -->
                             <div class="col-12 col-md-4 text-center align-self-center">
                                 <div class="mb-3">
                                     <img id="edit-user-profile-preview" src="{{ asset('uploads/user-profile/noprofile.png') }}" alt="profile preview" class="rounded-circle mb-2 border" width="150" height="150">
@@ -317,22 +312,14 @@
                                     <div class="form-text small">Leave empty to keep existing picture.</div>
                                 </div>
                             </div>
-
+                            <!-- User Info Column -->
                             <div class="col-12 col-md-8">
                                 <div class="mb-3">
                                     <div class="input-group">
                                         <span class="input-group-text">
                                             <i class="bi bi-building"></i>
-                                            <span class="ms-2">Site:</span>
                                         </span>
-                                        <select name="rssite" id="edit-rssite" class="form-select" required>
-                                            <option disabled selected>Select Site</option>
-                                            @foreach($sites as $site)
-                                                <option value="{{ $site->rssite }}" {{ old('rssite') == $site->rssite ? 'selected' : '' }}>
-                                                    {{ $site->rssite_desc }}
-                                                </option>
-                                            @endforeach
-                                        </select>
+                                        <input type="text" id="edit-rssite" name="rssite" class="form-control" readonly required>
                                     </div>
                                 </div>
 
@@ -340,18 +327,16 @@
                                     <div class="input-group">
                                         <span class="input-group-text">
                                             <i class="bi bi-person-badge"></i>
-                                            <span class="ms-2">User ID:</span>
                                         </span>
                                         <input type="text" id="edit-userid" class="form-control" readonly>
                                     </div>
-                                    <div class="form-text small">User ID cannot be changed.</div>
+                                    <div class="form-text small">Site and User ID cannot be changed.</div>
                                 </div>
 
                                 <div class="mb-3">
                                     <div class="input-group">
                                         <span class="input-group-text">
                                             <i class="bi bi-person"></i>
-                                            <span class="ms-2">Name:</span>
                                         </span>
                                         <input type="text" id="edit-name" name="name" class="form-control" maxlength="255">
                                     </div>
@@ -361,42 +346,36 @@
                                     <div class="input-group">
                                         <span class="input-group-text">
                                             <i class="bi bi-envelope"></i>
-                                            <span class="ms-2">Email:</span>
                                         </span>
                                         <input type="email" id="edit-email" name="email" class="form-control" maxlength="255" required>
                                     </div>
                                 </div>
 
-                                <div class="mb-3 row">
-                                    <div class="col input-group">
-                                        <span class="input-group-text">
-                                            <i class="bi bi-gender-ambiguous"></i>
-                                            <span class="ms-2">Gender:</span>
-                                        </span>
-                                        <select name="gender" id="edit-gender" class="form-select">
-                                            <option disabled>Select a gender</option>
-                                            <option value="male">Male</option>
-                                            <option value="female">Female</option>
-                                        </select>
+                                <div class="row mb-3">
+                                    <div class="col-12 col-md-6 mb-3 mb-md-0">
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="bi bi-gender-ambiguous"></i>
+                                            </span>
+                                            <select name="gender" id="edit-gender" class="form-select">
+                                                <option disabled>Select a gender</option>
+                                                <option value="male">Male</option>
+                                                <option value="female">Female</option>
+                                            </select>
+                                        </div>
                                     </div>
-                                    <div class="col input-group">
-                                        <span class="input-group-text">
-                                            <i class="bi bi-person-check"></i>
-                                            <span class="ms-2">Level:</span>
-                                        </span>
-                                        <select name="level" id="edit-level" class="form-select" required>
-                                            <option disabled>Select level</option>
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                            <option value="4">4</option>
-                                            <option value="5">5</option>
-                                            <option value="6">6</option>
-                                            <option value="7">7</option>
-                                            <option value="8">8</option>
-                                            <option value="9">9</option>
-                                            <option value="10">10</option>
-                                        </select>
+                                    <div class="col-12 col-md-6">
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="bi bi-person-check"></i>
+                                            </span>
+                                            <select name="level" id="edit-level" class="form-select" required>
+                                                <option disabled>Select level</option>
+                                                @for($i=1; $i<=10; $i++)
+                                                    <option value="{{ $i }}">{{ $i }}</option>
+                                                @endfor
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -404,7 +383,6 @@
                                     <div class="input-group">
                                         <span class="input-group-text">
                                             <i class="bi bi-lock"></i>
-                                            <span class="ms-2">Password:</span>
                                         </span>
                                         <input type="password" id="edit-password" name="password" class="form-control" placeholder="Password:">
                                     </div>
@@ -414,7 +392,7 @@
                         </div>
                     </div>
 
-                    <div class="modal-footer">
+                    <div class="modal-footer flex-wrap">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                         <button type="submit" id="submitEditUser" class="btn btn-warning">Update</button>
                     </div>

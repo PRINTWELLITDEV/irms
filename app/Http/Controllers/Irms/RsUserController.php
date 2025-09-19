@@ -143,7 +143,7 @@ class RsUserController extends Controller
         $hashedPassword = $password ? bcrypt($password) : null;
 
         try {
-            \DB::statement('EXEC sp_edit_user ?, ?, ?, ?, ?, ?, ?, ?, ?', [
+            \DB::statement('EXEC sp_update_user ?, ?, ?, ?, ?, ?, ?, ?, ?', [
                 $validated['rssite'],
                 $userid,
                 $validated['name'],
