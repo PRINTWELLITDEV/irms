@@ -110,7 +110,6 @@
                                             <li><strong>Users:</strong> 42</li>
                                             <li><strong>Warehouses:</strong> 12</li>
                                             <li><strong>Rack Locations:</strong> 128</li>
-                                            <li><strong>Rack Locations:</strong> 128</li>
                                         </ul>
                                     </div>
                                 </div>

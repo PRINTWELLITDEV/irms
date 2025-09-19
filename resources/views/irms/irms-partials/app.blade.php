@@ -53,6 +53,6 @@
     <script src="https://cdn.datatables.net/2.3.4/js/dataTables.min.js"></script>
 
     <!-- Chart.js CDN -->
-    <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </body>
 </html>
