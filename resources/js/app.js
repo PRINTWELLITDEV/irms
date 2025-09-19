@@ -6,6 +6,20 @@ $.extend($.fn.dataTable.defaults, {
     searching: false,
     ordering: false,
 });
+setInterval(function() {
+    // Get current path
+    const currentPath = window.location.pathname;
+    // Only run session check if current path contains /irms
+    if (currentPath.indexOf('/irms') !== -1) {
+        fetch(window.sessionCheckUrl)
+            .then(response => response.json())
+            .then(data => {
+                if (!data.valid) {
+                    window.location.href = "{{ url('/login') }}";
+                }
+            });
+    }
+}, 5000);
 
 $(document).ready(function () {
     // Users table
@@ -71,6 +85,27 @@ $(document).ready(function () {
     });
     $("#baylocSearch").on("keyup", function () {
         bayLocationTable.search(this.value).draw();
+    });
+
+    const rackTable = $('#rackTable').DataTable({
+        paging: true,
+        info: true,
+        lengthChange: false,
+        searching: true,
+        pageLength: 10,
+        language: {
+            emptyTable: "No rack locations found"
+        },
+        responsive: true,
+        stripeClasses: []
+    });
+    $('#rackSearch').on('keyup', function () {
+        rackTable.search(this.value).draw();
+    });
+
+    $('#rackTable').on('draw.dt', function() {
+        // Hide the manual empty row if DataTables is active
+        $('#no-rack-row').hide();
     });
 
     // Hide filter boxes initially
@@ -191,6 +226,8 @@ $(document).ready(function () {
         $("#edit-orig-rssite").val(rssite);
         $("#edit-orig-rswhse").val(rswhse);
     });
+
+    
 });
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -358,4 +395,32 @@ document.addEventListener("DOMContentLoaded", function () {
                 alert("Delete failed");
             }
         });
+
+    //Rack Location Add Form - Filter Warehouse and Bay Number based on selected Site
+    const siteSelect = document.getElementById('rssite');
+    const whseSelect = document.getElementById('rswhse');
+    const baySelect = document.getElementById('rsbaynum');
+
+    function filterOptions(select, siteValue) {
+        Array.from(select.options).forEach(option => {
+            if (!option.value) return; // skip placeholder
+            option.style.display = option.getAttribute('data-site') === siteValue ? '' : 'none';
+        });
+        // Reset selection if current value is not visible
+        if (select.selectedIndex > 0 && select.options[select.selectedIndex].style.display === 'none') {
+            select.selectedIndex = 0;
+        }
+    }
+
+    siteSelect.addEventListener('change', function () {
+        const siteValue = this.value;
+        filterOptions(whseSelect, siteValue);
+        filterOptions(baySelect, siteValue);
+    });
+
+    // Initial filter on page load if old value exists
+    if (siteSelect.value) {
+        filterOptions(whseSelect, siteSelect.value);
+        filterOptions(baySelect, siteSelect.value);
+    }
 });

@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Irms;
 
+use App\Http\Controllers\Controller;
 use App\Models\RsUser;
 use App\Models\IrmsSite;
 use Illuminate\Support\Facades\DB;
@@ -13,6 +14,9 @@ class RsUserController extends Controller
 {
     public function index()
     {
+        if (auth()->user()->userid !== 'sa') {
+            abort(403, 'Unauthorized');
+        }
         // Call the stored procedure to get users
         $users = \DB::select('EXEC sp_view_users');
         $sites = \DB::table('irms_site')->get();
@@ -91,6 +95,9 @@ class RsUserController extends Controller
 
     public function view($userid)
     {
+        if (auth()->user()->userid !== 'sa') {
+            abort(403, 'Unauthorized');
+        }
         $users = \DB::select('EXEC sp_view_users');
         $selectedUser = \DB::select('EXEC sp_select_user ?', [$userid]);
         $sites = \DB::table('irms_site')->get();

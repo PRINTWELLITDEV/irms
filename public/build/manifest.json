@@ -1,6 +1,6 @@
 {
   "resources/css/app.css": {
-    "file": "assets/app-DfRZHpjt.css",
+    "file": "assets/app-V6vD_5J1.css",
     "src": "resources/css/app.css",
     "isEntry": true,
     "names": [
@@ -8,7 +8,7 @@
     ]
   },
   "resources/css/irms.css": {
-    "file": "assets/irms-CRsqjEz4.css",
+    "file": "assets/irms-Xz385soH.css",
     "src": "resources/css/irms.css",
     "isEntry": true,
     "names": [
@@ -16,7 +16,7 @@
     ]
   },
   "resources/js/app.js": {
-    "file": "assets/app-B4rYaipr.js",
+    "file": "assets/app-0vI3yDK6.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true

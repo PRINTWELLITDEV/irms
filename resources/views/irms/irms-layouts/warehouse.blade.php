@@ -85,9 +85,6 @@
                                                     </td> -->
                                                 </tr>
                                             @empty
-                                                <tr>
-                                                    <td colspan="5" class="text-center text-muted">No data found</td>
-                                                </tr>
                                             @endforelse
                                         </tbody>
                                     </table>
@@ -100,43 +97,59 @@
         </div>
     </div>
 
-    {{-- Add Warehouse Modal --}}
+    <!-- Add Warehouse Modal -->
     <div class="modal fade" id="addWarehouseModal" tabindex="-1" aria-labelledby="addWarehouseLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-dialog modal-dialog-centered modal-l">
             <div class="modal-content">
-                <form action="{{ route('warehouse.store') }}" method="POST">
+                <form action="{{ route('warehouse.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
-                    <div class="modal-header bg-success text-white">
+                    <div class="modal-header bg-primary text-white">
                         <h1 class="modal-title fs-5" id="addWarehouseLabel">Add Warehouse</h1>
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close">
                         </button>
                     </div>
                     <div class="modal-body">
+                        
                         <div class="mb-3">
-                            <label for="rssite" class="form-label">Site</label>
-                            <select name="rssite" id="rssite" class="form-select" required>
-                                <option disabled selected>Select Site</option>
-                                @foreach($sites as $site)
-                                    <option value="{{ $site->rssite }}">{{ $site->rssite_desc }}</option>
-                                @endforeach
-                            </select>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-building"></i></span>
+                                <select name="rssite" id="rssite" class="form-select" required>
+                                    <option disabled selected>Select Site</option>
+                                    @foreach($sites as $site)
+                                        <option value="{{ $site->rssite }}" {{ old('rssite') == $site->rssite ? 'selected' : '' }}>
+                                            {{ $site->rssite_desc }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            @error('rssite') <div class="text-danger small">{{ $message }}</div> @enderror
                         </div>
                         <div class="mb-3">
-                            <label for="rswhse" class="form-label">Warehouse Code</label>
-                            <input type="text" class="form-control" id="rswhse" name="rswhse" maxlength="10" required>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-hash"></i></span>
+                                <input type="text" class="form-control" id="rswhse" name="rswhse" value="{{ old('rswhse') }}" required maxlength="10" placeholder="Warehouse Code">
+                            </div>
+                            @error('rswhse') <div class="text-danger small">{{ $message }}</div> @enderror
                         </div>
                         <div class="mb-3">
-                            <label for="name" class="form-label">Description</label>
-                            <input type="text" class="form-control" id="name" name="name" maxlength="30" required>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-archive"></i></span>
+                                <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}" required maxlength="255" placeholder="Warehouse Name">
+                            </div>
+                            @error('name') <div class="text-danger small">{{ $message }}</div> @enderror
                         </div>
                         <div class="mb-3">
-                            <label for="addr" class="form-label">Address</label>
-                            <input type="text" class="form-control" id="addr" name="addr" maxlength="60">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
+                                <input type="text" class="form-control" id="addr" name="addr" value="{{ old('addr') }}" maxlength="255" placeholder="Address">
+                            </div>
+                            @error('addr') <div class="text-danger small">{{ $message }}</div> @enderror
                         </div>
+                          
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-success">Save</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
                     </div>
                 </form>
             </div>

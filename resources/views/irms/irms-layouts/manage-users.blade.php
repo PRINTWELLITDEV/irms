@@ -87,9 +87,6 @@
                                                         </td> -->
                                                 </tr>
                                             @empty
-                                                <tr>
-                                                    <td colspan="7" class="text-center text-muted">No data available</td>
-                                                </tr>
                                             @endforelse
                                         </tbody>
                                     </table>
@@ -146,7 +143,7 @@
                                     <!-- <label for="userid" class="form-label">User ID</label> -->
                                     <div class="input-group">
                                         <span class="input-group-text"><i class="bi bi-person-badge"></i></span>
-                                        <input type="text" class="form-control" id="userid" name="userid" value="{{ old('userid') }}" required maxlength="8" placeholder="User ID">
+                                        <input type="text" class="form-control" id="userid" name="userid" value="{{ old('userid') }}" required maxlength="8" placeholder="User ID" autocomplete="off">
                                     </div>
                                 @error('userid') <div class="text-danger small">{{ $message }}</div> @enderror
                                 </div>
@@ -154,7 +151,7 @@
                                     <!-- <label for="name" class="form-label">Name</label> -->
                                     <div class="input-group">
                                         <span class="input-group-text"><i class="bi bi-person"></i></span>
-                                        <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}" maxlength="255" placeholder="Name">
+                                        <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}" maxlength="255" placeholder="Name" autocomplete="off">
                                     </div>
                                     @error('name') <div class="text-danger small">{{ $message }}</div> @enderror
                                 </div>
@@ -162,7 +159,7 @@
                                     <!-- <label for="email" class="form-label">Email</label> -->
                                     <div class="input-group">
                                         <span class="input-group-text"><i class="bi bi-envelope"></i></span>
-                                        <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}" maxlength="255" required placeholder="Email">
+                                        <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}" maxlength="255" required placeholder="Email" autocomplete="off">
                                     </div>
                                     @error('email') <div class="text-danger small">{{ $message }}</div> @enderror
                                 </div>
@@ -182,7 +179,7 @@
                                     <!-- <label for="password" class="form-label">Password</label> -->
                                     <div class="input-group">
                                         <span class="input-group-text"><i class="bi bi-lock"></i></span>
-                                        <input type="password" class="form-control" id="password" name="password" required maxlength="255" placeholder="Password">
+                                        <input type="password" class="form-control" id="password" name="password" required maxlength="255" placeholder="Password" autocomplete="off">
                                     </div>
                                     @error('password') <div class="text-danger small">{{ $message }}</div> @enderror
                                 </div>

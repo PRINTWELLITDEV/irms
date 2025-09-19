@@ -55,6 +55,7 @@
 
     <!-- Chart.js (if used globally) -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
 
     <!-- DataTables core + Bootstrap5 integration (single copy) -->
@@ -64,6 +65,10 @@
     <!-- ColumnControl plugin (only if you need it) -->
     <script src="https://cdn.datatables.net/columncontrol/1.1.0/js/dataTables.columnControl.min.js"></script>
     <!-- Optional other DataTables extensions: include only once and only those you need -->
+
+    <script>
+        window.sessionCheckUrl =  "{{ url('/irms/session') }}";
+    </script>
 </body>
 
 </html>

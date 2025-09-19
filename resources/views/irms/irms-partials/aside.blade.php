@@ -15,6 +15,7 @@
                         <p>Dashboard</p>
                     </a>
                 </li>
+                @if(auth()->user()->userid === 'sa')
                 <li class="nav-header">Manage Users</li>
                 <li class="nav-item">
                     <a href="{{ url('/irms/manage-users') }}" class="nav-link{{ request()->is('irms/manage-users') ? ' active' : '' }}">
@@ -22,6 +23,7 @@
                         <p>Users</p>
                     </a>
                 </li>
+                @endif
                 <li class="nav-header">Warehouse</li>
                 <li class="nav-item">
                     <a href="{{ url('/irms/warehouse') }}" class="nav-link{{ request()->is('irms/warehouse') ? ' active' : '' }}">

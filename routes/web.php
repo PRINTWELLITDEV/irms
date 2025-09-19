@@ -2,9 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\RsUserController;
-use App\Http\Controllers\RsWhseController;
-use App\Http\Controllers\RsBayLocController;
+use App\Http\Controllers\Irms\RsUserController;
+use App\Http\Controllers\Irms\RsWhseController;
+use App\Http\Controllers\Irms\RsBayLocController;
+use App\Http\Controllers\Irms\RsLocationController;
+
 
 // Home route
 Route::get('/', function () {
@@ -18,6 +20,11 @@ Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
 // Handle login and logout
 Route::post('login', [LoginController::class, 'login'])->name('login.submit');
 Route::post('logout', [LoginController::class, 'logout'])->name('logout');
+
+// Session check route
+Route::get('/irms/session', function () {
+    return response()->json(['valid' => auth()->check()]);
+});
 
 // Dashboard (protected)
 Route::get('/irms', function () {
@@ -42,7 +49,11 @@ Route::prefix('irms')->middleware('check.session')->group(function () {
     Route::get('/bay-locations', [RsBayLocController::class, 'index'])->name('baylocs.index');
     Route::post('/bay-locations/store', [RsBayLocController::class, 'store'])->name('baylocs.store');
 
+    //Rack Locations
+    Route::get('/rack-locations', [RsLocationController::class, 'index'])->name('racklocations.index');
+    Route::post('/rack-locations/store', [RsLocationController::class, 'store'])->name('racklocations.store');
+
     // Others
     Route::get('/whse-goodreceiving', fn() => view('irms/irms-layouts/whse-goodreceiving'))->name('irms.whse-goodreceiving');
-    Route::get('/rack-locations', fn() => view('irms/irms-layouts/rack-locations'))->name('irms.racklocations');
+    // Route::get('/rack-locations', fn() => view('irms/irms-layouts/rack-locations'))->name('irms.racklocations');
 });
