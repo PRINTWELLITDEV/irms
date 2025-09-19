@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Irms;
 
+use App\Http\Controllers\Controller;
 use App\Models\RsUser;
 use App\Models\IrmsSite;
 use Illuminate\Support\Facades\DB;
