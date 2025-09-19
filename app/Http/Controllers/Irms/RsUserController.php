@@ -75,7 +75,7 @@ class RsUserController extends Controller
         $hashedPassword = bcrypt($validated['password']);
         $create_date = now();
         $created_by = auth()->user()->userid ?? 'system';
-        $level = 1; // Set default level to 1
+        $level = null;
 
         \DB::statement('EXEC sp_add_user ?, ?, ?, ?, ?, ?, ?, ?, ?, ?', [
             $validated['rssite'],
@@ -111,5 +111,52 @@ class RsUserController extends Controller
     public function edit(Request $request)
     {
         return view('users.edit', compact('rsUser'));
+    }
+
+    public function update(Request $request)
+    {
+        $userid = $request->input('userid');
+        $validated = $request->validate([
+            'rssite' => 'required|max:8',
+            'name' => 'nullable|max:255',
+            'email' => 'required|email|max:255',
+            'gender' => 'nullable|max:10',
+            'profile_pic_url' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
+            'level' => 'nullable|integer',
+            'password' => 'nullable|max:255'
+        ]);
+
+        // Handle profile picture upload
+        if($request->hasFile('profile_pic_url')){
+            $file = $request->file('profile_pic_url');
+            $filename = uniqid() . '_' . $userid . '.png';
+            $file->move(public_path('uploads/user-profile'), $filename);
+            $profile_pic_url = 'uploads/user-profile/' . $filename;
+        } else {
+            // Use the existing profile picture if no new file is uploaded
+            $profile_pic_url = $request->input('existing_profile_pic_url', 'uploads/user-profile/noprofile.png');
+        }
+
+        $updated_by = auth()->user()->userid ?? 'system';
+        $level = $request->input('level');
+        $password = $request->input('password');
+        $hashedPassword = $password ? bcrypt($password) : null;
+
+        try {
+            \DB::statement('EXEC sp_edit_user ?, ?, ?, ?, ?, ?, ?, ?, ?', [
+                $validated['rssite'],
+                $userid,
+                $validated['name'],
+                $validated['email'],
+                $validated['gender'],
+                $profile_pic_url,
+                $level,
+                $hashedPassword,
+                $updated_by
+            ]);
+            return redirect()->route('rsusers.index')->with('success', 'User updated successfully!');
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->withErrors(['error' => $e->getMessage()]);
+        }
     }
 }

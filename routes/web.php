@@ -35,15 +35,13 @@ Route::prefix('irms')->middleware('check.session')->group(function () {
     // User management
     Route::get('/manage-users', [RsUserController::class, 'index'])->name('rsusers.index');
     Route::post('/manage-users/store', [RsUserController::class, 'store'])->name('rsusers.store');
-    // Route::get('/manage-users/{userid}', [RsUserController::class, 'view'])->name('rsusers.view');
-
-    Route::patch('/manage-users/{user}', [RsUserController::class, 'edit'])->name('rsuser.edit');
+    Route::put('/manage-users/update', [RsUserController::class, 'update'])->name('rsusers.update');
 
     // Warehouse
     Route::get('/warehouse', [RsWhseController::class, 'index'])->name('warehouse.index');
     Route::post('/warehouse/store', [RsWhseController::class, 'store'])->name('warehouse.store');
     Route::put('/warehouse/update', [RsWhseController::class, 'update'])->name('warehouse.update');
-    Route::get('/warehouse/{rswhse}', [RsWhseController::class, 'getWarehouseInfo']);
+    // Route::get('/warehouse/{rswhse}', [RsWhseController::class, 'getWarehouseInfo']);
 
     // Bay location
     Route::get('/bay-locations', [RsBayLocController::class, 'index'])->name('baylocs.index');

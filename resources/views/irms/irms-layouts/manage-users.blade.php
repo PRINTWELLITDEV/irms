@@ -9,7 +9,7 @@
                         <div class="col mb-3 d-flex align-items-center">
                             <h1 class="d-inline-block mb-0">Manage Users</h1>
                             @if(session('success'))
-                                <div id="success-alert" class="alert alert-success py-1 px-3 mb-0" style="transition: opacity 0.7s;">
+                                <div id="success-alert" class="alert alert-success py-1 px-3 mb-0 mx-2" style="transition: opacity 0.7s;">
                                     {{ session('success') }}
                                 </div>
                             @endif
@@ -40,16 +40,15 @@
                                 </div>
 
                                 <div class="table-responsive">
-                                    <table id="users-table"
-                                        class="table table-responsive table-striped table-bordered table-hover align-middle">
-                                        <thead class="text-center">
+                                    <table id="users-table" class="table table-striped table-hover align-middle">
+                                        <thead class="table-dark text-center">
                                             <tr>
                                                 <!-- <th width="5%">Profile</th> -->
-                                                <th class="text-center">Users</th>
-                                                <th class="text-center">User ID</th>
+                                                <th>Users</th>
+                                                <th>User ID</th>
                                                 <!-- <th width="40%">Email</th> -->
-                                                <th class="text-center">Site</th>
-                                                <th width class="text-center">Level</th>
+                                                <th>Site</th>
+                                                <th>Level</th>
                                                 <!-- <th width="5%">Action</th> -->
                                             </tr>
                                         </thead>
@@ -127,7 +126,10 @@
                                 <div class="mb-3">
                                     <!-- <label for="rssite" class="form-label">Site</label> -->
                                     <div class="input-group">
-                                        <span class="input-group-text"><i class="bi bi-building"></i></span>
+                                        <span class="input-group-text">
+                                            <i class="bi bi-building"></i>
+                                            <span class="ms-2">Site:</span>
+                                        </span>
                                         <select name="rssite" id="rssite" class="form-select" required>
                                             <option disabled selected>Select Site</option>
                                             @foreach($sites as $site)
@@ -142,7 +144,10 @@
                                 <div class="mb-3">
                                     <!-- <label for="userid" class="form-label">User ID</label> -->
                                     <div class="input-group">
-                                        <span class="input-group-text"><i class="bi bi-person-badge"></i></span>
+                                        <span class="input-group-text">
+                                            <i class="bi bi-person-badge"></i>
+                                            <span class="ms-2">User ID:</span>
+                                        </span>
                                         <input type="text" class="form-control" id="userid" name="userid" value="{{ old('userid') }}" required maxlength="8" placeholder="User ID" autocomplete="off">
                                     </div>
                                 @error('userid') <div class="text-danger small">{{ $message }}</div> @enderror
@@ -150,7 +155,10 @@
                                 <div class="mb-3">
                                     <!-- <label for="name" class="form-label">Name</label> -->
                                     <div class="input-group">
-                                        <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                        <span class="input-group-text">
+                                            <i class="bi bi-person"></i>
+                                            <span class="ms-2">Name:</span>
+                                        </span>
                                         <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}" maxlength="255" placeholder="Name" autocomplete="off">
                                     </div>
                                     @error('name') <div class="text-danger small">{{ $message }}</div> @enderror
@@ -158,7 +166,10 @@
                                 <div class="mb-3">
                                     <!-- <label for="email" class="form-label">Email</label> -->
                                     <div class="input-group">
-                                        <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                                        <span class="input-group-text">
+                                            <i class="bi bi-envelope"></i>
+                                            <span class="ms-2">Email:</span>
+                                        </span>
                                         <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}" maxlength="255" required placeholder="Email" autocomplete="off">
                                     </div>
                                     @error('email') <div class="text-danger small">{{ $message }}</div> @enderror
@@ -166,7 +177,10 @@
                                 <div class="mb-3">
                                     <!-- <label for="gender" class="form-label">Gender</label> -->
                                     <div class="input-group">
-                                        <span class="input-group-text"><i class="bi bi-gender-ambiguous"></i></span>
+                                        <span class="input-group-text py-2">
+                                            <i class="bi bi-gender-ambiguous"></i>
+                                            <span class="ms-2">Gender:</span>
+                                        </span>
                                         <select name="gender" id="gender" class="form-select" placeholder="Gender">
                                             <option disabled selected>Select a gender</option>
                                             <option value="male" {{ old('gender')=='male' ? 'selected' : '' }}>Male</option>
@@ -178,7 +192,10 @@
                                 <div class="mb-3">
                                     <!-- <label for="password" class="form-label">Password</label> -->
                                     <div class="input-group">
-                                        <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                                        <span class="input-group-text">
+                                            <i class="bi bi-lock"></i>
+                                            <span class="ms-2">Password:</span>
+                                        </span>
                                         <input type="password" class="form-control" id="password" name="password" required maxlength="255" placeholder="Password" autocomplete="off">
                                     </div>
                                     @error('password') <div class="text-danger small">{{ $message }}</div> @enderror
@@ -278,9 +295,11 @@
     <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-xl">
             <div class="modal-content">
-                <form id="editUserForm" method="POST" enctype="multipart/form-data">
+                <form id="editUserForm" method="POST" enctype="multipart/form-data" action="{{ route('rsusers.update') }}">
                     @csrf
                     @method('PUT')
+                    <input type="hidden" id="edit-userid-hidden" name="userid">
+                    <input type="hidden" id="edit-existing-profile-pic" name="existing_profile_pic_url">
                     <div class="modal-header bg-warning text-dark">
                         <h1 class="modal-title fs-5" id="editUserLabel">Edit User - <span id="edit-user-label-name">-</span></h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -300,73 +319,99 @@
                             </div>
 
                             <div class="col-12 col-md-8">
-                                <input type="hidden" id="edit-userid-hidden" name="userid">
                                 <div class="mb-3">
-                                    <label class="form-label">Site</label>
                                     <div class="input-group">
-                                        <span class="input-group-text"><i class="bi bi-building"></i></span>
+                                        <span class="input-group-text">
+                                            <i class="bi bi-building"></i>
+                                            <span class="ms-2">Site:</span>
+                                        </span>
                                         <select name="rssite" id="edit-rssite" class="form-select" required>
-                                            <option disabled>Select Site</option>
+                                            <option disabled selected>Select Site</option>
                                             @foreach($sites as $site)
-                                                <option value="{{ $site->rssite }}">{{ $site->rssite_desc }}</option>
+                                                <option value="{{ $site->rssite }}" {{ old('rssite') == $site->rssite ? 'selected' : '' }}>
+                                                    {{ $site->rssite_desc }}
+                                                </option>
                                             @endforeach
                                         </select>
                                     </div>
                                 </div>
 
                                 <div class="mb-3">
-                                    <label class="form-label">User ID</label>
                                     <div class="input-group">
-                                        <span class="input-group-text"><i class="bi bi-person-badge"></i></span>
+                                        <span class="input-group-text">
+                                            <i class="bi bi-person-badge"></i>
+                                            <span class="ms-2">User ID:</span>
+                                        </span>
                                         <input type="text" id="edit-userid" class="form-control" readonly>
                                     </div>
                                     <div class="form-text small">User ID cannot be changed.</div>
                                 </div>
 
                                 <div class="mb-3">
-                                    <label class="form-label">Name</label>
                                     <div class="input-group">
-                                        <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                        <span class="input-group-text">
+                                            <i class="bi bi-person"></i>
+                                            <span class="ms-2">Name:</span>
+                                        </span>
                                         <input type="text" id="edit-name" name="name" class="form-control" maxlength="255">
                                     </div>
                                 </div>
 
                                 <div class="mb-3">
-                                    <label class="form-label">Email</label>
                                     <div class="input-group">
-                                        <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                                        <span class="input-group-text">
+                                            <i class="bi bi-envelope"></i>
+                                            <span class="ms-2">Email:</span>
+                                        </span>
                                         <input type="email" id="edit-email" name="email" class="form-control" maxlength="255" required>
                                     </div>
                                 </div>
 
                                 <div class="mb-3 row">
-                                    <div class="col">
-                                        <label class="form-label">Gender</label>
+                                    <div class="col input-group">
+                                        <span class="input-group-text">
+                                            <i class="bi bi-gender-ambiguous"></i>
+                                            <span class="ms-2">Gender:</span>
+                                        </span>
                                         <select name="gender" id="edit-gender" class="form-select">
                                             <option disabled>Select a gender</option>
                                             <option value="male">Male</option>
                                             <option value="female">Female</option>
                                         </select>
                                     </div>
-                                    <div class="col">
-                                        <label class="form-label">Level</label>
+                                    <div class="col input-group">
+                                        <span class="input-group-text">
+                                            <i class="bi bi-person-check"></i>
+                                            <span class="ms-2">Level:</span>
+                                        </span>
                                         <select name="level" id="edit-level" class="form-select" required>
                                             <option disabled>Select level</option>
-                                            <option value="admin">Admin</option>
-                                            <option value="user">User</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                            <option value="7">7</option>
+                                            <option value="8">8</option>
+                                            <option value="9">9</option>
+                                            <option value="10">10</option>
                                         </select>
                                     </div>
                                 </div>
 
                                 <div class="mb-3">
-                                    <label class="form-label">Password (optional)</label>
                                     <div class="input-group">
-                                        <span class="input-group-text"><i class="bi bi-lock"></i></span>
-                                        <input type="password" id="edit-password" name="password" class="form-control" placeholder="Leave blank to keep current password">
+                                        <span class="input-group-text">
+                                            <i class="bi bi-lock"></i>
+                                            <span class="ms-2">Password:</span>
+                                        </span>
+                                        <input type="password" id="edit-password" name="password" class="form-control" placeholder="Password:">
                                     </div>
+                                    <div class="form-text small">Leave blank to keep current password.</div>
                                 </div>
                             </div>
-                        </div> <!-- /.row -->
+                        </div>
                     </div>
 
                     <div class="modal-footer">

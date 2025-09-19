@@ -28,6 +28,11 @@
     font-size: 1.5rem;
 }
 
+.input-group-text {
+    min-width: 140px; /* or your preferred width */
+    justify-content: left;
+}
+
 /* Footer */
 .app-footer {
     background: #f8f9fa;
@@ -55,7 +60,7 @@
 }
 table.table th, table.table td {
     white-space: nowrap;
-    padding: 0.75rem 0.5rem;
+    /* padding: 0.75rem 0.5rem; */
     cursor: pointer;
 }
 table.table td img {
@@ -70,8 +75,12 @@ table.table td img {
     font-size: 1.5rem;
 }
 
+/* Datatables Styling */
+/* Force all sort icons to the right */
+
+
 /* DataTables pagination */
-.dataTables_paginate .pagination {
+/* .dataTables_paginate .pagination {
     margin-top: 1rem;
     justify-content: center;
 }
@@ -85,7 +94,7 @@ table.table td img {
     background-color: #198754;
     color: #fff;
     border-color: #198754;
-}
+} */
 
 /* Make modal profile image bigger and responsive */
 .profile-pic {
@@ -184,6 +193,11 @@ table.table td img {
         width: 150px !important;
         height: 150px !important;
     }
+    .input-group-text {
+        min-width: 130px; /* or your preferred width */
+        justify-content: left;
+    }
+    
 }
 
 @media (max-width: 576px) {
