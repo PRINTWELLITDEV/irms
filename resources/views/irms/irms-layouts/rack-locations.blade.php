@@ -8,8 +8,13 @@
         <div class="content-header">
             <div class="container-fluid">
                 <div class="row align-items-center">
-                    <div class="col mb-3">
-                        <h1 class="d-inline-block mb-0">Rack Locations</h1>
+                    <div class="col mb-3 d-flex align-items-center">
+                        <h1 class="d-inline-block mb-0 me-3">Rack Locations</h1>
+                        @if(session('success'))
+                            <div id="success-alert" class="alert alert-success py-1 px-3 mb-0" style="transition: opacity 0.7s;">
+                                {{ session('success') }}
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -40,28 +45,30 @@
                                 <table id="rackTable" class="table table-striped table-bordered table-hover align-middle">
                                     <thead class="table-dark text-center">
                                     <tr>
+                                        @if(auth()->user()->userid === 'sa')
                                         <th>Site</th>
+                                        @endif
                                         <th>Warehouse</th>
                                         <th>Bay No.</th>
                                         <th>Location</th>
                                         <th>Description</th>
                                         <th>Quantity</th>
-                                        <th>Date</th>
+                                        <th>Create Date</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     @forelse($racklocs as $rsloc)
                                         <tr>
+                                            @if(auth()->user()->userid === 'sa')
                                             <td class="text-center align-middle">
-                                                @if(!empty($rsloc->logo_pic_url))
-                                                    <img src="{{ asset($rsloc->logo_pic_url) }}" alt="logo" class="mx-auto d-block" width="40" height="40" style="object-fit:contain;vertical-align:middle;">
-                                                @endif
+                                                <img src="{{ asset($rsloc->logo_pic_url) }}" alt="logo" class="mx-auto d-block" width="40" height="40" style="object-fit:contain;vertical-align:middle;">
                                             </td>
+                                            @endif
                                             <td>{{ $rsloc->rswhse }}</td>
                                             <td>{{ $rsloc->rsbaynum }}</td>
                                             <td>{{ $rsloc->rsloc }}</td>
-                                            <td>{{ $rsloc->rsdec }}</td>
-                                            <td>{{ $rsloc->qty }}</td>
+                                            <td>{{ $rsloc->rsdesc }}</td>
+                                            <td>{{ number_format($rsloc->qty, 0) }}</td>
                                             <td>{{ \Carbon\Carbon::parse($rsloc->createdate)->format('d M Y | h:i A') }}</td>
                                         </tr>
                                     @empty
@@ -90,6 +97,7 @@
                 <div class="modal-body">
                     
                     <div class="mb-3">
+                        @if(auth()->user()->userid === 'sa')
                         <div class="input-group">
                             <span class="input-group-text"><i class="bi bi-building"></i></span>
                             <select name="rssite" id="rssite" class="form-select" required>
@@ -101,6 +109,9 @@
                                 @endforeach
                             </select>
                         </div>
+                        @else
+                            <input type="hidden" name="rssite" id="rssite" value="{{ auth()->user()->site }}" readonly>
+                        @endif
                         @error('rssite') <div class="text-danger small">{{ $message }}</div> @enderror
                     </div>
                     <div class="mb-3">
@@ -109,9 +120,11 @@
                             <select name="rswhse" id="rswhse" class="form-select" required>
                                 <option disabled selected>Select Warehouse</option>
                                 @foreach($warehouses as $whse)
-                                    <option value="{{ $whse->rswhse }}" data-site="{{ $whse->rssite }}">
-                                        {{ $whse->name }}
-                                    </option>
+                                    @if(auth()->user()->userid === 'sa' || $whse->rssite === auth()->user()->rssite)
+                                        <option value="{{ $whse->rswhse }}" data-site="{{ $whse->rssite }}">
+                                            {{ $whse->name }}
+                                        </option>
+                                    @endif
                                 @endforeach
                             </select>
                         </div>
@@ -123,9 +136,11 @@
                             <select name="rsbaynum" id="rsbaynum" class="form-select" required>
                                 <option disabled selected>Select Bay Number</option>
                                 @foreach($baynums as $bay)
-                                    <option value="{{ $bay->rsbaynum }}" data-site="{{ $bay->rssite }}">
-                                        {{ $bay->rsbaynum }}
-                                    </option>
+                                    @if(auth()->user()->userid === 'sa' || $bay->rssite === auth()->user()->rssite)
+                                        <option value="{{ $bay->rsbaynum }}" data-site="{{ $bay->rssite }}">
+                                            {{ $bay->rsbaynum }}
+                                        </option>
+                                    @endif
                                 @endforeach
                             </select>
                         </div>
@@ -144,13 +159,6 @@
                             <input type="text" class="form-control" id="rsdec" name="rsdec" value="{{ old('rsdec') }}" maxlength="13" placeholder="Description">
                         </div>
                         @error('rsdec') <div class="text-danger small">{{ $message }}</div> @enderror
-                    </div>
-                    <div class="mb-3">
-                        <div class="input-group">
-                            <span class="input-group-text"><i class="bi bi-123"></i></span>
-                            <input type="number" step="any" class="form-control" id="qty" name="qty" value="{{ old('qty') }}" required placeholder="Quantity">
-                        </div>
-                        @error('qty') <div class="text-danger small">{{ $message }}</div> @enderror
                     </div>
                     
                 </div>

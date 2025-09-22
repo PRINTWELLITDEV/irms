@@ -116,5 +116,6 @@ return new class extends Migration
         DB::unprepared("IF OBJECT_ID('sp_view_users', 'P') IS NOT NULL DROP PROCEDURE sp_view_users");
         DB::unprepared("IF OBJECT_ID('sp_add_user', 'P') IS NOT NULL DROP PROCEDURE sp_add_user");
         DB::unprepared("IF OBJECT_ID('sp_select_user', 'P') IS NOT NULL DROP PROCEDURE sp_select_user");
+        DB::unprepared("IF OBJECT_ID('sp_update_user', 'P') IS NOT NULL DROP PROCEDURE sp_update_user");
     }
 };

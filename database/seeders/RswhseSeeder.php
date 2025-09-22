@@ -22,7 +22,23 @@ class RswhseSeeder extends Seeder
             ['rssite' => 'FP-SP', 'rswhse' => 'FBIC-B6', 'name' => 'FBIC-BLDG#6', 'addr' => 'Paranaque City', 'createdate' => null, 'createdby' => 'sa'],
             ['rssite' => 'FP-SP', 'rswhse' => 'FBIC-B7', 'name' => 'FBIC-BLDG#7', 'addr' => 'Paranaque City', 'createdate' => null, 'createdby' => 'sa'],
             ['rssite' => 'FP-SP', 'rswhse' => 'FBIC-B8', 'name' => 'FBIC-BLDG#8', 'addr' => 'Paranaque City', 'createdate' => null, 'createdby' => 'sa'],
+            ['rssite' => 'PI-SP', 'rswhse' => 'PBIC-A1', 'name' => 'PBIC-BLDG#1', 'addr' => 'Dansalan Str., Mandaluyong City, Metro Manila', 'createdate' => null, 'createdby' => 'sa'],
+            ['rssite' => 'PI-SP', 'rswhse' => 'PBIC-A2', 'name' => 'PBIC-BLDG#2', 'addr' => 'Dansalan Str., Mandaluyong City, Metro Manila', 'createdate' => null, 'createdby' => 'sa'],
+            ['rssite' => 'PI-SP', 'rswhse' => 'PBIC-A3', 'name' => 'PBIC-BLDG#3', 'addr' => 'Dansalan Str., Mandaluyong City, Metro Manila', 'createdate' => null, 'createdby' => 'sa'],
+            ['rssite' => 'PI-SP', 'rswhse' => 'PBIC-A4', 'name' => 'PBIC-BLDG#4', 'addr' => 'Dansalan Str., Mandaluyong City, Metro Manila', 'createdate' => null, 'createdby' => 'sa'],
             ['rssite' => 'PI-SP', 'rswhse' => 'PBIC-B1', 'name' => 'PBIC-BLDG#1', 'addr' => 'Dansalan Str., Mandaluyong City, Metro Manila', 'createdate' => null, 'createdby' => 'sa'],
+            ['rssite' => 'PI-SP', 'rswhse' => 'PBIC-B2', 'name' => 'PBIC-BLDG#2', 'addr' => 'Dansalan Str., Mandaluyong City, Metro Manila', 'createdate' => null, 'createdby' => 'sa'],
+            ['rssite' => 'PI-SP', 'rswhse' => 'PBIC-B3', 'name' => 'PBIC-BLDG#3', 'addr' => 'Dansalan Str., Mandaluyong City, Metro Manila', 'createdate' => null, 'createdby' => 'sa'],
+            ['rssite' => 'PI-SP', 'rswhse' => 'PBIC-B4', 'name' => 'PBIC-BLDG#4', 'addr' => 'Dansalan Str., Mandaluyong City, Metro Manila', 'createdate' => null, 'createdby' => 'sa'],
+            ['rssite' => 'PI-SP', 'rswhse' => 'PBIC-B5', 'name' => 'PBIC-BLDG#5', 'addr' => 'Dansalan Str., Mandaluyong City, Metro Manila', 'createdate' => null, 'createdby' => 'sa'],
+            ['rssite' => 'PIGRP-SP', 'rswhse' => 'PGBIC-A1', 'name' => 'PGBIC-BLDG#1', 'addr' => 'Mamplasan, Laguna', 'createdate' => null, 'createdby' => 'sa'],
+            ['rssite' => 'PIGRP-SP', 'rswhse' => 'PGBIC-A2', 'name' => 'PGBIC-BLDG#2', 'addr' => 'Mamplasan, Laguna', 'createdate' => null, 'createdby' => 'sa'],
+            ['rssite' => 'PIGRP-SP', 'rswhse' => 'PGBIC-A3', 'name' => 'PGBIC-BLDG#3', 'addr' => 'Mamplasan, Laguna', 'createdate' => null, 'createdby' => 'sa'],
+            ['rssite' => 'PIGRP-SP', 'rswhse' => 'PGBIC-A4', 'name' => 'PGBIC-BLDG#4', 'addr' => 'Mamplasan, Laguna', 'createdate' => null, 'createdby' => 'sa'],
+            ['rssite' => 'PIGRP-SP', 'rswhse' => 'PGBIC-B1', 'name' => 'PGBIC-BLDG#1', 'addr' => 'Mamplasan, Laguna', 'createdate' => null, 'createdby' => 'sa'],
+            ['rssite' => 'PIGRP-SP', 'rswhse' => 'PGBIC-B2', 'name' => 'PGBIC-BLDG#2', 'addr' => 'Mamplasan, Laguna', 'createdate' => null, 'createdby' => 'sa'],
+            ['rssite' => 'PIGRP-SP', 'rswhse' => 'PGBIC-B3', 'name' => 'PGBIC-BLDG#3', 'addr' => 'Mamplasan, Laguna', 'createdate' => null, 'createdby' => 'sa'],
+            ['rssite' => 'PIGRP-SP', 'rswhse' => 'PGBIC-B4', 'name' => 'PGBIC-BLDG#4', 'addr' => 'Mamplasan, Laguna', 'createdate' => null, 'createdby' => 'sa'],
         ];
 
         foreach ($data as $row) {

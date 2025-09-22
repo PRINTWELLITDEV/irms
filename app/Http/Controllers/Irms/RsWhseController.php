@@ -5,14 +5,27 @@ namespace App\Http\Controllers\Irms;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Models\Rswhse; // Add this at the top
-use App\Models\IrmsSite; // Make sure you have this model
+
+use App\Models\IrmsSite;
+use App\Models\RsUser;
+use App\Models\Rswhse; 
+
 
 class RsWhseController extends Controller
 {
     public function index()
     {
-        $warehouses = Rswhse::with('site')->get();
+        $user = auth()->user();
+        $userSite = $user->rssite;
+        $userid = $user->userid;
+
+        if ($userid === 'sa') {
+            // Show all warehouses for super admin
+            $warehouses = \DB::select('EXEC sp_view_whse', [null]);
+        } else {
+            $warehouses = \DB::select('EXEC sp_view_whse ?', [$userSite]);
+        }
+
         $sites = IrmsSite::all();
         return view('irms.irms-layouts.warehouse', compact('warehouses', 'sites'));
     }
@@ -25,6 +38,10 @@ class RsWhseController extends Controller
             'name'      => 'required|string|max:30',
             'addr'      => 'nullable|string|max:60',
         ]);
+        if (Rswhse::where('rswhse', $validated['rswhse'])->exists()) {
+            return redirect()->back()->withInput()->withErrors(['error' => 'Warehouse code already exists.']);
+        }
+
         $whse = $validated['rswhse'];
         $createdby = auth()->user()->userid ?? 'system';
 

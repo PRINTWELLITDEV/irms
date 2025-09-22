@@ -11,11 +11,14 @@
                 <div class="container-fluid">
                     <div class="row align-items-center">
                         <div class="col mb-3 d-flex align-items-center">
-                            <h1 class="d-inline-block mb-0">Bay Locations</h1>
+                            <h1 class="d-inline-block mb-0 me-3">Bay Locations</h1>
                             @if(session('success'))
-                                <div id="success-alert" class="alert alert-success py-1 px-3 mb-0" style="transition: opacity 0.7s;">
+                                <div id="alerts" class="alert alert-success py-1 px-3 mb-0" style="transition: opacity 0.7s;">
                                     {{ session('success') }}
                                 </div>
+                            @endif
+                            @if($errors->any())
+                                <div id="alerts" class="alert alert-danger py-1 px-3 mb-0" style="transition: opacity 0.7s;">{{ $errors->first() }}</div>
                             @endif
                         </div>
                     </div>
@@ -43,7 +46,9 @@
                                     <table id="bayloc-table" class="table table-striped table-bordered table-hover align-middle">
                                         <thead class="table-dark text-center">
                                             <tr>
+                                                @if(auth()->user()->userid === 'sa')
                                                 <th width="5%">Site</th>
+                                                @endif
                                                 <th>Bay Number</th>
                                                 <th>Created Date</th>
                                                 <th width="10%">Created By</th>
@@ -53,11 +58,11 @@
                                         <tbody>
                                             @forelse($baylocs as $bay)
                                                 <tr>
+                                                    @if(auth()->user()->userid === 'sa')
                                                     <td class="text-center align-middle">
-                                                        @if(!empty($bay->logo_pic_url))
-                                                            <img src="{{ asset($bay->logo_pic_url) }}" alt="logo" class="mx-auto d-block" width="40" height="40" style="object-fit:contain;vertical-align:middle;">
-                                                        @endif
+                                                        <img src="{{ asset($bay->logo_pic_url) }}" alt="logo" class="mx-auto d-block" width="40" height="40" style="object-fit:contain;vertical-align:middle;">
                                                     </td>
+                                                    @endif
                                                     <td>{{ $bay->rsbaynum }}</td>
                                                     <td>{{ \Carbon\Carbon::parse($bay->createdate)->format('d M Y | h:i A') }}</td>
                                                     <td>{{ $bay->name }}</td>
@@ -81,7 +86,7 @@
         </div>
     </div>
 
-        <!-- Add Bay Modal -->
+    <!-- Add Bay Modal -->
     <div class="modal fade" id="addBayModal" tabindex="-1" aria-labelledby="addBayLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-l">
             <div class="modal-content">
@@ -94,6 +99,7 @@
                     <div class="modal-body">
                         
                         <div class="mb-3">
+                            @if(auth()->user()->userid === 'sa')
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-building"></i></span>
                                 <select name="rssite" id="rssite" class="form-select" required>
@@ -105,6 +111,9 @@
                                     @endforeach
                                 </select>
                             </div>
+                            @else
+                                <input type="hidden" id="rssite" name="rssite" value="{{ auth()->user()->rssite }}" readonly>
+                            @endif
                             @error('rssite') <div class="text-danger small">{{ $message }}</div> @enderror
                         </div>
                         <div class="mb-3">

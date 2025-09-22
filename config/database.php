@@ -113,6 +113,21 @@ return [
             // 'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
         ],
 
+        'pisp_con' => [
+            'driver' => 'sqlsrv',
+            'url' => env('DB_URL'),
+            'host' => env('DB_HOST2', 'localhost'),
+            'port' => env('DB_PORT2', '1433'),
+            'database' => env('DB_DATABASE2', ''),
+            'username' => env('DB_USERNAME2', ''),
+            'password' => env('DB_PASSWORD2', ''),
+            'charset' => env('DB_CHARSET2', 'utf8'),
+            'prefix' => '',
+            'prefix_indexes' => true,
+            // 'encrypt' => env('DB_ENCRYPT', 'yes'),
+            // 'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
+        ],
+
     ],
 
     /*

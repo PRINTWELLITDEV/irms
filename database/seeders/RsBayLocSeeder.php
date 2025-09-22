@@ -14,24 +14,15 @@ class RsBayLocSeeder extends Seeder
     public function run(): void
     {
         DB::table('rsbayloc')->insert([
-            [
-                'rssite' => 'PI-SP', // Printwell, Inc.
-                'rsbaynum' => 'A1',
-                'createdate' => Carbon::now(),
-                'createdby' => 'sa',
-            ],
-            [
-                'rssite' => 'FP-SP', // Fortune Packaging Corp.
-                'rsbaynum' => 'A2',
-                'createdate' => Carbon::now(),
-                'createdby' => 'sa',
-            ],
-            [
-                'rssite' => 'PIGRP-SP', // Printwell Packaging Corp.
-                'rsbaynum' => 'A3',
-                'createdate' => Carbon::now(),
-                'createdby' => 'sa',
-            ],
+            ['rssite' => 'PI-SP', 'rsbaynum' => 'A1', 'createdate' => Carbon::now(),'createdby' => 'sa',],
+            ['rssite' => 'PI-SP', 'rsbaynum' => 'A2', 'createdate' => Carbon::now(),'createdby' => 'sa',],
+            ['rssite' => 'PI-SP', 'rsbaynum' => 'A3', 'createdate' => Carbon::now(),'createdby' => 'sa',],
+            ['rssite' => 'FP-SP', 'rsbaynum' => 'A1', 'createdate' => Carbon::now(),'createdby' => 'sa',],
+            ['rssite' => 'FP-SP', 'rsbaynum' => 'A2', 'createdate' => Carbon::now(),'createdby' => 'sa',],
+            ['rssite' => 'FP-SP', 'rsbaynum' => 'A3', 'createdate' => Carbon::now(),'createdby' => 'sa',],
+            ['rssite' => 'PIGRP-SP', 'rsbaynum' => 'A1', 'createdate' => Carbon::now(),'createdby' => 'sa',],
+            ['rssite' => 'PIGRP-SP', 'rsbaynum' => 'A2', 'createdate' => Carbon::now(),'createdby' => 'sa',],
+            ['rssite' => 'PIGRP-SP', 'rsbaynum' => 'A3', 'createdate' => Carbon::now(),'createdby' => 'sa',],
         ]);
     }
 }

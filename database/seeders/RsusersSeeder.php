@@ -17,7 +17,7 @@ class RsusersSeeder extends Seeder
             [
                 'rssite' => 'PI-SP',
                 'userid' => 'sa',
-                'name' => 'PI Super Admin',
+                'name' => 'PI Tagapangasiwa',
                 'password' => '$2y$12$X5z.hWskCAkt6QBq0K2C8O7lrHJLUVEkWZxgFR97b.XJX4KplN0du',
                 'email' => 'printwellitdev@gmail.com',
                 'email_verified_at' => null,
@@ -32,7 +32,7 @@ class RsusersSeeder extends Seeder
             ],
             [
                 'rssite' => 'FP-SP',
-                'userid' => 'PPR1181',
+                'userid' => 'FFR1181',
                 'name' => 'Trick Torres',
                 'password' => '$2y$12$gYdZ2lyIHg9NmSi8KefNbOlY6qouei3Cf5NXNLdLZyki.HqKNpI4C',
                 'email' => 'patrick.torres@printwell.com.ph',
@@ -50,7 +50,7 @@ class RsusersSeeder extends Seeder
                 'rssite' => 'PI-SP',
                 'userid' => 'PPC1187',
                 'name' => 'Aron Suarnaba',
-                'password' => '$2y$12$RRVhqnVTQl.l1iYtrycViuugrYf16QgawzIc3gwcdc3O73n0GA2mS',
+                'password' => '$2y$12$/Bj0q3.CpMeH2C/.7ijQZe5d9zhq9tdofnt7qXDwWa/rRQ6qRHMdK',
                 'email' => 'aron.suarnaba@printwell.com',
                 'email_verified_at' => null,
                 'level' => 1,

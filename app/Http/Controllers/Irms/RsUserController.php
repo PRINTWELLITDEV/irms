@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Irms;
 
 use App\Http\Controllers\Controller;
-use App\Models\RsUser;
-use App\Models\IrmsSite;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
+
+use App\Models\IrmsSite;
+use App\Models\RsUser;
+
 
 
 class RsUserController extends Controller
@@ -21,13 +23,17 @@ class RsUserController extends Controller
         $users = \DB::select('EXEC sp_view_users');
         $sites = \DB::table('irms_site')->get();
 
+        // Get the current user's site description
+        $site = IrmsSite::where('rssite', auth()->user()->rssite)->first();
+        $site_desc = $site ? $site->rssite_desc : auth()->user()->rssite;
+
         // If you want to support AJAX, you may need to convert $users to an array
         if (request()->ajax()) {
             return response()->json([
                 'users' => $users
             ]);
         }
-        return view('irms.irms-layouts.manage-users', compact('users', 'sites'));
+        return view('irms.irms-layouts.manage-users', compact('users', 'sites', 'site_desc'));
     }
 
     public function show($userid)
@@ -61,6 +67,10 @@ class RsUserController extends Controller
             'gender' => 'nullable|max:10',
             'profile_pic_url' => 'nullable|file|mimes:jpg,jpeg,png|max:2048'
         ]);
+
+        if (RsUser::where('userid', $validated['userid'])->exists()) {
+            return redirect()->back()->withInput()->withErrors(['error' => 'User ID already exists.']);
+        }
 
         if($request->hasFile('profile_pic_url')){
             $file = $request->file('profile_pic_url');

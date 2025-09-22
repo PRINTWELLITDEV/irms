@@ -5,19 +5,32 @@ namespace App\Http\Controllers\Irms;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Models\RsLocation;
+
 use App\Models\IrmsSite; 
+use App\Models\RsUser;
+use App\Models\RsLocation;
+
 
 class RsLocationController extends Controller
 {
     public function index()
     {
         // Fetch rack locations using the stored procedure
-        $racklocs = DB::select('EXEC sp_view_rslocs');
+        // $racklocs = DB::select('EXEC sp_view_rslocs');
+        $user = auth()->user();
+        $userSite = $user->rssite;
+        $userid = $user->userid;
+
+        if ($userid === 'sa') {
+            // Show all warehouses for super admin
+            $racklocs = \DB::select('EXEC sp_view_rslocs', [null]);
+        } else {
+            $racklocs = \DB::select('EXEC sp_view_rslocs ?', [$userSite]);
+        }
+
         $sites = IrmsSite::all();
         $warehouses = DB::table('rswhse')->get();
         $baynums = DB::table('rsbayloc')->get();
-        // Pass to the view
         return view('irms.irms-layouts.rack-locations', compact('racklocs', 'sites', 'warehouses', 'baynums'));
     }
 
@@ -28,9 +41,11 @@ class RsLocationController extends Controller
             'rswhse' => 'required|max:10',
             'rsbaynum' => 'required|max:5',
             'rsloc' => 'required|max:15',
-            'rsdec' => 'nullable|max:13',
-            'qty' => 'required|numeric',
+            'rsdesc' => 'nullable|max:13',
         ]);
+        if (RsLocation::where('rsloc', $validated['rsloc'])->exists()) {
+            return redirect()->back()->withInput()->withErrors(['error' => 'Rack location code already exists.']);
+        }
 
         $createdate = now();
         $createdby = auth()->user()->userid ?? 'system';
@@ -40,8 +55,8 @@ class RsLocationController extends Controller
             $validated['rswhse'],
             $validated['rsbaynum'],
             $validated['rsloc'],
-            $validated['rsdec'],
-            $validated['qty'],
+            $validated['rsdesc'],
+            0, // Set quantity to 0
             $createdate,
             $createdby
         ]);

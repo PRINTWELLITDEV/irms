@@ -15,6 +15,7 @@ return new class extends Migration
             $table->string('rssite', 8);
             $table->integer('trans_num');
             $table->dateTime('trxdate')->nullable();
+            $table->string('trxtype', 1)->nullable();
             $table->string('item', 30)->nullable();
             $table->string('desc', 60)->nullable();
             $table->string('job', 10)->nullable();

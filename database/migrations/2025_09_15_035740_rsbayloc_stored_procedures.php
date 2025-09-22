@@ -17,16 +17,17 @@ return new class extends Migration
         // Create sp_view_baylocs
         DB::unprepared('
             CREATE PROCEDURE sp_view_baylocs
+                @rssite VARCHAR(8) = NULL
             AS
-            SELECT 
-            b.*,
-            u.name,
-            s.rssite_desc,
-            s.logo_pic_url
-            FROM rsbayloc b
-            INNER JOIN irms_site s ON s.rssite = b.rssite
-            LEFT JOIN rsusers u ON b.createdby = u.userid
-            ORDER BY b.rssite, b.rsbaynum
+                SELECT 
+                b.*,
+                u.name,
+                s.rssite_desc, s.address, logo_pic_url
+                FROM rsbayloc b
+                INNER JOIN irms_site s ON s.rssite = b.rssite
+                LEFT JOIN rsusers u ON b.createdby = u.userid
+                WHERE (@rssite IS NULL OR b.rssite = @rssite)
+                ORDER BY b.rssite, b.rsbaynum
             ;
         ');
 

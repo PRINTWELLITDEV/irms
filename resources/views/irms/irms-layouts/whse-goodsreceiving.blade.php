@@ -8,7 +8,7 @@
         <!-- Content Wrapper -->
         <div class="content-wrapper">
             <div class="content-header">
-                <h1>Warehouse Good Receiving</h1>
+                <h1>Warehouse Goods Receiving</h1>
             </div>
             <div class="content-body">
                 <p>This is the warehouse good receiving content of the IRMS.</p>

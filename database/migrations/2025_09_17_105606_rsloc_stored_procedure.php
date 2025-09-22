@@ -18,15 +18,16 @@ return new class extends Migration
         // Create sp_view_rslocs
         \DB::unprepared('
             CREATE PROCEDURE sp_view_rslocs
+                @rssite VARCHAR(8) = NULL
             AS
             SELECT 
                 l.*,
                 u.name AS createdby_name,
-                s.rssite_desc,
-                s.logo_pic_url
+                s.rssite_desc, s.address, logo_pic_url
             FROM rslocation l
             INNER JOIN irms_site s ON s.rssite = l.rssite
             LEFT JOIN rsusers u ON l.createdby = u.userid
+            WHERE (@rssite IS NULL OR l.rssite = @rssite)
             ORDER BY l.rssite, l.rswhse, l.rsloc
         ');
 
@@ -37,13 +38,13 @@ return new class extends Migration
                 @rswhse NVARCHAR(10),
                 @rsbaynum NVARCHAR(5),
                 @rsloc NVARCHAR(15),
-                @rsdec NVARCHAR(13),
+                @rsdesc NVARCHAR(13),
                 @qty DECIMAL(19,8),
                 @createdate DATETIME,
                 @createdby NVARCHAR(30)
             AS
-            INSERT INTO rslocation (rssite, rswhse, rsbaynum, rsloc, rsdec, qty, createdate, createdby)
-            VALUES (@rssite, @rswhse, @rsbaynum, @rsloc, @rsdec, @qty, @createdate, @createdby);
+            INSERT INTO rslocation (rssite, rswhse, rsbaynum, rsloc, rsdesc, qty, createdate, createdby)
+            VALUES (@rssite, @rswhse, @rsbaynum, @rsloc, @rsdesc, @qty, @createdate, @createdby);
         ');
     }
 

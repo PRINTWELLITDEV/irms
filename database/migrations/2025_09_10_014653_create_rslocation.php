@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('rswhse', 10);
             $table->string('rsbaynum', 5);
             $table->string('rsloc', 15);
-            $table->string('rsdec', 13)->nullable();
+            $table->string('rsdesc', 13)->nullable();
             $table->decimal('qty', 19, 8)->nullable();
             $table->dateTime('createdate')->nullable();
             $table->string('createdby', 30)->nullable();

@@ -3,20 +3,30 @@
 namespace App\Http\Controllers\Irms;
 
 use App\Http\Controllers\Controller;
-use App\Models\RsBayLoc;
-use App\Models\IrmsSite;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
+use App\Models\IrmsSite;
+use App\Models\RsUser;
+use App\Models\RsBayLoc;
+
 
 class RsBayLocController extends Controller
 {
-    /**
-     * Display a listing of the bay locations.
-     */
     public function index()
     {
-        $baylocs = \DB::select('EXEC sp_view_baylocs');
-        $sites = \DB::table('irms_site')->get();
+        $user = auth()->user();
+        $userSite = $user->rssite;
+        $userid = $user->userid;
+
+        if ($userid === 'sa') {
+            // Show all bay locations for super admin
+            $baylocs = \DB::select('EXEC sp_view_baylocs', [null]);
+        } else {
+            $baylocs = \DB::select('EXEC sp_view_baylocs ?', [$userSite]);
+        }
+        
+        $sites = IrmsSite::all();
         return view('irms.irms-layouts.bay-locations', compact('baylocs', 'sites'));
     }
 
@@ -29,6 +39,10 @@ class RsBayLocController extends Controller
             'rssite' => 'required|max:8',
             'rsbaynum' => 'required|max:5',
         ]);
+
+        if (RsBayLoc::where('rsbaynum', $validated['rsbaynum'])->exists()) {
+            return redirect()->back()->withInput()->withErrors(['error' => 'Bay location number already exists.']);
+        }
 
         $createdby = auth()->user()->userid ?? 'system';
         $createdate = now();

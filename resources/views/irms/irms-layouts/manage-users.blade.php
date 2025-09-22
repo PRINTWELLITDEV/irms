@@ -7,11 +7,14 @@
                 <div class="container-fluid">
                     <div class="row align-items-center">
                         <div class="col mb-3 d-flex align-items-center">
-                            <h1 class="d-inline-block mb-0">Manage Users</h1>
+                            <h1 class="d-inline-block mb-0 me-3">Manage Users</h1>
                             @if(session('success'))
-                                <div id="success-alert" class="alert alert-success py-1 px-3 mb-0 mx-2" style="transition: opacity 0.7s;">
+                                <div id="alerts" class="alert alert-success py-1 px-3 mb-0" style="transition: opacity 0.7s;">
                                     {{ session('success') }}
                                 </div>
+                            @endif
+                            @if($errors->any())
+                                <div id="alerts" class="alert alert-danger py-1 px-3 mb-0" style="transition: opacity 0.7s;">{{ $errors->first() }}</div>
                             @endif
                         </div>
                     </div>
@@ -314,14 +317,19 @@
                             </div>
                             <!-- User Info Column -->
                             <div class="col-12 col-md-8">
+                                @if(auth()->user()->userid === 'sa')
                                 <div class="mb-3">
                                     <div class="input-group">
                                         <span class="input-group-text">
                                             <i class="bi bi-building"></i>
                                         </span>
-                                        <input type="text" id="edit-rssite" name="rssite" class="form-control" readonly required>
+                                        <input type="hidden" class="form-control" id="rssite" name="rssite" value="{{ auth()->user()->rssite }}" readonly>
+                                        <input type="text" class="form-control" value="{{ $site_desc }}" readonly>
                                     </div>
                                 </div>
+                                @else
+                                <input type="hidden" id="rssite" name="rssite" value="{{ auth()->user()->rssite }}" readonly>
+                                @endif
 
                                 <div class="mb-3">
                                     <div class="input-group">
@@ -370,7 +378,7 @@
                                                 <i class="bi bi-person-check"></i>
                                             </span>
                                             <select name="level" id="edit-level" class="form-select" required>
-                                                <option disabled>Select level</option>
+                                                <option disabled selected>Select level</option>
                                                 @for($i=1; $i<=10; $i++)
                                                     <option value="{{ $i }}">{{ $i }}</option>
                                                 @endfor

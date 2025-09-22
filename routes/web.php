@@ -53,7 +53,11 @@ Route::prefix('irms')->middleware('check.session')->group(function () {
     Route::get('/rack-locations', [RsLocationController::class, 'index'])->name('racklocations.index');
     Route::post('/rack-locations/store', [RsLocationController::class, 'store'])->name('racklocations.store');
 
+    //Item Locations 
+    Route::get('/item-locations', fn() => view('irms/irms-layouts/item-locations'))->name('irms.itemlocations');
+    
+
     // Others
-    Route::get('/whse-goodreceiving', fn() => view('irms/irms-layouts/whse-goodreceiving'))->name('irms.whse-goodreceiving');
+    Route::get('/whse-goodsreceiving', fn() => view('irms/irms-layouts/whse-goodsreceiving'))->name('irms.whse-goodsreceiving');
     // Route::get('/rack-locations', fn() => view('irms/irms-layouts/rack-locations'))->name('irms.racklocations');
 });

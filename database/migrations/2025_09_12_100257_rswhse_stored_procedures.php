@@ -10,6 +10,19 @@ return new class extends Migration
      */
     public function up(): void
     {
+        DB::unprepared("IF OBJECT_ID('sp_view_whse', 'P') IS NOT NULL DROP PROCEDURE sp_view_whse;");
+        DB::unprepared('
+            CREATE PROCEDURE sp_view_whse
+                @rssite VARCHAR(8) = NULL
+            AS
+            BEGIN
+                SELECT w.rssite, rswhse, name, addr, s.rssite_desc, s.address, logo_pic_url
+                FROM rswhse w
+                INNER JOIN irms_site s ON s.rssite = w.rssite
+                WHERE (@rssite IS NULL OR w.rssite = @rssite)
+            END
+        ');
+        
         // Drop procedures if they exist before creating (SQL Server syntax)
         DB::unprepared("IF OBJECT_ID('sp_add_whse', 'P') IS NOT NULL DROP PROCEDURE sp_add_whse;");
         DB::unprepared('
@@ -30,17 +43,6 @@ return new class extends Migration
                     GETDATE(),
                     @p_createdby
                 );
-            END
-        ');
-
-        DB::unprepared("IF OBJECT_ID('sp_view_whse', 'P') IS NOT NULL DROP PROCEDURE sp_view_whse;");
-        DB::unprepared('
-            CREATE PROCEDURE sp_view_whse
-            AS
-            BEGIN
-                SELECT w.rssite, rswhse, name, addr, logo_pic_url
-                FROM rswhse w
-                INNER JOIN irms_site s ON s.rssite = w.rssite;
             END
         ');
 

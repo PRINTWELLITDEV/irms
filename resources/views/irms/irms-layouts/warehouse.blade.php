@@ -11,9 +11,12 @@
                         <div class="col mb-3 d-flex align-items-center">
                             <h1 class="d-inline-block mb-0 me-3">Warehouse</h1>
                             @if(session('success'))
-                                <div id="success-alert" class="alert alert-success py-1 px-3 mb-0" style="transition: opacity 0.7s;">
+                                <div id="alerts" class="alert alert-success py-1 px-3 mb-0" style="transition: opacity 0.7s;">
                                     {{ session('success') }}
                                 </div>
+                            @endif
+                            @if($errors->any())
+                                <div id="alerts" class="alert alert-danger py-1 px-3 mb-0" style="transition: opacity 0.7s;">{{ $errors->first() }}</div>
                             @endif
                         </div>
                     </div>
@@ -25,9 +28,6 @@
                     <div class="col">
                         <div class="card">
                             <div class="card-body">
-                                @if($errors->any())
-                                    <div class="alert alert-danger">{{ $errors->first() }}</div>
-                                @endif
                                 <div class="d-flex justify-content-between align-items-center mb-3">
                                     <button type="button" id="btnAddWarehouse" class="btn btn-success d-flex align-items-center"
                                         data-bs-toggle="modal"
@@ -46,7 +46,11 @@
                                     <table id="warehouse-table" class="table table-striped table-bordered table-hover align-middle">
                                         <thead class="table-dark text-center">
                                             <tr>
+
+                                                @if(auth()->user()->userid === 'sa')
                                                 <th width="10%">Site</th>
+                                                @endif
+
                                                 <th width="17%">Warehouse</th>
                                                 <th width="20%">Description</th>
                                                 <th>Address</th>
@@ -55,18 +59,16 @@
                                         </thead>
                                         <tbody>
                                             @forelse($warehouses as $whse)
-                                                <tr
-                                                    data-rssite="{{ $whse->rssite }}"
-                                                    data-rssite_desc="{{ $whse->site->rssite_desc ?? $whse->rssite }}"
+                                                <tr data-rssite="{{ $whse->rssite }}"
+                                                    data-rssite_desc="{{ $whse->rssite_desc}}"
                                                     data-rswhse="{{ $whse->rswhse }}"
                                                     data-name="{{ $whse->name }}"
-                                                    data-addr="{{ $whse->addr }}"
-                                                >
+                                                    data-addr="{{ $whse->addr }}">
+                                                    @if(auth()->user()->userid === 'sa')
                                                     <td class="text-center align-middle">
-                                                        @if(!empty($whse->site) && !empty($whse->site->logo_pic_url))
-                                                            <img src="{{ asset($whse->site->logo_pic_url) }}" class="me-1" width="40" height="40" style="object-fit:contain;vertical-align:middle;">
-                                                        @endif
+                                                        <img src="{{ asset($whse->logo_pic_url) }}" class="me-1" width="40" height="40" style="object-fit:contain;vertical-align:middle;">
                                                     </td>
+                                                    @endif
                                                     <td>{{ $whse->rswhse }}</td>
                                                     <td>{{ $whse->name }}</td>
                                                     <td>{{ $whse->addr }}</td>
@@ -111,6 +113,7 @@
                     <div class="modal-body">
                         
                         <div class="mb-3">
+                            @if(auth()->user()->userid === 'sa')
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-building"></i></span>
                                 <select name="rssite" id="rssite" class="form-select" required>
@@ -122,6 +125,9 @@
                                     @endforeach
                                 </select>
                             </div>
+                            @else
+                                <input type="hidden" id="rssite" name="rssite" value="{{ auth()->user()->rssite }}" readonly>
+                            @endif
                             @error('rssite') <div class="text-danger small">{{ $message }}</div> @enderror
                         </div>
                         <div class="mb-3">
@@ -156,44 +162,6 @@
         </div>
     </div>
 
-
-    <!-- Warehouse Settings Modal -->
-    <!-- <div class="modal fade" id="warehouseSettingsModal" tabindex="-1" aria-labelledby="warehouseSettingsLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="warehouseSettingsLabel">Warehouse Settings</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <dl class="row mb-0">
-                        <dt class="col-sm-4">Site</dt>
-                        <dd class="col-sm-8" id="ws-site"></dd>
-
-                        <dt class="col-sm-4">Warehouse</dt>
-                        <dd class="col-sm-8" id="ws-whse"></dd>
-
-                        <dt class="col-sm-4">Description</dt>
-                        <dd class="col-sm-8" id="ws-name"></dd>
-
-                        <dt class="col-sm-4">Address</dt>
-                        <dd class="col-sm-8" id="ws-addr"></dd>
-                    </dl>
-                </div>
-                <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-danger">Delete</button>
-                    <button type="button" class="btn btn-warning"
-                            data-bs-target="#editWarehouseModal"
-                            data-bs-toggle="modal"
-                            id="editWarehouseBtn">
-                            Edit
-                    </button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div> -->
-
     <!-- {{-- Edit Warehouse Modal --}} -->
     <div class="modal fade" id="editWarehouseModal" tabindex="-1" aria-labelledby="editWarehouseLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -209,6 +177,7 @@
                     <div class="modal-body">
                         <input type="hidden" id="edit-orig-rssite" name="orig_rssite">
                         <input type="hidden" id="edit-orig-rswhse" name="orig_rswhse">
+                        @if(auth()->user()->userid === 'sa')
                         <div class="mb-3">
                             <label for="edit-rssite" class="form-label">Site</label>
                             <select name="rssite" id="edit-rssite" class="form-select" required>
@@ -218,6 +187,9 @@
                                 @endforeach
                             </select>
                         </div>
+                        @else
+                            <input type="hidden" id="rssite" name="rssite" value="{{ auth()->user()->rssite }}" readonly>
+                        @endif
                         <div class="mb-3">
                             <label for="edit-rswhse" class="form-label">Warehouse Code</label>
                             <input type="text" class="form-control" id="edit-rswhse" name="rswhse" value="" maxlength="10" required>
@@ -240,9 +212,9 @@
         </div>
     </div>
 
-    <!-- Warehouse View Modal -->
+    <!-- Responsive Warehouse View Modal -->
     <div class="modal fade" id="viewWarehouseModal" tabindex="-1" aria-labelledby="viewWarehouseLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-l">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header bg-primary text-white">
                     <h1 class="modal-title fs-5" id="viewWarehouseLabel">
@@ -251,39 +223,31 @@
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="row align-items-center">
-                        <!-- <div class="col-12 col-md-4 text-center mb-3 mb-md-0">
-                            <img id="view-warehouse-site-logo" src="" alt="site logo" class="profile-pic rounded mb-2" style="display:none;">
-                        </div> -->
-                        <div class="col-12 col-md-8">
-                            <table class="table table-responsive mb-0 table-borderless">
-                                <tbody>
-                                    <tr>
-                                        <th>Site:</th>
-                                        <td><span id="view-warehouse-site-desc">-</span></td>
-                                    </tr>
-                                    <tr>
-                                        <th>Warehouse Code:</th>
-                                        <td><span id="view-warehouse-code">-</span></td>
-                                    </tr>
-                                    <tr>
-                                        <th>Description:</th>
-                                        <td><span id="view-warehouse-name">-</span></td>
-                                    </tr>
-                                    <tr>
-                                        <th>Address:</th>
-                                        <td><span id="view-warehouse-addr">-</span></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                    <table class="table table-borderless mb-0">
+                        <tbody>
+                            <tr>
+                                <th class="w-40">Site:</th>
+                                <td><span id="view-warehouse-site-desc">-</span></td>
+                            </tr>
+                            <tr>
+                                <th>Warehouse Code:</th>
+                                <td><span id="view-warehouse-code">-</span></td>
+                            </tr>
+                            <tr>
+                                <th>Description:</th>
+                                <td><span id="view-warehouse-name">-</span></td>
+                            </tr>
+                            <tr>
+                                <th>Address:</th>
+                                <td><span id="view-warehouse-addr">-</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-                <div class="modal-footer d-flex justify-content-between">
+                <div class="modal-footer flex-wrap justify-content-between">
                     <button type="button" class="btn btn-danger" id="btnDeleteWarehouse">
                         <i class="bi bi-trash"></i> Delete
                     </button>
-                    <!-- <button type="button" class="btn btn-warning" id="btnEditWarehouse"> -->
                     <button type="button" class="btn btn-warning"
                             data-bs-target="#editWarehouseModal"
                             data-bs-toggle="modal"

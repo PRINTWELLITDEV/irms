@@ -23,7 +23,8 @@ class DatabaseSeeder extends Seeder
             IrmsSiteSeeder::class,
             RsusersSeeder::class,
             RswhseSeeder::class,
-            RsBayLocSeeder::class
+            RsBayLocSeeder::class,
+            RsLocSeeder::class,
         ]);
     }
 }

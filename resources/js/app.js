@@ -177,6 +177,7 @@ $(document).ready(function () {
         // Store current row data for use in edit modal
         $("#editWarehouseBtn")
             .data("rssite", $row.data("rssite"))
+            .data("site_desc", $row.data("site_desc"))
             .data("rswhse", $row.data("rswhse"))
             .data("name", $row.data("name"))
             .data("addr", $row.data("addr"));
@@ -204,6 +205,9 @@ $(document).ready(function () {
         // Set hidden original keys
         $("#edit-orig-rssite").val(rssite);
         $("#edit-orig-rswhse").val(rswhse);
+
+        $("#viewWarehouseModal").modal("hide");
+        $("#editWarehouseModal").modal("show");
     });
 
     
@@ -218,7 +222,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 100);
     }
 
-    const alert = document.getElementById("success-alert");
+    const alert = document.getElementById("alerts");
     if (alert) {
         setTimeout(() => {
             alert.style.opacity = "0";
@@ -232,6 +236,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const siteSelect = document.getElementById('rssite');
     const whseSelect = document.getElementById('rswhse');
     const baySelect = document.getElementById('rsbaynum');
+    const rslocInput = document.getElementById('rsloc');
+    const rsdecInput = document.getElementById('rsdec');
 
     function filterOptions(select, siteValue) {
         Array.from(select.options).forEach(option => {
@@ -244,14 +250,41 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    siteSelect.addEventListener('change', function () {
-        const siteValue = this.value;
-        filterOptions(whseSelect, siteValue);
-        filterOptions(baySelect, siteValue);
-    });
+    // Reset warehouse, bay, and other inputs when site changes
+    if (siteSelect) {
+        siteSelect.addEventListener('change', function () {
+            whseSelect.selectedIndex = 0;
+            baySelect.selectedIndex = 0;
+            filterOptions(whseSelect, this.value);
+            filterOptions(baySelect, this.value);
+
+            // Blank other inputs
+            if (rslocInput) rslocInput.value = '';
+            if (rsdecInput) rsdecInput.value = '';
+        });
+    }
+
+    // Reset bay and other inputs when warehouse changes
+    if (whseSelect) {
+        whseSelect.addEventListener('change', function () {
+            baySelect.selectedIndex = 0;
+
+            // Blank other inputs
+            if (rslocInput) rslocInput.value = '';
+            if (rsdecInput) rsdecInput.value = '';
+        });
+    }
+
+    // Reset other inputs when bay changes
+    if (baySelect) {
+        baySelect.addEventListener('change', function () {
+            if (rslocInput) rslocInput.value = '';
+            if (rsdecInput) rsdecInput.value = '';
+        });
+    }
 
     // Initial filter on page load if old value exists
-    if (siteSelect.value) {
+    if (siteSelect && siteSelect.value) {
         filterOptions(whseSelect, siteSelect.value);
         filterOptions(baySelect, siteSelect.value);
     }

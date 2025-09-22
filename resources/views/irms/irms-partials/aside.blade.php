@@ -1,10 +1,18 @@
+<form id="logout-form" method="POST" action="{{ route('logout') }}" class="d-none">
+    @csrf
+</form>
 <!-- Sidebar -->
 <aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="dark">
     <div class="sidebar-brand">
         <a href="{{ url('/irms') }}" class="brand-link">
             <img src="{{ asset('uploads/img/irms.png') }}" alt="IRMS Logo" class="brand-image opacity-75 shadow rounded-circle" />
-            <span class="brand-text fw-light">IRMS</span>
+            <span class="brand-text">IRMS</span>
         </a>
+    </div>
+    <div class="sidebar-brand">
+        <span class="brand-text fw-light">
+            {{ \App\Http\Controllers\Irms\IrmsController::getSiteDesc() }}
+        </span>
     </div>
     <div class="sidebar-wrapper">
         <nav class="mt-2">
@@ -24,20 +32,13 @@
                     </a>
                 </li>
                 @endif
-                <li class="nav-header">Warehouse</li>
+                <li class="nav-header">Warehouse and Locations</li>
                 <li class="nav-item">
                     <a href="{{ url('/irms/warehouse') }}" class="nav-link{{ request()->is('irms/warehouse') ? ' active' : '' }}">
                         <i class="nav-icon fas fa-warehouse"></i>
                         <p>Warehouse</p>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="{{ url('/irms/whse-goodreceiving') }}" class="nav-link{{ request()->is('irms/whse-goodreceiving') ? ' active' : '' }}">
-                        <i class="nav-icon fas fa-truck"></i>
-                        <p>Warehouse Good Receiving</p>
-                    </a>
-                </li>
-                <li class="nav-header">Location</li>
                 <li class="nav-item">
                     <a href="{{ url('/irms/bay-locations') }}" class="nav-link{{ request()->is('irms/bay-locations') ? ' active' : '' }}">
                         <i class="nav-icon bi bi-box-seam"></i>
@@ -50,6 +51,26 @@
                         <p>Rack Locations</p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{ url('/irms/item-locations') }}" class="nav-link{{ request()->is('irms/item-locations') ? ' active' : '' }}">
+                        <i class="nav-icon bi bi-list"></i>
+                        <p>Item Locations</p>
+                    </a>
+                </li>
+                <li class="nav-header">Warehouse Transactions</li>
+                <li class="nav-item">
+                    <a href="{{ url('/irms/whse-goodsreceiving') }}" class="nav-link{{ request()->is('irms/whse-goodsreceiving') ? ' active' : '' }}">
+                        <i class="nav-icon fas fa-truck"></i>
+                        <p>Goods Receiving</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url('/irms/whse-goodsdispatching') }}" class="nav-link{{ request()->is('irms/whse-goodsdispatching') ? ' active' : '' }}">
+                        <i class="nav-icon fas fa-truck"></i>
+                        <p>Goods Dispatching</p>
+                    </a>
+                </li>
+                <!-- <li class="nav-header"></li>
                 <li class="nav-item nav-logout">
                     @auth
                     <a href="{{ route('logout') }}" class="nav-link" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
@@ -57,10 +78,7 @@
                         <p>Log Out</p>
                     </a>
                     @endauth
-                    <form id="logout-form" method="POST" action="{{ route('logout') }}" class="d-none">
-                        @csrf
-                    </form>
-                </li>
+                </li> -->
             </ul> 
         </nav>
     </div>
