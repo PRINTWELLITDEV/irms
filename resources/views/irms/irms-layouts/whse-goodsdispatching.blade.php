@@ -1,6 +1,6 @@
 @extends('irms/irms-partials.app')
 
-@section('title', 'IRMS Receiving')
+@section('title', 'IRMS Dispatching')
 
 @section('content')
 
@@ -8,10 +8,10 @@
         <!-- Content Wrapper -->
         <div class="content-wrapper">
             <div class="content-header">
-                <h1>Warehouse Goods Receiving</h1>
+                <h1>Warehouse Goods Dispatching</h1>
             </div>
             <div class="content-body">
-                <p>This is the warehouse goods receiving content of the IRMS.</p>
+                <p>This is the warehouse goods dispatching content of the IRMS.</p>
             </div>
         </div>
 
