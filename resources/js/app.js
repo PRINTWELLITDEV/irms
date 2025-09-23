@@ -219,6 +219,37 @@ $(document).ready(function () {
         $("#editWarehouseModal").modal("show");
     });
 
+    // Receiving Form/Details toggle logic
+    $("#receiving-details").hide();
+
+    $("#goodsReceivingForm").on("submit", function (e) {
+        e.preventDefault(); // Prevent actual form submission for demo/static data
+        $(".card:has(#goodsReceivingForm)").hide();
+        $("#receiving-details").fadeIn();
+        // Optionally, scroll to the details
+        // $("html, body").animate({ scrollTop: $("#receiving-details").offset().top }, 300);
+    });
+    $("#btnBackReceiving").on("click", function () {
+        $("#receiving-details").hide();
+        $(".card:has(#goodsReceivingForm)").fadeIn();
+        // $("html, body").animate({ scrollTop: $(".card:has(#goodsReceivingForm)").offset().top }, -300);
+    });
+
+    //Dispatching Form/Details toggle logic
+    $("#dispatching-details").hide();
+    
+    $("#goodsDispatchingForm").on("submit", function (e) {
+        e.preventDefault(); // Prevent actual form submission for demo/static data
+        $(".card:has(#goodsDispatchingForm)").hide();
+        $("#dispatching-details").fadeIn();
+        // Optionally, scroll to the details
+        // $("html, body").animate({ scrollTop: $("#dispatching-details").offset().top }, 300);
+    });
+    $("#btnBackDispatching").on("click", function () {
+        $("#dispatching-details").hide();
+        $(".card:has(#goodsDispatchingForm)").fadeIn();
+        // $("html, body").animate({ scrollTop: $(".card:has(#goodsDispatchingForm)").offset().top }, -300);
+    });
     
 });
 
