@@ -30,7 +30,7 @@
                         <div class="card mx-auto">
                             <div class="card-body">
                                 <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <button type="button" id="btnAddBay" class="btn btn-success d-flex align-items-center"
+                                    <button type="button" id="btnAddBay" class="btn btn-success d-flex align-items-center me-2"
                                         data-bs-toggle="modal" data-bs-target="#addBayModal">
                                         <i class="bi bi-plus-circle-fill d-none d-sm-inline me-2"></i>
                                         <span class="d-none d-sm-inline">Add Bay</span>

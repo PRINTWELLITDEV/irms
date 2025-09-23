@@ -25,10 +25,9 @@
                 <div class="row">
                     <div class="col">
                         <div class="card">
-
                             <div class="card-body">
                                 <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <button type="button" id="btnAddUser" class="btn btn-success d-flex align-items-center"
+                                    <button type="button" id="btnAddUser" class="btn btn-success d-flex align-items-center me-2"
                                         data-bs-toggle="modal" data-bs-target="#addUserModal">
                                         <i class="bi bi-person-plus-fill d-none d-sm-inline me-2"></i>
                                         <span class="d-none d-sm-inline">Add User</span>
