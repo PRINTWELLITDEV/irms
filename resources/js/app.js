@@ -94,7 +94,10 @@ $(document).ready(function () {
             .data("site_desc", $row.data("site_desc"))
             .data("level", $row.data("level"))
             .data("gender", $row.data("gender"))
-            .data("profile", $row.data("profile"));
+            .data("department", $row.data("department"))
+            .data("position", $row.data("position"))
+            .data("profile", $row.data("profile"))
+            .data("section", $row.data("section"));
 
         // Fill view modal
         $("#view-user-site_desc").text($row.data("site_desc") || "-");
@@ -103,9 +106,12 @@ $(document).ready(function () {
         $("#view-user-email").text($row.data("email") || "-");
         $("#view-user-level").text($row.data("level") || "-");
         $("#view-user-gender").text($row.data("gender") || "-");
+        $("#view-user-department").text($row.data("department") || "-");
+        $("#view-user-position").text($row.data("position") || "-");
         $("#view-user-create_date").text($row.data("create_date") || "-");
         $("#view-user-label-name").text($row.data("name") || "-");
         $("#view-user-profile").attr("src", $row.data("profile"));
+        $("#view-user-section").text($row.data("section") || "-");
 
         $("#viewUserModal").modal("show");
     });
@@ -137,7 +143,10 @@ $(document).ready(function () {
         const site = $(this).data("site");
         const level = $(this).data("level");
         const gender = $(this).data("gender");
+        const department = $(this).data("department");
+        const position = $(this).data("position");
         const profile = $(this).data("profile");
+        const section = $(this).data("section");
 
         // Set values in edit modal
         $("#edit-user-label-name").text(name || userid);
@@ -151,9 +160,9 @@ $(document).ready(function () {
         $("#edit-level").val(level);
         $("#edit-password").val("");
         $("#edit-existing-profile-pic").val(profile);
-
-        // Set form action to the appropriate resource URL (adjust if your route differs)
-        // $("#editUserForm").attr("action", "/irms/manage-users/" + userid);
+        $("#edit-department").val(department);
+        $("#edit-position").val(position);
+        $("#edit-section").val(section);
 
         // Hide view modal then show edit modal
         $("#viewUserModal").modal("hide");

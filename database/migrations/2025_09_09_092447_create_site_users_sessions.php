@@ -24,7 +24,10 @@ return new class extends Migration
             $table->string('name')->nullable();
             $table->string('password', 255);
             $table->string('email', 255);
-            $table->timestamp('email_verified_at')->nullable();
+            // $table->timestamp('email_verified_at')->nullable();
+            $table->string('department', 50)->nullable();
+            $table->string('section', 50)->nullable();
+            $table->string('position', 50)->nullable();
             $table->integer('level')->nullable();
             $table->dateTime('create_date')->nullable();
             $table->dateTime('updated_date')->nullable();

@@ -51,7 +51,10 @@
                                                 <th>User ID</th>
                                                 <!-- <th width="40%">Email</th> -->
                                                 <th>Site</th>
+                                                <th>Department</th>
+                                                <th>Position</th>
                                                 <th>Level</th>
+                                                <th>Section</th>
                                                 <!-- <th width="5%">Action</th> -->
                                             </tr>
                                         </thead>
@@ -61,6 +64,9 @@
                                                     data-email="{{ $user->email }}" data-site="{{ $user->rssite }}"
                                                     data-site_desc="{{ $user->rssite_desc }}" data-level="{{ $user->level }}"
                                                     data-gender="{{ $user->gender }}"
+                                                    data-department="{{ $user->department }}"
+                                                    data-position="{{ $user->position }}"
+                                                    data-section="{{ $user->section }}"
                                                     data-profile="{{ $user->profile_pic_url ? asset($user->profile_pic_url) : asset('uploads/user-profile/noprofile.png') }}"
                                                     data-create_date="{{ date('d F Y', strtotime($user->create_date)) }}">
                                                     <!-- <td class="text-center align-middle">
@@ -78,9 +84,11 @@
                                                         @if(!empty($user->logo_pic_url))
                                                             <img src="{{ asset($user->logo_pic_url) }}" alt="logo" class="me-1">
                                                         @endif
-                                                        <!-- {{ $user->rssite_desc ?? $user->rssite }} -->
                                                     </td>
+                                                    <td class="align-middle">{{ $user->department }}</td>
+                                                    <td class="align-middle">{{ $user->position }}</td>
                                                     <td class="align-middle text-center">{{ $user->level }}</td>
+                                                    <td class="align-middle">{{ $user->section }}</td>
                                                     <!-- <td class="align-middle text-center">
                                                             <button type="button" class="btn btn-sm btn-secondary btn-settings"
                                                                     data-userid="{{ $user->userid }}" title="Settings">
@@ -143,15 +151,27 @@
                                     </div>
                                     @error('rssite') <div class="text-danger small">{{ $message }}</div> @enderror
                                 </div>
-                                <div class="mb-3">
-                                    <!-- <label for="userid" class="form-label">User ID</label> -->
-                                    <div class="input-group">
-                                        <span class="input-group-text">
-                                            <i class="bi bi-person-badge"></i>
-                                        </span>
-                                        <input type="text" class="form-control" id="userid" name="userid" value="{{ old('userid') }}" required maxlength="8" placeholder="User ID" autocomplete="off">
+                                <div class="row mb-3">
+                                    <div class="col-12 col-md mb-3 mb-md-0">
+                                        <!-- <label for="userid" class="form-label">User ID</label> -->
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="bi bi-person-badge"></i>
+                                            </span>
+                                            <input type="text" class="form-control" id="userid" name="userid" value="{{ old('userid') }}" required maxlength="8" placeholder="User ID" autocomplete="off">
+                                        </div>
+                                    @error('userid') <div class="text-danger small">{{ $message }}</div> @enderror
                                     </div>
-                                @error('userid') <div class="text-danger small">{{ $message }}</div> @enderror
+                                    <div class="col-12 col-md mb-md-0">
+                                        <!-- <label for="password" class="form-label">Password</label> -->
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="bi bi-lock"></i>
+                                            </span>
+                                            <input type="password" class="form-control" id="password" name="password" required maxlength="255" placeholder="Password" autocomplete="off">
+                                        </div>
+                                        @error('password') <div class="text-danger small">{{ $message }}</div> @enderror
+                                    </div>
                                 </div>
                                 <div class="mb-3">
                                     <!-- <label for="name" class="form-label">Name</label> -->
@@ -188,15 +208,33 @@
                                     @error('gender') <div class="text-danger small">{{ $message }}</div> @enderror
                                 </div>
                                 <div class="mb-3">
-                                    <!-- <label for="password" class="form-label">Password</label> -->
                                     <div class="input-group">
                                         <span class="input-group-text">
-                                            <i class="bi bi-lock"></i>
+                                            <i class="bi bi-building-gear"></i>
                                         </span>
-                                        <input type="password" class="form-control" id="password" name="password" required maxlength="255" placeholder="Password" autocomplete="off">
+                                        <input type="text" class="form-control" id="department" name="department" value="{{ old('department') }}" maxlength="255" placeholder="Department">
                                     </div>
-                                    @error('password') <div class="text-danger small">{{ $message }}</div> @enderror
+                                    @error('department') <div class="text-danger small">{{ $message }}</div> @enderror
                                 </div>
+                                <div class="mb-3">
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="bi bi-diagram-3"></i>
+                                        </span>
+                                        <input type="text" class="form-control" id="section" name="section" value="{{ old('section') }}" maxlength="255" placeholder="Section">
+                                    </div>
+                                    @error('section') <div class="text-danger small">{{ $message }}</div> @enderror
+                                </div>
+                                <div class="mb-3">
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="bi bi-person-workspace"></i>
+                                        </span>
+                                        <input type="text" class="form-control" id="position" name="position" value="{{ old('position') }}" maxlength="255" placeholder="Position">
+                                    </div>
+                                    @error('position') <div class="text-danger small">{{ $message }}</div> @enderror
+                                </div>
+                                
                             </div>
                         </div>
                     </div>
@@ -262,6 +300,24 @@
                                         <th>Gender:</th>
                                         <td id="view-user-gender-detail">
                                             <span id="view-user-gender">-</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Department:</th>
+                                        <td id="view-user-department-detail">
+                                            <span id="view-user-department">-</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Section:</th>
+                                        <td id="view-user-section-detail">
+                                            <span id="view-user-section">-</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Position:</th>
+                                        <td id="view-user-position-detail">
+                                            <span id="view-user-position">-</span>
                                         </td>
                                     </tr>
                                     <tr>
@@ -331,14 +387,36 @@
                                 <input type="hidden" id="rssite" name="rssite" value="{{ auth()->user()->rssite }}" readonly>
                                 @endif
 
-                                <div class="mb-3">
-                                    <div class="input-group">
-                                        <span class="input-group-text">
-                                            <i class="bi bi-person-badge"></i>
-                                        </span>
-                                        <input type="text" id="edit-userid" class="form-control" readonly>
+                                <div class="row">
+                                    <div class="col-12 col-md mb-3 mb-md-0">
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="bi bi-person-badge"></i>
+                                            </span>
+                                            <input type="text" id="edit-userid" class="form-control" readonly>
+                                        </div>
+                                        <div class="form-text small">Site and User ID cannot be changed.</div>
                                     </div>
-                                    <div class="form-text small">Site and User ID cannot be changed.</div>
+
+                                    <!-- Show password input below on mobile, beside on desktop -->
+                                    <div class="col-12 d-block d-md-none mb-3">
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="bi bi-lock"></i>
+                                            </span>
+                                            <input type="password" id="edit-password" name="password" class="form-control" placeholder="Password:">
+                                        </div>
+                                        <div class="form-text small">Leave blank to keep current password.</div>
+                                    </div>
+                                    <div class="col d-none d-md-block mb-3 mb-md-0">
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="bi bi-lock"></i>
+                                            </span>
+                                            <input type="password" id="edit-password" name="password" class="form-control" placeholder="Password:">
+                                        </div>
+                                        <div class="form-text small">Leave blank to keep current password.</div>
+                                    </div>
                                 </div>
 
                                 <div class="mb-3">
@@ -386,15 +464,29 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="mb-3">
                                     <div class="input-group">
                                         <span class="input-group-text">
-                                            <i class="bi bi-lock"></i>
+                                            <i class="bi bi-building-gear"></i>
                                         </span>
-                                        <input type="password" id="edit-password" name="password" class="form-control" placeholder="Password:">
+                                        <input type="text" id="edit-department" name="department" class="form-control" maxlength="255" placeholder="Department">
                                     </div>
-                                    <div class="form-text small">Leave blank to keep current password.</div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="bi bi-diagram-3"></i>
+                                        </span>
+                                        <input type="text" id="edit-section" name="section" class="form-control" maxlength="255" placeholder="Section">
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="bi bi-person-workspace"></i>
+                                        </span>
+                                        <input type="text" id="edit-position" name="position" class="form-control" maxlength="255" placeholder="Position">
+                                    </div>
                                 </div>
                             </div>
                         </div>

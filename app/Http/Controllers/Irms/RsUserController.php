@@ -64,8 +64,12 @@ class RsUserController extends Controller
             'name' => 'nullable|max:255',
             'password' => 'required|max:255',
             'email' => 'required|email|max:255',
+            'department' => 'nullable|max:255',
+            'section' => 'nullable|max:255',
+            'position' => 'nullable|max:255',
             'gender' => 'nullable|max:10',
-            'profile_pic_url' => 'nullable|file|mimes:jpg,jpeg,png|max:2048'
+            'profile_pic_url' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
+            'level' => 'nullable|integer'
         ]);
 
         if (RsUser::where('userid', $validated['userid'])->exists()) {
@@ -85,14 +89,17 @@ class RsUserController extends Controller
         $hashedPassword = bcrypt($validated['password']);
         $create_date = now();
         $created_by = auth()->user()->userid ?? 'system';
-        $level = null;
+        $level = $validated['level'] ?? 1;
 
-        \DB::statement('EXEC sp_add_user ?, ?, ?, ?, ?, ?, ?, ?, ?, ?', [
+        \DB::statement('EXEC sp_add_user ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?', [
             $validated['rssite'],
             $validated['userid'],
             $validated['name'],
             $hashedPassword,
             $validated['email'],
+            $validated['department'],
+            $validated['section'],
+            $validated['position'],
             $validated['gender'],
             $profile_pic_url,
             $create_date,
@@ -130,6 +137,9 @@ class RsUserController extends Controller
             'rssite' => 'required|max:8',
             'name' => 'nullable|max:255',
             'email' => 'required|email|max:255',
+            'department' => 'nullable|max:255',
+            'section' => 'nullable|max:255',
+            'position' => 'nullable|max:255',
             'gender' => 'nullable|max:10',
             'profile_pic_url' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
             'level' => 'nullable|integer',
@@ -143,7 +153,6 @@ class RsUserController extends Controller
             $file->move(public_path('uploads/user-profile'), $filename);
             $profile_pic_url = 'uploads/user-profile/' . $filename;
         } else {
-            // Use the existing profile picture if no new file is uploaded
             $profile_pic_url = $request->input('existing_profile_pic_url', 'uploads/user-profile/noprofile.png');
         }
 
@@ -153,11 +162,14 @@ class RsUserController extends Controller
         $hashedPassword = $password ? bcrypt($password) : null;
 
         try {
-            \DB::statement('EXEC sp_update_user ?, ?, ?, ?, ?, ?, ?, ?, ?', [
+            \DB::statement('EXEC sp_update_user ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?', [
                 $validated['rssite'],
                 $userid,
                 $validated['name'],
                 $validated['email'],
+                $validated['department'],
+                $validated['section'],
+                $validated['position'],
                 $validated['gender'],
                 $profile_pic_url,
                 $level,

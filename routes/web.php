@@ -59,5 +59,6 @@ Route::prefix('irms')->middleware('check.session')->group(function () {
 
     // Others
     Route::get('/whse-goodsreceiving', fn() => view('irms/irms-layouts/whse-goodsreceiving'))->name('irms.whse-goodsreceiving');
+    Route::get('/whse-goodsdispatching', fn() => view('irms/irms-layouts/whse-goodsdispatching'))->name('irms.whse-goodsdispatching');
     // Route::get('/rack-locations', fn() => view('irms/irms-layouts/rack-locations'))->name('irms.racklocations');
 });
