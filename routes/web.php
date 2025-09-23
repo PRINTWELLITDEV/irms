@@ -7,6 +7,7 @@ use App\Http\Controllers\Irms\RsWhseController;
 use App\Http\Controllers\Irms\RsBayLocController;
 use App\Http\Controllers\Irms\RsLocationController;
 use App\Http\Controllers\Irms\RsGoodsReceivingController;
+use App\Http\Controllers\Irms\RsGoodsDispatchingController;
 
 
 // Home route
@@ -57,10 +58,10 @@ Route::prefix('irms')->middleware('check.session')->group(function () {
     Route::get('/item-locations', fn() => view('irms/irms-layouts/item-locations'))->name('irms.itemlocations');
     
     // Goods Receiving
-    Route::get('/whse-goodsreceiving', fn() => view('irms/irms-layouts/whse-goodsreceiving'))->name('irms.whse-goodsreceiving');
+    Route::get('/whse-goodsreceiving', [RsGoodsReceivingController::class, 'index'])->name('goodsreceiving.index');
     Route::post('/whse-goodsreceiving/process', [RsGoodsReceivingController::class, 'process'])->name('goodsreceiving.process');
     
     // Goods Dispatching
-    Route::get('/whse-goodsdispatching', fn() => view('irms/irms-layouts/whse-goodsdispatching'))->name('irms.whse-goodsdispatching');
-    Route::post('/whse-goodsdispatching/process', [RsGoodsReceivingController::class, 'process'])->name('goodsdispatching.process');
+    Route::get('/whse-goodsdispatching', [RsGoodsDispatchingController::class, 'index'])->name('goodsdispatching.index');
+    Route::post('/whse-goodsdispatching/process', [RsGoodsDispatchingController::class, 'process'])->name('goodsdispatching.process');
 });

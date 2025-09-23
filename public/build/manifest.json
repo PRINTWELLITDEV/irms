@@ -8,7 +8,7 @@
     ]
   },
   "resources/css/irms.css": {
-    "file": "assets/irms-DKvzqQgA.css",
+    "file": "assets/irms-BTLNkZtR.css",
     "src": "resources/css/irms.css",
     "isEntry": true,
     "names": [
@@ -16,7 +16,7 @@
     ]
   },
   "resources/js/app.js": {
-    "file": "assets/app-CPNoRkmS.js",
+    "file": "assets/app-DgMWTlNm.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true

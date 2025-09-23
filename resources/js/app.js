@@ -220,30 +220,56 @@ $(document).ready(function () {
     });
 
     // Receiving Form/Details toggle logic
-    $("#receiving-details").hide();
+    // $("#receiving-details").hide();
 
     $("#goodsReceivingForm").on("submit", function (e) {
-        e.preventDefault(); // Prevent actual form submission for demo/static data
+        e.preventDefault();
+
+        // Pass all form data to the summary in receiving-details-form
+        $("#details-site").text($("#rssite option:selected").text() || $("#rssite").val() || '-');
+        $("#details-date").text($("#date").val() || '-');
+        $("#details-warehouse").text($("#rswhse option:selected").text() || $("#rswhse").val() || '-');
+        $("#details-jobco").text($("#jobco").val() || '-');
+        $("#details-lot").text($("#lot").val() || '-');
+        $("#details-item").text($("#item").val() || '-');
+        $("#details-pallet_size").text($("#pallet_size").val() || '-');
+        $("#details-um").text($("#um").val() || '-');
+        $("#details-bay").text($("#rsbaynum option:selected").text() || $("#rsbaynum").val() || '-');
+        $("#details-docno").text($("#docno").val() || '-');
+
+        // Hide form, show details
         $(".card:has(#goodsReceivingForm)").hide();
         $("#receiving-details").fadeIn();
-        // Optionally, scroll to the details
-        // $("html, body").animate({ scrollTop: $("#receiving-details").offset().top }, 300);
     });
+
     $("#btnBackReceiving").on("click", function () {
         $("#receiving-details").hide();
         $(".card:has(#goodsReceivingForm)").fadeIn();
-        // $("html, body").animate({ scrollTop: $(".card:has(#goodsReceivingForm)").offset().top }, -300);
     });
 
-    //Dispatching Form/Details toggle logic
+    // Dispatching Form/Details toggle logic
     $("#dispatching-details").hide();
     
     $("#goodsDispatchingForm").on("submit", function (e) {
-        e.preventDefault(); // Prevent actual form submission for demo/static data
+        e.preventDefault();
+
+        const site = $("#rssite option:selected").text() || $("#rssite").val() || '-';
+        const warehouse = $("#rswhse").val() || '-';
+        const bay = $("#rsbaynum").val() || '-';
+
+        $("#details-site").val(site);
+        $("#details-date").val($("#date").val() || '-');
+        $("#details-warehouse").val(warehouse);
+        $("#details-jobco").val($("#jobco").val() || '-');
+        $("#details-lot").val($("#lot").val() || '-');
+        $("#details-item").val($("#item").val() || '-');
+        $("#details-bay").val(bay);
+        $("#details-docno").val($("#docno").val() || '-');
+        $("#details-pallet_size").val($("#pallet_size").val() || '-');
+        $("#details-um").val($("#um").val() || '-');
+
         $(".card:has(#goodsDispatchingForm)").hide();
         $("#dispatching-details").fadeIn();
-        // Optionally, scroll to the details
-        // $("html, body").animate({ scrollTop: $("#dispatching-details").offset().top }, 300);
     });
     $("#btnBackDispatching").on("click", function () {
         $("#dispatching-details").hide();
@@ -327,5 +353,14 @@ document.addEventListener("DOMContentLoaded", function () {
     if (siteSelect && siteSelect.value) {
         filterOptions(whseSelect, siteSelect.value);
         filterOptions(baySelect, siteSelect.value);
+    }
+
+    // Auto-fill Lot when typing in Job / CO
+    const jobcoInput = document.getElementById('jobco');
+    const lotInput = document.getElementById('lot');
+    if (jobcoInput && lotInput) {
+        jobcoInput.addEventListener('input', function () {
+            lotInput.value = this.value ? this.value + '-1' : '';
+        });
     }
 });

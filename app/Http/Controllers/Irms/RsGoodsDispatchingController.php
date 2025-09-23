@@ -10,23 +10,23 @@ use App\Models\IrmsSite;
 use App\Models\RsUser;
 use App\Models\Rswhse;
 use App\Models\RsBayLoc;
-use App\Models\RsGoodsReceiving;
+use App\Models\RsGoodsDispatching;
 
-class RsGoodsReceivingController extends Controller
+class RsGoodsDispatchingController extends Controller
 {
     /**
-     * Show the goods receiving form.
+     * Show the goods dispatching form.
      */
     public function index()
     {
         $sites = IrmsSite::all();
         $warehouses = Rswhse::all();
         $baylocs = RsBayLoc::all();
-        return view('irms.irms-layouts.whse-goodsreceiving', compact('sites', 'warehouses', 'baylocs'));
+        return view('irms.irms-layouts.whse-goodsdispatching', compact('sites', 'warehouses', 'baylocs'));
     }
 
     /**
-     * Process the goods receiving form submission.
+     * Process the goods dispatching form submission.
      */
     public function process(Request $request)
     {
@@ -45,8 +45,8 @@ class RsGoodsReceivingController extends Controller
 
         // Save to database or call a stored procedure here as needed
         // Example:
-        // \DB::table('goods_receiving')->insert($validated);
+        // \DB::table('goods_dispatching')->insert($validated);
 
-        return redirect()->back()->with('success', 'Goods receiving processed successfully!');
+        return redirect()->back()->with('success', 'Goods dispatching processed successfully!');
     }
 }
