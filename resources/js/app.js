@@ -269,6 +269,18 @@ $(document).ready(function () {
         $("#editWarehouseModal").modal("show");
     });
 
+    $("#rackTable tbody").on("click", "tr", function () {
+        const $row = $(this);
+
+        $("#view-rack-warehouse").text($row.data("rswhse") || "-");
+        $("#view-rack-baynum").text($row.data("rsbaynum") || "-");
+        $("#view-rack-location").text($row.data("rsloc") || "-");
+        $("#view-rack-description").text($row.data("rsdesc") || "-");
+        $("#view-rack-quantity").text($row.data("qty") || "-");
+        $("#view-rack-createDate").text($row.data("createDate") || "-");
+        $("#viewRackModal").modal("show");
+    });
+
 
     // Receiving Form/Details toggle logic
     $("#receiving-details").hide();
@@ -390,10 +402,6 @@ $(document).ready(function () {
 
     // Dispatching Form/Details toggle logic
     $("#dispatching-details").hide();
-<<<<<<< HEAD
-
-=======
->>>>>>> c62679298258dca6919fffe064497660a5fcc13a
     $("#goodsDispatchingForm").on("submit", function (e) {
         e.preventDefault();
 
@@ -420,20 +428,6 @@ $(document).ready(function () {
         $(".card:has(#goodsDispatchingForm)").fadeIn();
         // $("html, body").animate({ scrollTop: $(".card:has(#goodsDispatchingForm)").offset().top }, -300);
     });
-<<<<<<< HEAD
-        //Rack Viewing Modals
-    $("#rackTable tbody").on("click", "tr", function () {
-        const $row = $(this);
-
-        $("#view-rack-warehouse").text($row.data("rswhse") || "-");
-        $("#view-rack-baynum").text($row.data("rsbaynum") || "-");
-        $("#view-rack-location").text($row.data("rsloc") || "-");
-        $("#view-rack-description").text($row.data("rsdesc") || "-");
-        $("#view-rack-quantity").text($row.data("qty") || "-");
-        $("#view-rack-createDate").text($row.data("createDate") || "-");
-        $("#viewRackModal").modal("show");
-    });
-=======
 
     // Enable/disable row inputs based on checkbox
     $(document).on('change', '#receivingTable input[type="checkbox"].big-checkbox', function () {
@@ -475,7 +469,6 @@ $(document).ready(function () {
     // Example row (inside your AJAX success):
     // <td><input type="text" class="form-control" value="" disabled></td>
     // <td><input type="text" class="form-control text-end" value="" disabled></td>
->>>>>>> c62679298258dca6919fffe064497660a5fcc13a
 });
 
 document.addEventListener("DOMContentLoaded", function () {
