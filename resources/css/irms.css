@@ -8,7 +8,7 @@
 .wrapper {
     flex-direction: column;
     display: flex;
-    min-height: 80vh;
+    min-height: 100vh;
 }
 
 /* Content Wrapper */
@@ -28,15 +28,48 @@
     font-size: 1.5rem;
 }
 
-/* .input-group-text {
-    min-width: 140px;
-    justify-content: left;
-} */
-
+/* Navbar */
+.app-header {
+    background: #f8f9fa;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+}
+.app-header .navbar-brand {
+    font-weight: bold;
+    font-size: 1.25rem;
+    color: #0e2b96;
+}
+.app-header .navbar-brand:hover {
+    text-decoration: none;
+    color: #0e2b96;
+}
+.app-header .nav-link {
+    color: #0e2b96;
+}
+.app-header .nav-link:hover {
+    color: #0a1c6e;
+}
+.app-header .nav-item .dropdown-menu {
+    min-width: 200px;
+}
+.app-header .nav-item .dropdown-menu .dropdown-item:hover {
+    background-color: #f8f9fa;
+    color: #0a1c6e;
+}
+.app-header .nav-item .dropdown-menu .dropdown-item:focus {
+    background-color: #f8f9fa;
+    color: #0a1c6e;
+}
 /* Footer */
 .app-footer {
     background: #f8f9fa;
-    padding: 1rem 0;
+    padding: 0rem 1.5rem !important;
+    border-top: 1px solid #dee2e6;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #6c757d;
+    box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.1);
+    margin-top: auto;
+    line-height: 1.5;
 }
 .app-footer a{
     text-decoration: none;
@@ -95,6 +128,7 @@ table.table td img {
     color: #fff;
     border-color: #198754;
 } */
+
 
 /* Make modal profile image bigger and responsive */
 .profile-pic {
@@ -229,6 +263,27 @@ table.table td img {
     .profile-pic {
         width: 200px !important;
         height: 200px !important;
+    }
+}
+
+/* Responsive: stack receiving-details-form fields vertically on small screens */
+@media (max-width: 576px) {
+    #receiving-details-form .row.mb-2 {
+        flex-direction: column !important;
+        font-size: 0.9rem;
+        margin-bottom: 1rem !important;
+    }
+    #receiving-details-form .col-6, 
+    #receiving-details-form .col-12 {
+        width: 100% !important;
+        max-width: 100% !important;
+        flex: 0 0 100% !important;
+    }
+    #receiving-details-form .fw-bold {
+        margin-bottom: 2px !important;
+    }
+    #receiving-details-form .ms-2 {
+        margin-left: 0 !important;
     }
 }
 

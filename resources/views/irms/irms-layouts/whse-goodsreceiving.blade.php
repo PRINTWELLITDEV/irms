@@ -26,7 +26,7 @@
             </div>
 
             <div class="content-body">
-                <div class="row justify-content-center">
+                <div class="row justify-content">
                     <div class="col-12 col-md-8 col-lg-9">
                         <div class="card mb-3 shadow-sm">
                             <div class="card-header bg-primary text-white">
@@ -36,35 +36,77 @@
                                 <!-- Add this style block at the top of your form or in your main CSS -->
                                 <style>
                                     .input-group-text.fixed-label {
-                                        min-width: 110px;
+                                        min-width: 120px;
                                         justify-content: flex-end;
                                     }
                                 </style>
 
+                                @php
+                                    $isSa = auth()->user()->userid === 'sa';
+                                @endphp
+
                                 <form id="goodsReceivingForm" method="POST" action="{{ route('goodsreceiving.process') }}">
                                     @csrf
+                                    @if($isSa)
                                     <div class="row g-3 align-items-center">
-                                        <div class="col-md-6 col-12">
+                                        <div class="col-md-6 col-12 mb-3">
                                             <div class="input-group">
-                                                <span class="input-group-text fixed-label" id="date-label">Date:</span>
-                                                <input type="date" class="form-control" id="date" name="date" value="{{ date('Y-m-d') }}" required>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 col-12">
-                                            <div class="input-group">
-                                                <span class="input-group-text fixed-label" id="whse-label">Warehouse:</span>
-                                                <select class="form-select" id="whse" name="whse" required>
-                                                    <option value="">Select Warehouse</option>
-                                                    <option value="FBIC-B8">FBIC-B8</option>
-                                                    <!-- Add more options as needed -->
+                                                <span class="input-group-text fixed-label" id="rssite-label">
+                                                    <span class="text-danger me-1">*</span>Site:
+                                                </span>
+                                                <select name="rssite" id="rssite" class="form-select" required>
+                                                    <option value="" disabled selected>Select Site</option>
+                                                    @foreach($sites as $site)
+                                                        <option value="{{ $site->rssite }}" {{ old('rssite') == $site->rssite ? 'selected' : '' }}>
+                                                            {{ $site->rssite_desc }}
+                                                        </option>
+                                                    @endforeach
                                                 </select>
                                             </div>
                                         </div>
                                     </div>
+                                    @else
+                                        <input type="hidden" name="rssite" id="rssite" value="{{ auth()->user()->rssite }}" readonly>
+                                    @endif
+                                    
+
+                                    <!-- Date -->
+                                    <div class="row g-3 align-items-center">
+                                        <div class="col-md-6 col-12">
+                                            <div class="input-group">
+                                                <span class="input-group-text fixed-label" id="date-label">
+                                                    <span class="text-danger me-1">*</span>Date:
+                                                </span>
+                                                <input type="date" class="form-control" id="date" name="date" value="{{ date('Y-m-d') }}" {{ $isSa ? 'disabled' : '' }} required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-12">
+                                            <div class="input-group">
+                                                <span class="input-group-text fixed-label" id="rswhse-label">
+                                                    <span class="text-danger me-1">*</span>Warehouse:
+                                                </span>
+                                                <select name="rswhse" id="rswhse" class="form-select" required>
+                                                    <option value=""disabled selected>Select Warehouse</option>
+                                                    @foreach($warehouses as $rswhse)
+                                                        @if($isSa || $rswhse->rssite === auth()->user()->rssite)
+                                                            <option value="{{ $rswhse->rswhse }}" data-site="{{ $rswhse->rssite }}">
+                                                                {{ $rswhse->rswhse }} - {{ $rswhse->name }}
+                                                            </option>
+                                                        @endif
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+
+                                    <!-- Job / CO and Lot -->
                                     <div class="row g-3 align-items-center mt-2">
                                         <div class="col-md-6 col-12">
                                             <div class="input-group">
-                                                <span class="input-group-text fixed-label" id="jobco-label">Job / CO:</span>
+                                                <span class="input-group-text fixed-label" id="jobco-label">
+                                                    <span class="text-danger me-1">*</span>Job / CO:
+                                                </span>
                                                 <input type="text" class="form-control" id="jobco" name="jobco" required>
                                             </div>
                                         </div>
@@ -76,45 +118,62 @@
                                         </div>
                                     </div>
                                     <div class="row g-3 align-items-center mt-2">
-                                        <div class="col-md-12 col-12">
+                                        <div class="col-md-6 col-12">
                                             <div class="input-group">
                                                 <span class="input-group-text fixed-label" id="item-label">Item:</span>
-                                                <input type="text" class="form-control" id="item" name="item" readonly>
+                                                <input type="text" class="form-control bg-secondary bg-opacity-10" id="item" name="item" readonly>
+                                                
                                             </div>
-                                            <small class="text-muted" id="item-desc"></small>
                                         </div>
-                                        
+                                        <div class="col-md-12 col-12">
+                                            <div class="input-group">
+                                                <span class="input-group-text fixed-label" id="desc-label">Description:</span>
+                                                <input type="text" class="form-control bg-secondary bg-opacity-10" id="desc" name="desc" readonly>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="row g-3 align-items-center mt-2">
                                         <div class="col-md-6 col-12">
                                             <div class="input-group">
                                                 <span class="input-group-text fixed-label" id="pallet-size-label">Pallet Size:</span>
-                                                <input type="number" class="form-control" id="pallet_size" name="pallet_size">
+                                                <input type="number" class="form-control bg-secondary bg-opacity-10" id="pallet_size" name="pallet_size">
                                             </div>
                                         </div>
                                         <div class="col-md-6 col-12">
                                             <div class="input-group">
                                                 <span class="input-group-text fixed-label" id="um-label">U/M:</span>
-                                                <input type="text" class="form-control" id="um" name="um" readonly>
+                                                <input type="text" class="form-control bg-secondary bg-opacity-10" id="um" name="um" readonly>
                                             </div>
                                         </div>
                                     </div>
+                                    <!-- Bay No and Doc No -->
                                     <div class="row g-3 align-items-center mt-2">
                                         <div class="col-md-6 col-12">
                                             <div class="input-group">
-                                                <span class="input-group-text fixed-label" id="baynum-label">Bay No.:</span>
-                                                <select class="form-select" id="baynum" name="baynum">
-                                                    <option value="">Select Bay</option>
-                                                    <option value="A1">A1</option>
-                                                    <!-- Add more options as needed -->
+                                                <span class="input-group-text fixed-label" id="rsbaynum-label">
+                                                    <span class="text-danger me-1">*</span>Bay No.:
+                                                </span>
+                                                <select name="rsbaynum" id="rsbaynum" class="form-select" required>
+                                                    <option value=""disabled selected>Select Bay</option>
+                                                    @foreach($baylocs as $bay)
+                                                        @if($isSa || $bay->rssite === auth()->user()->rssite)
+                                                            <option value="{{ $bay->rsbaynum }}" data-site="{{ $bay->rssite }}">
+                                                                {{ $bay->rsbaynum }}
+                                                            </option>
+                                                        @endif
+                                                    @endforeach
                                                 </select>
                                             </div>
+                                            
                                         </div>
                                         <div class="col-md-6 col-12">
                                             <div class="input-group">
-                                                <span class="input-group-text fixed-label" id="docno-label">Doc No:</span>
+                                                <span class="input-group-text fixed-label" id="docno-label">
+                                                    Doc No: <small><span class="text-secondary ms-1 small">(Opt.)</span></small>
+                                                </span>
                                                 <input type="text" class="form-control" id="docno" name="docno">
                                             </div>
+                                            
                                         </div>
                                     </div>
                                     <div class="row mt-4">
@@ -130,49 +189,78 @@
 
                 <div id="receiving-details" class="card mb-3 shadow-sm">
                     <div class="card-header bg-secondary text-white">
-                        <h6 class="mb-0">Receiving Details</h6>
+                        <h5 class="mb-0">Receiving Details</h5>
                     </div>
                     <div class="card-body">
-                        <button type="button" id="btnBackReceiving" class="btn btn-danger d-flex align-items-center me-2 mb-3">
+                        <button type="button" id="btnBackReceiving" class="btn btn-danger d-flex align-items-center mb-2">
                             <i class="bi bi-arrow-left d-sm-inline me-2"></i>
                             <span class="d-md-inline">Back</span>
                         </button>
-                        <div class="table-responsive bg-secondary bg-opacity-75 p-3 rounded">
-                            <table class="table table-borderless">
-                                <tbody>
-                                    <tr>
-                                        <th width="5%" class="text-end">Date</th>
-                                        <th width="1%">:</th>
-                                        <td colspan=4>June 11, 2025</td>
-                                    </tr>
-                                    <tr>
-                                        <th width="5%" class="text-end">Warehouse</th>
-                                        <th width="1%">:</th>
-                                        <td colspan=4>FBIC-B8</td>
-                                    </tr>
-                                    <tr>
-                                        <th width="5%" class="text-end">Job / CO</th>
-                                        <th width="1%">:</th>
-                                        <td width="20%">JOB12345</td>
-                                        <th width="5%" class="text-end">Lot</th>
-                                        <th width="1%">:</th>
-                                        <td>LOT12345</td>
-                                    </tr>
-                                    <tr>
-                                        <th class="text-end">Item</th>
-                                        <th width="1%">:</th>
-                                        <td colspan=4>ITEM001</td>
-                                    </tr>
-                                    <tr>
-                                        <th class="text-end">Bay</th>
-                                        <th width="1%">:</th>
-                                        <td>BAY001</td>
-                                        <th class="text-end">Doc No</th>
-                                        <th width="1%">:</th>
-                                        <td>DOC12345</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        <div class="bg-secondary bg-opacity-50 p-2 mb-3 rounded">
+                            <form id="receiving-details-form">
+                                <div class="bg-light p-3 rounded shadow-sm">
+                                    <div class="row mb-2">
+                                        @if(auth()->user()->userid === 'sa')
+                                        <div class="col-12">
+                                            <span class="fw-bold">Site:</span>
+                                            <span id="details-site" class="ms-2"></span>
+                                        </div>
+                                        @endif
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-6">
+                                            <span class="fw-bold">Date:</span>
+                                            <span id="details-date" class="ms-2"></span>
+                                        </div>
+                                        <div class="col-6">
+                                            <span class="fw-bold">Warehouse:</span>
+                                            <span id="details-warehouse" class="ms-2"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-6">
+                                            <span class="fw-bold">Job / CO:</span>
+                                            <span id="details-jobco" class="ms-2"></span>
+                                        </div>
+                                        <div class="col-6">
+                                            <span class="fw-bold">Lot:</span>
+                                            <span id="details-lot" class="ms-2"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-12">
+                                            <span class="fw-bold">Item:</span>
+                                            <span id="details-item" class="ms-2"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-12">
+                                            <span class="fw-bold">Description:</span>
+                                            <span id="details-description" class="ms-2"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-6">
+                                            <span class="fw-bold">Pallet Size:</span>
+                                            <span id="details-pallet_size" class="ms-2"></span>
+                                        </div>
+                                        <div class="col-6">
+                                            <span class="fw-bold">U/M:</span>
+                                            <span id="details-um" class="ms-2"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-6">
+                                            <span class="fw-bold">Bay No.:</span>
+                                            <span id="details-bay" class="ms-2"></span>
+                                        </div>
+                                        <div class="col-6">
+                                            <span class="fw-bold">Doc No:</span>
+                                            <span id="details-docno" class="ms-2"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <button type="button" id="btnSelectAll" class="btn btn-outline-dark d-flex align-items-center me-2">
@@ -180,7 +268,7 @@
                                 <span class="d-md-inline">Select all</span>
                             </button>
                             <button type="button" id="btnReceive" class="btn btn-success d-flex align-items-center">
-                                <i class="bi bi-box-arrow-in-down d-sm-inline me-2"></i>
+                                <i class="bi bi-box-arrow-in-right d-sm-inline me-2"></i>
                                 <span class="d-md-inline">Receive</span>
                             </button>
                         </div>
@@ -198,47 +286,18 @@
                             <table id="receivingTable" class="table table-striped table-bordered align-middle w-100">
                                 <thead class="table-light">
                                     <tr>
-                                        <th width="5%"></th>
+                                        <th width="2%"></th>
                                         <th width="5%">Select</th>
-                                        <th>Rs Loc No.</th>
-                                        <th>Pallet Tag No.</th>
-                                        <th>Qty to Receive</th>
-                                        <th>Qty on Hand</th>
-                                        <th>U/M</th>
-                                        <th>Date Received</th>
+                                        <th width="25%">Rack Location</th>
+                                        <th width="25%">Pallet Tag No.</th>
+                                        <th width="10%">Qty to Receive</th>
+                                        <th width="10%">Qty on Hand</th>
+                                        <th width="5%">U/M</th>
+                                        <th width="10%">Date Received</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td class="text-center align-middle"><input type="checkbox" name="select_row[]" value="1" class="big-checkbox"></td>
-                                        <td>RL-001</td>
-                                        <td>PT-1001</td>
-                                        <td>50</td>
-                                        <td>120</td>
-                                        <td>PC</td>
-                                        <td>2025-06-11</td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td class="text-center align-middle"><input type="checkbox" name="select_row[]" value="2" class="big-checkbox"></td>
-                                        <td>RL-002</td>
-                                        <td>PT-1002</td>
-                                        <td>30</td>
-                                        <td>80</td>
-                                        <td>PC</td>
-                                        <td>2025-06-11</td>
-                                    </tr>
-                                    <tr>
-                                        <td>3</td>
-                                        <td class="text-center align-middle"><input type="checkbox" name="select_row[]" value="3" class="big-checkbox"></td>
-                                        <td>RL-003</td>
-                                        <td>PT-1003</td>
-                                        <td>20</td>
-                                        <td>60</td>
-                                        <td>PC</td>
-                                        <td>2025-06-10</td>
-                                    </tr>
+                                    <!-- JS will populate rows here -->
                                 </tbody>
                             </table>
                         </div>
@@ -248,4 +307,7 @@
         </div>
     </div>
 
+    <script>
+        window.appUrl = "{{ rtrim(config('app.url'), '/') }}";
+    </script>
 @endsection

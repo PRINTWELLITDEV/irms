@@ -33,6 +33,21 @@ $.extend($.fn.dataTable.defaults, {
 });
 
 $(document).ready(function () {
+    const isSa = $("select#rssite").length > 0 && $("input[name='rssite']").length === 0;
+
+    function setFieldsEnabled(enabled) {
+        $("#date, #rswhse, #jobco, #lot, #item, #pallet_size, #um, #rsbaynum, #docno").prop("disabled", !enabled);
+    }
+
+    if (isSa) {
+        setFieldsEnabled(false);
+        $("#rssite").on("change", function () {
+            setFieldsEnabled(true);
+        });
+    } else {
+        setFieldsEnabled(true);
+    }
+
     // Hide filter boxes initially
     // $(".dataTables_filter").hide();
     // $(".dt-layout-cell").hide();
@@ -254,37 +269,158 @@ $(document).ready(function () {
         $("#editWarehouseModal").modal("show");
     });
 
+
     // Receiving Form/Details toggle logic
     $("#receiving-details").hide();
-
     $("#goodsReceivingForm").on("submit", function (e) {
-        e.preventDefault(); // Prevent actual form submission for demo/static data
+        e.preventDefault();
+
+        // Pass all form data to the summary in receiving-details-form
+        $("#details-site").text($("#rssite option:selected").text() || $("#rssite").val() || '-');
+        $("#details-date").text($("#date").val() || '-');
+        $("#details-warehouse").text($("#rswhse option:selected").text() || $("#rswhse").val() || '-');
+        $("#details-jobco").text($("#jobco").val() || '-');
+        $("#details-lot").text($("#lot").val() || '-');
+        $("#details-item").text($("#item").val() || '-');
+        $("#details-description").text($("#desc").val() || '-');
+        $("#details-pallet_size").text($("#pallet_size").val() || '-');
+        $("#details-um").text($("#um").val() || '-');
+        $("#details-bay").text($("#rsbaynum option:selected").text() || $("#rsbaynum").val() || '-');
+        $("#details-docno").text($("#docno").val() || '-');
+
+        // Get form values
+        const rssite = $("#rssite").val() || $("input[name='rssite']").val();
+        const rswhse = $("#rswhse").val();
+        const rsbaynum = $("#rsbaynum").val();
+        const dateReceived = $("#date").val();
+        const um = $("#um").val();
+
+        // Format pallet size for summary/details: show "0" if integer 0, else show decimal only if needed
+        let palletSize = $("#pallet_size").val();
+        let palletSizeNum = parseFloat(palletSize);
+        if (isNaN(palletSizeNum) || palletSizeNum === 0) {
+            palletSize = "0";
+        } else if (palletSizeNum % 1 === 0) {
+            palletSize = palletSizeNum.toString();
+        } else {
+            palletSize = palletSizeNum.toFixed(2).replace(/\.00$/, "");
+        }
+        $("#details-pallet_size").text(palletSize);
+
+        // AJAX to get rsloc list
+        $.ajax({
+            url: window.appUrl + '/irms/whse-goodsreceiving/rsloc-list',
+            method: 'POST',
+            data: {
+                rssite: rssite,
+                rswhse: rswhse,
+                rsbaynum: rsbaynum,
+                _token: $('input[name="_token"]').val()
+            },
+            success: function (data) {
+                const tbody = $("#receivingTable tbody");
+                tbody.empty();
+                if (data.length > 0) {
+                    data.forEach(function(row, idx) {
+                        // Format qty_onHand: show "0" if integer 0, else show decimal only if needed
+                        let qtyOnHandNum = parseFloat(row.qty_onHand);
+                        let qtyOnHand;
+                        if (isNaN(qtyOnHandNum) || qtyOnHandNum === 0) {
+                            qtyOnHand = "0";
+                        } else if (qtyOnHandNum % 1 === 0) {
+                            qtyOnHand = qtyOnHandNum.toString();
+                        } else {
+                            qtyOnHand = qtyOnHandNum.toFixed(2).replace(/\.00$/, "");
+                        }
+                        tbody.append(`
+                            <tr>
+                                <td>${idx + 1}</td>
+                                <td class="text-center align-middle"><input type="checkbox" name="select_row[]" value="${idx + 1}" class="big-checkbox"></td>
+                                <td>${row.rsloc}</td>
+                                <td><input type="text" class="form-control" value="" disabled></td>
+                                <td><input type="text" class="form-control text-end" value="" disabled></td>
+                                <td class="text-end">${qtyOnHand}</td>
+                                <td>${um}</td>
+                                <td></td>
+                            </tr>
+                        `);
+                    });
+                } else {
+                    tbody.append('<tr><td colspan="8" class="text-center">No Rack Location found.</td></tr>');
+                }
+            }
+        });
+
+        // Hide form, show details
         $(".card:has(#goodsReceivingForm)").hide();
         $("#receiving-details").fadeIn();
-        // Optionally, scroll to the details
-        // $("html, body").animate({ scrollTop: $("#receiving-details").offset().top }, 300);
     });
+
     $("#btnBackReceiving").on("click", function () {
         $("#receiving-details").hide();
         $(".card:has(#goodsReceivingForm)").fadeIn();
-        // $("html, body").animate({ scrollTop: $(".card:has(#goodsReceivingForm)").offset().top }, -300);
+    });
+    
+    // Reset fields when site is changed
+    $("#rssite").on("change", function () {
+        // Set date to today
+        const today = new Date().toISOString().split('T')[0];
+        $("#date").val(today);
+
+        // Select first option for warehouse and bay
+        $("#rswhse").prop("selectedIndex", 0);
+        $("#rsbaynum").prop("selectedIndex", 0);
+
+        // Reset other fields
+        $("#jobco").val('');
+        $("#lot").val('');
+        $("#item").val('');
+        $("#pallet_size").val('');
+        $("#um").val('');
+        $("#docno").val('');
+        $("#item-desc").text('');
     });
 
-    //Dispatching Form/Details toggle logic
-    $("#dispatching-details").hide();
+    // Disable date greater than today
+    const dateInput = document.getElementById('date');
+    if (dateInput) {
+        const today = new Date().toISOString().split('T')[0];
+        dateInput.setAttribute('max', today);
+    }
 
+    // Dispatching Form/Details toggle logic
+    $("#dispatching-details").hide();
+<<<<<<< HEAD
+
+=======
+>>>>>>> c62679298258dca6919fffe064497660a5fcc13a
     $("#goodsDispatchingForm").on("submit", function (e) {
-        e.preventDefault(); // Prevent actual form submission for demo/static data
+        e.preventDefault();
+
+        const site = $("#rssite option:selected").text() || $("#rssite").val() || '-';
+        const warehouse = $("#rswhse").val() || '-';
+        const bay = $("#rsbaynum").val() || '-';
+
+        $("#details-site").val(site);
+        $("#details-date").val($("#date").val() || '-');
+        $("#details-warehouse").val(warehouse);
+        $("#details-jobco").val($("#jobco").val() || '-');
+        $("#details-lot").val($("#lot").val() || '-');
+        $("#details-item").val($("#item").val() || '-');
+        $("#details-bay").val(bay);
+        $("#details-docno").val($("#docno").val() || '-');
+        $("#details-pallet_size").val($("#pallet_size").val() || '-');
+        $("#details-um").val($("#um").val() || '-');
+
         $(".card:has(#goodsDispatchingForm)").hide();
         $("#dispatching-details").fadeIn();
-        // Optionally, scroll to the details
-        // $("html, body").animate({ scrollTop: $("#dispatching-details").offset().top }, 300);
     });
     $("#btnBackDispatching").on("click", function () {
         $("#dispatching-details").hide();
         $(".card:has(#goodsDispatchingForm)").fadeIn();
         // $("html, body").animate({ scrollTop: $(".card:has(#goodsDispatchingForm)").offset().top }, -300);
     });
+<<<<<<< HEAD
         //Rack Viewing Modals
     $("#rackTable tbody").on("click", "tr", function () {
         const $row = $(this);
@@ -297,6 +433,49 @@ $(document).ready(function () {
         $("#view-rack-createDate").text($row.data("createDate") || "-");
         $("#viewRackModal").modal("show");
     });
+=======
+
+    // Enable/disable row inputs based on checkbox
+    $(document).on('change', '#receivingTable input[type="checkbox"].big-checkbox', function () {
+        const $row = $(this).closest('tr');
+        const enabled = $(this).is(':checked');
+        $row.find('input[type="text"]').prop('disabled', !enabled);
+
+        // Get Pallet Size and Date Received from summary/details
+        let palletSize = $("#details-pallet_size").text() || $("#pallet_size").val();
+        let dateReceived = $("#details-date").text() || $("#date").val();
+
+        // If checked, set Qty to Receive and Date Received
+        if (enabled) {
+            $row.find('input[type="text"]').eq(1).val(palletSize); // Qty to Receive
+            $row.find('td').eq(7).text(dateReceived); // Date Received cell
+        } else {
+            $row.find('input[type="text"]').eq(1).val('');
+            $row.find('td').eq(7).text(''); // Clear Date Received
+        }
+    });
+
+    // Select All / Unselect All logic
+    $("#btnSelectAll").on("click", function () {
+        const checkboxes = $("#receivingTable input[type='checkbox'].big-checkbox");
+        const allChecked = checkboxes.length > 0 && checkboxes.filter(":checked").length === checkboxes.length;
+
+        if (allChecked) {
+            checkboxes.prop('checked', false).trigger('change');
+            $(this).find('span').text('Select all');
+            $(this).find('i').removeClass('bi-x-circle-fill').addClass('bi-check-circle-fill');
+        } else {
+            checkboxes.prop('checked', true).trigger('change');
+            $(this).find('span').text('Unselect all');
+            $(this).find('i').removeClass('bi-check-circle-fill').addClass('bi-x-circle-fill');
+        }
+    });
+
+    // When populating table rows, make sure inputs are disabled by default
+    // Example row (inside your AJAX success):
+    // <td><input type="text" class="form-control" value="" disabled></td>
+    // <td><input type="text" class="form-control text-end" value="" disabled></td>
+>>>>>>> c62679298258dca6919fffe064497660a5fcc13a
 });
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -381,6 +560,67 @@ document.addEventListener("DOMContentLoaded", function () {
         filterOptions(whseSelect, siteSelect.value);
         filterOptions(baySelect, siteSelect.value);
     }
+
+    // Auto-fill Lot when typing in Job / CO
+    const jobcoInput = document.getElementById('jobco');
+    const lotInput = document.getElementById('lot');
+    if (jobcoInput && lotInput) {
+        jobcoInput.addEventListener('input', function () {
+            lotInput.value = this.value ? this.value + '-1' : '';
+        });
+    }
+
+    $("#jobco").on("input", function () {
+        const job = $(this).val();
+        let rssite = $("#rssite").val() || $("input[name='rssite']").val();
+        if (!rssite) return;
+
+        $.ajax({
+            url: window.appUrl + '/irms/whse-goodsreceiving/job-item-details',
+            method: 'POST',
+            data: {
+                job: job,
+                rssite: rssite,
+                _token: $('input[name="_token"]').val()
+            },
+            success: function (data) {
+                if (data.length > 0) {
+                    $("#item").val(data[0].item || '');
+                    $("#um").val(data[0].u_m || '');
+                    // $("#item-desc").text(data[0].description || '');
+                    // $("#item-desc-ext").text(data[0].Uf_itemdesc_ext || '');
+                    let itemdesc;
+                    if (data[0].description && data[0].Uf_itemdesc_ext) {
+                        itemdesc = data[0].description + ' - ' + data[0].Uf_itemdesc_ext;
+                    } else if (data[0].description) {
+                        itemdesc = data[0].description;
+                    } else if (data[0].Uf_itemdesc_ext) {
+                        itemdesc = data[0].Uf_itemdesc_ext;
+                    } else {
+                        itemdesc = '';
+                    }
+                    $("#desc").val(itemdesc);
+
+                    let palletSize = data[0].Uf_Item_PalletSize;
+                    let palletSizeNum = parseFloat(palletSize);
+                    if (isNaN(palletSizeNum) || palletSizeNum === 0) {
+                        palletSize = "0";
+                    } else if (palletSizeNum % 1 === 0) {
+                        palletSize = palletSizeNum.toString();
+                    } else {
+                        palletSize = palletSizeNum.toFixed(2).replace(/\.00$/, "");
+                    }
+                    $("#pallet_size").val(palletSize);
+                    // $("#pallet_size").val(data[0].Uf_Item_PalletSize || '');
+                } else {
+                    $("#item").val('');
+                    $("#um").val('');
+                    $("#item-desc").text('');
+                    $("#pallet_size").val('');
+                }
+            }
+        });
+    });
 });
 
 

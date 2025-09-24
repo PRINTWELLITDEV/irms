@@ -26,7 +26,7 @@
             </div>
 
             <div class="content-body">
-                <div class="row justify-content-center">
+                <div class="row justify-content">
                     <div class="col-12 col-md-8 col-lg-9">
                         <div class="card mb-3 shadow-sm">
                             <div class="card-header bg-danger text-white">
@@ -36,35 +36,71 @@
                                 <!-- Add this style block at the top of your form or in your main CSS -->
                                 <style>
                                     .input-group-text.fixed-label {
-                                        min-width: 110px;
+                                        min-width: 120px;
                                         justify-content: flex-end;
                                     }
                                 </style>
 
                                 <form id="goodsDispatchingForm" method="POST" action="{{ route('goodsdispatching.process') }}">
                                     @csrf
+                                    @if(auth()->user()->userid === 'sa')
+                                    <div class="row g-3 align-items-center">
+                                        <div class="col-md-6 col-12 mb-3">
+                                            <div class="input-group">
+                                                <span class="input-group-text fixed-label" id="rssite-label">Site:</span>
+                                                <select name="rssite" id="rssite" class="form-select" required>
+                                                    <option disabled selected>Select Site</option>
+                                                    @foreach($sites as $site)
+                                                        <option value="{{ $site->rssite }}" {{ old('rssite') == $site->rssite ? 'selected' : '' }}>
+                                                            {{ $site->rssite_desc }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @else
+                                        <input type="hidden" name="rssite" id="rssite" value="{{ auth()->user()->rssite }}" readonly>
+                                    @endif
+                                    @error('rssite') <div class="text-danger small">{{ $message }}</div> @enderror
+
+                                    <!-- Date -->
                                     <div class="row g-3 align-items-center">
                                         <div class="col-md-6 col-12">
                                             <div class="input-group">
-                                                <span class="input-group-text fixed-label" id="date-label">Date:</span>
+                                                <span class="input-group-text fixed-label" id="date-label">
+                                                    <span class="text-danger me-1">*</span>Date:
+                                                </span>
                                                 <input type="date" class="form-control" id="date" name="date" value="{{ date('Y-m-d') }}" required>
                                             </div>
                                         </div>
                                         <div class="col-md-6 col-12">
                                             <div class="input-group">
-                                                <span class="input-group-text fixed-label" id="whse-label">Warehouse:</span>
-                                                <select class="form-select" id="whse" name="whse" required>
-                                                    <option value="">Select Warehouse</option>
-                                                    <option value="FBIC-B8">FBIC-B8</option>
-                                                    <!-- Add more options as needed -->
+                                                <span class="input-group-text fixed-label" id="rswhse-label">
+                                                    <span class="text-danger me-1">*</span>Warehouse:
+                                                </span>
+                                                <select name="rswhse" id="rswhse" class="form-select" required>
+                                                    <option disabled selected>Select Warehouse</option>
+                                                    @foreach($warehouses as $rswhse)
+                                                        @if(auth()->user()->userid === 'sa' || $rswhse->rssite === auth()->user()->rssite)
+                                                            <option value="{{ $rswhse->rswhse }}" data-site="{{ $rswhse->rssite }}">
+                                                                {{ $rswhse->rswhse }} - {{ $rswhse->name }}
+                                                            </option>
+                                                        @endif
+                                                    @endforeach
                                                 </select>
                                             </div>
+                                            @error('rswhse') <div class="text-danger small">{{ $message }}</div> @enderror
                                         </div>
                                     </div>
+
+                                    <!-- Job / CO and Lot -->
                                     <div class="row g-3 align-items-center mt-2">
                                         <div class="col-md-6 col-12">
                                             <div class="input-group">
-                                                <span class="input-group-text fixed-label" id="jobco-label">Job / CO:</span>
+                                                <span class="input-group-text fixed-label" id="jobco-label">
+                                                    <span class="text-danger me-1">*</span>Job / CO:
+                                                </span>
                                                 <input type="text" class="form-control" id="jobco" name="jobco" required>
                                             </div>
                                         </div>
@@ -79,7 +115,7 @@
                                         <div class="col-md-12 col-12">
                                             <div class="input-group">
                                                 <span class="input-group-text fixed-label" id="item-label">Item:</span>
-                                                <input type="text" class="form-control" id="item" name="item" readonly>
+                                                <input type="text" class="form-control bg-secondary bg-opacity-10" id="item" name="item" readonly>
                                             </div>
                                             <small class="text-muted" id="item-desc"></small>
                                         </div>
@@ -88,32 +124,45 @@
                                     <div class="row g-3 align-items-center mt-2">
                                         <div class="col-md-6 col-12">
                                             <div class="input-group">
-                                                <span class="input-group-text fixed-label" id="pallet-size-label">Pallet Size:</span>
+                                                <span class="input-group-text fixed-label" id="pallet-size-label">
+                                                    <span class="text-danger me-1">*</span>Pallet Size:
+                                                </span>
                                                 <input type="number" class="form-control" id="pallet_size" name="pallet_size">
                                             </div>
                                         </div>
                                         <div class="col-md-6 col-12">
                                             <div class="input-group">
                                                 <span class="input-group-text fixed-label" id="um-label">U/M:</span>
-                                                <input type="text" class="form-control" id="um" name="um" readonly>
+                                                <input type="text" class="form-control bg-secondary bg-opacity-10" id="um" name="um" readonly>
                                             </div>
                                         </div>
                                     </div>
+                                    <!-- Bay No and Doc No -->
                                     <div class="row g-3 align-items-center mt-2">
                                         <div class="col-md-6 col-12">
                                             <div class="input-group">
-                                                <span class="input-group-text fixed-label" id="baynum-label">Bay No.:</span>
-                                                <select class="form-select" id="baynum" name="baynum">
-                                                    <option value="">Select Bay</option>
-                                                    <option value="A1">A1</option>
-                                                    <!-- Add more options as needed -->
+                                                <span class="input-group-text fixed-label" id="rsbaynum-label">
+                                                    <span class="text-danger me-1">*</span>Bay No.:
+                                                </span>
+                                                <select name="rsbaynum" id="rsbaynum" class="form-select" required>
+                                                    <option disabled selected>Select Bay</option>
+                                                    @foreach($baylocs as $bay)
+                                                        @if(auth()->user()->userid === 'sa' || $bay->rssite === auth()->user()->rssite)
+                                                            <option value="{{ $bay->rsbaynum }}" data-site="{{ $bay->rssite }}">
+                                                                {{ $bay->rsbaynum }}
+                                                            </option>
+                                                        @endif
+                                                    @endforeach
                                                 </select>
                                             </div>
+                                            @error('rsbaynum') <div class="text-danger small">{{ $message }}</div> @enderror
                                         </div>
                                         <div class="col-md-6 col-12">
                                             <div class="input-group">
-                                                <span class="input-group-text fixed-label" id="docno-label">Doc No:</span>
-                                                <input type="text" class="form-control" id="docno" name="docno">
+                                                <span class="input-group-text fixed-label" id="docno-label">
+                                                    <span class="text-danger me-1">*</span>Doc No:
+                                                </span>
+                                                <input type="text" class="form-control" id="docno" name="docno" required>
                                             </div>
                                         </div>
                                     </div>
@@ -130,49 +179,72 @@
 
                 <div id="dispatching-details" class="card mb-3 shadow-sm">
                     <div class="card-header bg-secondary text-white">
-                        <h6 class="mb-0">Dispatching Details</h6>
+                        <h5 class="mb-0">Dispatching Details</h5>
                     </div>
                     <div class="card-body">
-                        <button type="button" id="btnBackDispatching" class="btn btn-danger d-flex align-items-center me-2 mb-3">
+                        <button type="button" id="btnBackDispatching" class="btn btn-danger d-flex align-items-center mb-2">
                             <i class="bi bi-arrow-left d-sm-inline me-2"></i>
                             <span class="d-md-inline">Back</span>
                         </button>
-                        <div class="table-responsive bg-secondary bg-opacity-75 p-3 rounded">
-                            <table class="table table-borderless">
-                                <tbody>
-                                    <tr>
-                                        <th width="5%" class="text-end">Date</th>
-                                        <th width="1%">:</th>
-                                        <td colspan=4>June 11, 2025</td>
-                                    </tr>
-                                    <tr>
-                                        <th width="5%" class="text-end">Warehouse</th>
-                                        <th width="1%">:</th>
-                                        <td colspan=4>FBIC-B8</td>
-                                    </tr>
-                                    <tr>
-                                        <th width="5%" class="text-end">Job / CO</th>
-                                        <th width="1%">:</th>
-                                        <td width="20%">JOB12345</td>
-                                        <th width="5%" class="text-end">Lot</th>
-                                        <th width="1%">:</th>
-                                        <td>LOT12345</td>
-                                    </tr>
-                                    <tr>
-                                        <th class="text-end">Item</th>
-                                        <th width="1%">:</th>
-                                        <td colspan=4>ITEM001</td>
-                                    </tr>
-                                    <tr>
-                                        <th class="text-end">Bay</th>
-                                        <th width="1%">:</th>
-                                        <td>BAY001</td>
-                                        <th class="text-end">Doc No</th>
-                                        <th width="1%">:</th>
-                                        <td>DOC12345</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        <div class="bg-secondary bg-opacity-50 p-2 mb-3 rounded">
+                            <form id="dispatching-details-form">
+                                <div class="bg-light p-3 rounded shadow-sm">
+                                    <div class="row mb-2">
+                                        @if(auth()->user()->userid === 'sa')
+                                        <div class="col-12">
+                                            <span class="fw-bold">Site:</span>
+                                            <span id="details-site" class="ms-2"></span>
+                                        </div>
+                                        @endif
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-6">
+                                            <span class="fw-bold">Date:</span>
+                                            <span id="details-date" class="ms-2"></span>
+                                        </div>
+                                        <div class="col-6">
+                                            <span class="fw-bold">Warehouse:</span>
+                                            <span id="details-warehouse" class="ms-2"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-6">
+                                            <span class="fw-bold">Job / CO:</span>
+                                            <span id="details-jobco" class="ms-2"></span>
+                                        </div>
+                                        <div class="col-6">
+                                            <span class="fw-bold">Lot:</span>
+                                            <span id="details-lot" class="ms-2"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-12">
+                                            <span class="fw-bold">Item:</span>
+                                            <span id="details-item" class="ms-2"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-6">
+                                            <span class="fw-bold">Pallet Size:</span>
+                                            <span id="details-pallet_size" class="ms-2"></span>
+                                        </div>
+                                        <div class="col-6">
+                                            <span class="fw-bold">U/M:</span>
+                                            <span id="details-um" class="ms-2"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-6">
+                                            <span class="fw-bold">Bay No.:</span>
+                                            <span id="details-bay" class="ms-2"></span>
+                                        </div>
+                                        <div class="col-6">
+                                            <span class="fw-bold">Doc No:</span>
+                                            <span id="details-docno" class="ms-2"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <button type="button" id="btnSelectAll" class="btn btn-outline-dark d-flex align-items-center me-2">
@@ -180,7 +252,7 @@
                                 <span class="d-md-inline">Select all</span>
                             </button>
                             <button type="button" id="btnDispatch" class="btn btn-success d-flex align-items-center">
-                                <i class="bi bi-box-arrow-in-down d-sm-inline me-2"></i>
+                                <i class="bi bi-box-arrow-left d-sm-inline me-2"></i>
                                 <span class="d-md-inline">Dispatch</span>
                             </button>
                         </div>
@@ -190,7 +262,7 @@
                                 .table input[type="checkbox"].big-checkbox {
                                     width: 24px;
                                     height: 24px;
-                                    accent-color: #174700ff; /* Bootstrap primary */
+                                    accent-color: #174700ff;
                                     cursor: pointer;
                                 }
                             </style>

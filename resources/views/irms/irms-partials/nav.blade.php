@@ -2,7 +2,7 @@
     use Illuminate\Support\Facades\Auth;
     $user = Auth::user();
 @endphp
-<nav class="app-header navbar navbar-expand bg-body">
+<nav class="app-header navbar navbar-expand bg-body sticky-top">
     <div class="container-fluid">
         <ul class="navbar-nav">
             <li class="nav-item">
