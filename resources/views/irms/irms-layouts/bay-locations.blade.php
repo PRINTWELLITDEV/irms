@@ -43,8 +43,8 @@
                                     </div>
                                 </div>
                                 <div class="table-responsive">
-                                    <table id="bayloc-table" class="table table-striped table-bordered table-hover align-middle">
-                                        <thead class="table-dark text-center">
+                                    <table id="bayloc-table" class="table table-striped table-bordered table-hover align-middle display">
+                                        <thead class="text-center">
                                             <tr>
                                                 @if(auth()->user()->userid === 'sa')
                                                 <th width="5%">Site</th>
@@ -57,7 +57,7 @@
                                         </thead>
                                         <tbody>
                                             @forelse($baylocs as $bay)
-                                                <tr>
+                                                <tr data-bs-toggle="modal" data-bs-target="#viewBayModal" data-rsbaynum="{{ $bay->rsbaynum }}" data-createddate="{{ \Carbon\Carbon::parse($bay->createdate)->format('d M Y | h:i A') }}" data-createdby="{{ $bay->name }}">
                                                     @if(auth()->user()->userid === 'sa')
                                                     <td class="text-center align-middle">
                                                         <img src="{{ asset($bay->logo_pic_url) }}" alt="logo" class="mx-auto d-block" width="40" height="40" style="object-fit:contain;vertical-align:middle;">
@@ -86,9 +86,53 @@
         </div>
     </div>
 
+    <!-- View Modal -->
+     <div class="modal fade" id="viewBayModal" tabindex="-1" aria-labelledby="viewBayModalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-md">
+            <div class="modal-content">
+
+                    <div class="modal-header bg-info text-white">
+                        <h1 class="modal-title fs-5" id="viewBayModalTitle">View Bay Location</h1>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <table class="table table-responsive mb-0 table-borderless">
+                            <tbody>
+                                <tr>
+                                    <th>Bay Number:</th>
+                                    <td id="view-bay-number">
+                                        <!-- <span id="view-bay-number">-</span> -->
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Created Date:</th>
+                                    <td id="view-created-date">
+                                        <!-- <span id="view-created-date">-</span> -->
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Created By:</th>
+                                    <td id="view-created-by">
+                                        <!-- <span id="view-created-by">-</span> -->
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" data-bs-dismiss="modal" class="btn btn-secondary">Close</button>
+                    </div>
+
+            </div>
+        </div>
+     </div>
+
+
     <!-- Add Bay Modal -->
     <div class="modal fade" id="addBayModal" tabindex="-1" aria-labelledby="addBayLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-l">
+        <div class="modal-dialog modal-dialog-centered modal-md">
             <div class="modal-content">
                 <form action="{{ route('baylocs.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
@@ -97,7 +141,7 @@
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        
+
                         <div class="mb-3">
                             @if(auth()->user()->userid === 'sa')
                             <div class="input-group">
@@ -133,5 +177,7 @@
             </div>
         </div>
     </div>
+
+
 
 @endsection

@@ -43,8 +43,8 @@
                                     </div>
                                 </div>
                                 <div class="table-responsive">
-                                    <table id="warehouse-table" class="table table-striped table-bordered table-hover align-middle">
-                                        <thead class="table-dark text-center">
+                                    <table id="warehouse-table" class="table table-striped table-bordered table-hover align-middle display">
+                                        <thead class="table-light text-center">
                                             <tr>
 
                                                 @if(auth()->user()->userid === 'sa')
@@ -111,7 +111,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        
+
                         <div class="mb-3">
                             @if(auth()->user()->userid === 'sa')
                             <div class="input-group">
@@ -151,7 +151,7 @@
                             </div>
                             @error('addr') <div class="text-danger small">{{ $message }}</div> @enderror
                         </div>
-                          
+
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>

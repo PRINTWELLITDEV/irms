@@ -42,8 +42,8 @@
                             </div>
 
                             <div class="table-responsive">
-                                <table id="rackTable" class="table table-striped table-bordered table-hover align-middle">
-                                    <thead class="table-dark text-center">
+                                <table id="rackTable" class="table table-striped table-bordered table-hover align-middle display">
+                                    <thead class="text-center">
                                     <tr>
                                         @if(auth()->user()->userid === 'sa')
                                         <th>Site</th>
@@ -84,9 +84,59 @@
     </div>
 </div>
 
+<!-- View Modals -->
+<div class="modal fade" id="viewRackModal" tabindex="-1" aria-labelledby="viewRackModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content">
+            <form action="">
+                <div class="modal-header bg-primary text-white">
+                    <h1 class="modal-title fs-5" id="viewRackModalLabel">View Rack Location</h1>
+                    <button type="button" class="btn btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    <table class="table-responsive mb-0">
+                        <tbody>
+                            <tr>
+                                <th>Warehouse</th>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th>Bay No.</th>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th>Location</th>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th>Description</th>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th>Quantity</th>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th>Create Date</th>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
 <!-- Add Rack Location Modal -->
 <div class="modal fade" id="addRackModal" tabindex="-1" aria-labelledby="addRackModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-l">
+    <div class="modal-dialog modal-dialog-centered modal-md">
         <div class="modal-content">
             <form action="{{ route('racklocations.store') }}" method="POST">
                 @csrf
@@ -95,7 +145,7 @@
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    
+
                     <div class="mb-3">
                         @if(auth()->user()->userid === 'sa')
                         <div class="input-group">
@@ -160,7 +210,7 @@
                         </div>
                         @error('rsdec') <div class="text-danger small">{{ $message }}</div> @enderror
                     </div>
-                    
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
