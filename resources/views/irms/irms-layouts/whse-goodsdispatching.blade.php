@@ -83,7 +83,7 @@
                                             </div>
                                             <small class="text-muted" id="item-desc"></small>
                                         </div>
-                                        
+
                                     </div>
                                     <div class="row g-3 align-items-center mt-2">
                                         <div class="col-md-6 col-12">

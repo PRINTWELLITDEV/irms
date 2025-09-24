@@ -53,13 +53,13 @@ Route::prefix('irms')->middleware('check.session')->group(function () {
     Route::get('/rack-locations', [RsLocationController::class, 'index'])->name('racklocations.index');
     Route::post('/rack-locations/store', [RsLocationController::class, 'store'])->name('racklocations.store');
 
-    //Item Locations 
+    //Item Locations
     Route::get('/item-locations', fn() => view('irms/irms-layouts/item-locations'))->name('irms.itemlocations');
-    
+
     // Goods Receiving
     Route::get('/whse-goodsreceiving', fn() => view('irms/irms-layouts/whse-goodsreceiving'))->name('irms.whse-goodsreceiving');
     Route::post('/whse-goodsreceiving/process', [RsGoodsReceivingController::class, 'process'])->name('goodsreceiving.process');
-    
+
     // Goods Dispatching
     Route::get('/whse-goodsdispatching', fn() => view('irms/irms-layouts/whse-goodsdispatching'))->name('irms.whse-goodsdispatching');
     Route::post('/whse-goodsdispatching/process', [RsGoodsReceivingController::class, 'process'])->name('goodsdispatching.process');
