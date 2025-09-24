@@ -1,6 +1,6 @@
 @extends('irms/irms-partials.app')
 
-@section('title', 'IRMS Receiving')
+@section('title', 'IRMS Dispatching')
 
 @section('content')
 
@@ -11,7 +11,7 @@
                 <div class="container-fluid">
                     <div class="row align-items-center">
                         <div class="col mb-3 d-flex align-items-center">
-                            <h1 class="d-inline-block mb-0 me-3">Warehouse Goods Receiving</h1>
+                            <h1 class="d-inline-block mb-0 me-3">Warehouse Goods Dispatching</h1>
                             @if(session('success'))
                                 <div id="alerts" class="alert alert-success py-1 px-3 mb-0" style="transition: opacity 0.7s;">
                                     {{ session('success') }}
@@ -29,8 +29,8 @@
                 <div class="row justify-content-center">
                     <div class="col-12 col-md-8 col-lg-9">
                         <div class="card mb-3 shadow-sm">
-                            <div class="card-header bg-primary text-white">
-                                <h5 class="mb-0">Goods Receiving Form</h5>
+                            <div class="card-header bg-danger text-white">
+                                <h5 class="mb-0">Goods Dispatching Form</h5>
                             </div>
                             <div class="card-body">
                                 <!-- Add this style block at the top of your form or in your main CSS -->
@@ -41,7 +41,7 @@
                                     }
                                 </style>
 
-                                <form id="goodsReceivingForm" method="POST" action="{{ route('goodsreceiving.process') }}">
+                                <form id="goodsDispatchingForm" method="POST" action="{{ route('goodsdispatching.process') }}">
                                     @csrf
                                     <div class="row g-3 align-items-center">
                                         <div class="col-md-6 col-12">
@@ -119,7 +119,7 @@
                                     </div>
                                     <div class="row mt-4">
                                         <div class="col text-center">
-                                            <button type="submit" class="btn btn-primary px-5">Process</button>
+                                            <button type="submit" class="btn btn-danger px-5">Process</button>
                                         </div>
                                     </div>
                                 </form>
@@ -128,12 +128,12 @@
                     </div>
                 </div>
 
-                <div id="receiving-details" class="card mb-3 shadow-sm">
+                <div id="dispatching-details" class="card mb-3 shadow-sm">
                     <div class="card-header bg-secondary text-white">
-                        <h6 class="mb-0">Receiving Details</h6>
+                        <h6 class="mb-0">Dispatching Details</h6>
                     </div>
                     <div class="card-body">
-                        <button type="button" id="btnBackReceiving" class="btn btn-danger d-flex align-items-center me-2 mb-3">
+                        <button type="button" id="btnBackDispatching" class="btn btn-danger d-flex align-items-center me-2 mb-3">
                             <i class="bi bi-arrow-left d-sm-inline me-2"></i>
                             <span class="d-md-inline">Back</span>
                         </button>
@@ -179,9 +179,9 @@
                                 <i class="bi bi-check-circle-fill d-sm-inline me-2"></i>
                                 <span class="d-md-inline">Select all</span>
                             </button>
-                            <button type="button" id="btnReceive" class="btn btn-success d-flex align-items-center">
+                            <button type="button" id="btnDispatch" class="btn btn-success d-flex align-items-center">
                                 <i class="bi bi-box-arrow-in-down d-sm-inline me-2"></i>
-                                <span class="d-md-inline">Receive</span>
+                                <span class="d-md-inline">Dispatch</span>
                             </button>
                         </div>
                         <div class="table-responsive">
@@ -195,17 +195,17 @@
                                 }
                             </style>
 
-                            <table id="receivingTable" class="table table-striped table-bordered align-middle w-100">
+                            <table id="dispatchingTable" class="table table-striped table-bordered align-middle w-100">
                                 <thead class="table-light">
                                     <tr>
                                         <th width="5%"></th>
                                         <th width="5%">Select</th>
                                         <th>Rs Loc No.</th>
                                         <th>Pallet Tag No.</th>
-                                        <th>Qty to Receive</th>
+                                        <th>Qty to Dispatch</th>
                                         <th>Qty on Hand</th>
                                         <th>U/M</th>
-                                        <th>Date Received</th>
+                                        <th>Date Dispatched</th>
                                     </tr>
                                 </thead>
                                 <tbody>

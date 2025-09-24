@@ -12,7 +12,7 @@
                 <div class="card card-primary">
                     <div class="card-body">
 
-                        <div class="row mb-3">
+                        <div class="row mb-3 wrap">
                             <div class="col-3 text-center text-white align-items-center">
                                 <div class="small-box bg-success">
                                     <div class="inner">

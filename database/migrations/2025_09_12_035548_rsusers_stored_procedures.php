@@ -16,20 +16,23 @@ return new class extends Migration
             CREATE PROCEDURE sp_view_users
             AS
             SELECT
-				u.rssite,
-				u.userid,
-				u.name,
-				u.email,
-				u.level,
-				u.gender,
-				u.create_date,
-				u.profile_pic_url,
+                u.rssite,
+                u.userid,
+                u.name,
+                u.email,
+                u.department,
+                u.section,
+                u.position,
+                u.level,
+                u.gender,
+                u.create_date,
+                u.profile_pic_url,
                 s.rssite_desc,
                 s.address,
-				s.logo_pic_url
+                s.logo_pic_url
             FROM rsusers u
             INNER JOIN irms_site s ON s.rssite = u.rssite
-			WHERE u.userid <> \'sa\';
+            WHERE u.userid <> \'sa\';
         ');
 
         // Create sp_add_user (use @param, no IN, and use NVARCHAR for Unicode support)
@@ -41,6 +44,9 @@ return new class extends Migration
                 @name NVARCHAR(255),
                 @password NVARCHAR(255),
                 @email NVARCHAR(255),
+                @department NVARCHAR(255),
+                @section NVARCHAR(255),
+                @position NVARCHAR(255),
                 @gender NVARCHAR(10),
                 @profile_pic_url NVARCHAR(255),
                 @create_date DATETIME,
@@ -49,9 +55,9 @@ return new class extends Migration
             AS
             BEGIN
                 INSERT INTO rsusers (
-                    rssite, userid, name, password, email, gender, profile_pic_url, create_date, updated_by, level
+                    rssite, userid, name, password, email, department, section, position, gender, profile_pic_url, create_date, updated_by, level
                 ) VALUES (
-                    @rssite, @userid, @name, @password, @email, @gender, @profile_pic_url, @create_date, @created_by, @level
+                    @rssite, @userid, @name, @password, @email, @department, @section, @position, @gender, @profile_pic_url, @create_date, @created_by, @level
                 );
             END
         ');
@@ -63,17 +69,20 @@ return new class extends Migration
                 @userid NVARCHAR(8)
             AS
             SELECT
-				u.rssite,
-				u.userid,
-				u.name,
-				u.email,
-				u.level,
-				u.gender,
-				u.create_date,
-				u.profile_pic_url,
+                u.rssite,
+                u.userid,
+                u.name,
+                u.email,
+                u.department,
+                u.section,
+                u.position,
+                u.level,
+                u.gender,
+                u.create_date,
+                u.profile_pic_url,
                 s.rssite_desc,
                 s.address,
-				s.logo_pic_url
+                s.logo_pic_url
             FROM rsusers u
             INNER JOIN irms_site s ON s.rssite = u.rssite
             WHERE u.userid = @userid;
@@ -86,6 +95,9 @@ return new class extends Migration
                 @userid NVARCHAR(8),
                 @name NVARCHAR(255),
                 @email NVARCHAR(255),
+                @department NVARCHAR(255),
+                @section NVARCHAR(255),
+                @position NVARCHAR(255),
                 @gender NVARCHAR(10),
                 @profile_pic_url NVARCHAR(255),
                 @level INT,
@@ -98,6 +110,9 @@ return new class extends Migration
                     rssite = @rssite,
                     name = @name,
                     email = @email,
+                    department = @department,
+                    section = @section,
+                    position = @position,
                     gender = @gender,
                     profile_pic_url = @profile_pic_url,
                     level = @level,
