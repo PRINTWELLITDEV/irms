@@ -306,7 +306,7 @@ $(document).ready(function () {
                                 <td><input type="text" class="form-control text-end" value="" disabled></td>
                                 <td class="text-end">${qtyOnHand}</td>
                                 <td>${um}</td>
-                                <td>${dateReceived}</td>
+                                <td></td>
                             </tr>
                         `);
                     });
@@ -388,14 +388,17 @@ $(document).ready(function () {
         const enabled = $(this).is(':checked');
         $row.find('input[type="text"]').prop('disabled', !enabled);
 
-        // If checked, set Qty to Receive to Pallet Size
+        // Get Pallet Size and Date Received from summary/details
+        let palletSize = $("#details-pallet_size").text() || $("#pallet_size").val();
+        let dateReceived = $("#details-date").text() || $("#date").val();
+
+        // If checked, set Qty to Receive and Date Received
         if (enabled) {
-            // Get Pallet Size from summary/details
-            let palletSize = $("#details-pallet_size").text() || $("#pallet_size").val();
-            $row.find('input[type="text"]').eq(1).val(palletSize); // Qty to Receive is the second input in the row
+            $row.find('input[type="text"]').eq(1).val(palletSize); // Qty to Receive
+            $row.find('td').eq(7).text(dateReceived); // Date Received cell
         } else {
-            // If unchecked, clear Qty to Receive
             $row.find('input[type="text"]').eq(1).val('');
+            $row.find('td').eq(7).text(''); // Clear Date Received
         }
     });
 

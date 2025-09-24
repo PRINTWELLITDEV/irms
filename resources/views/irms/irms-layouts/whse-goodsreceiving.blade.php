@@ -169,7 +169,7 @@
                                         <div class="col-md-6 col-12">
                                             <div class="input-group">
                                                 <span class="input-group-text fixed-label" id="docno-label">
-                                                    Doc No: <small><span class="text-secondary ms-1 small">(Optional)</span></small>
+                                                    Doc No: <small><span class="text-secondary ms-1 small">(Opt.)</span></small>
                                                 </span>
                                                 <input type="text" class="form-control" id="docno" name="docno">
                                             </div>

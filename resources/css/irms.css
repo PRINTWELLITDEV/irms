@@ -129,6 +129,7 @@ table.table td img {
     border-color: #198754;
 } */
 
+
 /* Make modal profile image bigger and responsive */
 .profile-pic {
     width: 180px !important;
@@ -262,6 +263,27 @@ table.table td img {
     .profile-pic {
         width: 200px !important;
         height: 200px !important;
+    }
+}
+
+/* Responsive: stack receiving-details-form fields vertically on small screens */
+@media (max-width: 576px) {
+    #receiving-details-form .row.mb-2 {
+        flex-direction: column !important;
+        font-size: 0.9rem;
+        margin-bottom: 1rem !important;
+    }
+    #receiving-details-form .col-6, 
+    #receiving-details-form .col-12 {
+        width: 100% !important;
+        max-width: 100% !important;
+        flex: 0 0 100% !important;
+    }
+    #receiving-details-form .fw-bold {
+        margin-bottom: 2px !important;
+    }
+    #receiving-details-form .ms-2 {
+        margin-left: 0 !important;
     }
 }
 
