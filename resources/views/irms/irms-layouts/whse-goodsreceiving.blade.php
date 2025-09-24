@@ -41,15 +41,21 @@
                                     }
                                 </style>
 
+                                @php
+                                    $isSa = auth()->user()->userid === 'sa';
+                                @endphp
+
                                 <form id="goodsReceivingForm" method="POST" action="{{ route('goodsreceiving.process') }}">
                                     @csrf
-                                    @if(auth()->user()->userid === 'sa')
+                                    @if($isSa)
                                     <div class="row g-3 align-items-center">
                                         <div class="col-md-6 col-12 mb-3">
                                             <div class="input-group">
-                                                <span class="input-group-text fixed-label" id="rssite-label">Site:</span>
+                                                <span class="input-group-text fixed-label" id="rssite-label">
+                                                    <span class="text-danger me-1">*</span>Site:
+                                                </span>
                                                 <select name="rssite" id="rssite" class="form-select" required>
-                                                    <option disabled selected>Select Site</option>
+                                                    <option value="" disabled selected>Select Site</option>
                                                     @foreach($sites as $site)
                                                         <option value="{{ $site->rssite }}" {{ old('rssite') == $site->rssite ? 'selected' : '' }}>
                                                             {{ $site->rssite_desc }}
@@ -62,7 +68,7 @@
                                     @else
                                         <input type="hidden" name="rssite" id="rssite" value="{{ auth()->user()->rssite }}" readonly>
                                     @endif
-                                    @error('rssite') <div class="text-danger small">{{ $message }}</div> @enderror
+                                    
 
                                     <!-- Date -->
                                     <div class="row g-3 align-items-center">
@@ -71,7 +77,7 @@
                                                 <span class="input-group-text fixed-label" id="date-label">
                                                     <span class="text-danger me-1">*</span>Date:
                                                 </span>
-                                                <input type="date" class="form-control" id="date" name="date" value="{{ date('Y-m-d') }}" required>
+                                                <input type="date" class="form-control" id="date" name="date" value="{{ date('Y-m-d') }}" {{ $isSa ? 'disabled' : '' }} required>
                                             </div>
                                         </div>
                                         <div class="col-md-6 col-12">
@@ -80,9 +86,9 @@
                                                     <span class="text-danger me-1">*</span>Warehouse:
                                                 </span>
                                                 <select name="rswhse" id="rswhse" class="form-select" required>
-                                                    <option disabled selected>Select Warehouse</option>
+                                                    <option value=""disabled selected>Select Warehouse</option>
                                                     @foreach($warehouses as $rswhse)
-                                                        @if(auth()->user()->userid === 'sa' || $rswhse->rssite === auth()->user()->rssite)
+                                                        @if($isSa || $rswhse->rssite === auth()->user()->rssite)
                                                             <option value="{{ $rswhse->rswhse }}" data-site="{{ $rswhse->rssite }}">
                                                                 {{ $rswhse->rswhse }} - {{ $rswhse->name }}
                                                             </option>
@@ -90,7 +96,7 @@
                                                     @endforeach
                                                 </select>
                                             </div>
-                                            @error('rswhse') <div class="text-danger small">{{ $message }}</div> @enderror
+                                            
                                         </div>
                                     </div>
 
@@ -112,22 +118,25 @@
                                         </div>
                                     </div>
                                     <div class="row g-3 align-items-center mt-2">
-                                        <div class="col-md-12 col-12">
+                                        <div class="col-md-6 col-12">
                                             <div class="input-group">
                                                 <span class="input-group-text fixed-label" id="item-label">Item:</span>
                                                 <input type="text" class="form-control bg-secondary bg-opacity-10" id="item" name="item" readonly>
+                                                
                                             </div>
-                                            <small class="text-muted" id="item-desc"></small>
                                         </div>
-                                        
+                                        <div class="col-md-12 col-12">
+                                            <div class="input-group">
+                                                <span class="input-group-text fixed-label" id="desc-label">Description:</span>
+                                                <input type="text" class="form-control bg-secondary bg-opacity-10" id="desc" name="desc" readonly>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="row g-3 align-items-center mt-2">
                                         <div class="col-md-6 col-12">
                                             <div class="input-group">
-                                                <span class="input-group-text fixed-label" id="pallet-size-label">
-                                                    <span class="text-danger me-1">*</span>Pallet Size:
-                                                </span>
-                                                <input type="number" class="form-control" id="pallet_size" name="pallet_size">
+                                                <span class="input-group-text fixed-label" id="pallet-size-label">Pallet Size:</span>
+                                                <input type="number" class="form-control bg-secondary bg-opacity-10" id="pallet_size" name="pallet_size">
                                             </div>
                                         </div>
                                         <div class="col-md-6 col-12">
@@ -145,9 +154,9 @@
                                                     <span class="text-danger me-1">*</span>Bay No.:
                                                 </span>
                                                 <select name="rsbaynum" id="rsbaynum" class="form-select" required>
-                                                    <option disabled selected>Select Bay</option>
+                                                    <option value=""disabled selected>Select Bay</option>
                                                     @foreach($baylocs as $bay)
-                                                        @if(auth()->user()->userid === 'sa' || $bay->rssite === auth()->user()->rssite)
+                                                        @if($isSa || $bay->rssite === auth()->user()->rssite)
                                                             <option value="{{ $bay->rsbaynum }}" data-site="{{ $bay->rssite }}">
                                                                 {{ $bay->rsbaynum }}
                                                             </option>
@@ -155,15 +164,16 @@
                                                     @endforeach
                                                 </select>
                                             </div>
-                                            @error('rsbaynum') <div class="text-danger small">{{ $message }}</div> @enderror
+                                            
                                         </div>
                                         <div class="col-md-6 col-12">
                                             <div class="input-group">
                                                 <span class="input-group-text fixed-label" id="docno-label">
-                                                    <span class="text-danger me-1">*</span>Doc No:
+                                                    Doc No: <small><span class="text-secondary ms-1 small">(Optional)</span></small>
                                                 </span>
-                                                <input type="text" class="form-control" id="docno" name="docno" required>
+                                                <input type="text" class="form-control" id="docno" name="docno">
                                             </div>
+                                            
                                         </div>
                                     </div>
                                     <div class="row mt-4">
@@ -179,7 +189,7 @@
 
                 <div id="receiving-details" class="card mb-3 shadow-sm">
                     <div class="card-header bg-secondary text-white">
-                        <h6 class="mb-0">Receiving Details</h6>
+                        <h5 class="mb-0">Receiving Details</h5>
                     </div>
                     <div class="card-body">
                         <button type="button" id="btnBackReceiving" class="btn btn-danger d-flex align-items-center mb-2">
@@ -187,53 +197,68 @@
                             <span class="d-md-inline">Back</span>
                         </button>
                         <div class="bg-secondary bg-opacity-50 p-2 mb-3 rounded">
-                            
                             <form id="receiving-details-form">
-                                <div class="bg-light p-2 rounded shadow-sm">
-                                    <ul class="list-group list-group-flush">
+                                <div class="bg-light p-3 rounded shadow-sm">
+                                    <div class="row mb-2">
                                         @if(auth()->user()->userid === 'sa')
-                                        <li class="list-group-item align-items-center">
+                                        <div class="col-12">
                                             <span class="fw-bold">Site:</span>
-                                            <span id="details-site"></span>
-                                        </li>
+                                            <span id="details-site" class="ms-2"></span>
+                                        </div>
                                         @endif
-                                        <li class="list-group-item align-items-center">
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-6">
                                             <span class="fw-bold">Date:</span>
-                                            <span id="details-date"></span>
-                                        </li>
-                                        <li class="list-group-item align-items-center">
+                                            <span id="details-date" class="ms-2"></span>
+                                        </div>
+                                        <div class="col-6">
                                             <span class="fw-bold">Warehouse:</span>
-                                            <span id="details-warehouse"></span>
-                                        </li>
-                                        <li class="list-group-item align-items-center">
+                                            <span id="details-warehouse" class="ms-2"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-6">
                                             <span class="fw-bold">Job / CO:</span>
-                                            <span id="details-jobco"></span>
-                                        </li>
-                                        <li class="list-group-item align-items-center">
+                                            <span id="details-jobco" class="ms-2"></span>
+                                        </div>
+                                        <div class="col-6">
                                             <span class="fw-bold">Lot:</span>
-                                            <span id="details-lot"></span>
-                                        </li>
-                                        <li class="list-group-item align-items-center">
+                                            <span id="details-lot" class="ms-2"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-12">
                                             <span class="fw-bold">Item:</span>
-                                            <span id="details-item"></span>
-                                        </li>
-                                        <li class="list-group-item align-items-center">
+                                            <span id="details-item" class="ms-2"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-12">
+                                            <span class="fw-bold">Description:</span>
+                                            <span id="details-description" class="ms-2"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-6">
                                             <span class="fw-bold">Pallet Size:</span>
-                                            <span id="details-pallet_size"></span>
-                                        </li>
-                                        <li class="list-group-item align-items-center">
+                                            <span id="details-pallet_size" class="ms-2"></span>
+                                        </div>
+                                        <div class="col-6">
                                             <span class="fw-bold">U/M:</span>
-                                            <span id="details-um"></span>
-                                        </li>
-                                        <li class="list-group-item align-items-center">
+                                            <span id="details-um" class="ms-2"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-6">
                                             <span class="fw-bold">Bay No.:</span>
-                                            <span id="details-bay"></span>
-                                        </li>
-                                        <li class="list-group-item align-items-center">
+                                            <span id="details-bay" class="ms-2"></span>
+                                        </div>
+                                        <div class="col-6">
                                             <span class="fw-bold">Doc No:</span>
-                                            <span id="details-docno"></span>
-                                        </li>
-                                    </ul>
+                                            <span id="details-docno" class="ms-2"></span>
+                                        </div>
+                                    </div>
                                 </div>
                             </form>
                         </div>
@@ -261,47 +286,18 @@
                             <table id="receivingTable" class="table table-striped table-bordered align-middle w-100">
                                 <thead class="table-light">
                                     <tr>
-                                        <th width="5%"></th>
+                                        <th width="2%"></th>
                                         <th width="5%">Select</th>
-                                        <th>Rs Loc No.</th>
-                                        <th>Pallet Tag No.</th>
-                                        <th>Qty to Receive</th>
-                                        <th>Qty on Hand</th>
-                                        <th>U/M</th>
-                                        <th>Date Received</th>
+                                        <th width="25%">Rs Loc No.</th>
+                                        <th width="25%">Pallet Tag No.</th>
+                                        <th width="10%">Qty to Receive</th>
+                                        <th width="10%">Qty on Hand</th>
+                                        <th width="5%">U/M</th>
+                                        <th width="10%">Date Received</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td class="text-center align-middle"><input type="checkbox" name="select_row[]" value="1" class="big-checkbox"></td>
-                                        <td>RL-001</td>
-                                        <td>PT-1001</td>
-                                        <td>50</td>
-                                        <td>120</td>
-                                        <td>PC</td>
-                                        <td>2025-06-11</td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td class="text-center align-middle"><input type="checkbox" name="select_row[]" value="2" class="big-checkbox"></td>
-                                        <td>RL-002</td>
-                                        <td>PT-1002</td>
-                                        <td>30</td>
-                                        <td>80</td>
-                                        <td>PC</td>
-                                        <td>2025-06-11</td>
-                                    </tr>
-                                    <tr>
-                                        <td>3</td>
-                                        <td class="text-center align-middle"><input type="checkbox" name="select_row[]" value="3" class="big-checkbox"></td>
-                                        <td>RL-003</td>
-                                        <td>PT-1003</td>
-                                        <td>20</td>
-                                        <td>60</td>
-                                        <td>PC</td>
-                                        <td>2025-06-10</td>
-                                    </tr>
+                                    <!-- JS will populate rows here -->
                                 </tbody>
                             </table>
                         </div>
@@ -311,4 +307,7 @@
         </div>
     </div>
 
+    <script>
+        window.appUrl = "{{ rtrim(config('app.url'), '/') }}";
+    </script>
 @endsection

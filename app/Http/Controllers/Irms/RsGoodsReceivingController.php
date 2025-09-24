@@ -43,10 +43,39 @@ class RsGoodsReceivingController extends Controller
             'docno' => 'nullable|string|max:30',
         ]);
 
-        // Save to database or call a stored procedure here as needed
-        // Example:
-        // \DB::table('goods_receiving')->insert($validated);
+        
 
         return redirect()->back()->with('success', 'Goods receiving processed successfully!');
+    }
+
+    /**
+     * Get job item details via AJAX.
+     */
+    public function getJobItemDetails(Request $request)
+    {
+        $rssite = $request->input('rssite');
+        $job = $request->input('job');
+
+        $results = \DB::select('EXEC sp_get_job_item_details @rssite = ?, @job = ?', [
+            $rssite, $job
+        ]);
+
+        return response()->json($results);
+    }
+
+    /**
+     * Get RS location list via AJAX.
+     */
+    public function getRsLocList(Request $request)
+    {
+        $rssite = $request->input('rssite');
+        $rswhse = $request->input('rswhse');
+        $rsbaynum = $request->input('rsbaynum');
+
+        $results = \DB::select('EXEC sp_get_rsloc_list @rssite = ?, @rswhse = ?, @rsbaynum = ?', [
+            $rssite, $rswhse, $rsbaynum
+        ]);
+
+        return response()->json($results);
     }
 }
