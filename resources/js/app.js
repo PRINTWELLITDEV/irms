@@ -311,7 +311,7 @@ $(document).ready(function () {
                         `);
                     });
                 } else {
-                    tbody.append('<tr><td colspan="8" class="text-center">No RS Location found.</td></tr>');
+                    tbody.append('<tr><td colspan="8" class="text-center">No Rack Location found.</td></tr>');
                 }
             }
         });

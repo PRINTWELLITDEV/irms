@@ -288,7 +288,7 @@
                                     <tr>
                                         <th width="2%"></th>
                                         <th width="5%">Select</th>
-                                        <th width="25%">Rs Loc No.</th>
+                                        <th width="25%">Rack Location</th>
                                         <th width="25%">Pallet Tag No.</th>
                                         <th width="10%">Qty to Receive</th>
                                         <th width="10%">Qty on Hand</th>
