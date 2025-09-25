@@ -43,7 +43,7 @@
 
                                 <div class="table-responsive">
                                     <table id="users-table" class="table table-striped table-hover align-middle">
-                                        <thead class="table-dark text-center">
+                                        <thead class="table-light text-center">
                                             <tr>
                                                 <!-- <th width="5%">Profile</th> -->
                                                 <th>Users</th>
