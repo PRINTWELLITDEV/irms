@@ -160,7 +160,7 @@
                             </select>
                         </div>
                         @else
-                            <input type="hidden" name="rssite" id="rssite" value="{{ auth()->user()->site }}" readonly>
+                            <input type="hidden" name="rssite" id="rssite" value="{{ auth()->user()->rssite }}" readonly>
                         @endif
                         @error('rssite') <div class="text-danger small">{{ $message }}</div> @enderror
                     </div>
@@ -206,9 +206,9 @@
                     <div class="mb-3">
                         <div class="input-group">
                             <span class="input-group-text"><i class="bi bi-card-text"></i></span>
-                            <input type="text" class="form-control" id="rsdec" name="rsdec" value="{{ old('rsdec') }}" maxlength="13" placeholder="Description">
+                            <input type="text" class="form-control" id="rsdesc" name="rsdesc" value="{{ old('rsdesc') }}" maxlength="13" placeholder="Description">
                         </div>
-                        @error('rsdec') <div class="text-danger small">{{ $message }}</div> @enderror
+                        @error('rsdesc') <div class="text-danger small">{{ $message }}</div> @enderror
                     </div>
 
                 </div>

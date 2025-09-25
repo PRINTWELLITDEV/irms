@@ -594,10 +594,6 @@ document.addEventListener("DOMContentLoaded", function () {
             baySelect.selectedIndex = 0;
             filterOptions(whseSelect, this.value);
             filterOptions(baySelect, this.value);
-
-            // Blank other inputs
-            if (rslocInput) rslocInput.value = "";
-            if (rsdecInput) rsdecInput.value = "";
         });
     }
 
