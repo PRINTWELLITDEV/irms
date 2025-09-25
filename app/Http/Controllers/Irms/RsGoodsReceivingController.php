@@ -49,6 +49,37 @@ class RsGoodsReceivingController extends Controller
     }
 
     /**
+     * Process the goods received.
+     */
+    public function processGoodsReceived(Request $request)
+    {
+        $rows = $request->input('rows'); // Array of checked rows with all needed fields
+
+        foreach ($rows as $row) {
+            \DB::statement('EXEC sp_goodsreceived_process 
+                @rssite = ?, @rswhse = ?, @rsbaynum = ?, @rsloc = ?, @rspallet_num = ?, @job = ?, @item = ?, @desc = ?, @um = ?, @qty = ?, @datercvd = ?, @docnum = ?, @createdby = ?',
+                [
+                    $row['rssite'],
+                    $row['rswhse'],
+                    $row['rsbaynum'],
+                    $row['rsloc'],
+                    $row['rspallet_num'],
+                    $row['job'],
+                    $row['item'],
+                    $row['desc'],
+                    $row['um'],
+                    $row['qty'],
+                    $row['datercvd'],
+                    $row['docnum'],
+                    auth()->user()->userid
+                ]
+            );
+        }
+
+        return response()->json(['success' => true, 'message' => 'Goods received successfully!']);
+    }
+
+    /**
      * Get job item details via AJAX.
      */
     public function getJobItemDetails(Request $request)
@@ -71,9 +102,11 @@ class RsGoodsReceivingController extends Controller
         $rssite = $request->input('rssite');
         $rswhse = $request->input('rswhse');
         $rsbaynum = $request->input('rsbaynum');
+        $item = $request->input('item');
+        $pallet_size = $request->input('pallet_size');
 
-        $results = \DB::select('EXEC sp_get_rsloc_list @rssite = ?, @rswhse = ?, @rsbaynum = ?', [
-            $rssite, $rswhse, $rsbaynum
+        $results = \DB::select('EXEC sp_get_rsloc_list @rssite = ?, @rswhse = ?, @rsbaynum = ?, @item = ?, @pallet_size = ?', [
+            $rssite, $rswhse, $rsbaynum, $item, $pallet_size
         ]);
 
         return response()->json($results);

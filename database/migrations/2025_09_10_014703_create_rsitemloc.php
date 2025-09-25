@@ -25,7 +25,7 @@ return new class extends Migration
             $table->dateTime('datercvd')->nullable();
             $table->dateTime('createdate')->nullable();
             $table->string('createdby', 30)->nullable();
-            $table->primary(['rssite', 'rswhse', 'rsloc'], 'PK_rsitemloc');
+            // $table->primary(['rssite', 'rswhse', 'rsloc'], 'PK_rsitemloc');
         });
     }
 

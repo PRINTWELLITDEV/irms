@@ -71,7 +71,9 @@ return new class extends Migration
             CREATE PROCEDURE sp_get_rsloc_list
                 @rssite NVARCHAR(8),
                 @rswhse NVARCHAR(10),
-                @rsbaynum NVARCHAR(5)
+                @rsbaynum NVARCHAR(5),
+                @item NVARCHAR(30),
+                @pallet_size DECIMAL(19,8)
             AS
             BEGIN
                 SET NOCOUNT ON;
@@ -92,9 +94,67 @@ return new class extends Migration
                     l.rssite = @rssite
                     AND l.rswhse = @rswhse
                     AND l.rsbaynum = @rsbaynum
+                    AND l.qty < @pallet_size
             END
         ");
         
+        DB::unprepared("
+            IF OBJECT_ID('sp_goodsreceived_process', 'P') IS NOT NULL
+                DROP PROCEDURE sp_goodsreceived_process;
+        ");
+        DB::unprepared("
+			CREATE PROCEDURE sp_goodsreceived_process
+                @rssite NVARCHAR(8),
+                @rswhse NVARCHAR(10),
+                @rsbaynum NVARCHAR(5),
+                @rsloc NVARCHAR(15),
+                @rspallet_num NVARCHAR(10),
+                @job NVARCHAR(10),
+                @item NVARCHAR(30),
+                @desc NVARCHAR(60),
+                @um NVARCHAR(3),
+                @qty DECIMAL(19,8),
+                @datercvd DATETIME,
+                @docnum NVARCHAR(20),
+                @createdby NVARCHAR(30)
+            AS
+            BEGIN
+                SET NOCOUNT ON;
+
+                -- Insert into rsitemloc
+                INSERT INTO rsitemloc (
+                    rssite, rswhse, rsbaynum, rsloc, rspallet_num, job, item, [desc], um, qty, datercvd, createdate, createdby
+                ) VALUES (
+                    @rssite, @rswhse, @rsbaynum, @rsloc, @rspallet_num, @job, @item, @desc, @um, @qty, @datercvd, GETDATE(), @createdby
+                );
+
+                -- Insert into rstrans
+                INSERT INTO rstrans (
+                    rssite, trans_num, trxdate, trxtype, item, [desc], job, rswhse, rsloc, rspallet_num, qty, um, docnum, createdby, createdate
+                ) VALUES (
+                    @rssite,
+                    (SELECT ISNULL(MAX(trans_num),0)+1 FROM rstrans WHERE rssite=@rssite), -- auto-increment per site
+                    @datercvd,
+                    'R', -- R for Receiving
+                    @item,
+                    @desc,
+                    @job,
+                    @rswhse,
+                    @rsloc,
+                    @rspallet_num,
+                    @qty,
+                    @um,
+                    @docnum,
+                    @createdby,
+                    GETDATE()
+                );
+
+                -- Update rslocation qty
+                UPDATE rslocation
+                SET qty = ISNULL(qty,0) + @qty
+                WHERE rssite = @rssite AND rswhse = @rswhse AND rsloc = @rsloc;
+            END
+        ");
     }
 
     /**
@@ -109,6 +169,10 @@ return new class extends Migration
         DB::unprepared("
             IF OBJECT_ID('sp_get_rsloc_list', 'P') IS NOT NULL
                 DROP PROCEDURE sp_get_rsloc_list;
+        ");
+        DB::unprepared("
+            IF OBJECT_ID('sp_goodsreceived_process', 'P') IS NOT NULL
+                DROP PROCEDURE sp_goodsreceived_process;
         ");
     }
 };

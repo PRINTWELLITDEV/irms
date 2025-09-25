@@ -55,7 +55,6 @@ $(document).ready(function () {
     // Users table
     const usersTable = $("#users-table").DataTable({
         fixedHeader: true,
-        pageLength: 15,
         columnControl: ["order", ['colVisDropdown']],
         ordering: {
             indicators: false,
@@ -73,7 +72,6 @@ $(document).ready(function () {
     // Warehouse table
     const warehouseTable = $("#warehouse-table").DataTable({
         fixedHeader: true,
-        pageLength: 15,
         columnControl: ["order", ['colVisDropdown']],
         ordering: {
             indicators: false,
@@ -91,7 +89,6 @@ $(document).ready(function () {
     // Bay Location table
     const bayLocationTable = $("#bayloc-table").DataTable({
         fixedHeader: true,
-        pageLength: 15,
         columnControl: ["order", ['colVisDropdown']],
         ordering: {
             indicators: false,
@@ -122,7 +119,6 @@ $(document).ready(function () {
     // Rack Location table
     const rackTable = $("#rackTable").DataTable({
         fixedHeader: true,
-        pageLength: 15,
         columnControl: ["order", ['colVisDropdown']],
         ordering: {
             indicators: false,
@@ -334,6 +330,8 @@ $(document).ready(function () {
                 rssite: rssite,
                 rswhse: rswhse,
                 rsbaynum: rsbaynum,
+                item: $("#item").val(),
+                pallet_size: $("#pallet_size").val(),
                 _token: $('input[name="_token"]').val()
             },
             success: function (data) {
@@ -476,6 +474,73 @@ $(document).ready(function () {
     // Example row (inside your AJAX success):
     // <td><input type="text" class="form-control" value="" disabled></td>
     // <td><input type="text" class="form-control text-end" value="" disabled></td>
+    $("#btnReceive").on("click", function () {
+        const rows = [];
+        $("#receivingTable tbody tr").each(function () {
+            const $row = $(this);
+            const checked = $row.find('input[type="checkbox"].big-checkbox').is(':checked');
+            if (checked) {
+                rows.push({
+                    rssite: $("#rssite").val() || $("input[name='rssite']").val(),
+                    rswhse: $("#rswhse").val(),
+                    rsbaynum: $("#rsbaynum").val(),
+                    rsloc: $row.find('td').eq(2).text(),
+                    rspallet_num: $row.find('input[type="text"]').eq(0).val(),
+                    job: $("#jobco").val(),
+                    item: $("#item").val(),
+                    desc: $("#desc").val(),
+                    um: $("#um").val(),
+                    qty: $row.find('input[type="text"]').eq(1).val(),
+                    datercvd: $("#date").val(),
+                    docnum: $("#docno").val()
+                });
+            }
+        });
+
+        if (rows.length === 0) {
+            alert("Please select at least one row to receive.");
+            return;
+        }
+
+        $.ajax({
+            url: window.appUrl + '/irms/whse-goodsreceiving/process-goods-received',
+            method: 'POST',
+            data: {
+                rows: rows,
+                _token: $('input[name="_token"]').val()
+            },
+            success: function (response) {
+                // Show modal
+                $("body").append(`
+                    <div class="modal fade" id="goodsReceivedModal" tabindex="-1" aria-labelledby="goodsReceivedModalLabel" aria-hidden="true">
+                      <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                          <div class="modal-header bg-success text-white">
+                            <h5 class="modal-title" id="goodsReceivedModalLabel">Success</h5>
+                          </div>
+                          <div class="modal-body text-center">
+                            <i class="bi bi-check-circle-fill text-success" style="font-size:2rem;"></i>
+                            <p class="mt-3 mb-0">Goods received successfully!</p>
+                          </div>
+                          <div class="modal-footer justify-content-center">
+                            <button type="button" class="btn btn-success px-4" id="modalRedirectBtn">OK</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                `);
+                $("#goodsReceivedModal").modal("show");
+                $("#modalRedirectBtn").on("click", function () {
+                    $("#goodsReceivedModal").modal("hide");
+                    window.location.href = window.appUrl + "/irms/whse-goodsreceiving";
+                });
+                // Remove modal from DOM after hidden
+                $("#goodsReceivedModal").on("hidden.bs.modal", function () {
+                    $(this).remove();
+                });
+            }
+        });
+    });
 });
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -599,7 +664,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     } else {
                         itemdesc = '';
                     }
-                    $("#desc").val(itemdesc);
+                    $("#desc").val(itemdesc || '');
 
                     let palletSize = data[0].Uf_Item_PalletSize;
                     let palletSizeNum = parseFloat(palletSize);
@@ -615,7 +680,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 } else {
                     $("#item").val('');
                     $("#um").val('');
-                    $("#item-desc").text('');
+                    $("#desc").val('');
                     $("#pallet_size").val('');
                 }
             }
@@ -1048,3 +1113,5 @@ document.addEventListener("DOMContentLoaded", function () {
         initDashboardCharts();
     }
 })();
+
+
