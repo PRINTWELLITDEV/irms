@@ -84,12 +84,51 @@ class RsGoodsReceivingController extends Controller
      */
     public function getJobItemDetails(Request $request)
     {
+        // using stored procedure
+        // $rssite = $request->input('rssite');
+        // $job = $request->input('job');
+
+        // $results = \DB::select('EXEC sp_get_job_item_details @rssite = ?, @job = ?', [
+        //     $rssite, $job
+        // ]);
+
+        // using query builder
+
         $rssite = $request->input('rssite');
         $job = $request->input('job');
+        $suffix = 0;
 
-        $results = \DB::select('EXEC sp_get_job_item_details @rssite = ?, @job = ?', [
-            $rssite, $job
-        ]);
+        // Map rssite to connection name
+        $connections = [
+            'PI-SP' => 'pisp_con',
+            'FP-SP' => 'fpsp_con',
+            'PIGRP-SP' => 'pigrpsp_con',
+        ];
+        $connection = $connections[$rssite] ?? null;
+
+        if (!$connection) {
+            return response()->json(['error' => 'Invalid site'], 400);
+        }
+
+        if (empty($job)) {
+            return response()->json([]);
+        }
+
+        $results = \DB::connection($connection)
+            ->table('job as j')
+            ->join('item as i', 'i.item', '=', 'j.item')
+            ->select(
+                'j.job',
+                'j.suffix',
+                'j.item',
+                'i.description',
+                'i.Uf_itemdesc_ext',
+                'i.u_m',
+                'i.Uf_Item_PalletSize'
+            )
+            ->where('j.job', $job)
+            ->where('j.suffix', $suffix)
+            ->get();
 
         return response()->json($results);
     }

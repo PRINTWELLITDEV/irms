@@ -26,13 +26,13 @@ return new class extends Migration
 
                 -- Map rssite to database name
                 IF @rssite = 'PI-SP'
-                    SET @db = 'PI-SP_App';
+                    SET @db = '[192.168.2.4].[PI-SP_App]'
                 ELSE IF @rssite = 'FP-SP'
-                    SET @db = 'FP-SP_App';
+                    SET @db = '[192.168.2.4].[FP-SP_App]'
                 ELSE IF @rssite = 'PIGRP-SP'
-                    SET @db = 'PIGRP-SP_App';
+                    SET @db = '[192.168.2.4].[PIGRP-SP_App]'
                 ELSE
-                    SET @db = NULL;
+                    SET @db = NULL
 
                 IF @db IS NOT NULL
                 BEGIN
@@ -49,9 +49,7 @@ return new class extends Migration
                             i.Uf_Item_PalletSize
                         FROM [' + @db + '].dbo.job j
                         INNER JOIN [' + @db + '].dbo.item i ON i.item = j.item
-                        WHERE 
-                          j.job = @job
-                          AND j.suffix = 0
+                        WHERE (@job IS NULL OR j.job = @job) AND j.suffix = 0
                     ';
 
                     EXEC sp_executesql @sql, N'@job NVARCHAR(20)', @job;
