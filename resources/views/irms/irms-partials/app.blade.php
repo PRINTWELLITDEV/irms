@@ -43,6 +43,19 @@
     <script>
         window.sessionCheckUrl = "{{ url('/irms/session') }}";
         window.loginUrl = "{{ route('login') }}";
+
+        setInterval(function () {
+            const currentPath = window.location.pathname;
+            if (currentPath.indexOf("/irms") !== -1) {
+                fetch(window.sessionCheckUrl)
+                .then((response) => response.json())
+                .then((data) => {
+                    if (!data.valid) {
+                        window.location.href = window.loginUrl;
+                    }
+                });
+            }
+        }, 5000);
     </script>
 </body>
 </html>

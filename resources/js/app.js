@@ -2,19 +2,6 @@ import "bootstrap";
 
 import "admin-lte";
 
-setInterval(function () {
-    const currentPath = window.location.pathname;
-    if (currentPath.indexOf("/irms") !== -1) {
-        fetch(window.sessionCheckUrl)
-            .then((response) => response.json())
-            .then((data) => {
-                if (!data.valid) {
-                    window.location.href = window.loginUrl;
-                }
-            });
-    }
-}, 5000);
-
 $.extend($.fn.dataTable.defaults, {
     paging: true,
     info: true,
