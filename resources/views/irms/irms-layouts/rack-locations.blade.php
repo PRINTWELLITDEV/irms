@@ -136,7 +136,7 @@
                             </tr>
                             <tr class="text-center">
                                 <th>Create Date: </th>
-                                <td>
+                                <td class="ps-4">
                                     <span id="view-rack-createDate">-</span>
                                 </td>
                             </tr>

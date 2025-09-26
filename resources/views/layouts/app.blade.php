@@ -18,6 +18,84 @@
         'resources/css/irms.css',
         'resources/js/app.js',
     ])
+
+    <style>
+        /* smoother content reveal */
+        .content-wrapper {
+            opacity: 0;
+            transform: translateY(8px);
+            transition: opacity 450ms cubic-bezier(.22,1,.36,1), transform 450ms cubic-bezier(.22,1,.36,1);
+            will-change: opacity, transform;
+        }
+        .content-wrapper.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* smoother card hover */
+        .card {
+            transition: transform 350ms cubic-bezier(.22,1,.36,1), box-shadow 350ms cubic-bezier(.22,1,.36,1);
+            will-change: transform, box-shadow;
+        }
+        .card:hover {
+            transform: translateY(-6px) translateZ(0);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+        }
+
+        /* small improvement for modals / dropdowns */
+        .dropdown-menu, .modal-content {
+            transition: transform 260ms cubic-bezier(.22,1,.36,1), opacity 260ms ease;
+            will-change: transform, opacity;
+        }
+
+        /* Sidebar width + smooth collapse */
+        .app-sidebar {
+            width: 230px;
+            transition: width 300ms cubic-bezier(.22,1,.36,1), opacity 250ms ease;
+            will-change: width, opacity;
+            overflow: hidden;
+        }
+
+        /* collapsed (icon-only) width */
+        .app-sidebar.sidebar-mini {
+            width: 64px;
+        }
+
+        /* temporary class during transition (optional) */
+        .app-sidebar.sidebar-collapsing {
+            transition-duration: 320ms;
+        }
+
+        /* hide text labels when collapsed */
+        .app-sidebar.sidebar-mini .brand-text,
+        .app-sidebar.sidebar-mini .sidebar-wrapper .nav-link p,
+        .app-sidebar.sidebar-mini .sidebar-wrapper .nav-header {
+            opacity: 0;
+            transition: opacity 180ms ease;
+            pointer-events: none;
+        }
+
+        /* keep icons visible and centered */
+        .app-sidebar .nav-icon,
+        .app-sidebar .brand-image {
+            transition: transform 300ms ease;
+        }
+
+        /* adjust content area if you use left margin */
+        .content-wrapper {
+            transition: margin-left 300ms cubic-bezier(.22,1,.36,1);
+        }
+
+        /* when collapsed reduce left offset (adjust selector according your layout) */
+        body.sidebar-mini .content-wrapper {
+            margin-left: 64px; /* match collapsed aside width */
+        }
+
+        /* when expanded ensure original offset */
+        body:not(.sidebar-mini) .content-wrapper {
+            margin-left: 230px; /* match full aside width */
+        }
+    </style>
 </head>
 <body>
     <div id="app">

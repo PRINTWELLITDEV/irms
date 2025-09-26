@@ -42,8 +42,8 @@
                                         <span class="input-group-text"><i class="bi bi-search"></i></span>
                                     </div>
                                 </div>
-                                <div class="table-responsive">
-                                    <table id="bayloc-table" class="table table-striped table-bordered table-hover align-middle display">
+                                <div class="table-responsive h-100">
+                                    <table id="bayloc-table" class="table table-striped table-bordered table-hover align-middle display ">
                                         <thead class="text-center">
                                             <tr>
                                                 @if(auth()->user()->userid === 'sa')
