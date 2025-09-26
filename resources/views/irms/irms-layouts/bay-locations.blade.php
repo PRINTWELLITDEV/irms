@@ -101,20 +101,20 @@
                             <tbody>
                                 <tr>
                                     <th>Bay Number:</th>
-                                    <td id="view-bay-number">
-                                        <!-- <span id="view-bay-number">-</span> -->
+                                    <td>
+                                        <span id="view-bay-number">-</span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>Created Date:</th>
-                                    <td id="view-created-date">
-                                        <!-- <span id="view-created-date">-</span> -->
+                                    <td>
+                                        <span id="view-created-date">-</span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>Created By:</th>
-                                    <td id="view-created-by">
-                                        <!-- <span id="view-created-by">-</span> -->
+                                    <td>
+                                        <span id="view-created-by">-</span>
                                     </td>
                                 </tr>
                             </tbody>

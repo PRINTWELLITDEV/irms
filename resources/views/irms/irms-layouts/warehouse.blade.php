@@ -43,7 +43,7 @@
                                     </div>
                                 </div>
                                 <div class="table-responsive">
-                                    <table id="warehouse-table" class="table table-striped table-bordered table-hover align-middle display">
+                                    <table id="warehouse-table" class="table table-striped table-bordered table-hover align-middle display nowrap">
                                         <thead class="table-light text-center">
                                             <tr>
 

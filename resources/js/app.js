@@ -67,7 +67,7 @@ $(document).ready(function () {
     const warehouseTable = $("#warehouse-table").DataTable({
         fixedHeader: true,
         pageLength: 15,
-        columnControl: ["order", ['colVisDropdown']],
+        columnControl: ["order", ['searchList']],
         ordering: {
             indicators: false,
             handler: true,
@@ -85,7 +85,7 @@ $(document).ready(function () {
     const bayLocationTable = $("#bayloc-table").DataTable({
         fixedHeader: true,
         pageLength: 15,
-        columnControl: ["order", ['colVisDropdown']],
+        columnControl: ["order", ['searchList']],
         ordering: {
             indicators: false,
             handler: true,
@@ -102,7 +102,7 @@ $(document).ready(function () {
     });
 
     //Bay Location Table row selection function
-    $("#rackTable").on("click", "tr", function () {
+    $("#bayloc-table").on("click", "tr", function () {
         const $row = $(this);
 
         $("#view-bay-number").text($row.data("rsbaynum") || "-");
@@ -115,8 +115,8 @@ $(document).ready(function () {
     // Rack Location table
     const rackTable = $("#rackTable").DataTable({
         fixedHeader: true,
-        pageLength: 15,
-        columnControl: ["order", ['colVisDropdown']],
+        pageLength: 12,
+        columnControl: ["order", ['searchList']],
         ordering: {
             indicators: false,
             handler: true,
@@ -372,7 +372,7 @@ $(document).ready(function () {
         $("#receiving-details").hide();
         $(".card:has(#goodsReceivingForm)").fadeIn();
     });
-    
+
     // Reset fields when site is changed
     $("#rssite").on("change", function () {
         // Set date to today

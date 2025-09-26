@@ -58,21 +58,28 @@
                                     </thead>
                                     <tbody>
                                     @forelse($racklocs as $rsloc)
-                                        <tr>
-                                            @if(auth()->user()->userid === 'sa')
-                                            <td class="text-center align-middle">
-                                                <img src="{{ asset($rsloc->logo_pic_url) }}" alt="logo" class="mx-auto d-block" width="40" height="40" style="object-fit:contain;vertical-align:middle;">
-                                            </td>
-                                            @endif
-                                            <td>{{ $rsloc->rswhse }}</td>
-                                            <td>{{ $rsloc->rsbaynum }}</td>
-                                            <td>{{ $rsloc->rsloc }}</td>
-                                            <td>{{ $rsloc->rsdesc }}</td>
-                                            <td>{{ number_format($rsloc->qty, 0) }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($rsloc->createdate)->format('d M Y | h:i A') }}</td>
+                                        <tr
+                                            data-rswhse="{{ $rsloc->rswhse }}"
+                                            data-rsbaynum="{{ $rsloc->rsbaynum }}"
+                                            data-rsloc="{{ $rsloc->rsloc }}"
+                                            data-rsdesc="{{ $rsloc->rsdesc }}"
+                                            data-qty="{{ number_format($rsloc->qty, 0) }}"
+                                            data-create-date="{{ \Carbon\Carbon::parse($rsloc->createdate)->format('d M Y | h:i A') }}"
+                                        >
+                                             @if(auth()->user()->userid === 'sa')
+                                             <td class="text-center align-middle">
+                                                 <img src="{{ asset($rsloc->logo_pic_url) }}" alt="logo" class="mx-auto d-block" width="40" height="40" style="object-fit:contain;vertical-align:middle;">
+                                             </td>
+                                             @endif
+                                             <td>{{ $rsloc->rswhse }}</td>
+                                             <td>{{ $rsloc->rsbaynum }}</td>
+                                             <td>{{ $rsloc->rsloc }}</td>
+                                             <td>{{ $rsloc->rsdesc }}</td>
+                                             <td>{{ number_format($rsloc->qty, 0) }}</td>
+                                             <td>{{ \Carbon\Carbon::parse($rsloc->createdate)->format('d M Y | h:i A') }}</td>
                                         </tr>
-                                    @empty
-                                    @endforelse
+                                     @empty
+                                     @endforelse
                                     </tbody>
                                 </table>
                             </div>
@@ -95,38 +102,50 @@
                 </div>
                 <div class="modal-body">
 
-                    <table class="table-responsive mb-0">
+                    <table class="table-responsive mb-0 display" id="viewRackModals">
                         <tbody>
-                            <tr>
-                                <th>Warehouse</th>
-                                <td></td>
+                            <tr class="text-center">
+                                <th>Warehouse: </th>
+                                <td>
+                                    <span id="view-rack-warehouse">-</span>
+                                </td>
                             </tr>
-                            <tr>
-                                <th>Bay No.</th>
-                                <td></td>
+                            <tr class="text-center">
+                                <th>Bay No.: </th>
+                                <td>
+                                    <span class="text-end" id="view-rack-baynum">-</span>
+                                </td>
                             </tr>
-                            <tr>
-                                <th>Location</th>
-                                <td></td>
+                            <tr class="text-center">
+                                <th>Location: </th>
+                                <td>
+                                    <span id="view-rack-location">-</span>
+                                </td>
                             </tr>
-                            <tr>
-                                <th>Description</th>
-                                <td></td>
+                            <tr class="text-center">
+                                <th>Description: </th>
+                                <td>
+                                    <span id="view-rack-description">-</span>
+                                </td>
                             </tr>
-                            <tr>
-                                <th>Quantity</th>
-                                <td></td>
+                            <tr class="text-center">
+                                <th>Quantity: </th>
+                                <td>
+                                    <span id="view-rack-quantity">-</span>
+                                </td>
                             </tr>
-                            <tr>
-                                <th>Create Date</th>
-                                <td></td>
+                            <tr class="text-center">
+                                <th>Create Date: </th>
+                                <td>
+                                    <span id="view-rack-createDate">-</span>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary">Close</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
             </form>
         </div>
