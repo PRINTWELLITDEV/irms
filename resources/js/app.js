@@ -54,9 +54,16 @@ $(document).ready(function () {
 
     // Users table
     const usersTable = $("#users-table").DataTable({
-        pageLength: 5,
+        fixedHeader: true,
+        pageLength: 15,
+        columnControl: ["order", ['colVisDropdown']],
+        ordering: {
+            indicators: false,
+            handler: true,
+        },
+        responsive: true,
         language: {
-            emptyTable: "No data available",
+            emptyTable: "No warehouses found",
         },
     });
     $("#userSearch").on("keyup", function () {
