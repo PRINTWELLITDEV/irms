@@ -46,32 +46,30 @@
                                     <table id="bayloc-table" class="table table-striped table-bordered table-hover align-middle display">
                                         <thead class="text-center">
                                             <tr>
-                                                @if(auth()->user()->userid === 'sa')
-                                                <th width="5%">Site</th>
-                                                @endif
                                                 <th>Bay Number</th>
-                                                <th>Created Date</th>
-                                                <th width="10%">Created By</th>
+                                                @if(auth()->user()->userid === 'sa')
+                                                <th width="10%">Site</th>
+                                                @endif
+                                                <!-- <th width="10%">Created Date</th> -->
+                                                <!-- <th width="10%">Created By</th> -->
                                                 <!-- <th width="8%">Action</th>  -->
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @forelse($baylocs as $bay)
                                                 <tr data-bs-toggle="modal" data-bs-target="#viewBayModal" data-rsbaynum="{{ $bay->rsbaynum }}" data-createddate="{{ \Carbon\Carbon::parse($bay->createdate)->format('d M Y | h:i A') }}" data-createdby="{{ $bay->name }}">
+                                                    
+                                                    <td>{{ $bay->rsbaynum }}</td>
+
                                                     @if(auth()->user()->userid === 'sa')
-                                                    <td class="text-center align-middle">
-                                                        <img src="{{ asset($bay->logo_pic_url) }}" alt="logo" class="mx-auto d-block" width="40" height="40" style="object-fit:contain;vertical-align:middle;">
+                                                    <td>
+                                                        {{ $bay->rssite_desc ?? 'N/A' }}
+                                                        <!-- <img src="{{ asset($bay->logo_pic_url) }}" alt="logo" class="mx-auto d-block" width="40" height="40" style="object-fit:contain;vertical-align:middle;"> -->
                                                     </td>
                                                     @endif
-                                                    <td>{{ $bay->rsbaynum }}</td>
-                                                    <td>{{ \Carbon\Carbon::parse($bay->createdate)->format('d M Y | h:i A') }}</td>
-                                                    <td>{{ $bay->name }}</td>
-                                                    <!-- <td class="align-middle text-center">
-                                                        <button type="button" class="btn btn-sm btn-secondary btn-settings"
-                                                                data-baynum="{{ $bay->rsbaynum }}" title="Settings">
-                                                            <i class="bi bi-gear-fill"></i>
-                                                        </button>
-                                                    </td> -->
+                                                    <!-- <td>{{ \Carbon\Carbon::parse($bay->createdate)->format('d M Y - h:i A') }}</td> -->
+                                                    <!-- <td>{{ $bay->name }}</td> -->
+                                                    
                                                 </tr>
                                             @empty
                                             @endforelse

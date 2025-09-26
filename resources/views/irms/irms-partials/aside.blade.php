@@ -10,9 +10,16 @@
         </a>
     </div>
     <div class="sidebar-brand">
-        <span class="brand-text fw-light">
-            {{ \App\Http\Controllers\Irms\IrmsController::getSiteDesc() }}
-        </span>
+        @if(auth()->user()->userid === 'sa')
+            <span class="brand-text fw-light">
+                Super Admin
+            </span>
+        @else
+            <span class="brand-text fw-light">
+                {{ \App\Http\Controllers\Irms\IrmsController::getSiteDesc() }}
+            </span>
+        @endif
+        
     </div>
     <div class="sidebar-wrapper">
         <nav class="mt-2">

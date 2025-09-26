@@ -47,13 +47,14 @@
                                         <thead class="table-light text-center">
                                             <tr>
 
+                                                
+
+                                                <th width="10%">Warehouse</th>
+                                                <th>Description</th>
+                                                <!-- <th width="20%">Address</th> -->
                                                 @if(auth()->user()->userid === 'sa')
                                                 <th width="10%">Site</th>
                                                 @endif
-
-                                                <th width="17%">Warehouse</th>
-                                                <th width="20%">Description</th>
-                                                <th>Address</th>
                                                 <!-- <th width="5%">Action</th> -->
                                             </tr>
                                         </thead>
@@ -64,27 +65,15 @@
                                                     data-rswhse="{{ $whse->rswhse }}"
                                                     data-name="{{ $whse->name }}"
                                                     data-addr="{{ $whse->addr }}">
-                                                    @if(auth()->user()->userid === 'sa')
-                                                    <td class="text-center align-middle">
-                                                        <img src="{{ asset($whse->logo_pic_url) }}" class="me-1" width="40" height="40" style="object-fit:contain;vertical-align:middle;">
-                                                    </td>
-                                                    @endif
                                                     <td>{{ $whse->rswhse }}</td>
                                                     <td>{{ $whse->name }}</td>
-                                                    <td>{{ $whse->addr }}</td>
-                                                    <!-- <td class="text-center">
-                                                        <button type="button"
-                                                            class="btn btn-secondary btn-sm btn-settings"
-                                                            data-bs-toggle="modal"
-                                                            data-bs-target="#warehouseSettingsModal"
-                                                            data-rssite="{{ $whse->rssite }}"
-                                                            data-rssite_desc="{{ $whse->site->rssite_desc ?? $whse->rssite }}"
-                                                            data-rswhse="{{ $whse->rswhse }}"
-                                                            data-name="{{ $whse->name }}"
-                                                            data-addr="{{ $whse->addr }}">
-                                                            <i class="bi bi-gear-fill"></i>
-                                                        </button>
-                                                    </td> -->
+                                                    <!-- <td>{{ $whse->addr }}</td> -->
+                                                    @if(auth()->user()->userid === 'sa')
+                                                    <td>
+                                                        {{ $whse->rssite_desc ?? 'N/A' }}
+                                                        <!-- <img src="{{ asset($whse->logo_pic_url) }}" class="me-1" width="40" height="40" style="object-fit:contain;vertical-align:middle;"> -->
+                                                    </td>
+                                                    @endif
                                                 </tr>
                                             @empty
                                             @endforelse

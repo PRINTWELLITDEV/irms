@@ -101,8 +101,6 @@ $(document).ready(function () {
         $("#view-created-by").text($row.data("createdby") || "-");
     });
 
-
-
     // Rack Location table
     const rackTable = $("#rackTable").DataTable({
         fixedHeader: true,
@@ -560,12 +558,12 @@ document.addEventListener("DOMContentLoaded", function () {
     const rsdecInput = document.getElementById("rsdec");
 
     function filterOptions(select, siteValue) {
+        if (!select) return; // Prevent error if element doesn't exist
         Array.from(select.options).forEach((option) => {
-            if (!option.value) return; // skip placeholder
+            if (!option.value) return;
             option.style.display =
                 option.getAttribute("data-site") === siteValue ? "" : "none";
         });
-        // Reset selection if current value is not visible
         if (
             select.selectedIndex > 0 &&
             select.options[select.selectedIndex].style.display === "none"
@@ -574,39 +572,31 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // Reset warehouse, bay, and other inputs when site changes
-    if (siteSelect) {
+    // When adding event listeners, check if the element exists
+    if (siteSelect && whseSelect && baySelect) {
         siteSelect.addEventListener("change", function () {
             whseSelect.selectedIndex = 0;
             baySelect.selectedIndex = 0;
             filterOptions(whseSelect, this.value);
             filterOptions(baySelect, this.value);
         });
-    }
 
-    // Reset bay and other inputs when warehouse changes
-    if (whseSelect) {
         whseSelect.addEventListener("change", function () {
             baySelect.selectedIndex = 0;
-
-            // Blank other inputs
             if (rslocInput) rslocInput.value = "";
             if (rsdecInput) rsdecInput.value = "";
         });
-    }
 
-    // Reset other inputs when bay changes
-    if (baySelect) {
         baySelect.addEventListener("change", function () {
             if (rslocInput) rslocInput.value = "";
             if (rsdecInput) rsdecInput.value = "";
         });
-    }
 
-    // Initial filter on page load if old value exists
-    if (siteSelect && siteSelect.value) {
-        filterOptions(whseSelect, siteSelect.value);
-        filterOptions(baySelect, siteSelect.value);
+        // Initial filter on page load if old value exists
+        if (siteSelect.value) {
+            filterOptions(whseSelect, siteSelect.value);
+            filterOptions(baySelect, siteSelect.value);
+        }
     }
 
     // Auto-fill Lot when typing in Job / CO
@@ -670,6 +660,13 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 });
+
+$('#viewUserModal, #editUserModal, #viewWarehouseModal, #editWarehouseModal, #viewBayModal, #viewRackModal').on('hide.bs.modal', function () {
+    if (document.activeElement && this.contains(document.activeElement)) {
+        document.activeElement.blur();
+    }
+});
+
 
 
 
@@ -1096,5 +1093,4 @@ document.addEventListener("DOMContentLoaded", function () {
         initDashboardCharts();
     }
 })();
-
 
