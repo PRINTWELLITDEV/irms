@@ -37,7 +37,7 @@ class RsBayLocSeeder extends Seeder
         ];
 
         $fpSpBayData = [];
-        $createdate = Carbon::create(2025, 9, 26);
+        $createdate = "2025-09-26";
 
         foreach ($fpSpBays as $bay) {
             $fpSpBayData[] = [

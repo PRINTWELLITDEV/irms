@@ -9,7 +9,7 @@ class RswhseSeeder extends Seeder
 {
     public function run(): void
     {
-        $createdate = Carbon::create(2025, 9, 26);
+        $createdate = "2025-09-26";
         $data = [
             //Fortune Official Warehouse
             ['rssite' => 'FP-SP', 'rswhse' => 'FBIC-BLDG8', 'name' => 'FBIC-BLDG#8', 'addr' => 'FPC BICUTAN WHSE BLDG #8', 'createdate' => $createdate, 'createdby' => 'sa'],
