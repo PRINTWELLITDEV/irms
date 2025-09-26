@@ -45,15 +45,16 @@
                                 <table id="rackTable" class="table table-striped table-bordered table-hover align-middle display">
                                     <thead class="text-center">
                                     <tr>
+
+                                        <th>Rack Location</th>
+                                        <th width="10%">Warehouse</th>
+                                        <th width="10%">Bay No.</th>
+                                        <!-- <th>Description</th> -->
+                                        <th width="10%">Quantity</th>
                                         @if(auth()->user()->userid === 'sa')
-                                        <th>Site</th>
+                                        <th width="10%">Site</th>
                                         @endif
-                                        <th>Warehouse</th>
-                                        <th>Bay No.</th>
-                                        <th>Location</th>
-                                        <th>Description</th>
-                                        <th>Quantity</th>
-                                        <th>Create Date</th>
+                                        <!-- <th width="10%">Create Date</th> -->
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -66,17 +67,18 @@
                                             data-qty="{{ number_format($rsloc->qty, 0) }}"
                                             data-create-date="{{ \Carbon\Carbon::parse($rsloc->createdate)->format('d M Y | h:i A') }}"
                                         >
-                                             @if(auth()->user()->userid === 'sa')
-                                             <td class="text-center align-middle">
-                                                 <img src="{{ asset($rsloc->logo_pic_url) }}" alt="logo" class="mx-auto d-block" width="40" height="40" style="object-fit:contain;vertical-align:middle;">
-                                             </td>
-                                             @endif
-                                             <td>{{ $rsloc->rswhse }}</td>
-                                             <td>{{ $rsloc->rsbaynum }}</td>
-                                             <td>{{ $rsloc->rsloc }}</td>
-                                             <td>{{ $rsloc->rsdesc }}</td>
-                                             <td>{{ number_format($rsloc->qty, 0) }}</td>
-                                             <td>{{ \Carbon\Carbon::parse($rsloc->createdate)->format('d M Y | h:i A') }}</td>
+                                            <td>{{ $rsloc->rsloc }}</td>
+                                            <td>{{ $rsloc->rswhse }}</td>
+                                            <td>{{ $rsloc->rsbaynum }}</td>
+                                            <!-- <td>{{ $rsloc->rsdesc }}</td> -->
+                                            <td class="text-end me-3">{{ number_format($rsloc->qty, 0) }}</td>
+                                            @if(auth()->user()->userid === 'sa')
+                                            <td>
+                                                {{ $rsloc->rssite_desc ?? 'N/A' }}
+                                                <!-- <img src="{{ asset($rsloc->logo_pic_url) }}" alt="logo" class="mx-auto d-block" width="40" height="40" style="object-fit:contain;vertical-align:middle;"> -->
+                                            </td>
+                                            @endif
+                                            <!-- <td>{{ \Carbon\Carbon::parse($rsloc->createdate)->format('d M Y - h:i A') }}</td> -->
                                         </tr>
                                      @empty
                                      @endforelse
@@ -179,7 +181,7 @@
                             </select>
                         </div>
                         @else
-                            <input type="hidden" name="rssite" id="rssite" value="{{ auth()->user()->site }}" readonly>
+                            <input type="hidden" name="rssite" id="rssite" value="{{ auth()->user()->rssite }}" readonly>
                         @endif
                         @error('rssite') <div class="text-danger small">{{ $message }}</div> @enderror
                     </div>
@@ -225,9 +227,9 @@
                     <div class="mb-3">
                         <div class="input-group">
                             <span class="input-group-text"><i class="bi bi-card-text"></i></span>
-                            <input type="text" class="form-control" id="rsdec" name="rsdec" value="{{ old('rsdec') }}" maxlength="13" placeholder="Description">
+                            <input type="text" class="form-control" id="rsdesc" name="rsdesc" value="{{ old('rsdesc') }}" maxlength="13" placeholder="Description">
                         </div>
-                        @error('rsdec') <div class="text-danger small">{{ $message }}</div> @enderror
+                        @error('rsdesc') <div class="text-danger small">{{ $message }}</div> @enderror
                     </div>
 
                 </div>

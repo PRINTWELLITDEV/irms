@@ -2,19 +2,6 @@ import "bootstrap";
 
 import "admin-lte";
 
-setInterval(function () {
-    const currentPath = window.location.pathname;
-    if (currentPath.indexOf("/irms") !== -1) {
-        fetch(window.sessionCheckUrl)
-            .then((response) => response.json())
-            .then((data) => {
-                if (!data.valid) {
-                    window.location.href = window.loginUrl;
-                }
-            });
-    }
-}, 5000);
-
 $.extend($.fn.dataTable.defaults, {
     paging: true,
     info: true,
@@ -55,7 +42,6 @@ $(document).ready(function () {
     // Users table
     const usersTable = $("#users-table").DataTable({
         fixedHeader: true,
-        pageLength: 15,
         columnControl: ["order", ['colVisDropdown']],
         ordering: {
             indicators: false,
@@ -116,8 +102,6 @@ $(document).ready(function () {
         $("#view-created-date").text($row.data("createdate") || "-");
         $("#view-created-by").text($row.data("createdby") || "-");
     });
-
-
 
     // Rack Location table
     const rackTable = $("#rackTable").DataTable({
@@ -334,6 +318,8 @@ $(document).ready(function () {
                 rssite: rssite,
                 rswhse: rswhse,
                 rsbaynum: rsbaynum,
+                item: $("#item").val(),
+                pallet_size: $("#pallet_size").val(),
                 _token: $('input[name="_token"]').val()
             },
             success: function (data) {
@@ -476,6 +462,73 @@ $(document).ready(function () {
     // Example row (inside your AJAX success):
     // <td><input type="text" class="form-control" value="" disabled></td>
     // <td><input type="text" class="form-control text-end" value="" disabled></td>
+    $("#btnReceive").on("click", function () {
+        const rows = [];
+        $("#receivingTable tbody tr").each(function () {
+            const $row = $(this);
+            const checked = $row.find('input[type="checkbox"].big-checkbox').is(':checked');
+            if (checked) {
+                rows.push({
+                    rssite: $("#rssite").val() || $("input[name='rssite']").val(),
+                    rswhse: $("#rswhse").val(),
+                    rsbaynum: $("#rsbaynum").val(),
+                    rsloc: $row.find('td').eq(2).text(),
+                    rspallet_num: $row.find('input[type="text"]').eq(0).val(),
+                    job: $("#jobco").val(),
+                    item: $("#item").val(),
+                    desc: $("#desc").val(),
+                    um: $("#um").val(),
+                    qty: $row.find('input[type="text"]').eq(1).val(),
+                    datercvd: $("#date").val(),
+                    docnum: $("#docno").val()
+                });
+            }
+        });
+
+        if (rows.length === 0) {
+            alert("Please select at least one row to receive.");
+            return;
+        }
+
+        $.ajax({
+            url: window.appUrl + '/irms/whse-goodsreceiving/process-goods-received',
+            method: 'POST',
+            data: {
+                rows: rows,
+                _token: $('input[name="_token"]').val()
+            },
+            success: function (response) {
+                // Show modal
+                $("body").append(`
+                    <div class="modal fade" id="goodsReceivedModal" tabindex="-1" aria-labelledby="goodsReceivedModalLabel" aria-hidden="true">
+                      <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                          <div class="modal-header bg-success text-white">
+                            <h5 class="modal-title" id="goodsReceivedModalLabel">Success</h5>
+                          </div>
+                          <div class="modal-body text-center">
+                            <i class="bi bi-check-circle-fill text-success" style="font-size:2rem;"></i>
+                            <p class="mt-3 mb-0">Goods received successfully!</p>
+                          </div>
+                          <div class="modal-footer justify-content-center">
+                            <button type="button" class="btn btn-success px-4" id="modalRedirectBtn">OK</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                `);
+                $("#goodsReceivedModal").modal("show");
+                $("#modalRedirectBtn").on("click", function () {
+                    $("#goodsReceivedModal").modal("hide");
+                    window.location.href = window.appUrl + "/irms/whse-goodsreceiving";
+                });
+                // Remove modal from DOM after hidden
+                $("#goodsReceivedModal").on("hidden.bs.modal", function () {
+                    $(this).remove();
+                });
+            }
+        });
+    });
 });
 
 // Toggle aside to icon-only (mini) when navbar collapse button is clicked
@@ -538,12 +591,12 @@ document.addEventListener("DOMContentLoaded", function () {
     const rsdecInput = document.getElementById("rsdec");
 
     function filterOptions(select, siteValue) {
+        if (!select) return; // Prevent error if element doesn't exist
         Array.from(select.options).forEach((option) => {
-            if (!option.value) return; // skip placeholder
+            if (!option.value) return;
             option.style.display =
                 option.getAttribute("data-site") === siteValue ? "" : "none";
         });
-        // Reset selection if current value is not visible
         if (
             select.selectedIndex > 0 &&
             select.options[select.selectedIndex].style.display === "none"
@@ -552,43 +605,31 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // Reset warehouse, bay, and other inputs when site changes
-    if (siteSelect) {
+    // When adding event listeners, check if the element exists
+    if (siteSelect && whseSelect && baySelect) {
         siteSelect.addEventListener("change", function () {
             whseSelect.selectedIndex = 0;
             baySelect.selectedIndex = 0;
             filterOptions(whseSelect, this.value);
             filterOptions(baySelect, this.value);
-
-            // Blank other inputs
-            if (rslocInput) rslocInput.value = "";
-            if (rsdecInput) rsdecInput.value = "";
         });
-    }
 
-    // Reset bay and other inputs when warehouse changes
-    if (whseSelect) {
         whseSelect.addEventListener("change", function () {
             baySelect.selectedIndex = 0;
-
-            // Blank other inputs
             if (rslocInput) rslocInput.value = "";
             if (rsdecInput) rsdecInput.value = "";
         });
-    }
 
-    // Reset other inputs when bay changes
-    if (baySelect) {
         baySelect.addEventListener("change", function () {
             if (rslocInput) rslocInput.value = "";
             if (rsdecInput) rsdecInput.value = "";
         });
-    }
 
-    // Initial filter on page load if old value exists
-    if (siteSelect && siteSelect.value) {
-        filterOptions(whseSelect, siteSelect.value);
-        filterOptions(baySelect, siteSelect.value);
+        // Initial filter on page load if old value exists
+        if (siteSelect.value) {
+            filterOptions(whseSelect, siteSelect.value);
+            filterOptions(baySelect, siteSelect.value);
+        }
     }
 
     // Auto-fill Lot when typing in Job / CO
@@ -629,7 +670,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     } else {
                         itemdesc = '';
                     }
-                    $("#desc").val(itemdesc);
+                    $("#desc").val(itemdesc || '');
 
                     let palletSize = data[0].Uf_Item_PalletSize;
                     let palletSizeNum = parseFloat(palletSize);
@@ -645,13 +686,20 @@ document.addEventListener("DOMContentLoaded", function () {
                 } else {
                     $("#item").val('');
                     $("#um").val('');
-                    $("#item-desc").text('');
+                    $("#desc").val('');
                     $("#pallet_size").val('');
                 }
             }
         });
     });
 });
+
+$('#viewUserModal, #editUserModal, #viewWarehouseModal, #editWarehouseModal, #viewBayModal, #viewRackModal').on('hide.bs.modal', function () {
+    if (document.activeElement && this.contains(document.activeElement)) {
+        document.activeElement.blur();
+    }
+});
+
 
 
 
@@ -1078,3 +1126,4 @@ document.addEventListener("DOMContentLoaded", function () {
         initDashboardCharts();
     }
 })();
+

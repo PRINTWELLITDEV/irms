@@ -47,10 +47,10 @@
                                             <tr>
                                                 <!-- <th width="5%">Profile</th> -->
                                                 <th>Users</th>
-                                                <th>User ID</th>
+                                                <th width="10%">User ID</th>
                                                 <!-- <th width="40%">Email</th> -->
-                                                <th>Site</th>
-                                                <th>Level</th>
+                                                <th width="10%">Site</th>
+                                                <th width="5%">Level</th>
                                                 <!-- <th width="5%">Action</th> -->
                                             </tr>
                                         </thead>
@@ -62,30 +62,19 @@
                                                     data-gender="{{ $user->gender }}"
                                                     data-profile="{{ $user->profile_pic_url ? asset($user->profile_pic_url) : asset('uploads/user-profile/noprofile.png') }}"
                                                     data-create_date="{{ date('d F Y', strtotime($user->create_date)) }}">
-                                                    <!-- <td class="text-center align-middle">
-                                                            <img src="{{ $user->profile_pic_url ? asset($user->profile_pic_url) : asset('uploads/user-profile/noprofile.png') }}"
-                                                                alt="profile" class="rounded-circle" width="50" height="50">
-                                                        </td> -->
                                                     <td class="align-middle">
                                                         <img src="{{ $user->profile_pic_url ? asset($user->profile_pic_url) : asset('uploads/user-profile/noprofile.png') }}"
                                                             alt="profile" class="rounded-circle border border-3">
                                                         {{ $user->name }}
                                                     </td>
                                                     <td class="align-middle">{{ $user->userid }}</td>
-                                                    <!-- <td class="align-middle">{{ $user->email }}</td> -->
-                                                    <td class="align-middle text-center">
-                                                        @if(!empty($user->logo_pic_url))
+                                                    <td class="align-middle">
+                                                        <!-- @if(!empty($user->logo_pic_url))
                                                             <img src="{{ asset($user->logo_pic_url) }}" alt="logo" class="me-1">
-                                                        @endif
-                                                        <!-- {{ $user->rssite_desc ?? $user->rssite }} -->
+                                                        @endif -->
+                                                        {{ $user->rssite_desc ?? 'N/A' }}
                                                     </td>
                                                     <td class="align-middle text-center">{{ $user->level }}</td>
-                                                    <!-- <td class="align-middle text-center">
-                                                            <button type="button" class="btn btn-sm btn-secondary btn-settings"
-                                                                    data-userid="{{ $user->userid }}" title="Settings">
-                                                                <i class="bi bi-gear-fill"></i>
-                                                            </button>
-                                                        </td> -->
                                                 </tr>
                                             @empty
                                             @endforelse
@@ -180,8 +169,8 @@
                                         </span>
                                         <select name="gender" id="gender" class="form-select" placeholder="Gender">
                                             <option disabled selected>Select a gender</option>
-                                            <option value="male" {{ old('gender')=='male' ? 'selected' : '' }}>Male</option>
-                                            <option value="female" {{ old('gender')=='female' ? 'selected' : '' }}>Female</option>
+                                            <option value="Male" {{ old('gender')=='Male' ? 'selected' : '' }}>Male</option>
+                                            <option value="Female" {{ old('gender')=='Female' ? 'selected' : '' }}>Female</option>
                                         </select>
                                     </div>
                                     @error('gender') <div class="text-danger small">{{ $message }}</div> @enderror
@@ -322,7 +311,7 @@
                                         <span class="input-group-text">
                                             <i class="bi bi-building"></i>
                                         </span>
-                                        <input type="hidden" class="form-control" id="rssite" name="rssite" value="{{ auth()->user()->rssite }}" readonly>
+                                        <input type="hidden" class="form-control" name="rssite" value="{{ auth()->user()->rssite }}" readonly>
                                         <input type="text" class="form-control" value="{{ $site_desc }}" readonly>
                                     </div>
                                 </div>
@@ -366,8 +355,8 @@
                                             </span>
                                             <select name="gender" id="edit-gender" class="form-select">
                                                 <option disabled>Select a gender</option>
-                                                <option value="male">Male</option>
-                                                <option value="female">Female</option>
+                                                <option value="Male">Male</option>
+                                                <option value="Female">Female</option>
                                             </select>
                                         </div>
                                     </div>

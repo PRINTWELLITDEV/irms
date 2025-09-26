@@ -64,6 +64,7 @@ Route::prefix('irms')->middleware('check.session')->group(function () {
 
     Route::post('/whse-goodsreceiving/job-item-details', [RsGoodsReceivingController::class, 'getJobItemDetails'])->name('goodsreceiving.jobitemdetails');
     Route::post('/whse-goodsreceiving/rsloc-list', [RsGoodsReceivingController::class, 'getRsLocList'])->name('goodsreceiving.rsloclist');
+    Route::post('/whse-goodsreceiving/process-goods-received', [RsGoodsReceivingController::class, 'processGoodsReceived'])->name('goodsreceiving.processreceived');
 
     // Goods Dispatching
     Route::get('/whse-goodsdispatching', [RsGoodsDispatchingController::class, 'index'])->name('goodsdispatching.index');
@@ -71,3 +72,5 @@ Route::prefix('irms')->middleware('check.session')->group(function () {
 
 
 });
+
+

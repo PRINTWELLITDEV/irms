@@ -287,3 +287,27 @@ table.table td img {
     }
 }
 
+/* Responsive DataTables pagination for mobile */
+@media (max-width: 576px) {
+    .dataTables_paginate .pagination {
+        flex-wrap: wrap;
+        justify-content: center;
+        font-size: 0.9rem;
+        gap: 2px;
+    }
+    .dataTables_paginate .page-item .page-link {
+        padding: 0.3rem 0.6rem;
+        font-size: 0.9rem;
+        border-radius: 8px;
+        margin: 2px 0;
+    }
+    .dataTables_paginate .page-item.active .page-link {
+        background-color: #198754;
+        color: #fff;
+        border-color: #198754;
+    }
+    .dataTables_paginate .page-item.disabled .page-link {
+        color: #ccc;
+    }
+}
+
