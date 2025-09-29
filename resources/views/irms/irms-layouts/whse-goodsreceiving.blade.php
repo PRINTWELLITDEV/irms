@@ -273,33 +273,26 @@
                             </button>
                         </div>
                         <div class="table-responsive">
-                            <!-- Add this style block before your table or in your main CSS file -->
-                            <style>
-                                .table input[type="checkbox"].big-checkbox {
-                                    width: 24px;
-                                    height: 24px;
-                                    accent-color: #174700ff; /* Bootstrap primary */
-                                    cursor: pointer;
-                                }
-                            </style>
+                            <div style="max-height: 400px; overflow-y: auto;">
 
-                            <table id="receivingTable" class="table table-striped table-bordered align-middle w-100">
-                                <thead class="table-light">
-                                    <tr>
-                                        <th width="2%"></th>
-                                        <th width="5%">Select</th>
-                                        <th width="25%">Rack Location</th>
-                                        <th width="25%">Pallet Tag No.</th>
-                                        <th width="10%">Qty to Receive</th>
-                                        <th width="10%">Qty on Hand</th>
-                                        <th width="5%">U/M</th>
-                                        <th width="10%">Date Received</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <!-- JS will populate rows here -->
-                                </tbody>
-                            </table>
+                                <table id="receivingTable" class="table table-striped table-bordered align-middle w-100">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th width="2%"></th>
+                                            <th width="5%">Select</th>
+                                            <th width="25%">Rack Location</th>
+                                            <th width="25%">Pallet Tag No.</th>
+                                            <th width="10%">Qty to Receive</th>
+                                            <th width="10%">Qty on Hand</th>
+                                            <th width="5%">U/M</th>
+                                            <th width="10%">Date Received</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- JS will populate rows here -->
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>

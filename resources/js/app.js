@@ -122,6 +122,37 @@ $(document).ready(function () {
         rackTable.search(this.value).draw();
     });
 
+    // Item Locations table
+    const itemLocTable = $("#itemloc-table").DataTable({
+        fixedHeader: true,
+        pageLength: 12,
+        columnControl: ["order", ['searchList']],
+        ordering: {
+            indicators: false,
+            handler: true,
+        },
+        responsive: true,
+        language: {
+            emptyTable: "No Item Locations found",
+        },
+    });
+
+    // Search function for item locations
+    $("#rackSearch").on("keyup", function () {
+        itemLocTable.search(this.value).draw();
+    });
+
+    // Row click to show modal (if you want a view modal for item locations)
+    $("#itemloc-table tbody").on("click", "tr", function () {
+        const $row = $(this);
+        // Example: fill modal fields
+        $("#view-itemloc-job").text($row.data("job") || "");
+        $("#view-itemloc-desc").text($row.data("desc") || "");
+        $("#view-itemloc-qty").text($row.data("qty") || "0");
+        $("#view-itemloc-um").text($row.data("um") || "");
+        $("#view-itemloc-site-desc").text($row.data("rssite_desc") || "");
+        $("#viewItemLocModal").modal("show");
+    });
 
     // Controls
     // Show user view modal when a row is clicked
@@ -272,7 +303,6 @@ $(document).ready(function () {
         $("#view-rack-createDate").text($row.data("createDate") || "");
         $("#viewRackModal").modal("show");
     });
-
 
     // Receiving Form/Details toggle logic
     $("#receiving-details").hide();
@@ -561,37 +591,54 @@ $(document).ready(function () {
             }
         });
     });
+    
+    // Toggle aside to icon-only (mini) 
+    $("[data-lte-toggle='sidebar']").on("click", function (e) {
+        e.preventDefault();
+        const isMobile = window.innerWidth < 768;
+        const $aside = $(".app-sidebar");
+
+        if (isMobile) {
+            // Hide sidebar on mobile
+            $aside.hide();
+        } else {
+            // Toggle sidebar-mini on desktop
+            $("body").toggleClass("sidebar-mini");
+            $aside.toggleClass("sidebar-mini");
+            $aside.show();
+        }
+    });
 });
 
 // Toggle aside to icon-only (mini) when navbar collapse button is clicked
-(function () {
-    const SIDEBAR_PREF_KEY = 'irms_sidebar_mini';
+// (function () {
+//     const SIDEBAR_PREF_KEY = 'irms_sidebar_mini';
 
-    function applySidebarMini(enable) {
-        document.body.classList.toggle('sidebar-mini', !!enable);
-        const aside = document.querySelector('.app-sidebar');
-        if (aside) aside.classList.toggle('sidebar-mini', !!enable);
-        try { localStorage.setItem(SIDEBAR_PREF_KEY, !!enable ? '1' : '0'); } catch (e) { /* ignore */ }
-    }
+//     function applySidebarMini(enable) {
+//         document.body.classList.toggle('sidebar-mini', !!enable);
+//         const aside = document.querySelector('.app-sidebar');
+//         if (aside) aside.classList.toggle('sidebar-mini', !!enable);
+//         try { localStorage.setItem(SIDEBAR_PREF_KEY, !!enable ? '1' : '0'); } catch (e) { /* ignore */ }
+//     }
 
-    // restore preference on load
-    try {
-        const pref = localStorage.getItem(SIDEBAR_PREF_KEY);
-        if (pref === '1') applySidebarMini(true);
-    } catch (e) { /* ignore */ }
+//     // restore preference on load
+//     try {
+//         const pref = localStorage.getItem(SIDEBAR_PREF_KEY);
+//         if (pref === '1') applySidebarMini(true);
+//     } catch (e) { /* ignore */ }
 
-    // hook into the navbar collapse toggle(s)
-    const sidebarToggleBtns = document.querySelectorAll('[data-lte-toggle="sidebar"]');
-    sidebarToggleBtns.forEach((btn) => {
-        btn.addEventListener('click', function () {
-            // Delay slightly so AdminLTE's own toggle runs first (if present)
-            setTimeout(() => {
-                const currentlyMini = document.body.classList.contains('sidebar-mini');
-                applySidebarMini(!currentlyMini);
-            }, 40);
-        });
-    });
-})();
+//     // hook into the navbar collapse toggle(s)
+//     const sidebarToggleBtns = document.querySelectorAll('[data-lte-toggle="sidebar"]');
+//     sidebarToggleBtns.forEach((btn) => {
+//         btn.addEventListener('click', function () {
+//             // Delay slightly so AdminLTE's own toggle runs first (if present)
+//             setTimeout(() => {
+//                 const currentlyMini = document.body.classList.contains('sidebar-mini');
+//                 applySidebarMini(!currentlyMini);
+//             }, 40);
+//         });
+//     });
+// })();
 
 document.addEventListener("DOMContentLoaded", function () {
     // Fade in content wrapper
