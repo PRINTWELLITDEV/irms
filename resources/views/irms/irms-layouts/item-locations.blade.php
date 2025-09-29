@@ -35,7 +35,7 @@
                                 </button> -->
 
                                 <div class="input-group" style="max-width: 300px;">
-                                    <input type="text" id="rackSearch" class="form-control" placeholder="Search rack location...">
+                                    <input type="text" id="rackSearch" class="form-control" placeholder="Search Item location...">
                                     <span class="input-group-text">
                                         <i class="bi bi-search"></i>
                                     </span>
@@ -56,6 +56,7 @@
                                         <!-- <th width="10%">Create Date</th> -->
                                     </tr>
                                     </thead>
+                                    
                                     <tbody>
                                     @forelse($itemlocs as $loc)
                                         <tr

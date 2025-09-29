@@ -90,6 +90,7 @@
 /* Table */
 .table-responsive {
     margin-bottom: 1.5rem;
+    min-height: 60vh;
 }
 table.table th, table.table td {
     white-space: nowrap;
