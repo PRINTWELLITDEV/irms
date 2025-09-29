@@ -64,9 +64,9 @@
                         <p>Item Locations</p>
                     </a>
                 </li>
-                <li class="nav-header">Warehouse Transactions</li>
+                <li class="nav-header">Receiving and Dispatching</li>
                 <li class="nav-item">
-                    <a href="{{ url('/irms/whse-goodsreceiving') }}" class="nav-link{{ request()->is('irms/whse-goodsreceiving') ? ' active' : '' }}">
+                    <a href="{{ url('/irms/receiving') }}" class="nav-link{{ request()->is('irms/receiving') ? ' active' : '' }}">
                         <i class="nav-icon fas fa-truck"></i>
                         <p>Goods Receiving</p>
                     </a>
@@ -75,6 +75,13 @@
                     <a href="{{ url('/irms/whse-goodsdispatching') }}" class="nav-link{{ request()->is('irms/whse-goodsdispatching') ? ' active' : '' }}">
                         <i class="nav-icon fas fa-truck"></i>
                         <p>Goods Dispatching</p>
+                    </a>
+                </li>
+                <li class="nav-header">Transactions</li>
+                <li class="nav-item">
+                    <a href="{{ url('/irms/transactions') }}" class="nav-link{{ request()->is('irms/transactions') ? ' active' : '' }}">
+                        <i class="nav-icon fas fa-exchange-alt"></i>
+                        <p>Transactions</p>
                     </a>
                 </li>
                 <!-- <li class="nav-header"></li>

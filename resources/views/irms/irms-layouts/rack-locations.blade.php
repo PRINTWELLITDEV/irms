@@ -60,12 +60,15 @@
                                     <tbody>
                                     @forelse($racklocs as $rsloc)
                                         <tr
+                                            data-rssite="{{ $rsloc->rssite }}"
+                                            data-rssite_desc="{{ $rsloc->rssite_desc }}"
                                             data-rswhse="{{ $rsloc->rswhse }}"
                                             data-rsbaynum="{{ $rsloc->rsbaynum }}"
                                             data-rsloc="{{ $rsloc->rsloc }}"
                                             data-rsdesc="{{ $rsloc->rsdesc }}"
-                                            data-qty="{{ number_format($rsloc->qty, 0) }}"
-                                            data-create-date="{{ \Carbon\Carbon::parse($rsloc->createdate)->format('d M Y | h:i A') }}"
+                                            data-qty="{{ ($rsloc->qty ?? 0) == 0 ? '0' : number_format($rsloc->qty, 0) }}"
+                                            data-create-date="{{ \Carbon\Carbon::parse($rsloc->createdate)->format('d M Y - h:i A') }}"
+                                            
                                         >
                                             <td>{{ $rsloc->rsloc }}</td>
                                             <td>{{ $rsloc->rswhse }}</td>
@@ -104,41 +107,41 @@
                 </div>
                 <div class="modal-body">
 
-                    <table class="table-responsive mb-0 display" id="viewRackModals">
+                    <table class="table table-responsive mb-0 table-borderless" id="viewRackModals">
                         <tbody>
-                            <tr class="text-center">
+                            <tr>
                                 <th>Warehouse: </th>
                                 <td>
                                     <span id="view-rack-warehouse">-</span>
                                 </td>
                             </tr>
-                            <tr class="text-center">
+                            <tr>
                                 <th>Bay No.: </th>
                                 <td>
                                     <span class="text-end" id="view-rack-baynum">-</span>
                                 </td>
                             </tr>
-                            <tr class="text-center">
+                            <tr>
                                 <th>Location: </th>
                                 <td>
                                     <span id="view-rack-location">-</span>
                                 </td>
                             </tr>
-                            <tr class="text-center">
+                            <tr>
                                 <th>Description: </th>
                                 <td>
                                     <span id="view-rack-description">-</span>
                                 </td>
                             </tr>
-                            <tr class="text-center">
+                            <tr>
                                 <th>Quantity: </th>
                                 <td>
                                     <span id="view-rack-quantity">-</span>
                                 </td>
                             </tr>
-                            <tr class="text-center">
+                            <tr>
                                 <th>Create Date: </th>
-                                <td class="ps-4">
+                                <td>
                                     <span id="view-rack-createDate">-</span>
                                 </td>
                             </tr>

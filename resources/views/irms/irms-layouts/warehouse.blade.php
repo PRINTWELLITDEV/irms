@@ -46,9 +46,6 @@
                                     <table id="warehouse-table" class="table table-striped table-bordered table-hover align-middle display nowrap">
                                         <thead class="table-light text-center">
                                             <tr>
-
-
-
                                                 <th width="10%">Warehouse</th>
                                                 <th>Description</th>
                                                 <!-- <th width="20%">Address</th> -->

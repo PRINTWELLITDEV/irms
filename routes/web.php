@@ -58,13 +58,11 @@ Route::prefix('irms')->middleware('check.session')->group(function () {
     Route::get('/item-locations', fn() => view('irms/irms-layouts/item-locations'))->name('irms.itemlocations');
 
     // Goods Receiving
-    Route::get('/whse-goodsreceiving', [RsGoodsReceivingController::class, 'index'])->name('goodsreceiving.index');
-    Route::post('/whse-goodsreceiving/process', [RsGoodsReceivingController::class, 'process'])->name('goodsreceiving.process');
-
-
-    Route::post('/whse-goodsreceiving/job-item-details', [RsGoodsReceivingController::class, 'getJobItemDetails'])->name('goodsreceiving.jobitemdetails');
-    Route::post('/whse-goodsreceiving/rsloc-list', [RsGoodsReceivingController::class, 'getRsLocList'])->name('goodsreceiving.rsloclist');
-    Route::post('/whse-goodsreceiving/process-goods-received', [RsGoodsReceivingController::class, 'processGoodsReceived'])->name('goodsreceiving.processreceived');
+    Route::get('/receiving', [RsGoodsReceivingController::class, 'index'])->name('goodsreceiving.index');
+    Route::post('/receiving/process', [RsGoodsReceivingController::class, 'process'])->name('goodsreceiving.process');
+    Route::post('/receiving/job-item-details', [RsGoodsReceivingController::class, 'getJobItemDetails'])->name('goodsreceiving.jobitemdetails');
+    Route::post('/receiving/rsloc-list', [RsGoodsReceivingController::class, 'getRsLocList'])->name('goodsreceiving.rsloclist');
+    Route::post('/receiving/process-goods-received', [RsGoodsReceivingController::class, 'processGoodsReceived'])->name('goodsreceiving.processreceived');
 
     // Goods Dispatching
     Route::get('/whse-goodsdispatching', [RsGoodsDispatchingController::class, 'index'])->name('goodsdispatching.index');

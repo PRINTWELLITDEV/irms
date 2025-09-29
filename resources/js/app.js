@@ -95,12 +95,13 @@ $(document).ready(function () {
     });
 
     //Bay Location Table row selection function
-    $("#bayloc-table").on("click", "tr", function () {
+    $("#bayloc-table tbody").on("click", "tr", function () {
         const $row = $(this);
-
-        $("#view-bay-number").text($row.data("rsbaynum") || "-");
-        $("#view-created-date").text($row.data("createdate") || "-");
-        $("#view-created-by").text($row.data("createdby") || "-");
+        $("#view-bay-number").text($row.data("rsbaynum") || "");
+        $("#view-created-date").text($row.data("createDate") || "");
+        $("#view-created-by").text($row.data("createdby") || "");
+        $("#view-bay-site-desc").text($row.data("rssite_desc") || "");
+        $("#viewBayModal").modal("show");
     });
 
     // Rack Location table
@@ -141,18 +142,18 @@ $(document).ready(function () {
             .data("section", $row.data("section"));
 
         // Fill view modal
-        $("#view-user-site_desc").text($row.data("site_desc") || "-");
-        $("#view-user-id").text($row.data("userid") || "-");
-        $("#view-user-name").text($row.data("name") || "-");
-        $("#view-user-email").text($row.data("email") || "-");
-        $("#view-user-level").text($row.data("level") || "-");
-        $("#view-user-gender").text($row.data("gender") || "-");
-        $("#view-user-department").text($row.data("department") || "-");
-        $("#view-user-position").text($row.data("position") || "-");
-        $("#view-user-create_date").text($row.data("create_date") || "-");
-        $("#view-user-label-name").text($row.data("name") || "-");
+        $("#view-user-site_desc").text($row.data("site_desc") || "");
+        $("#view-user-id").text($row.data("userid") || "");
+        $("#view-user-name").text($row.data("name") || "");
+        $("#view-user-email").text($row.data("email") || "");
+        $("#view-user-level").text($row.data("level") || "");
+        $("#view-user-gender").text($row.data("gender") || "");
+        $("#view-user-department").text($row.data("department") || "");
+        $("#view-user-position").text($row.data("position") || "");
+        $("#view-user-create_date").text($row.data("create_date") || "");
+        $("#view-user-label-name").text($row.data("name") || "");
         $("#view-user-profile").attr("src", $row.data("profile"));
-        $("#view-user-section").text($row.data("section") || "-");
+        $("#view-user-section").text($row.data("section") || "");
 
         $("#viewUserModal").modal("show");
     });
@@ -232,11 +233,11 @@ $(document).ready(function () {
             .data("name", $row.data("name"))
             .data("addr", $row.data("addr"));
         // Fill view modal
-        $("#view-warehouse-site-desc").text($row.data("rssite_desc") || "-");
-        $("#view-warehouse-code").text($row.data("rswhse") || "-");
-        $("#view-warehouse-name").text($row.data("name") || "-");
-        $("#view-warehouse-addr").text($row.data("addr") || "-");
-        $("#view-warehouse-label-name").text($row.data("name") || "-");
+        $("#view-warehouse-site-desc").text($row.data("rssite_desc") || "");
+        $("#view-warehouse-code").text($row.data("rswhse") || "");
+        $("#view-warehouse-name").text($row.data("name") || "");
+        $("#view-warehouse-addr").text($row.data("addr") || "");
+        $("#view-warehouse-label-name").text($row.data("name") || "");
         $("#viewWarehouseModal").modal("show");
     });
 
@@ -263,12 +264,12 @@ $(document).ready(function () {
     $("#rackTable tbody").on("click", "tr", function () {
         const $row = $(this);
 
-        $("#view-rack-warehouse").text($row.data("rswhse") || "-");
-        $("#view-rack-baynum").text($row.data("rsbaynum") || "-");
-        $("#view-rack-location").text($row.data("rsloc") || "-");
-        $("#view-rack-description").text($row.data("rsdesc") || "-");
-        $("#view-rack-quantity").text($row.data("qty") || "-");
-        $("#view-rack-createDate").text($row.data("createDate") || "-");
+        $("#view-rack-warehouse").text($row.data("rswhse") || "");
+        $("#view-rack-baynum").text($row.data("rsbaynum") || "");
+        $("#view-rack-location").text($row.data("rsloc") || "");
+        $("#view-rack-description").text($row.data("rsdesc") || "");
+        $("#view-rack-quantity").text($row.data("qty") || "0");
+        $("#view-rack-createDate").text($row.data("createDate") || "");
         $("#viewRackModal").modal("show");
     });
 
@@ -312,7 +313,7 @@ $(document).ready(function () {
 
         // AJAX to get rsloc list
         $.ajax({
-            url: window.appUrl + '/irms/whse-goodsreceiving/rsloc-list',
+            url: window.appUrl + '/irms/receiving/rsloc-list',
             method: 'POST',
             data: {
                 rssite: rssite,
@@ -392,6 +393,37 @@ $(document).ready(function () {
         const today = new Date().toISOString().split('T')[0];
         dateInput.setAttribute('max', today);
     }
+
+    // Cache form data in localStorage
+    const RECEIVING_FORM_KEY = "irms_goods_receiving_form";
+    // Save form fields to localStorage on change/input
+    $("#goodsReceivingForm :input").on("change input", function () {
+        const data = {};
+        $("#goodsReceivingForm :input").each(function () {
+            if (this.name && this.type !== "submit" && this.type !== "button") {
+                data[this.name] = $(this).val();
+            }
+        });
+        localStorage.setItem(RECEIVING_FORM_KEY, JSON.stringify(data));
+    });
+    // Restore form fields from localStorage on page load
+    $(document).ready(function () {
+        const saved = localStorage.getItem(RECEIVING_FORM_KEY);
+        if (saved) {
+            const data = JSON.parse(saved);
+            Object.entries(data).forEach(([name, value]) => {
+                $(`#goodsReceivingForm [name="${name}"]`).val(value);
+            });
+        }
+    });
+
+    // Optional: Clear cache on successful submit
+    // $("#goodsReceivingForm").on("submit", function () {
+    //     localStorage.removeItem(RECEIVING_FORM_KEY);
+    // });
+    $("#btnReceive").on("click", function () {
+        localStorage.removeItem(RECEIVING_FORM_KEY);
+    });
 
     // Dispatching Form/Details toggle logic
     $("#dispatching-details").hide();
@@ -491,7 +523,7 @@ $(document).ready(function () {
         }
 
         $.ajax({
-            url: window.appUrl + '/irms/whse-goodsreceiving/process-goods-received',
+            url: window.appUrl + '/irms/receiving/process-goods-received',
             method: 'POST',
             data: {
                 rows: rows,
@@ -520,7 +552,7 @@ $(document).ready(function () {
                 $("#goodsReceivedModal").modal("show");
                 $("#modalRedirectBtn").on("click", function () {
                     $("#goodsReceivedModal").modal("hide");
-                    window.location.href = window.appUrl + "/irms/whse-goodsreceiving";
+                    window.location.href = window.appUrl + "/irms/receiving";
                 });
                 // Remove modal from DOM after hidden
                 $("#goodsReceivedModal").on("hidden.bs.modal", function () {
@@ -647,7 +679,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!rssite) return;
 
         $.ajax({
-            url: window.appUrl + '/irms/whse-goodsreceiving/job-item-details',
+            url: window.appUrl + '/irms/receiving/job-item-details',
             method: 'POST',
             data: {
                 job: job,

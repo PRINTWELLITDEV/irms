@@ -57,7 +57,12 @@
                                         </thead>
                                         <tbody>
                                             @forelse($baylocs as $bay)
-                                                <tr data-bs-toggle="modal" data-bs-target="#viewBayModal" data-rsbaynum="{{ $bay->rsbaynum }}" data-createddate="{{ \Carbon\Carbon::parse($bay->createdate)->format('d M Y | h:i A') }}" data-createdby="{{ $bay->name }}">
+                                                <tr
+                                                data-rssite="{{ $bay->rssite }}"
+                                                data-rssite_desc="{{ $bay->rssite_desc}}"
+                                                data-rsbaynum="{{ $bay->rsbaynum }}"
+                                                data-create-date="{{ \Carbon\Carbon::parse($bay->createdate)->format('d M Y - h:i A') }}"
+                                                data-createdby="{{ $bay->name }}">
                                                     
                                                     <td>{{ $bay->rsbaynum }}</td>
 
@@ -97,23 +102,23 @@
                     <div class="modal-body">
                         <table class="table table-responsive mb-0 table-borderless">
                             <tbody>
+                                @if(auth()->user()->userid === 'sa')
+                                <tr>
+                                    <th class="w-40">Site:</th>
+                                    <td><span id="view-bay-site-desc">-</span></td>
+                                </tr>
+                                @endif
                                 <tr>
                                     <th>Bay Number:</th>
-                                    <td>
-                                        <span id="view-bay-number">-</span>
-                                    </td>
+                                    <td><span id="view-bay-number">-</span></td>
                                 </tr>
                                 <tr>
                                     <th>Created Date:</th>
-                                    <td>
-                                        <span id="view-created-date">-</span>
-                                    </td>
+                                    <td><span id="view-created-date">-</span></td>
                                 </tr>
                                 <tr>
                                     <th>Created By:</th>
-                                    <td>
-                                        <span id="view-created-by">-</span>
-                                    </td>
+                                    <td><span id="view-created-by">-</span></td>
                                 </tr>
                             </tbody>
                         </table>
