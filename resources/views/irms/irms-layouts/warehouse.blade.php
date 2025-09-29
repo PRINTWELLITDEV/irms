@@ -47,7 +47,7 @@
                                         <thead class="table-light text-center">
                                             <tr>
 
-                                                
+
 
                                                 <th width="10%">Warehouse</th>
                                                 <th>Description</th>
@@ -92,7 +92,7 @@
     <div class="modal fade" id="addWarehouseModal" tabindex="-1" aria-labelledby="addWarehouseLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-l">
             <div class="modal-content">
-                <form action="{{ route('warehouse.store') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('warehouse.store') }}" method="POST" enctype="multipart/form-data"   >
                     @csrf
                     <div class="modal-header bg-primary text-white">
                         <h1 class="modal-title fs-5" id="addWarehouseLabel">Add Warehouse</h1>
@@ -129,7 +129,7 @@
                         <div class="mb-3">
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-archive"></i></span>
-                                <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}" required maxlength="255" placeholder="Warehouse Name">
+                                <input type="text" class="form-control" id="name" name="name" autocomplete="on" value="{{ old('name') }}" required maxlength="255" placeholder="Warehouse Name">
                             </div>
                             @error('name') <div class="text-danger small">{{ $message }}</div> @enderror
                         </div>
@@ -185,7 +185,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="edit-name" class="form-label">Description</label>
-                            <input type="text" class="form-control" id="edit-name" name="name" maxlength="30" required>
+                            <input type="text" class="form-control" autocomplete="on" id="edit-name" name="name" maxlength="30" required>
                         </div>
                         <div class="mb-3">
                             <label for="edit-addr" class="form-label">Address</label>
