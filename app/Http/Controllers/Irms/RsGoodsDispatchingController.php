@@ -49,4 +49,34 @@ class RsGoodsDispatchingController extends Controller
 
         return redirect()->back()->with('success', 'Goods dispatching processed successfully!');
     }
+
+    /**
+     * Get job item details for dispatching.
+     */
+    public function getJobItemDetails(Request $request)
+    {
+        $rssite = $request->input('rssite');
+        $job = $request->input('jobco');
+
+        $result = \DB::select('EXEC sp_dispatching_job_item_details @rssite = ?, @job = ?', [
+            $rssite, $job
+        ]);
+
+        return response()->json($result ? $result[0] : []);
+    }
+
+    /**
+     * Get item list in RS location.
+     */
+    public function getItemInRsLocList(Request $request)
+    {
+        $rssite = $request->input('rssite');
+        $job = $request->input('job');
+
+        $results = \DB::select('EXEC sp_get_item_in_rsloc_list @rssite = ?, @job = ?', [
+            $rssite, $job
+        ]);
+
+        return response()->json($results);
+    }
 }

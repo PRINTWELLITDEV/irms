@@ -42,6 +42,7 @@
 
     @vite(['resources/js/app.js'])
     <script>
+        window.appUrl = "{{ url('') }}";
         window.sessionCheckUrl = "{{ url('/irms/session') }}";
         window.loginUrl = "{{ route('login') }}";
 
