@@ -33,14 +33,6 @@
                                 <h5 class="mb-0">Goods Receiving Form</h5>
                             </div>
                             <div class="card-body">
-                                <!-- Add this style block at the top of your form or in your main CSS -->
-                                <style>
-                                    .input-group-text.fixed-label {
-                                        min-width: 120px;
-                                        justify-content: flex-end;
-                                    }
-                                </style>
-
                                 @php
                                     $isSa = auth()->user()->userid === 'sa';
                                 @endphp
@@ -107,7 +99,7 @@
                                                 <span class="input-group-text fixed-label" id="jobco-label">
                                                     <span class="text-danger me-1">*</span>Job / CO:
                                                 </span>
-                                                <input type="text" class="form-control" id="jobco" name="jobco" required>
+                                                <input type="text" class="form-control" id="jobcoreceive" name="jobco" required>
                                             </div>
                                         </div>
                                         <div class="col-md-6 col-12">

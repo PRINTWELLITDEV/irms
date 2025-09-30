@@ -133,6 +133,11 @@ table.table td img {
     z-index: 2;
 }
 
+.input-group-text.fixed-label {
+    min-width: 120px;
+    justify-content: flex-end;
+}
+
 /* Datatables Styling */
 /* Force all sort icons to the right */
 
