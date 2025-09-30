@@ -23,7 +23,7 @@ $(document).ready(function () {
     const isSa = $("select#rssite").length > 0 && $("input[name='rssite']").length === 0;
 
     function setFieldsEnabled(enabled) {
-        $("#date, #rswhse, #jobco, #lot, #item, #pallet_size, #um, #rsbaynum, #docno").prop("disabled", !enabled);
+        $("#date, #rswhse, #jobcoreceive, #jobcodispatch, #lot, #item, #pallet_size, #um, #rsbaynum, #docno").prop("disabled", !enabled);
     }
 
     if (isSa) {
@@ -122,6 +122,58 @@ $(document).ready(function () {
         rackTable.search(this.value).draw();
     });
 
+    // Item Locations table
+    const itemLocTable = $("#itemloc-table").DataTable({
+        fixedHeader: true,
+        pageLength: 12,
+        columnControl: ["order", ['searchList']],
+        ordering: {
+            indicators: false,
+            handler: true,
+        },
+        responsive: true,
+        language: {
+            emptyTable: "No Item Locations found",
+        },
+    });
+
+    // Search function for item locations
+    $("#itemSearch").on("keyup", function () {
+        itemLocTable.search(this.value).draw();
+    });
+
+    const transTable = $("#transaction-table").DataTable({
+        fixedHeader: true,
+        pageLength: 12,
+        columnControl: ["order", ['searchList']],
+        ordering: {
+            indicators: false,
+            handler: true,
+        },
+        responsive: true,
+        language: {
+            emptyTable: "No Item Locations found",
+        },
+    });
+
+    // Search function for item locations
+    $("#transSearch").on("keyup", function () {
+        transTable.search(this.value).draw();
+    });
+
+
+
+    // Row click to show modal (if you want a view modal for item locations)
+    $("#itemloc-table tbody").on("click", "tr", function () {
+        const $row = $(this);
+        // Example: fill modal fields
+        $("#view-itemloc-job").text($row.data("job") || "");
+        $("#view-itemloc-desc").text($row.data("desc") || "");
+        $("#view-itemloc-qty").text($row.data("qty") || "0");
+        $("#view-itemloc-um").text($row.data("um") || "");
+        $("#view-itemloc-site-desc").text($row.data("rssite_desc") || "");
+        $("#viewItemLocModal").modal("show");
+    });
 
     // Controls
     // Show user view modal when a row is clicked
@@ -273,7 +325,6 @@ $(document).ready(function () {
         $("#viewRackModal").modal("show");
     });
 
-
     // Receiving Form/Details toggle logic
     $("#receiving-details").hide();
     $("#goodsReceivingForm").on("submit", function (e) {
@@ -283,7 +334,7 @@ $(document).ready(function () {
         $("#details-site").text($("#rssite option:selected").text() || $("#rssite").val() || '-');
         $("#details-date").text($("#date").val() || '-');
         $("#details-warehouse").text($("#rswhse option:selected").text() || $("#rswhse").val() || '-');
-        $("#details-jobco").text($("#jobco").val() || '-');
+        $("#details-jobco").text($("#jobcoreceive").val() || '-');
         $("#details-lot").text($("#lot").val() || '-');
         $("#details-item").text($("#item").val() || '-');
         $("#details-description").text($("#desc").val() || '-');
@@ -395,64 +446,48 @@ $(document).ready(function () {
     }
 
     // Cache form data in localStorage
-    const RECEIVING_FORM_KEY = "irms_goods_receiving_form";
-    // Save form fields to localStorage on change/input
-    $("#goodsReceivingForm :input").on("change input", function () {
-        const data = {};
-        $("#goodsReceivingForm :input").each(function () {
-            if (this.name && this.type !== "submit" && this.type !== "button") {
-                data[this.name] = $(this).val();
-            }
-        });
-        localStorage.setItem(RECEIVING_FORM_KEY, JSON.stringify(data));
-    });
-    // Restore form fields from localStorage on page load
-    $(document).ready(function () {
-        const saved = localStorage.getItem(RECEIVING_FORM_KEY);
-        if (saved) {
-            const data = JSON.parse(saved);
-            Object.entries(data).forEach(([name, value]) => {
-                $(`#goodsReceivingForm [name="${name}"]`).val(value);
-            });
-        }
-    });
+    // const RECEIVING_FORM_KEY = "irms_goods_receiving_form";
+    // // Save form fields to localStorage on change/input
+    // $("#goodsReceivingForm :input").on("change input", function () {
+    //     const data = {};
+    //     $("#goodsReceivingForm :input").each(function () {
+    //         if (this.name && this.type !== "submit" && this.type !== "button") {
+    //             data[this.name] = $(this).val();
+    //         }
+    //     });
+    //     localStorage.setItem(RECEIVING_FORM_KEY, JSON.stringify(data));
+    // });
+    // // Restore form fields from localStorage on page load
+    // $(document).ready(function () {
+    //     const saved = localStorage.getItem(RECEIVING_FORM_KEY);
+    //     if (saved) {
+    //         const data = JSON.parse(saved);
 
-    // Optional: Clear cache on successful submit
-    // $("#goodsReceivingForm").on("submit", function () {
+    //         // Set site first
+    //         if (data.rssite) {
+    //             $("#rssite").val(data.rssite);
+    //             setFieldsEnabled(true);
+
+    //             // Filter warehouse and bay options to match selected site
+    //             filterOptions(document.getElementById("rswhse"), data.rssite);
+    //             filterOptions(document.getElementById("rsbaynum"), data.rssite);
+    //         }
+
+    //         // Now set warehouse and bay after filtering
+    //         if (data.rswhse) $("#rswhse").val(data.rswhse);
+    //         if (data.rsbaynum) $("#rsbaynum").val(data.rsbaynum);
+
+    //         // Set other fields
+    //         Object.entries(data).forEach(([name, value]) => {
+    //             if (name !== "rssite" && name !== "rswhse" && name !== "rsbaynum") {
+    //                 $(`#goodsReceivingForm [name="${name}"]`).val(value);
+    //             }
+    //         });
+    //     }
+    // });
+    // $("#btnlogout, #btnReceive").on("click", function () {
     //     localStorage.removeItem(RECEIVING_FORM_KEY);
     // });
-    $("#btnReceive").on("click", function () {
-        localStorage.removeItem(RECEIVING_FORM_KEY);
-    });
-
-    // Dispatching Form/Details toggle logic
-    $("#dispatching-details").hide();
-    $("#goodsDispatchingForm").on("submit", function (e) {
-        e.preventDefault();
-
-        const site = $("#rssite option:selected").text() || $("#rssite").val() || '-';
-        const warehouse = $("#rswhse").val() || '-';
-        const bay = $("#rsbaynum").val() || '-';
-
-        $("#details-site").val(site);
-        $("#details-date").val($("#date").val() || '-');
-        $("#details-warehouse").val(warehouse);
-        $("#details-jobco").val($("#jobco").val() || '-');
-        $("#details-lot").val($("#lot").val() || '-');
-        $("#details-item").val($("#item").val() || '-');
-        $("#details-bay").val(bay);
-        $("#details-docno").val($("#docno").val() || '-');
-        $("#details-pallet_size").val($("#pallet_size").val() || '-');
-        $("#details-um").val($("#um").val() || '-');
-
-        $(".card:has(#goodsDispatchingForm)").hide();
-        $("#dispatching-details").fadeIn();
-    });
-    $("#btnBackDispatching").on("click", function () {
-        $("#dispatching-details").hide();
-        $(".card:has(#goodsDispatchingForm)").fadeIn();
-        // $("html, body").animate({ scrollTop: $(".card:has(#goodsDispatchingForm)").offset().top }, -300);
-    });
 
     // Enable/disable row inputs based on checkbox
     $(document).on('change', '#receivingTable input[type="checkbox"].big-checkbox', function () {
@@ -505,8 +540,9 @@ $(document).ready(function () {
                     rswhse: $("#rswhse").val(),
                     rsbaynum: $("#rsbaynum").val(),
                     rsloc: $row.find('td').eq(2).text(),
+                    rslot: $("#lot").val(), 
                     rspallet_num: $row.find('input[type="text"]').eq(0).val(),
-                    job: $("#jobco").val(),
+                    job: $("#jobcoreceive").val(),
                     item: $("#item").val(),
                     desc: $("#desc").val(),
                     um: $("#um").val(),
@@ -560,6 +596,107 @@ $(document).ready(function () {
                 });
             }
         });
+    });
+
+    // Dispatching Form/Details toggle logic
+    $("#dispatching-details").hide();
+    $("#goodsDispatchingForm").on("submit", function (e) {
+        e.preventDefault();
+
+        // Pass all form data to the summary in dispatching-details-form
+        $("#details-site").text($("#rssite option:selected").text() || $("#rssite").val() || '-');
+        $("#details-date").text($("#date").val() || '-');
+        $("#details-warehouse").text($("#rswhse").val() || '-');
+        $("#details-jobco").text($("#jobcodispatch").val() || '-');
+        $("#details-lot").text($("#lot").val() || '-');
+        $("#details-item").text($("#item").val() || '-');
+        $("#details-desc").text($("#desc").val() || '-');
+        $("#details-um").text($("#um").val() || '-');
+        $("#details-docno").text($("#docno").val() || '-');
+
+        // AJAX to get item in rsloc list
+        $.ajax({
+            url: window.appUrl + '/irms/dispatching/item-in-rsloc-list',
+            method: 'POST',
+            data: {
+                rssite: $("#rssite").val() || $("input[name='rssite']").val(),
+                job: $("#jobcodispatch").val(),
+                _token: $('input[name="_token"]').val()
+            },
+            success: function (data) {
+                const tbody = $("#dispatchingTable tbody");
+                tbody.empty();
+                if (data.length > 0) {
+                    data.forEach(function(row, idx) {
+                        let qtyNum = parseFloat(row.qty);
+                        let qty = isNaN(qtyNum) || qtyNum === 0 ? "0" : (qtyNum % 1 === 0 ? qtyNum.toString() : qtyNum.toFixed(2).replace(/\.00$/, ""));
+                        tbody.append(`
+                            <tr>
+                                <td>${idx + 1}</td>
+                                <td class="text-center align-middle"><input type="checkbox" name="select_row[]" value="${idx + 1}" class="big-checkbox"></td>
+                                <td>${row.rsloc}</td>
+                                <td>${row.rspallet_num || ""}</td>
+                                <td class="text-end"><input type="text" class="form-control text-end" value="${qty}" disabled></td>
+                                <td>${row.um || ""}</td>
+                                <td>${row.datercvd || ""}</td>
+                            </tr>
+                        `);
+                    });
+                } else {
+                    tbody.append('<tr><td colspan="8" class="text-center">No Rack Location found.</td></tr>');
+                }
+            }
+        });
+
+        // Hide form, show details
+        $(".card:has(#goodsDispatchingForm)").hide();
+        $("#dispatching-details").fadeIn();
+    });
+
+    // Back button to return to form
+    $("#btnBackDispatching").on("click", function () {
+        $("#dispatching-details").hide();
+        $(".card:has(#goodsDispatchingForm)").fadeIn();
+    });
+
+    // Enable/disable Qty to Dispatch input based on checkbox
+    $(document).on('change', '#dispatchingTable input[type="checkbox"].big-checkbox', function () {
+        const $row = $(this).closest('tr');
+        const enabled = $(this).is(':checked');
+        $row.find('input[type="text"]').prop('disabled', !enabled);
+    });
+
+    // Select All / Unselect All logic for dispatchingTable
+    $("#btnSelectAll").on("click", function () {
+        const checkboxes = $("#dispatchingTable input[type='checkbox'].big-checkbox");
+        const allChecked = checkboxes.length > 0 && checkboxes.filter(":checked").length === checkboxes.length;
+
+        if (allChecked) {
+            checkboxes.prop('checked', false).trigger('change');
+            $(this).find('span').text('Select all');
+            $(this).find('i').removeClass('bi-x-circle-fill').addClass('bi-check-circle-fill');
+        } else {
+            checkboxes.prop('checked', true).trigger('change');
+            $(this).find('span').text('Unselect all');
+            $(this).find('i').removeClass('bi-check-circle-fill').addClass('bi-x-circle-fill');
+        }
+    });
+
+    // Toggle aside to icon-only (mini) 
+    $("[data-lte-toggle='sidebar']").on("click", function (e) {
+        e.preventDefault();
+        const isMobile = window.innerWidth < 768;
+        const $aside = $(".app-sidebar");
+
+        if (isMobile) {
+            // Hide sidebar on mobile
+            $aside.hide();
+        } else {
+            // Toggle sidebar-mini on desktop
+            $("body").toggleClass("sidebar-mini");
+            $aside.toggleClass("sidebar-mini");
+            $aside.show();
+        }
     });
 });
 
@@ -621,6 +758,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const baySelect = document.getElementById("rsbaynum");
     const rslocInput = document.getElementById("rsloc");
     const rsdecInput = document.getElementById("rsdec");
+    const descInput = document.getElementById("desc");
 
     function filterOptions(select, siteValue) {
         if (!select) return; // Prevent error if element doesn't exist
@@ -646,16 +784,16 @@ document.addEventListener("DOMContentLoaded", function () {
             filterOptions(baySelect, this.value);
         });
 
-        whseSelect.addEventListener("change", function () {
-            baySelect.selectedIndex = 0;
-            if (rslocInput) rslocInput.value = "";
-            if (rsdecInput) rsdecInput.value = "";
-        });
+        // whseSelect.addEventListener("change", function () {
+        //     baySelect.selectedIndex = 0;
+        //     if (rslocInput) rslocInput.value = "";
+        //     if (rsdecInput) rsdecInput.value = "";
+        // });
 
-        baySelect.addEventListener("change", function () {
-            if (rslocInput) rslocInput.value = "";
-            if (rsdecInput) rsdecInput.value = "";
-        });
+        // baySelect.addEventListener("change", function () {
+        //     if (rslocInput) rslocInput.value = "";
+        //     if (rsdecInput) rsdecInput.value = "";
+        // });
 
         // Initial filter on page load if old value exists
         if (siteSelect.value) {
@@ -665,16 +803,17 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Auto-fill Lot when typing in Job / CO
-    const jobcoInput = document.getElementById('jobco');
-    const lotInput = document.getElementById('lot');
-    if (jobcoInput && lotInput) {
-        jobcoInput.addEventListener('input', function () {
-            lotInput.value = this.value ? this.value + '-1' : '';
-        });
-    }
+    // const jobcoInput = document.getElementById('jobcoreceive');
+    // const lotInput = document.getElementById('lot');
+    // if (jobcoInput && lotInput) {
+    //     jobcoInput.addEventListener('input', function () {
+    //         lotInput.value = this.value ? this.value + '-1' : '';
+    //     });
+    // }
 
-    $("#jobco").on("input", function () {
+    $("#jobcoreceive").on("input", function () {
         const job = $(this).val();
+        const lotInput = document.getElementById('lot');
         let rssite = $("#rssite").val() || $("input[name='rssite']").val();
         if (!rssite) return;
 
@@ -690,8 +829,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (data.length > 0) {
                     $("#item").val(data[0].item || '');
                     $("#um").val(data[0].u_m || '');
-                    // $("#item-desc").text(data[0].description || '');
-                    // $("#item-desc-ext").text(data[0].Uf_itemdesc_ext || '');
                     let itemdesc;
                     if (data[0].description && data[0].Uf_itemdesc_ext) {
                         itemdesc = data[0].description + ' - ' + data[0].Uf_itemdesc_ext;
@@ -714,13 +851,50 @@ document.addEventListener("DOMContentLoaded", function () {
                         palletSize = palletSizeNum.toFixed(2).replace(/\.00$/, "");
                     }
                     $("#pallet_size").val(palletSize);
-                    // $("#pallet_size").val(data[0].Uf_Item_PalletSize || '');
+                    lotInput.value = job ? job + '-1' : '';
                 } else {
                     $("#item").val('');
                     $("#um").val('');
                     $("#desc").val('');
                     $("#pallet_size").val('');
+                    lotInput.value = '';
                 }
+            }
+        });
+    });
+
+
+    $("#jobcodispatch").on("input", function () {
+        const job = $(this).val();
+        const rssite = $("#rssite").val() || $("input[name='rssite']").val();
+        const lotInputDispatch = document.getElementById('lot');
+
+        if (!job || !rssite) return;
+
+        $.ajax({
+            url: window.appUrl + '/irms/dispatching/job-item-details',
+            method: "POST",
+            data: {
+                jobco: job,
+                rssite: rssite,
+                _token: $('input[name="_token"]').val()
+            },
+            success: function (data) {
+                if (data && Object.keys(data).length > 0) {
+                    $("#rswhse").val(data.rswhse || "");
+                    $("#item").val(data.item || "");
+                    $("#um").val(data.um || "");
+                    $("#desc").val(data.desc || "");
+
+                    lotInputDispatch.value = job ? job + '-1' : '';
+                } else {
+                    $("#rswhse").val('');
+                    $("#item").val('');
+                    $("#um").val('');
+                    $("#desc").val('');
+                    lotInputDispatch.value = '';
+                }
+                
             }
         });
     });

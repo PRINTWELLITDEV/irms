@@ -58,16 +58,14 @@ class RsLocSeeder extends Seeder
 
         // fclose($file);
 
-        // $folder = storage_path('app/seed_data');
-        $folder = database_path('seeders/seed_data/rslocation_data.csv');
-
-        // Get all .csv files inside the folder
+        $folder = database_path('seeders/seed_data');
         $files = glob($folder . '/*.csv');
 
         foreach ($files as $filePath) {
             $this->seedFromCsv($filePath);
         }
     }
+    
     private function seedFromCsv(string $filePath): void
     {
         $handle = fopen($filePath, 'r');

@@ -42,7 +42,7 @@
                                         <span class="input-group-text"><i class="bi bi-search"></i></span>
                                     </div>
                                 </div>
-                                <div class="table-responsive h-100">
+                                <div class="table-responsive table-view">
                                     <table id="bayloc-table" class="table table-striped table-bordered table-hover align-middle display ">
                                         <thead class="text-center">
                                             <tr>

@@ -33,14 +33,6 @@
                                 <h5 class="mb-0">Goods Receiving Form</h5>
                             </div>
                             <div class="card-body">
-                                <!-- Add this style block at the top of your form or in your main CSS -->
-                                <style>
-                                    .input-group-text.fixed-label {
-                                        min-width: 120px;
-                                        justify-content: flex-end;
-                                    }
-                                </style>
-
                                 @php
                                     $isSa = auth()->user()->userid === 'sa';
                                 @endphp
@@ -107,7 +99,7 @@
                                                 <span class="input-group-text fixed-label" id="jobco-label">
                                                     <span class="text-danger me-1">*</span>Job / CO:
                                                 </span>
-                                                <input type="text" class="form-control" id="jobco" name="jobco" required>
+                                                <input type="text" class="form-control" id="jobcoreceive" name="jobco" required>
                                             </div>
                                         </div>
                                         <div class="col-md-6 col-12">
@@ -273,33 +265,26 @@
                             </button>
                         </div>
                         <div class="table-responsive">
-                            <!-- Add this style block before your table or in your main CSS file -->
-                            <style>
-                                .table input[type="checkbox"].big-checkbox {
-                                    width: 24px;
-                                    height: 24px;
-                                    accent-color: #174700ff; /* Bootstrap primary */
-                                    cursor: pointer;
-                                }
-                            </style>
+                            <div class="table-view">
 
-                            <table id="receivingTable" class="table table-striped table-bordered align-middle w-100">
-                                <thead class="table-light">
-                                    <tr>
-                                        <th width="2%"></th>
-                                        <th width="5%">Select</th>
-                                        <th width="25%">Rack Location</th>
-                                        <th width="25%">Pallet Tag No.</th>
-                                        <th width="10%">Qty to Receive</th>
-                                        <th width="10%">Qty on Hand</th>
-                                        <th width="5%">U/M</th>
-                                        <th width="10%">Date Received</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <!-- JS will populate rows here -->
-                                </tbody>
-                            </table>
+                                <table id="receivingTable" class="table table-striped table-bordered align-middle w-100">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th width="2%"></th>
+                                            <th width="5%">Select</th>
+                                            <th width="25%">Rack Location</th>
+                                            <th width="25%">Pallet Tag No.</th>
+                                            <th width="10%">Qty to Receive</th>
+                                            <th width="10%">Qty on Hand</th>
+                                            <th width="5%">U/M</th>
+                                            <th width="10%">Date Received</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- JS will populate rows here -->
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>

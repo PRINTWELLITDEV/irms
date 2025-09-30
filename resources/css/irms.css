@@ -88,6 +88,12 @@
 }
 
 /* Table */
+.table-view{
+    min-height: 60vh;
+    max-height: 60vh;
+    overflow-y: auto;
+    position: relative;
+}
 .table-responsive {
     margin-bottom: 1.5rem;
 }
@@ -106,6 +112,30 @@ table.table td img {
 }
 .content-header h1 {
     font-size: 1.5rem;
+}
+.table input[type="checkbox"].big-checkbox {
+    width: 24px;
+    height: 24px;
+    accent-color: #174700ff; /* Bootstrap primary */
+    cursor: pointer;
+}
+
+.scroll-table {
+    max-height: 350px;
+    overflow-y: auto;
+    position: relative;
+}
+
+.scroll-table thead th {
+    position: sticky;
+    top: 0;
+    background: #f8f9fa; /* Use your header bg color */
+    z-index: 2;
+}
+
+.input-group-text.fixed-label {
+    min-width: 120px;
+    justify-content: flex-end;
 }
 
 /* Datatables Styling */

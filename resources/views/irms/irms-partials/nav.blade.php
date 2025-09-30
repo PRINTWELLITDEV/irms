@@ -80,7 +80,7 @@
                     <li class="d-flex justify-content-center gap-5 pb-2">
                         <a href="#" class="btn btn-outline-primary btn-sm">Profile</a>
                         @auth
-                            <a href="{{ route('logout') }}" class="btn btn-outline-danger btn-sm"
+                            <a href="{{ route('logout') }}" class="btn btn-outline-danger btn-sm" id="btnlogout"
                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                 Log Out
                             </a>

@@ -10,56 +10,56 @@ return new class extends Migration
      */
     public function up(): void
     {
-        DB::unprepared("
-            IF OBJECT_ID('sp_get_job_item_details', 'P') IS NOT NULL
-                DROP PROCEDURE sp_get_job_item_details;
-        ");
-        DB::unprepared("
-            CREATE PROCEDURE sp_get_job_item_details
-                @rssite NVARCHAR(20),
-                @job NVARCHAR(20) = NULL
-            AS
-            BEGIN
-                SET NOCOUNT ON;
+        // DB::unprepared("
+        //     IF OBJECT_ID('sp_get_job_item_details', 'P') IS NOT NULL
+        //         DROP PROCEDURE sp_get_job_item_details;
+        // ");
+        // DB::unprepared("
+        //     CREATE PROCEDURE sp_get_job_item_details
+        //         @rssite NVARCHAR(20),
+        //         @job NVARCHAR(20) = NULL
+        //     AS
+        //     BEGIN
+        //         SET NOCOUNT ON;
 
-                DECLARE @db NVARCHAR(50);
+        //         DECLARE @db NVARCHAR(50);
 
-                -- Map rssite to database name
-                IF @rssite = 'PI-SP'
-                    SET @db = '[192.168.2.4].[PI-SP_App]'
-                ELSE IF @rssite = 'FP-SP'
-                    SET @db = '[192.168.2.4].[FP-SP_App]'
-                ELSE IF @rssite = 'PIGRP-SP'
-                    SET @db = '[192.168.2.4].[PIGRP-SP_App]'
-                ELSE
-                    SET @db = NULL
+        //         -- Map rssite to database name
+        //         IF @rssite = 'PI-SP'
+        //             SET @db = '[192.168.2.4].[PI-SP_App]'
+        //         ELSE IF @rssite = 'FP-SP'
+        //             SET @db = '[192.168.2.4].[FP-SP_App]'
+        //         ELSE IF @rssite = 'PIGRP-SP'
+        //             SET @db = '[192.168.2.4].[PIGRP-SP_App]'
+        //         ELSE
+        //             SET @db = NULL
 
-                IF @db IS NOT NULL
-                BEGIN
-                    DECLARE @sql NVARCHAR(MAX);
+        //         IF @db IS NOT NULL
+        //         BEGIN
+        //             DECLARE @sql NVARCHAR(MAX);
 
-                    SET @sql = '
-                        SELECT
-                            j.job, 
-                            j.suffix, 
-                            j.item, 
-                            i.description, 
-                            i.Uf_itemdesc_ext, 
-                            i.u_m, 
-                            i.Uf_Item_PalletSize
-                        FROM [' + @db + '].dbo.job j
-                        INNER JOIN [' + @db + '].dbo.item i ON i.item = j.item
-                        WHERE (@job IS NULL OR j.job = @job) AND j.suffix = 0
-                    ';
+        //             SET @sql = '
+        //                 SELECT
+        //                     j.job, 
+        //                     j.suffix, 
+        //                     j.item, 
+        //                     i.description, 
+        //                     i.Uf_itemdesc_ext, 
+        //                     i.u_m, 
+        //                     i.Uf_Item_PalletSize
+        //                 FROM [' + @db + '].dbo.job j
+        //                 INNER JOIN [' + @db + '].dbo.item i ON i.item = j.item
+        //                 WHERE (@job IS NULL OR j.job = @job) AND j.suffix = 0
+        //             ';
 
-                    EXEC sp_executesql @sql, N'@job NVARCHAR(20)', @job;
-                END
-                ELSE
-                BEGIN
-                    RAISERROR('Invalid site/database.', 16, 1);
-                END
-            END
-        ");
+        //             EXEC sp_executesql @sql, N'@job NVARCHAR(20)', @job;
+        //         END
+        //         ELSE
+        //         BEGIN
+        //             RAISERROR('Invalid site/database.', 16, 1);
+        //         END
+        //     END
+        // ");
 
         DB::unprepared("
             IF OBJECT_ID('sp_get_rsloc_list', 'P') IS NOT NULL
@@ -97,15 +97,16 @@ return new class extends Migration
         ");
         
         DB::unprepared("
-            IF OBJECT_ID('sp_goodsreceived_process', 'P') IS NOT NULL
-                DROP PROCEDURE sp_goodsreceived_process;
+            IF OBJECT_ID('sp_goodsreceive_process', 'P') IS NOT NULL
+                DROP PROCEDURE sp_goodsreceive_process;
         ");
         DB::unprepared("
-			CREATE PROCEDURE sp_goodsreceived_process
+			CREATE PROCEDURE sp_goodsreceive_process
                 @rssite NVARCHAR(8),
                 @rswhse NVARCHAR(10),
                 @rsbaynum NVARCHAR(5),
                 @rsloc NVARCHAR(15),
+                @rslot NVARCHAR(15),
                 @rspallet_num NVARCHAR(10),
                 @job NVARCHAR(10),
                 @item NVARCHAR(30),
@@ -128,17 +129,18 @@ return new class extends Migration
 
                 -- Insert into rstrans
                 INSERT INTO rstrans (
-                    rssite, trans_num, trxdate, trxtype, item, [desc], job, rswhse, rsloc, rspallet_num, qty, um, docnum, createdby, createdate
+                    rssite, trans_num, trxdate, trxtype, item, [desc], job, rswhse, rsloc, rslot, rspallet_num, qty, um, docnum, createdby, createdate
                 ) VALUES (
                     @rssite,
-                    (SELECT ISNULL(MAX(trans_num),0)+1 FROM rstrans WHERE rssite=@rssite), -- auto-increment per site
+                    (SELECT ISNULL(MAX(trans_num),0)+1 FROM rstrans WHERE rssite=@rssite),
                     @datercvd,
-                    'R', -- R for Receiving
+                    'R',
                     @item,
                     @desc,
                     @job,
                     @rswhse,
                     @rsloc,
+                    @rslot,
                     @rspallet_num,
                     @qty,
                     @um,
@@ -169,8 +171,8 @@ return new class extends Migration
                 DROP PROCEDURE sp_get_rsloc_list;
         ");
         DB::unprepared("
-            IF OBJECT_ID('sp_goodsreceived_process', 'P') IS NOT NULL
-                DROP PROCEDURE sp_goodsreceived_process;
+            IF OBJECT_ID('sp_goodsreceive_process', 'P') IS NOT NULL
+                DROP PROCEDURE sp_goodsreceive_process;
         ");
     }
 };
