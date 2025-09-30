@@ -56,13 +56,14 @@ class RsGoodsReceivingController extends Controller
         $rows = $request->input('rows'); // Array of checked rows with all needed fields
 
         foreach ($rows as $row) {
-            \DB::statement('EXEC sp_goodsreceived_process 
-                @rssite = ?, @rswhse = ?, @rsbaynum = ?, @rsloc = ?, @rspallet_num = ?, @job = ?, @item = ?, @desc = ?, @um = ?, @qty = ?, @datercvd = ?, @docnum = ?, @createdby = ?',
+            \DB::statement('EXEC sp_goodsreceive_process 
+                @rssite = ?, @rswhse = ?, @rsbaynum = ?, @rsloc = ?, @rslot = ?, @rspallet_num = ?, @job = ?, @item = ?, @desc = ?, @um = ?, @qty = ?, @datercvd = ?, @docnum = ?, @createdby = ?',
                 [
                     $row['rssite'],
                     $row['rswhse'],
                     $row['rsbaynum'],
                     $row['rsloc'],
+                    $row['rslot'],
                     $row['rspallet_num'],
                     $row['job'],
                     $row['item'],
