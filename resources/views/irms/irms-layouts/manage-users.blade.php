@@ -42,8 +42,8 @@
                                 </div>
 
                                 <div class="table-responsive">
-                                    <table id="users-table" class="table table-striped table-hover align-middle">
-                                        <thead class="table-light text-center">
+                                    <table id="users-table" class="table table-striped table-hover align-middle display">
+                                        <thead class="text-center">
                                             <tr>
                                                 <!-- <th width="5%">Profile</th> -->
                                                 <th>Users</th>
@@ -200,7 +200,7 @@
 
     <!-- User View Modal -->
     <div class="modal fade" id="viewUserModal" tabindex="-1" aria-labelledby="viewUserLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header bg-primary text-white">
                     <h1 class="modal-title fs-5" id="viewUserLabel"><span id="view-user-label-name">-</span></h1>
@@ -209,7 +209,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="row align-items-center">
-                        <div class="profile-col col-12 col-md-4 align-middle text-center border border-2 rounded py-5">
+                        <div class="profile-col col-12 col-md-4 align-middle text-center rounded py-5">
                             <img id="view-user-profile" src="{{ asset('uploads/user-profile/noprofile.png') }}"
                                 alt="profile" class="profile-pic rounded-circle">
                         </div>

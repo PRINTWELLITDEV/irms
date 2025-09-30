@@ -564,34 +564,34 @@ $(document).ready(function () {
 });
 
 // Toggle aside to icon-only (mini) when navbar collapse button is clicked
-(function () {
-    const SIDEBAR_PREF_KEY = 'irms_sidebar_mini';
+// (function () {
+//     const SIDEBAR_PREF_KEY = 'irms_sidebar_mini';
 
-    function applySidebarMini(enable) {
-        document.body.classList.toggle('sidebar-mini', !!enable);
-        const aside = document.querySelector('.app-sidebar');
-        if (aside) aside.classList.toggle('sidebar-mini', !!enable);
-        try { localStorage.setItem(SIDEBAR_PREF_KEY, !!enable ? '1' : '0'); } catch (e) { /* ignore */ }
-    }
+//     function applySidebarMini(enable) {
+//         document.body.classList.toggle('sidebar-mini', !!enable);
+//         const aside = document.querySelector('.app-sidebar');
+//         if (aside) aside.classList.toggle('sidebar-mini', !!enable);
+//         try { localStorage.setItem(SIDEBAR_PREF_KEY, !!enable ? '1' : '0'); } catch (e) { /* ignore */ }
+//     }
 
-    // restore preference on load
-    try {
-        const pref = localStorage.getItem(SIDEBAR_PREF_KEY);
-        if (pref === '1') applySidebarMini(true);
-    } catch (e) { /* ignore */ }
+//     // restore preference on load
+//     try {
+//         const pref = localStorage.getItem(SIDEBAR_PREF_KEY);
+//         if (pref === '1') applySidebarMini(true);
+//     } catch (e) { /* ignore */ }
 
-    // hook into the navbar collapse toggle(s)
-    const sidebarToggleBtns = document.querySelectorAll('[data-lte-toggle="sidebar"]');
-    sidebarToggleBtns.forEach((btn) => {
-        btn.addEventListener('click', function () {
-            // Delay slightly so AdminLTE's own toggle runs first (if present)
-            setTimeout(() => {
-                const currentlyMini = document.body.classList.contains('sidebar-mini');
-                applySidebarMini(!currentlyMini);
-            }, 40);
-        });
-    });
-})();
+//     // hook into the navbar collapse toggle(s)
+//     const sidebarToggleBtns = document.querySelectorAll('[data-lte-toggle="sidebar"]');
+//     sidebarToggleBtns.forEach((btn) => {
+//         btn.addEventListener('click', function () {
+//             // Delay slightly so AdminLTE's own toggle runs first (if present)
+//             setTimeout(() => {
+//                 const currentlyMini = document.body.classList.contains('sidebar-mini');
+//                 applySidebarMini(!currentlyMini);
+//             }, 40);
+//         });
+//     });
+// })();
 
 document.addEventListener("DOMContentLoaded", function () {
     // Fade in content wrapper
