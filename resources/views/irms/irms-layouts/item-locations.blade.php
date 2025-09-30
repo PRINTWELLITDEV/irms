@@ -42,7 +42,7 @@
                                 </div>
                             </div>
 
-                            <div class="table-responsive">
+                            <div class="table-responsive table-view">
                                 <table id="itemloc-table" class="table table-striped table-bordered table-hover align-middle display">
                                     <thead class="text-center">
                                     <tr>

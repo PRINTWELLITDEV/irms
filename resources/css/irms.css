@@ -88,9 +88,14 @@
 }
 
 /* Table */
+.table-view{
+    min-height: 60vh;
+    max-height: 60vh;
+    overflow-y: auto;
+    position: relative;
+}
 .table-responsive {
     margin-bottom: 1.5rem;
-    min-height: 60vh;
 }
 table.table th, table.table td {
     white-space: nowrap;

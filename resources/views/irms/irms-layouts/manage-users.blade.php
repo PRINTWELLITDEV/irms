@@ -41,7 +41,7 @@
                                     </div>
                                 </div>
 
-                                <div class="table-responsive">
+                                <div class="table-responsive table-view">
                                     <table id="users-table" class="table table-striped table-hover align-middle">
                                         <thead class="table-light text-center">
                                             <tr>
