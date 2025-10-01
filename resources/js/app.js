@@ -772,21 +772,21 @@ $(document).ready(function () {
     });
 
     // Toggle aside to icon-only (mini) 
-    $("[data-lte-toggle='sidebar']").on("click", function (e) {
-        e.preventDefault();
-        const isMobile = window.innerWidth < 768;
-        const $aside = $(".app-sidebar");
+    //$("[data-lte-toggle='sidebar']").on("click", function (e) {
+        //e.preventDefault();
+        //const isMobile = window.innerWidth < 768;
+        //const $aside = $(".app-sidebar");
 
-        if (isMobile) {
-            // Hide sidebar on mobile
-            $aside.hide();
-        } else {
+        //if (isMobile) {
+            //// Hide sidebar on mobile
+            //$aside.hide();
+        //} else {
             // Toggle sidebar-mini on desktop
-            $("body").toggleClass("sidebar-mini");
-            $aside.toggleClass("sidebar-mini");
-            $aside.show();
-        }
-    });
+            //$("body").toggleClass("sidebar-mini");
+            //$aside.toggleClass("sidebar-mini");
+            //$aside.show();
+        //}
+    //});
 });
 
 // Toggle aside to icon-only (mini) when navbar collapse button is clicked
