@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('rstrans', function (Blueprint $table) {
             $table->string('rssite', 8);
-            $table->integer('trans_num');
+            $table->string('trans_num');
             $table->dateTime('trxdate')->nullable();
             $table->string('trxtype', 1)->nullable();
             $table->string('item', 30)->nullable();
@@ -30,6 +30,11 @@ return new class extends Migration
             $table->dateTime('createdate')->nullable();
             $table->primary(['rssite', 'trans_num'], 'PK_rstrans');
         });
+
+        Schema::create('rslasttran', function (Blueprint $table) {
+            $table->char('trans_year', 2)->primary(); // e.g. '25'
+            $table->integer('last_num')->default(0);  // last used number for the year
+        });
     }
 
     /**
@@ -38,5 +43,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('rstrans');
+        Schema::dropIfExists('rslasttran');
     }
 };

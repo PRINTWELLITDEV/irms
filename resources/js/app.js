@@ -678,6 +678,99 @@ $(document).ready(function () {
         }
     });
 
+    $("#btnDispatch").on("click", function () {
+        const rows = [];
+        let hasError = false;
+
+        $("#dispatchingTable tbody tr").each(function () {
+            const $row = $(this);
+            const checked = $row.find('input[type="checkbox"].big-checkbox').is(':checked');
+            if (checked) {
+                const qtyInput = $row.find('input[type="text"]');
+                const qtyToDispatch = parseFloat(qtyInput.val());
+                const availableQty = parseFloat(qtyInput.attr('value')) || parseFloat(qtyInput.val());
+                const rsloc = $row.find('td').eq(2).text();
+                const rspallet_num = $row.find('td').eq(3).text();
+                const um = $row.find('td').eq(5).text();
+
+                // Validate quantity
+                if (isNaN(qtyToDispatch) || qtyToDispatch <= 0) {
+                    qtyInput.addClass('is-invalid');
+                    hasError = true;
+                    return;
+                }
+                if (qtyToDispatch > availableQty) {
+                    qtyInput.addClass('is-invalid');
+                    hasError = true;
+                    return;
+                }
+                qtyInput.removeClass('is-invalid');
+
+                rows.push({
+                    rssite: $("#rssite").val() || $("input[name='rssite']").val(),
+                    rswhse: $("#rswhse").val(),
+                    rsloc: rsloc,
+                    rslot: $("#lot").val(),
+                    rspallet_num: rspallet_num,
+                    job: $("#jobcodispatch").val(),
+                    item: $("#item").val(),
+                    desc: $("#desc").val(),
+                    um: um,
+                    qty: qtyToDispatch,
+                    datedispatch: $("#date").val(),
+                    docno: $("#docno").val()
+                });
+            }
+        });
+
+        if (hasError) {
+            alert("Please enter a valid quantity to dispatch (must be > 0 and ≤ available quantity) for all selected rows.");
+            return;
+        }
+
+        if (rows.length === 0) {
+            alert("Please select at least one row to dispatch.");
+            return;
+        }
+
+        $.ajax({
+            url: window.appUrl + '/irms/dispatching/process-goods-dispatch',
+            method: 'POST',
+            data: {
+                rows: rows,
+                _token: $('input[name="_token"]').val()
+            },
+            success: function (response) {
+                $("body").append(`
+                    <div class="modal fade" id="goodsDispatchedModal" tabindex="-1" aria-labelledby="goodsDispatchedModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                        <div class="modal-header bg-success text-white">
+                            <h5 class="modal-title" id="goodsDispatchedModalLabel">Success</h5>
+                        </div>
+                        <div class="modal-body text-center">
+                            <i class="bi bi-check-circle-fill text-success" style="font-size:2rem;"></i>
+                            <p class="mt-3 mb-0">Goods dispatched successfully!</p>
+                        </div>
+                        <div class="modal-footer justify-content-center">
+                            <button type="button" class="btn btn-success px-4" id="modalDispatchRedirectBtn">OK</button>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+                `);
+                $("#goodsDispatchedModal").modal("show");
+                $("#modalDispatchRedirectBtn").on("click", function () {
+                    $("#goodsDispatchedModal").modal("hide");
+                    window.location.href = window.appUrl + "/irms/dispatching";
+                });
+                $("#goodsDispatchedModal").on("hidden.bs.modal", function () {
+                    $(this).remove();
+                });
+            }
+        });
+    });
+
     // Toggle aside to icon-only (mini) 
     $("[data-lte-toggle='sidebar']").on("click", function (e) {
         e.preventDefault();

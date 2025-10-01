@@ -79,4 +79,32 @@ class RsGoodsDispatchingController extends Controller
 
         return response()->json($results);
     }
+
+    public function processGoodsDispatch(Request $request)
+    {
+        $rows = $request->input('rows'); // Array of checked rows with all needed fields
+
+        foreach ($rows as $row) {
+            \DB::statement('EXEC sp_goodsdispatch_process 
+                @rssite = ?, @rswhse = ?, @rsloc = ?, @rslot = ?, @rspallet_num = ?, @job = ?, @item = ?, @desc = ?, @um = ?, @qty = ?, @datedispatch = ?, @docnum = ?, @createdby = ?',
+                [
+                    $row['rssite'],
+                    $row['rswhse'],
+                    $row['rsloc'],
+                    $row['rslot'],
+                    $row['rspallet_num'],
+                    $row['job'],
+                    $row['item'],
+                    $row['desc'],
+                    $row['um'],
+                    $row['qty'],
+                    $row['datedispatch'],
+                    $row['docno'],
+                    auth()->user()->userid
+                ]
+            );
+        }
+
+        return response()->json(['success' => true, 'message' => 'Goods dispatched successfully!']);
+    }
 }

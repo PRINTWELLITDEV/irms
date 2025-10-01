@@ -120,6 +120,26 @@ return new class extends Migration
             BEGIN
                 SET NOCOUNT ON;
 
+                DECLARE @trans_year CHAR(2) = RIGHT(CONVERT(CHAR(4), YEAR(GETDATE())), 2);
+                DECLARE @last_num INT;
+                DECLARE @trans_num NVARCHAR(10);
+
+                -- Get or initialize last_num for current year
+                IF EXISTS (SELECT 1 FROM rslasttran WHERE trans_year = @trans_year)
+                BEGIN
+                    SELECT @last_num = last_num FROM rslasttran WHERE trans_year = @trans_year;
+                    SET @last_num = @last_num + 1;
+                    UPDATE rslasttran SET last_num = @last_num WHERE trans_year = @trans_year;
+                END
+                ELSE
+                BEGIN
+                    SET @last_num = 1;
+                    INSERT INTO rslasttran (trans_year, last_num) VALUES (@trans_year, @last_num);
+                END
+
+                -- Format trans_num as YY-0000001
+                SET @trans_num = @trans_year + '-' + RIGHT('0000000' + CAST(@last_num AS VARCHAR(7)), 7);
+
                 -- Insert into rsitemloc
                 INSERT INTO rsitemloc (
                     rssite, rswhse, rsbaynum, rsloc, rspallet_num, job, item, [desc], um, qty, datercvd, createdate, createdby
@@ -132,7 +152,7 @@ return new class extends Migration
                     rssite, trans_num, trxdate, trxtype, item, [desc], job, rswhse, rsloc, rslot, rspallet_num, qty, um, docnum, createdby, createdate
                 ) VALUES (
                     @rssite,
-                    (SELECT ISNULL(MAX(trans_num),0)+1 FROM rstrans WHERE rssite=@rssite),
+                    @trans_num,
                     @datercvd,
                     'R',
                     @item,
@@ -162,10 +182,10 @@ return new class extends Migration
      */
     public function down(): void
     {
-        DB::unprepared("
-            IF OBJECT_ID('sp_get_job_item_details', 'P') IS NOT NULL
-                DROP PROCEDURE sp_get_job_item_details;
-        ");
+        // DB::unprepared("
+        //     IF OBJECT_ID('sp_get_job_item_details', 'P') IS NOT NULL
+        //         DROP PROCEDURE sp_get_job_item_details;
+        // ");
         DB::unprepared("
             IF OBJECT_ID('sp_get_rsloc_list', 'P') IS NOT NULL
                 DROP PROCEDURE sp_get_rsloc_list;

@@ -39,16 +39,16 @@
                                 <table id="transaction-table" class="table table-striped table-bordered table-hover align-middle display">
                                     <thead class="text-center">
                                     <tr>
-                                        <th>No.</th>
-                                        <th>Transaction Date</th>
-                                        <th>Job</th>
-                                        <th>Item</th>
-                                        <th>Lot</th>
-                                        <th>Pallet No.</th>
-                                        <th>Qty</th>
-                                        <th>U/M</th>
-                                        <th>Doc No.</th>
-                                        <th>Type</th>
+                                        <th width="5%">Trans No.</th>
+                                        <th width="5%">Trans Date</th>
+                                        <th width="5%">Type</th>
+                                        <th width="">Job</th>
+                                        <th width="">Item</th>
+                                        <!-- <th>Lot</th> -->
+                                        <th width="5%">Pallet No.</th>
+                                        <th width="5%">Qty</th>
+                                        <th width="5%">U/M</th>
+                                        <th width="5%">Doc No.</th>
                                         @if(auth()->user()->userid === 'sa')
                                             <th width="10%">Site</th>
                                         @endif
@@ -72,14 +72,14 @@
                                         >
                                             <td>{{ $trx->trans_num }}</td>
                                             <td>{{ \Carbon\Carbon::parse($trx->trxdate)->format('d M Y') }}</td>
+                                            <td>{{ $trx->trxtype }}</td>
                                             <td>{{ $trx->job }}</td>
                                             <td>{{ $trx->item }}</td>
-                                            <td>{{ $trx->rslot }}</td>
+                                            <!-- <td>{{ $trx->rslot }}</td> -->
                                             <td>{{ $trx->rspallet_num }}</td>
                                             <td class="text-end">{{ ($trx->qty ?? 0) == 0 ? '0' : number_format($trx->qty, 0) }}</td>
                                             <td>{{ $trx->um }}</td>
                                             <td>{{ $trx->docnum }}</td>
-                                            <td>{{ $trx->trxtype }}</td>
                                             @if(auth()->user()->userid === 'sa')
                                                 <td>{{ $trx->rssite_desc }}</td>
                                             @endif
