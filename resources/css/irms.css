@@ -4,6 +4,33 @@
 /* Import AdminLTE */
 @import "admin-lte/dist/css/adminlte.css";
 
+/* Aside */
+.sidebar-brand .brand-image {
+    width: 35px;
+    height: 35px;
+    object-fit: contain;
+    background-color: #ccc !important;
+}
+
+body.sidebar-mini .app-sidebar .sidebar-brand,
+.app-sidebar.sidebar-mini .sidebar-brand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+body.sidebar-mini .app-sidebar .sidebar-brand .brand-image,
+.app-sidebar.sidebar-mini .sidebar-brand .brand-image {
+    margin: 0 auto;
+    display: block;
+}
+
+body.sidebar-mini .app-sidebar .sidebar-brand .brand-text,
+.app-sidebar.sidebar-mini .sidebar-brand .brand-text {
+    display: none;
+}
+
 /* Layout Wrapper */
 .wrapper {
     flex-direction: column;

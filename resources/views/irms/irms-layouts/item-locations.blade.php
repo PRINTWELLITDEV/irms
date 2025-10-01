@@ -48,6 +48,7 @@
                                     <tr>
                                         <th>Item Locations</th>
                                         <th>Job No.</th>
+                                        <th>Pallet No.</th>
                                         <th>Qty</th>
                                         <th>U/M</th>
                                         @if(auth()->user()->userid === 'sa')
@@ -76,6 +77,7 @@
                                         >
                                             <td>{{ $loc->rsloc }}</td>
                                             <td>{{ $loc->job }}</td>
+                                            <td>{{ $loc->rspallet_num }}</td>
                                             <td class="text-end">{{ ($loc->qty ?? 0) == 0 ? '0' : number_format($loc->qty, 0) }}</td>
                                             <td>{{ $loc->um }}</td>
                                             @if(auth()->user()->userid === 'sa')

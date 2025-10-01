@@ -18,7 +18,7 @@
                                 <div class="card-body">
                                     <h5 class="card-title">Inventory</h5>
                                     <p class="text-muted">Manage your inventory</p>
-                                    <a href="{{ route('inventory') }}" class="stretched-link"></a>
+                                    <a href="" class="stretched-link"></a>
                                 </div>
                             </div>
                         </div>
@@ -27,7 +27,7 @@
                                 <div class="card-body">
                                     <h5 class="card-title">Dashboard</h5>
                                     <p class="text-muted">View analytics</p>
-                                    <a href="{{ route('dashboard') }}" class="stretched-link"></a>
+                                    <a href="" class="stretched-link"></a>
                                 </div>
                             </div>
                         </div>

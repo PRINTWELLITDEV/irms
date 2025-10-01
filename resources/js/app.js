@@ -10,6 +10,7 @@ $.extend($.fn.dataTable.defaults, {
     pageLength: 10,
     responsive: true,
     autoWidth: false,
+    order: [],
     layout: {
         topStart: null, // Hides search box
         topEnd: null, // Hides page length / buttons
@@ -59,7 +60,6 @@ $(document).ready(function () {
     // Warehouse table
     const warehouseTable = $("#warehouse-table").DataTable({
         fixedHeader: true,
-        pageLength: 15,
         columnControl: ["order", ['searchList']],
         ordering: {
             indicators: false,
@@ -77,7 +77,6 @@ $(document).ready(function () {
     // Bay Location table
     const bayLocationTable = $("#bayloc-table").DataTable({
         fixedHeader: true,
-        pageLength: 15,
         columnControl: ["order", ['searchList']],
         ordering: {
             indicators: false,
@@ -107,7 +106,6 @@ $(document).ready(function () {
     // Rack Location table
     const rackTable = $("#rackTable").DataTable({
         fixedHeader: true,
-        pageLength: 12,
         columnControl: ["order", ['searchList']],
         ordering: {
             indicators: false,
@@ -125,7 +123,6 @@ $(document).ready(function () {
     // Item Locations table
     const itemLocTable = $("#itemloc-table").DataTable({
         fixedHeader: true,
-        pageLength: 12,
         columnControl: ["order", ['searchList']],
         ordering: {
             indicators: false,
@@ -144,7 +141,6 @@ $(document).ready(function () {
 
     const transTable = $("#transaction-table").DataTable({
         fixedHeader: true,
-        pageLength: 12,
         columnControl: ["order", ['searchList']],
         ordering: {
             indicators: false,

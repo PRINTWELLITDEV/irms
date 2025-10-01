@@ -4,18 +4,21 @@
 <!-- Sidebar -->
 <aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="dark">
     <div class="sidebar-brand">
+        
         <a href="{{ url('/irms') }}" class="brand-link">
-            <img src="{{ asset('uploads/img/irms.png') }}" alt="IRMS Logo" class="brand-image opacity-75 shadow rounded-circle" />
-            <span class="brand-text">IRMS</span>
+            <img src="{{ asset('uploads/img/irms.png') }}" alt="IRMS Logo" class="brand-image shadow rounded-circle" />
+            <span class="brand-text fw-bold">IRMS</span>
         </a>
     </div>
     <div class="sidebar-brand">
         @if(auth()->user()->userid === 'sa')
+            <img src="{{ asset(\App\Http\Controllers\Irms\IrmsController::getprofile()) }}" alt="Super Admin Logo" class="brand-image shadow rounded-circle" />
             <span class="brand-text fw-light">
                 Super Admin
             </span>
         @else
-            <span class="brand-text fw-light">
+            <img src="{{ asset(\App\Http\Controllers\Irms\IrmsController::getSiteImage()) }}" alt="Site Logo" class="brand-image shadow rounded-circle" />
+            <span class="brand-text fw-light small">
                 {{ \App\Http\Controllers\Irms\IrmsController::getSiteDesc() }}
             </span>
         @endif

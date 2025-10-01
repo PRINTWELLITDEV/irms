@@ -30,7 +30,7 @@ return new class extends Migration
             INNER JOIN irms_site s ON s.rssite = t.rssite
             INNER JOIN rsusers u ON u.userid = t.createdby
             WHERE (@rssite IS NULL OR t.rssite = @rssite)
-            ORDER BY t.trans_num DESC, t.trxdate DESC
+            ORDER BY t.createdate DESC
         ');
     }
 
