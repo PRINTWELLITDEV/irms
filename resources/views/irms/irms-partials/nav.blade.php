@@ -1,6 +1,11 @@
 @php
     use Illuminate\Support\Facades\Auth;
+    use Illuminate\Support\Facades\DB;
     $user = Auth::user();
+    $siteDesc = null;
+    if ($user && $user->rssite) {
+        $siteDesc = DB::table('irms_site')->where('rssite', $user->rssite)->value('rssite_desc');
+    }
 @endphp
 <nav class="app-header navbar navbar-expand bg-body sticky-top">
     <div class="container-fluid">
@@ -48,36 +53,33 @@
             </li>
             <!--end::Fullscreen Toggle-->
             <!-- User Dropdown -->
-            <li class="nav-item dropdown user-menu">
+            <li class="nav-item dropdown user-menu shadow rounded">
                 <a href="#" class="nav-link dropdown-toggle" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <img src="{{ $user
                                     ? ($user->profile_pic_url
                                         ? asset($user->profile_pic_url)
                                         : asset('uploads/user-profile/noprofile.png'))
                                     : asset('uploads/user-profile/guest.png') }}"
-                        class="user-image rounded-circle"
-                        alt="{{ $user->userid ?? 'Guest User' }}-img"
-                        width="30" height="30">
+                        class="user-image rounded-circle border border-2 border-opacity-25 me-2"
+                        alt="{{ $user->userid ?? 'Guest User' }}-img">
                     <span class="d-none d-md-inline">{{ $user->name ?? 'Guest' }}</span>
                 </a>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                    <li class="dropdown-header text-center">
+                <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end" aria-labelledby="userDropdown">
+                    <li class="user-header text-center py-3">
                         <img src="{{ $user
                                         ? ($user->profile_pic_url
                                             ? asset($user->profile_pic_url)
                                             : asset('uploads/user-profile/noprofile.png'))
                                         : asset('uploads/user-profile/guest.png') }}"
-                             class="user-image rounded-circle"
-                             alt="{{ $user->userid ?? 'Guest User' }}-img"
-                             width="100" height="100">
-                        <p class="mb-0">
-                            <small>User ID: {{ $user->userid ?? 'Guest ID' }} </small><br>
-                            {{ $user->name ?? 'Guest User' }} <br>
-                            <small>Site: {{ $user->rssite ?? 'N/A' }}</small>
-                        </p>
+                            class="user-image rounded-circle shadow mb-2"
+                            alt="{{ $user->userid ?? 'Guest User' }}-img"
+                        />
+                        <div class="fw-bold">{{ $user->name ?? 'Guest User' }}</div>
+                        <div class="text-muted small">User ID: {{ $user->userid ?? 'Guest ID' }}</div>
+                        <small>{{ $siteDesc ?? 'N/A' }}</small>
                     </li>
                     <li><hr class="dropdown-divider"></li>
-                    <li class="d-flex justify-content-center gap-5 pb-2">
+                    <li class="d-flex justify-content-center gap-5 p-2">
                         <a href="#" class="btn btn-outline-primary btn-sm">Profile</a>
                         @auth
                             <a href="{{ route('logout') }}" class="btn btn-outline-danger btn-sm" id="btnlogout"
