@@ -17,6 +17,11 @@ IRMS is a web-based application designed to efficiently manage inventory racks, 
 - Secure authentication and session management
 - Real-time search and filtering
 - Audit trail for user creation and updates
+- Environment configuration via `.env.example`
+- Stored procedures for efficient database operations
+- Mobile-friendly interface
+- Select site, warehouse, and bay with dynamic filtering
+- Temporary form caching for user convenience
 
 ## Technologies Used
 
@@ -46,12 +51,44 @@ IRMS is a web-based application designed to efficiently manage inventory racks, 
    php artisan serve
    ```
 
+## Environment Configuration
+
+Before running the application, copy the example environment file and update it with your settings:
+
+```bash
+cp .env.example .env
+```
+
+Open `.env` and configure the following:
+
+- **App Key**:  
+  Generate a new application key for security:
+  ```bash
+  php artisan key:generate
+  ```
+  This will automatically update the `APP_KEY` value in your `.env` file.
+
+- **Database settings**:  
+  Set your database host, port, name, username, and password for each connection (Main, PI-SP, FP-SP, PIGRP-SP).
+- **Session and cache settings**:  
+  Adjust session, cache, and queue drivers as needed.
+- **Mail settings**:  
+  Set up your mailer, host, port, username, password, and sender address.
+- **Other environment variables**:  
+  Update any other values to match your local or production environment.
+
+Refer to `.env.example` for all available configuration options.
+
 ## Usage
 
 - Access the dashboard at `/irms`
+- Log in using your assigned credentials
+- Configure your environment by copying `.env.example` to `.env` and updating the settings
 - Manage users, warehouses, and sites via the sidebar navigation
 - Add, edit, and delete records using modals
-- Search and filter data in tables
+- Search and filter data in tables using the built-in DataTables features
+- Use the responsive interface on desktop or mobile devices
+- All changes are tracked for audit purposes
 
 ## Creators <br>
 
