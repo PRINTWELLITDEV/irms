@@ -24,3 +24,11 @@
 .app-footer .pi-link:hover {
     text-decoration: underline;
 }
+
+/* In your CSS file (e.g., public/css/styles.css) */
+#home-background {
+    /* The path here is relative to the CSS file's location,
+       but often, you'll use the root (/) or relative path based on your setup. */
+    background-image: url('/uploads/img/bg_home.jpg');
+    background-size: cover;
+}

@@ -15,7 +15,8 @@
         <ul class="navbar-nav ms-auto">
             <!-- Notifications Dropdown -->
             <li class="nav-item dropdown">
-                <a class="nav-link" href="#" id="notificationsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <a class="nav-link" href="#" id="notificationsDropdown" role="button" data-bs-toggle="dropdown"
+                    aria-expanded="false">
                     <i class="far fa-bell"></i>
                     <span class="badge bg-warning rounded-pill">3</span>
                 </a>
@@ -23,18 +24,18 @@
                     <span class="dropdown-item dropdown-header">15 Notifications</span>
                     <div class="dropdown-divider"></div>
                     <a href="#" class="dropdown-item">
-                    <i class="bi bi-envelope me-2"></i> 4 new messages
-                    <span class="float-end text-secondary fs-7">3 mins</span>
+                        <i class="bi bi-envelope me-2"></i> 4 new messages
+                        <span class="float-end text-secondary fs-7">3 mins</span>
                     </a>
                     <div class="dropdown-divider"></div>
                     <a href="#" class="dropdown-item">
-                    <i class="bi bi-people-fill me-2"></i> 8 friend requests
-                    <span class="float-end text-secondary fs-7">12 hours</span>
+                        <i class="bi bi-people-fill me-2"></i> 8 friend requests
+                        <span class="float-end text-secondary fs-7">12 hours</span>
                     </a>
                     <div class="dropdown-divider"></div>
                     <a href="#" class="dropdown-item">
-                    <i class="bi bi-file-earmark-fill me-2"></i> 3 new reports
-                    <span class="float-end text-secondary fs-7">2 days</span>
+                        <i class="bi bi-file-earmark-fill me-2"></i> 3 new reports
+                        <span class="float-end text-secondary fs-7">2 days</span>
                     </a>
                     <div class="dropdown-divider"></div>
                     <a href="#" class="dropdown-item dropdown-footer"> See All Notifications </a>
@@ -42,10 +43,10 @@
             </li>
             <!--begin::Fullscreen Toggle-->
             <li class="nav-item">
-              <a class="nav-link" id="fullscreenToggle" href="#" data-lte-toggle="fullscreen">
-                <i data-lte-icon="maximize" class="bi bi-arrows-fullscreen"></i>
-                <i data-lte-icon="minimize" class="bi bi-fullscreen-exit" style="display: none"></i>
-              </a>
+                <a class="nav-link" id="fullscreenToggle" href="#" data-lte-toggle="fullscreen">
+                    <i data-lte-icon="maximize" class="bi bi-arrows-fullscreen"></i>
+                    <i data-lte-icon="minimize" class="bi bi-fullscreen-exit" style="display: none"></i>
+                </a>
             </li>
             <!--end::Fullscreen Toggle-->
 
@@ -57,7 +58,7 @@
                     </a>
                 @else
                     <a class="nav-link" href="#" title="Logout"
-                       onclick="event.preventDefault(); document.getElementById('logout-form-top').submit();">
+                        onclick="event.preventDefault(); document.getElementById('logout-form-top').submit();">
                         <i class="bi bi-box-arrow-right"></i>
                     </a>
                 @endguest
@@ -69,7 +70,7 @@
                     <a class="nav-link" href="{{ route('login') }}">Login</a>
                 @else
                     <a class="nav-link" href="#"
-                       onclick="event.preventDefault(); document.getElementById('logout-form-top').submit();">
+                        onclick="event.preventDefault(); document.getElementById('logout-form-top').submit();">
                         Logout
                     </a>
                 @endguest
@@ -77,31 +78,33 @@
 
             <!-- User Dropdown -->
             <li class="nav-item dropdown user-menu">
-                <a href="#" class="nav-link dropdown-toggle" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <a href="#" class="nav-link dropdown-toggle" id="userDropdown" role="button" data-bs-toggle="dropdown"
+                    aria-expanded="false">
                     <img src="{{ $user && $user->profile_pic_path
-                                  ? Storage::disk('public')->url($user->profile_pic_path)
-                                  : asset('uploads/user-profile/noprofile.png') }}"
-                        class="user-image rounded-circle" alt="{{ $user->userid ?? 'Guest' }}-img">
+    ? Storage::disk('public')->url($user->profile_pic_path)
+    : asset('uploads/user-profile/noprofile.png') }}" class="user-image rounded-circle"
+                        alt="{{ $user->userid ?? 'Guest' }}-img">
                     <span class="d-none d-md-inline">{{ $user->name ?? 'Guest' }}</span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end" aria-labelledby="userDropdown">
                     <li class="user-header text-center py-3">
                         <img src="{{ $user && $user->profile_pic_path
-                                      ? Storage::disk('public')->url($user->profile_pic_path)
-                                      : asset('uploads/user-profile/noprofile.png') }}"
+    ? Storage::disk('public')->url($user->profile_pic_path)
+    : asset('uploads/user-profile/noprofile.png') }}"
                             class="user-image rounded-circle shadow mb-2"
-                            alt="{{ $user->userid ?? 'Guest User' }}-img"
-                        />
+                            alt="{{ $user->userid ?? 'Guest User' }}-img" />
                         <div class="fw-bold">{{ $user->name ?? 'Guest User' }}</div>
                         <div class="text-muted small">User ID: {{ $user->userid ?? 'Guest ID' }}</div>
                         <small>{{ $siteDesc ?? 'N/A' }}</small>
                     </li>
-                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
                     <li class="d-flex justify-content-center gap-3 p-2">
                         @auth
                             <a href="#" class="btn btn-outline-primary btn-sm">Profile</a>
                             <a href="#" class="btn btn-outline-danger btn-sm"
-                               onclick="event.preventDefault(); document.getElementById('logout-form-top').submit();">
+                                onclick="event.preventDefault(); document.getElementById('logout-form-top').submit();">
                                 Log Out
                             </a>
                         @endauth

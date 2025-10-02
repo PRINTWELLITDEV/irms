@@ -34,6 +34,8 @@ return array(
     'App\\Models\\RsItemLoc' => $baseDir . '/app/Models/RsItemLoc.php',
     'App\\Models\\RsLocation' => $baseDir . '/app/Models/RsLocation.php',
     'App\\Models\\RsTrans' => $baseDir . '/app/Models/RsTrans.php',
+    'App\\Models\\RsUser' => $baseDir . '/app/Models/RsUser.php',
+    'App\\Models\\RsWhse' => $baseDir . '/app/Models/RsWhse.php',
     'App\\Models\\Session' => $baseDir . '/app/Models/Session.php',
     'App\\Providers\\AppServiceProvider' => $baseDir . '/app/Providers/AppServiceProvider.php',
     'App\\Providers\\AuthServiceProvider' => $baseDir . '/app/Providers/AuthServiceProvider.php',

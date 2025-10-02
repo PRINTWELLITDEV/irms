@@ -7,37 +7,39 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class RsUser extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    protected $table = 'rsusers';
+    // Use the SQL Server connection if needed
+    protected $connection = 'sqlsrv';
 
-    /**
-     * Composite primary key: rssite + userid
-     */
-    protected $primaryKey = ['rssite', 'userid'];
+    // Set the exact schema + table name found in SQL Server (adjust if different)
+    protected $table = 'dbo.rsusers'; // change to 'dbo.rs_users' or actual name if required
+
+    // Primary key config (adjust if not 'userid')
+    protected $primaryKey = 'userid';
     public $incrementing = false;
     protected $keyType = 'string';
+
+    // If the table has no timestamps
     public $timestamps = false;
 
-    protected $dates = ['create_date', 'updated_date'];
-    protected $hidden = ['password'];
-
+    // Mass-assignable attributes - adjust to your columns
     protected $fillable = [
-        'rssite',
-        'userid',
-        'name',
-        'email',
-        'password',
-        'level',
-        'user_type',
-        'gender',
-        'profile_pic_url',
-        'updated_by',
-        'updated_by_sql',
+        'userid', 'name', 'email', 'profile_pic_path', 'rssite', // ...
     ];
+
+    // Convenience accessor for public URL of profile pic
+    public function getProfilePicUrlAttribute()
+    {
+        if ($this->profile_pic_path) {
+            return Storage::disk('public')->url($this->profile_pic_path);
+        }
+        return asset('uploads/user-profile/noprofile.png');
+    }
 
     /**
      * Ensure updating sets updated_by (Laravel authenticated user).
@@ -56,10 +58,17 @@ class RsUser extends Authenticatable
      */
     protected function setKeysForSaveQuery($query)
     {
-        foreach ($this->getKeyName() as $keyField) {
-            $query->where($keyField, '=', $this->getAttribute($keyField));
+        $keyName = $this->getKeyName();
+
+        if (is_array($keyName)) {
+            foreach ($keyName as $keyField) {
+                $query->where($keyField, '=', $this->getAttribute($keyField));
+            }
+            return $query;
         }
-        return $query;
+
+        // single primary key
+        return $query->where($keyName, '=', $this->getAttribute($keyName));
     }
 
     /**
