@@ -65,7 +65,7 @@
             </li>
 
             <!-- Auth link: shows Login for guests, Logout for authenticated users (visible on md+) -->
-            <li class="nav-item d-none d-md-block">
+            <!-- <li class="nav-item d-none d-md-block">
                 @guest
                     <a class="nav-link" href="{{ route('login') }}">Login</a>
                 @else
@@ -74,7 +74,7 @@
                         Logout
                     </a>
                 @endguest
-            </li>
+            </li> -->
 
             <!-- User Dropdown -->
             <li class="nav-item dropdown user-menu">
