@@ -48,9 +48,9 @@
                                     <tr>
                                         <th>Item Locations</th>
                                         <th>Job No.</th>
-                                        <th>Pallet No.</th>
-                                        <th>Qty</th>
-                                        <th>U/M</th>
+                                        <th width="10%">Qty</th>
+                                        <th width="5%">U/M</th>
+                                        <th width="5%">Pallet No.</th>
                                         @if(auth()->user()->userid === 'sa')
                                             <th width="10%">Site</th>
                                         @endif
@@ -77,9 +77,9 @@
                                         >
                                             <td>{{ $loc->rsloc }}</td>
                                             <td>{{ $loc->job }}</td>
-                                            <td>{{ $loc->rspallet_num }}</td>
                                             <td class="text-end">{{ ($loc->qty ?? 0) == 0 ? '0' : number_format($loc->qty, 0) }}</td>
                                             <td>{{ $loc->um }}</td>
+                                            <td>{{ $loc->rspallet_num }}</td>
                                             @if(auth()->user()->userid === 'sa')
                                                 <td>{{ $loc->rssite_desc ?? 'N/A' }}</td>
                                             @endif
