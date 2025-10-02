@@ -1,11 +1,9 @@
 @extends('irms.irms-partials.app')
-
 @section('title', 'IRMS Rack Locations')
-
 @section('content')
-<div class="wrapper">
-    <div class="content-wrapper">
-        <div class="content-header">
+<main class="app-main">
+    <div class="app-content-wrapper">
+        <div class="app-content-header">
             <div class="container-fluid">
                 <div class="row align-items-center">
                     <div class="col mb-3 d-flex align-items-center">
@@ -20,73 +18,75 @@
             </div>
         </div>
 
-        <div class="content-body">
-            <div class="row">
-                <div class="col">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <button type="button" id="btnAddRack" class="btn btn-success d-flex align-items-center me-2"
-                                        data-bs-toggle="modal" data-bs-target="#addRackModal">
-                                    <i class="bi bi-plus-circle-fill d-none d-sm-inline me-2"></i>
-                                    <span class="d-none d-sm-inline">Add Rack</span>
-                                    <i class="bi bi-plus-circle-fill d-inline d-sm-none"></i>
-                                </button>
+        <div class="app-content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <button type="button" id="btnAddRack" class="btn btn-success d-flex align-items-center me-2"
+                                            data-bs-toggle="modal" data-bs-target="#addRackModal">
+                                        <i class="bi bi-plus-circle-fill d-none d-sm-inline me-2"></i>
+                                        <span class="d-none d-sm-inline">Add Rack</span>
+                                        <i class="bi bi-plus-circle-fill d-inline d-sm-none"></i>
+                                    </button>
 
-                                <div class="input-group" style="max-width: 300px;">
-                                    <input type="text" id="rackSearch" class="form-control" placeholder="Search rack location...">
-                                    <span class="input-group-text">
-                                        <i class="bi bi-search"></i>
-                                    </span>
+                                    <div class="input-group" style="max-width: 300px;">
+                                        <input type="text" id="rackSearch" class="form-control" placeholder="Search rack location...">
+                                        <span class="input-group-text">
+                                            <i class="bi bi-search"></i>
+                                        </span>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div class="table-responsive table-view">
-                                <table id="rackTable" class="table table-striped table-bordered table-hover align-middle display">
-                                    <thead class="text-center">
-                                    <tr>
+                                <div class="table-responsive table-view">
+                                    <table id="rackTable" class="table table-striped table-bordered table-hover align-middle display">
+                                        <thead class="text-center">
+                                        <tr>
 
-                                        <th>Rack Location</th>
-                                        <th width="10%">Warehouse</th>
-                                        <th width="10%">Bay No.</th>
-                                        <!-- <th>Description</th> -->
-                                        <th width="10%">Quantity</th>
-                                        @if(auth()->user()->userid === 'sa')
-                                        <th width="10%">Site</th>
-                                        @endif
-                                        <!-- <th width="10%">Create Date</th> -->
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    @forelse($racklocs as $rsloc)
-                                        <tr
-                                            data-rssite="{{ $rsloc->rssite }}"
-                                            data-rssite_desc="{{ $rsloc->rssite_desc }}"
-                                            data-rswhse="{{ $rsloc->rswhse }}"
-                                            data-rsbaynum="{{ $rsloc->rsbaynum }}"
-                                            data-rsloc="{{ $rsloc->rsloc }}"
-                                            data-rsdesc="{{ $rsloc->rsdesc }}"
-                                            data-qty="{{ ($rsloc->qty ?? 0) == 0 ? '0' : number_format($rsloc->qty, 0) }}"
-                                            data-create-date="{{ \Carbon\Carbon::parse($rsloc->createdate)->format('d M Y - h:i A') }}"
-                                            
-                                        >
-                                            <td>{{ $rsloc->rsloc }}</td>
-                                            <td>{{ $rsloc->rswhse }}</td>
-                                            <td>{{ $rsloc->rsbaynum }}</td>
-                                            <!-- <td>{{ $rsloc->rsdesc }}</td> -->
-                                            <td class="text-end me-3">{{ number_format($rsloc->qty, 0) }}</td>
+                                            <th>Rack Location</th>
+                                            <th width="10%">Warehouse</th>
+                                            <th width="10%">Bay No.</th>
+                                            <!-- <th>Description</th> -->
+                                            <th width="10%">Quantity</th>
                                             @if(auth()->user()->userid === 'sa')
-                                            <td>
-                                                {{ $rsloc->rssite_desc ?? 'N/A' }}
-                                                <!-- <img src="{{ asset($rsloc->logo_pic_url) }}" alt="logo" class="mx-auto d-block" width="40" height="40" style="object-fit:contain;vertical-align:middle;"> -->
-                                            </td>
+                                            <th width="10%">Site</th>
                                             @endif
-                                            <!-- <td>{{ \Carbon\Carbon::parse($rsloc->createdate)->format('d M Y - h:i A') }}</td> -->
+                                            <!-- <th width="10%">Create Date</th> -->
                                         </tr>
-                                     @empty
-                                     @endforelse
-                                    </tbody>
-                                </table>
+                                        </thead>
+                                        <tbody>
+                                        @forelse($racklocs as $rsloc)
+                                            <tr
+                                                data-rssite="{{ $rsloc->rssite }}"
+                                                data-rssite_desc="{{ $rsloc->rssite_desc }}"
+                                                data-rswhse="{{ $rsloc->rswhse }}"
+                                                data-rsbaynum="{{ $rsloc->rsbaynum }}"
+                                                data-rsloc="{{ $rsloc->rsloc }}"
+                                                data-rsdesc="{{ $rsloc->rsdesc }}"
+                                                data-qty="{{ ($rsloc->qty ?? 0) == 0 ? '0' : number_format($rsloc->qty, 0) }}"
+                                                data-create-date="{{ \Carbon\Carbon::parse($rsloc->createdate)->format('d M Y - h:i A') }}"
+                                                
+                                            >
+                                                <td>{{ $rsloc->rsloc }}</td>
+                                                <td>{{ $rsloc->rswhse }}</td>
+                                                <td>{{ $rsloc->rsbaynum }}</td>
+                                                <!-- <td>{{ $rsloc->rsdesc }}</td> -->
+                                                <td class="text-end me-3">{{ number_format($rsloc->qty, 0) }}</td>
+                                                @if(auth()->user()->userid === 'sa')
+                                                <td>
+                                                    {{ $rsloc->rssite_desc ?? 'N/A' }}
+                                                    <!-- <img src="{{ asset($rsloc->logo_pic_url) }}" alt="logo" class="mx-auto d-block" width="40" height="40" style="object-fit:contain;vertical-align:middle;"> -->
+                                                </td>
+                                                @endif
+                                                <!-- <td>{{ \Carbon\Carbon::parse($rsloc->createdate)->format('d M Y - h:i A') }}</td> -->
+                                            </tr>
+                                        @empty
+                                        @endforelse
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -94,7 +94,7 @@
             </div>
         </div>
     </div>
-</div>
+</main>
 
 <!-- View Modals -->
 <div class="modal fade" id="viewRackModal" tabindex="-1" aria-labelledby="viewRackModalLabel" aria-hidden="true">

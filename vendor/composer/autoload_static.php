@@ -581,7 +581,6 @@ class ComposerStaticInitc514d8f7b9fc5970bdd94287905ef584
         'App\\Models\\RsLocation' => __DIR__ . '/../..' . '/app/Models/RsLocation.php',
         'App\\Models\\RsTrans' => __DIR__ . '/../..' . '/app/Models/RsTrans.php',
         'App\\Models\\RsUser' => __DIR__ . '/../..' . '/app/Models/RsUser.php',
-        'App\\Models\\RsWhse' => __DIR__ . '/../..' . '/app/Models/RsWhse.php',
         'App\\Models\\Session' => __DIR__ . '/../..' . '/app/Models/Session.php',
         'App\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',
         'App\\Providers\\AuthServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AuthServiceProvider.php',

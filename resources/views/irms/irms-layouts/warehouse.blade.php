@@ -1,29 +1,28 @@
 @extends('irms.irms-partials.app')
-
 @section('title', 'IRMS Warehouse')
-
 @section('content')
-    <div class="wrapper">
-        <div class="content-wrapper">
-            <div class="content-header">
-                <div class="container-fluid">
-                    <div class="row align-items-center">
-                        <div class="col mb-3 d-flex align-items-center">
-                            <h1 class="d-inline-block mb-0 me-3">Warehouse</h1>
-                            @if(session('success'))
-                                <div id="alerts" class="alert alert-success py-1 px-3 mb-0" style="transition: opacity 0.7s;">
-                                    {{ session('success') }}
-                                </div>
-                            @endif
-                            @if($errors->any())
-                                <div id="alerts" class="alert alert-danger py-1 px-3 mb-0" style="transition: opacity 0.7s;">{{ $errors->first() }}</div>
-                            @endif
-                        </div>
+<main class="app-main">
+    <div class="app-content-wrapper">
+        <div class="app-content-header">
+            <div class="container-fluid">
+                <div class="row align-items-center">
+                    <div class="col mb-3 d-flex align-items-center">
+                        <h1 class="d-inline-block mb-0 me-3">Warehouse</h1>
+                        @if(session('success'))
+                            <div id="alerts" class="alert alert-success py-1 px-3 mb-0" style="transition: opacity 0.7s;">
+                                {{ session('success') }}
+                            </div>
+                        @endif
+                        @if($errors->any())
+                            <div id="alerts" class="alert alert-danger py-1 px-3 mb-0" style="transition: opacity 0.7s;">{{ $errors->first() }}</div>
+                        @endif
                     </div>
                 </div>
             </div>
+        </div>
 
-            <div class="content-body">
+        <div class="app-content">
+            <div class="container-fluid">
                 <div class="row">
                     <div class="col">
                         <div class="card">
@@ -84,6 +83,7 @@
             </div>
         </div>
     </div>
+</main>
 
     <!-- Add Warehouse Modal -->
     <div class="modal fade" id="addWarehouseModal" tabindex="-1" aria-labelledby="addWarehouseLabel" aria-hidden="true">

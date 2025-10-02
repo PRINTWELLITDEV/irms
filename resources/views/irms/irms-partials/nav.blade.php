@@ -3,7 +3,7 @@
     $user = $user ?? auth()->user(); // composer provides $user but fallback safe
     $siteDesc = $siteDesc ?? null;
 @endphp
-<nav class="app-header navbar navbar-expand bg-body sticky-top">
+<nav class="app-header navbar navbar-expand bg-body">
     <div class="container-fluid">
         <ul class="navbar-nav">
             <li class="nav-item">
@@ -78,19 +78,21 @@
 
             <!-- User Dropdown -->
             <li class="nav-item dropdown user-menu">
-                <a href="#" class="nav-link dropdown-toggle" id="userDropdown" role="button" data-bs-toggle="dropdown"
-                    aria-expanded="false">
-                    <img src="{{ $user && $user->profile_pic_path
-    ? Storage::disk('public')->url($user->profile_pic_path)
-    : asset('uploads/user-profile/noprofile.png') }}" class="user-image rounded-circle"
-                        alt="{{ $user->userid ?? 'Guest' }}-img">
+                <a href="#" class="nav-link dropdown-toggle" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src="{{ $user
+                                    ? ($user->profile_pic_url
+                                        ? asset($user->profile_pic_url)
+                                        : asset('uploads/user-profile/noprofile.png'))
+                                    : asset('uploads/user-profile/guest.png') }}"
+                        class="user-image rounded-circle border border-2 border-opacity-25 me-2"
+                        alt="{{ $user->userid ?? 'Guest User' }}-img">
                     <span class="d-none d-md-inline">{{ $user->name ?? 'Guest' }}</span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end" aria-labelledby="userDropdown">
                     <li class="user-header text-center py-3">
                         <img src="{{ $user && $user->profile_pic_path
-    ? Storage::disk('public')->url($user->profile_pic_path)
-    : asset('uploads/user-profile/noprofile.png') }}"
+                                    ? Storage::disk('public')->url($user->profile_pic_path)
+                                    : asset('uploads/user-profile/noprofile.png') }}"
                             class="user-image rounded-circle shadow mb-2"
                             alt="{{ $user->userid ?? 'Guest User' }}-img" />
                         <div class="fw-bold">{{ $user->name ?? 'Guest User' }}</div>

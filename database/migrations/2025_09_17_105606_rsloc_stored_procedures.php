@@ -28,7 +28,9 @@ return new class extends Migration
             INNER JOIN irms_site s ON s.rssite = l.rssite
             LEFT JOIN rsusers u ON l.createdby = u.userid
             WHERE (@rssite IS NULL OR l.rssite = @rssite)
-            ORDER BY l.rssite, l.rswhse, l.rsloc
+            ORDER BY l.rssite, l.rswhse,
+                l.qty DESC,
+				l.rsloc
         ');
 
         // Create sp_add_rslocs
