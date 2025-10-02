@@ -8,8 +8,8 @@
     <link rel="icon" type="image/png" href="{{ asset('uploads/img/irms.png') }}">
 
     @vite([
-        'resources/css/app.css',
         'resources/css/irms.css',
+        'resources/js/irms/irms.js'
     ])
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="..." crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -38,24 +38,10 @@
     <script src="https://cdn.datatables.net/columncontrol/1.1.0/js/columnControl.dataTables.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    @vite(['resources/js/app.js'])
     <script>
         window.appUrl = "{{ url('') }}";
         window.sessionCheckUrl = "{{ url('/irms/session') }}";
         window.loginUrl = "{{ route('login') }}";
-
-        setInterval(function () {
-            const currentPath = window.location.pathname;
-            if (currentPath.indexOf("/irms") !== -1) {
-                fetch(window.sessionCheckUrl)
-                .then((response) => response.json())
-                .then((data) => {
-                    if (!data.valid) {
-                        window.location.href = window.loginUrl;
-                    }
-                });
-            }
-        }, 5000);
     </script>
 </body>
 </html>
