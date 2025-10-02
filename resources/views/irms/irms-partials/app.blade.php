@@ -59,5 +59,10 @@
             }
         }, 5000);
     </script>
+
+    <!-- Single logout form used by nav links (moved here so it's always present) -->
+    <form id="logout-form-top" action="{{ route('logout') }}" method="POST" class="d-none">
+        @csrf
+    </form>
 </body>
 </html>

@@ -1,7 +1,7 @@
 @php
     use Illuminate\Support\Facades\Auth;
     use Illuminate\Support\Facades\DB;
-    $user = Auth::user();
+    $user = auth()->user();
     $siteDesc = null;
     if ($user && $user->rssite) {
         $siteDesc = DB::table('irms_site')->where('rssite', $user->rssite)->value('rssite_desc');
@@ -52,6 +52,33 @@
               </a>
             </li>
             <!--end::Fullscreen Toggle-->
+
+            <!-- Small screen: icon-only login/logout -->
+            <li class="nav-item d-md-none">
+                @guest
+                    <a class="nav-link" href="{{ route('login') }}" title="Login">
+                        <i class="bi bi-box-arrow-in-right"></i>
+                    </a>
+                @else
+                    <a class="nav-link" href="#" title="Logout"
+                       onclick="event.preventDefault(); document.getElementById('logout-form-top').submit();">
+                        <i class="bi bi-box-arrow-right"></i>
+                    </a>
+                @endguest
+            </li>
+
+            <!-- Auth link: shows Login for guests, Logout for authenticated users (visible on md+) -->
+            <li class="nav-item d-none d-md-block">
+                @guest
+                    <a class="nav-link" href="{{ route('login') }}">Login</a>
+                @else
+                    <a class="nav-link" href="#"
+                       onclick="event.preventDefault(); document.getElementById('logout-form-top').submit();">
+                        Logout
+                    </a>
+                @endguest
+            </li>
+
             <!-- User Dropdown -->
             <li class="nav-item dropdown user-menu shadow rounded">
                 <a href="#" class="nav-link dropdown-toggle" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -79,17 +106,25 @@
                         <small>{{ $siteDesc ?? 'N/A' }}</small>
                     </li>
                     <li><hr class="dropdown-divider"></li>
-                    <li class="d-flex justify-content-center gap-5 p-2">
-                        <a href="#" class="btn btn-outline-primary btn-sm">Profile</a>
+                    <li class="d-flex justify-content-center gap-3 p-2">
                         @auth
-                            <a href="{{ route('logout') }}" class="btn btn-outline-danger btn-sm" id="btnlogout"
-                               onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            <a href="#" class="btn btn-outline-primary btn-sm">Profile</a>
+                            <a href="#" class="btn btn-outline-danger btn-sm"
+                               onclick="event.preventDefault(); document.getElementById('logout-form-top').submit();">
                                 Log Out
                             </a>
                         @endauth
+                        @guest
+                            <a href="{{ route('login') }}" class="btn btn-primary btn-sm">Login</a>
+                        @endguest
                     </li>
                 </ul>
             </li>
         </ul>
     </div>
 </nav>
+
+<!-- Single logout form used by nav links -->
+<form id="logout-form-top" action="{{ route('logout') }}" method="POST" class="d-none">
+    @csrf
+</form>
