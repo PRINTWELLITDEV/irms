@@ -19,6 +19,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        view()->composer('irms.irms-partials.nav', function ($view) {
+            $user = auth()->user();
+            $siteDesc = null;
+            if ($user && $user->rssite) {
+                $siteDesc = \DB::table('irms_site')
+                    ->where('rssite', $user->rssite)
+                    ->value('rssite_desc');
+            }
+            $view->with(['user' => $user, 'siteDesc' => $siteDesc]);
+        });
     }
 }

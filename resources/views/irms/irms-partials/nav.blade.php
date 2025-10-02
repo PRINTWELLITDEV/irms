@@ -1,11 +1,7 @@
 @php
-    use Illuminate\Support\Facades\Auth;
-    use Illuminate\Support\Facades\DB;
-    $user = auth()->user();
-    $siteDesc = null;
-    if ($user && $user->rssite) {
-        $siteDesc = DB::table('irms_site')->where('rssite', $user->rssite)->value('rssite_desc');
-    }
+    use Illuminate\Support\Facades\Storage;
+    $user = $user ?? auth()->user(); // composer provides $user but fallback safe
+    $siteDesc = $siteDesc ?? null;
 @endphp
 <nav class="app-header navbar navbar-expand bg-body sticky-top">
     <div class="container-fluid">
@@ -80,24 +76,19 @@
             </li>
 
             <!-- User Dropdown -->
-            <li class="nav-item dropdown user-menu shadow rounded">
+            <li class="nav-item dropdown user-menu">
                 <a href="#" class="nav-link dropdown-toggle" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="{{ $user
-                                    ? ($user->profile_pic_url
-                                        ? asset($user->profile_pic_url)
-                                        : asset('uploads/user-profile/noprofile.png'))
-                                    : asset('uploads/user-profile/guest.png') }}"
-                        class="user-image rounded-circle border border-2 border-opacity-25 me-2"
-                        alt="{{ $user->userid ?? 'Guest User' }}-img">
+                    <img src="{{ $user && $user->profile_pic_path
+                                  ? Storage::disk('public')->url($user->profile_pic_path)
+                                  : asset('uploads/user-profile/noprofile.png') }}"
+                        class="user-image rounded-circle" alt="{{ $user->userid ?? 'Guest' }}-img">
                     <span class="d-none d-md-inline">{{ $user->name ?? 'Guest' }}</span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end" aria-labelledby="userDropdown">
                     <li class="user-header text-center py-3">
-                        <img src="{{ $user
-                                        ? ($user->profile_pic_url
-                                            ? asset($user->profile_pic_url)
-                                            : asset('uploads/user-profile/noprofile.png'))
-                                        : asset('uploads/user-profile/guest.png') }}"
+                        <img src="{{ $user && $user->profile_pic_path
+                                      ? Storage::disk('public')->url($user->profile_pic_path)
+                                      : asset('uploads/user-profile/noprofile.png') }}"
                             class="user-image rounded-circle shadow mb-2"
                             alt="{{ $user->userid ?? 'Guest User' }}-img"
                         />
@@ -125,6 +116,6 @@
 </nav>
 
 <!-- Single logout form used by nav links -->
-<form id="logout-form-top" action="{{ route('logout') }}" method="POST" class="d-none">
+<form id="logout-form-top" class="text-danger" action="{{ route('logout') }}" method="POST" class="d-none">
     @csrf
 </form>

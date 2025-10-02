@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Rswhse extends Model
+class RsWhse extends Model
 {
     protected $table = 'rswhse';
     public $timestamps = false;
