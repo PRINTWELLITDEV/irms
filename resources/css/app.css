@@ -4,10 +4,14 @@
 /* Import AdminLTE */
 @import "admin-lte/dist/css/adminlte.css";
 
+.app-main {
+    min-height: 100vh !important;
+}
+
 /* Footer */
 .app-footer {
     background: #f8f9fa;
-    padding: 1rem 0;
+    padding: 1rem;
 }
 .app-footer a{
     text-decoration: none;
@@ -32,3 +36,202 @@
     background-image: url('/uploads/img/bg_home.jpg');
     background-size: cover;
 }
+
+/* Center glass-panel and fix padding for all screens */
+.glass-bg-container {
+    height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    overflow-x: hidden;
+}
+
+.glass-panel {
+    margin: 0 auto;
+    padding: 2.5rem;
+    border-radius: 16px;
+    max-width: 600px;
+    width: 100%;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* --------------------------------------
+                1. Glassmorphism Setup
+    -------------------------------------- */
+
+
+.glass-panel {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    transform-style: preserve-3d;
+}
+
+/* --------------------------------------
+                2. Glass Cards (Logged-in view)
+    -------------------------------------- */
+.glass-card {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(5px);
+    color: white !important;
+    transition: all 0.3s ease;
+    position: relative; /* for absolute positioned icon */
+    overflow: hidden;
+}
+
+.glass-card:hover {
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+    transform: translateY(-5px);
+    text-decoration: none; /* remove underline on hover */
+}
+
+/* --------------------------------------
+                3. Glass Button (Guest view)
+    -------------------------------------- */
+.glass-button {
+    background: #007bff;
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    transition: all 0.3s ease;
+}
+
+.glass-button:hover {
+    background: #0056b3;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    transform: scale(1.05);
+    text-decoration: none;
+}
+
+
+
+/* Responsive adjustments for mobile */
+@media (max-width: 576px) {
+    .glass-panel {
+        padding: 1.5rem;
+        border-radius: 10px;
+        max-width: 98vw;
+    }
+    .glass-card {
+        padding: 1rem !important;
+        font-size: 1rem !important;
+    }
+    .display-3 {
+        font-size: 2rem !important;
+    }
+    .lead {
+        font-size: 1rem !important;
+    }
+    .glass-bg-container {
+        padding: 1rem !important;
+    }
+    .card-body {
+        padding: 1rem !important;
+    }
+}
+
+/* Ensure cards stack vertically on mobile */
+@media (max-width: 768px) {
+    .row.g-4.justify-content-center.mt-5.pt-3 {
+        flex-direction: column !important;
+        align-items: center !important;
+    }
+    .glass-card {
+        width: 100% !important;
+        margin-bottom: 1rem !important;
+    }
+}
+
+/* --- Existing imports and styles above --- */
+
+/* smoother content reveal */
+.content-wrapper {
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 450ms cubic-bezier(.22, 1, .36, 1), transform 450ms cubic-bezier(.22, 1, .36, 1);
+    will-change: opacity, transform;
+}
+
+.content-wrapper.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* smoother card hover */
+.card {
+    transition: transform 350ms cubic-bezier(.22, 1, .36, 1), box-shadow 350ms cubic-bezier(.22, 1, .36, 1);
+    will-change: transform, box-shadow;
+}
+
+.card:hover {
+    transform: translateY(-6px) translateZ(0);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* small improvement for modals / dropdowns */
+.dropdown-menu,
+.modal-content {
+    transition: transform 260ms cubic-bezier(.22, 1, .36, 1), opacity 260ms ease;
+    will-change: transform, opacity;
+}
+
+/* Sidebar width + smooth collapse */
+.app-sidebar {
+    width: 230px;
+    transition: width 300ms cubic-bezier(.22, 1, .36, 1), opacity 250ms ease;
+    will-change: width, opacity;
+    overflow: hidden;
+}
+
+/* collapsed (icon-only) width */
+.app-sidebar.sidebar-mini {
+    width: 64px;
+}
+
+/* temporary class during transition (optional) */
+.app-sidebar.sidebar-collapsing {
+    transition-duration: 320ms;
+}
+
+/* hide text labels when collapsed */
+.app-sidebar.sidebar-mini .brand-text,
+.app-sidebar.sidebar-mini .sidebar-wrapper .nav-link p,
+.app-sidebar.sidebar-mini .sidebar-wrapper .nav-header {
+    opacity: 0;
+    transition: opacity 180ms ease;
+    pointer-events: none;
+}
+
+/* keep icons visible and centered */
+.app-sidebar .nav-icon,
+.app-sidebar .brand-image {
+    transition: transform 300ms ease;
+}
+
+/* adjust content area if you use left margin */
+.content-wrapper {
+    transition: margin-left 300ms cubic-bezier(.22, 1, .36, 1);
+}
+
+/* when collapsed reduce left offset (adjust selector according your layout) */
+body.sidebar-mini .content-wrapper {
+    margin-left: 64px;
+    /* match collapsed aside width */
+}
+
+/* when expanded ensure original offset */
+body:not(.sidebar-mini) .content-wrapper {
+    margin-left: 230px;
+    /* match full aside width */
+}
+

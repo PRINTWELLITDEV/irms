@@ -1,10 +1,11 @@
-@extends('layouts.app')
 
+@extends('layouts.app')
+@section('title', 'IRMS')
 @section('content')
     {{-- Main wrapper with the background image/gradient for the glass effect --}}
-    <div class="glass-bg-container min-vh-100 d-flex align-items-center py-5" id="home-background">
+    <div class="glass-bg-container d-flex align-items-center" id="home-background">
         <div class="container">
-            <div class="row justify-content-center w-100">
+            <div class="row justify-content-center">
                 <div class="col-lg-10 col-xl-8 text-center glass-panel p-5 rounded-4 shadow-lg">
 
                     {{-- Title/Tagline with strong contrast for readability --}}
@@ -53,63 +54,3 @@
         </div>
     </div>
 @endsection
-
-@push('styles')
-    <style>
-        /* --------------------------------------
-                       1. Glassmorphism Setup
-           -------------------------------------- */
-
-
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 16px;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            transform-style: preserve-3d;
-        }
-
-        .text-shadow {
-            text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-        }
-
-        /* --------------------------------------
-                       2. Glass Cards (Logged-in view)
-           -------------------------------------- */
-        .glass-card {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(5px);
-            color: white !important;
-            transition: all 0.3s ease;
-            position: relative; /* for absolute positioned icon */
-            overflow: hidden;
-        }
-
-        .glass-card:hover {
-            background: rgba(255, 255, 255, 0.2);
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
-            transform: translateY(-5px);
-            text-decoration: none; /* remove underline on hover */
-        }
-
-        /* --------------------------------------
-                       3. Glass Button (Guest view)
-           -------------------------------------- */
-        .glass-button {
-            background: #007bff;
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            transition: all 0.3s ease;
-        }
-
-        .glass-button:hover {
-            background: #0056b3;
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-            transform: scale(1.05);
-            text-decoration: none;
-        }
-    </style>
-@endpush
