@@ -3,12 +3,16 @@
 @section('title', 'IRMS Dashboard')
 
 @section('content')
-    <div class="wrapper" style="height: 100%vh">
-        <div class="content-wrapper">
-            <div class="content-header">
+<main class="app-main">
+    <div class="app-content-wrapper">
+        <div class="app-content-header">
+            <div class="container-fluid">
                 <h1>Welcome to IRMS Dashboard</h1>
             </div>
-            <div class="content-body">
+        </div>
+
+        <div class="app-content">
+            <div class="container-fluid">
                 <div class="card card-primary">
                     <div class="card-body">
 
@@ -158,13 +162,12 @@
                                 </div>
                             </div>
                         </div>
-
-
-
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</main>
+
 
 @endsection

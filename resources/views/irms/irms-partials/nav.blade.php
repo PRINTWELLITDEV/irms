@@ -7,7 +7,7 @@
         $siteDesc = DB::table('irms_site')->where('rssite', $user->rssite)->value('rssite_desc');
     }
 @endphp
-<nav class="app-header navbar navbar-expand bg-body sticky-top">
+<nav class="app-header navbar navbar-expand bg-body">
     <div class="container-fluid">
         <ul class="navbar-nav">
             <li class="nav-item">
@@ -53,7 +53,7 @@
             </li>
             <!--end::Fullscreen Toggle-->
             <!-- User Dropdown -->
-            <li class="nav-item dropdown user-menu shadow rounded">
+            <li class="nav-item dropdown user-menu">
                 <a href="#" class="nav-link dropdown-toggle" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <img src="{{ $user
                                     ? ($user->profile_pic_url

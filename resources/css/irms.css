@@ -5,58 +5,30 @@
 @import "admin-lte/dist/css/adminlte.css";
 
 /* Aside */
-.sidebar-brand .brand-image {
+.brand-image {
     width: 35px;
     height: 35px;
     object-fit: contain;
     background-color: #ccc !important;
 }
 
-body.sidebar-mini .app-sidebar .sidebar-brand,
-.app-sidebar.sidebar-mini .sidebar-brand {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-body.sidebar-mini .app-sidebar .sidebar-brand .brand-image,
-.app-sidebar.sidebar-mini .sidebar-brand .brand-image {
-    margin: 0 auto;
-    display: block;
-}
-
-body.sidebar-mini .app-sidebar .sidebar-brand .brand-text,
-.app-sidebar.sidebar-mini .sidebar-brand .brand-text {
-    display: none;
-}
-
 /* Layout Wrapper */
-.wrapper {
-    flex-direction: column;
-    display: flex;
-    min-height: 100vh;
-}
 
 /* Content Wrapper */
-.content-wrapper {
-    flex: 1;
-    background: #f4f6f9;
-    padding: 2rem;
+.app-content-wrapper {
     opacity: 0;
     transition: opacity 0.4s ease;
 }
-.content-wrapper.visible {
+.app-content-wrapper.visible {
     opacity: 1;
 }
-
-.content-header h1 {
+.app-content-header h1 {
     margin-bottom: 1rem;
-    font-size: 1.5rem;
+    font-size: 2rem;
 }
 
 /* Navbar */
-.app-header {
+/* .app-header {
     background: #f8f9fa;
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
 }
@@ -85,7 +57,8 @@ body.sidebar-mini .app-sidebar .sidebar-brand .brand-text,
 .app-header .nav-item .dropdown-menu .dropdown-item:focus {
     background-color: #f8f9fa;
     color: #0a1c6e;
-}
+} */
+
 /* Footer */
 .app-footer {
     background: #f8f9fa;
@@ -126,7 +99,7 @@ body.sidebar-mini .app-sidebar .sidebar-brand .brand-text,
 }
 table.table th, table.table td {
     white-space: nowrap;
-    /* padding: 0.75rem 0.5rem; */
+    padding: 0.75rem 0.5rem;
     cursor: pointer;
 }
 table.table td img {
@@ -137,13 +110,10 @@ table.table td img {
     vertical-align: middle;
 
 }
-.content-header h1 {
-    font-size: 1.5rem;
-}
 .table input[type="checkbox"].big-checkbox {
     width: 24px;
     height: 24px;
-    accent-color: #174700ff; /* Bootstrap primary */
+    accent-color: #174700ff;
     cursor: pointer;
 }
 
@@ -156,7 +126,7 @@ table.table td img {
 .scroll-table thead th {
     position: sticky;
     top: 0;
-    background: #f8f9fa; /* Use your header bg color */
+    background: #f8f9fa;
     z-index: 2;
 }
 
@@ -194,7 +164,6 @@ table.table td img {
     object-fit: cover;
     border: 3px solid #838383;
 }
-
 .modal-xl {
     max-width: 55vw;
 }

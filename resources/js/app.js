@@ -2,6 +2,7 @@ import "bootstrap";
 
 import "admin-lte";
 
+
 $.extend($.fn.dataTable.defaults, {
     paging: true,
     info: true,
@@ -770,58 +771,11 @@ $(document).ready(function () {
             }
         });
     });
-
-    // Toggle aside to icon-only (mini) 
-    //$("[data-lte-toggle='sidebar']").on("click", function (e) {
-        //e.preventDefault();
-        //const isMobile = window.innerWidth < 768;
-        //const $aside = $(".app-sidebar");
-
-        //if (isMobile) {
-            //// Hide sidebar on mobile
-            //$aside.hide();
-        //} else {
-            // Toggle sidebar-mini on desktop
-            //$("body").toggleClass("sidebar-mini");
-            //$aside.toggleClass("sidebar-mini");
-            //$aside.show();
-        //}
-    //});
 });
-
-// Toggle aside to icon-only (mini) when navbar collapse button is clicked
-// (function () {
-//     const SIDEBAR_PREF_KEY = 'irms_sidebar_mini';
-
-//     function applySidebarMini(enable) {
-//         document.body.classList.toggle('sidebar-mini', !!enable);
-//         const aside = document.querySelector('.app-sidebar');
-//         if (aside) aside.classList.toggle('sidebar-mini', !!enable);
-//         try { localStorage.setItem(SIDEBAR_PREF_KEY, !!enable ? '1' : '0'); } catch (e) { /* ignore */ }
-//     }
-
-//     // restore preference on load
-//     try {
-//         const pref = localStorage.getItem(SIDEBAR_PREF_KEY);
-//         if (pref === '1') applySidebarMini(true);
-//     } catch (e) { /* ignore */ }
-
-//     // hook into the navbar collapse toggle(s)
-//     const sidebarToggleBtns = document.querySelectorAll('[data-lte-toggle="sidebar"]');
-//     sidebarToggleBtns.forEach((btn) => {
-//         btn.addEventListener('click', function () {
-//             // Delay slightly so AdminLTE's own toggle runs first (if present)
-//             setTimeout(() => {
-//                 const currentlyMini = document.body.classList.contains('sidebar-mini');
-//                 applySidebarMini(!currentlyMini);
-//             }, 40);
-//         });
-//     });
-// })();
 
 document.addEventListener("DOMContentLoaded", function () {
     // Fade in content wrapper
-    const wrapper = document.querySelector(".content-wrapper");
+    const wrapper = document.querySelector(".app-content-wrapper");
     if (wrapper) {
         setTimeout(() => {
             wrapper.classList.add("visible");
