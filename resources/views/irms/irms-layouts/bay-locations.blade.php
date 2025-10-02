@@ -43,7 +43,7 @@
                                 </div>
                                 <div class="table-responsive table-view">
                                     <table id="bayloc-table" class="table table-striped table-bordered table-hover align-middle display ">
-                                        <thead class="text-center">
+                                        <thead>
                                             <tr>
                                                 <th>Bay Number</th>
                                                 @if(auth()->user()->userid === 'sa')

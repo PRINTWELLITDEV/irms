@@ -229,7 +229,7 @@
                             </style>
 
                             <table id="dispatchingTable" class="table table-striped table-bordered align-middle w-100">
-                                <thead class="table-light">
+                                <thead>
                                     <tr>
                                         <th width="5%"></th>
                                         <th width="5%">Select</th>

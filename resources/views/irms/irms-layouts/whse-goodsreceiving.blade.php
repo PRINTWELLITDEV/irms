@@ -268,7 +268,7 @@
                             <div class="table-view">
 
                                 <table id="receivingTable" class="table table-striped table-bordered align-middle w-100">
-                                    <thead class="table-light">
+                                    <thead>
                                         <tr>
                                             <th width="2%"></th>
                                             <th width="5%">Select</th>

@@ -38,7 +38,7 @@
 
                                 <div class="table-responsive table-view">
                                     <table id="transaction-table" class="table table-striped table-bordered table-hover align-middle display">
-                                        <thead class="text-center">
+                                        <thead>
                                         <tr>
                                             <th width="5%">Trans No.</th>
                                             <th width="5%">Trans Date</th>

@@ -44,7 +44,7 @@
 
                                 <div class="table-responsive table-view">
                                     <table id="itemloc-table" class="table table-striped table-bordered table-hover align-middle display">
-                                        <thead class="text-center">
+                                        <thead>
                                         <tr>
                                             <th>Item Locations</th>
                                             <th>Job No.</th>

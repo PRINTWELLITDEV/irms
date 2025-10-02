@@ -44,7 +44,7 @@
 
                                 <div class="table-responsive table-view">
                                     <table id="users-table" class="table table-striped table-hover align-middle display">
-                                        <thead class="table-light text-center">
+                                        <thead>
                                             <tr>
                                                 <!-- <th width="5%">Profile</th> -->
                                                 <th>Users</th>
