@@ -147,9 +147,9 @@
                         <h5 class="mb-0">Dispatching Details</h5>
                     </div>
                     <div class="card-body">
-                        <button type="button" id="btnBackDispatching" class="btn btn-danger d-flex align-items-center mb-2">
+                        <button type="button" id="btnBackReceiving" class="btn border-2 border-secondary d-flex align-items-center mb-2">
                             <i class="bi bi-arrow-left d-sm-inline me-2"></i>
-                            <span class="d-md-inline">Back</span>
+                            <span class="d-md-inline fw-bold">Back</span>
                         </button>
                         <div class="bg-secondary bg-opacity-50 p-2 mb-3 rounded">
                             <form id="dispatching-details-form">
@@ -235,7 +235,8 @@
                                         <th width="5%">Select</th>
                                         <th>Rs Loc No.</th>
                                         <th>Pallet Tag No.</th>
-                                        <th>Qty to Dispatch</th>
+                                        <th>Qty Available</th>
+                                        <th width="15%">Qty to Dispatch</th>
                                         <th>U/M</th>
                                         <th>Date Dispatched</th>
                                     </tr>
