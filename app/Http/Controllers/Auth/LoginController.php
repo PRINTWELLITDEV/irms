@@ -9,8 +9,8 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Validation\ValidationException;
-use App\Models\RsUser;
 use Illuminate\Support\Facades\Hash;
+use App\Models\RsUser;
 
 class LoginController extends Controller
 {

@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class RsWhse extends Model
 {
     protected $connection = 'sqlsrv';
-    protected $table = 'dbo.rswhse'; // adjust to actual table name
-    protected $primaryKey = 'whse_id'; // adjust if different
+    protected $table = 'rswhse';
+    protected $primaryKey = 'rswhse';
     public $incrementing = false;
     public $timestamps = false;
 

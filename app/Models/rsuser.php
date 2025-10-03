@@ -7,82 +7,61 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 
 class RsUser extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    // Use the SQL Server connection if needed
+    // Use SQL Server connection
     protected $connection = 'sqlsrv';
 
-    // Set the exact schema + table name found in SQL Server (adjust if different)
-    protected $table = 'dbo.rsusers'; // change to 'dbo.rs_users' or actual name if required
+    // Table name (no schema prefix needed for Laravel migrations)
+    protected $table = 'rsusers';
 
-    // Primary key config (adjust if not 'userid')
-    protected $primaryKey = 'userid';
+    // Composite primary key
+    protected $primaryKey = ['rssite', 'userid'];
     public $incrementing = false;
     protected $keyType = 'string';
 
-    // If the table has no timestamps
+    // No timestamps
     public $timestamps = false;
 
-    // Mass-assignable attributes - adjust to your columns
+    // Fillable columns (match migration)
     protected $fillable = [
-        'userid', 'name', 'email', 'profile_pic_path', 'rssite', // ...
+        'rssite', 'userid', 'name', 'password', 'email',
+        'department', 'section', 'position', 'level',
+        'create_date', 'updated_date', 'updated_by', 'updated_by_sql',
+        'gender', 'profile_pic_url', 'remember_token'
     ];
 
-    // Convenience accessor for public URL of profile pic
+    // Accessor for profile image
     public function getProfilePicUrlAttribute()
     {
-        if ($this->profile_pic_path) {
-            return Storage::disk('public')->url($this->profile_pic_path);
+        if (!empty($this->attributes['profile_pic_url'])) {
+            return asset($this->attributes['profile_pic_url']);
         }
         return asset('uploads/user-profile/noprofile.png');
     }
 
-    /**
-     * Ensure updating sets updated_by (Laravel authenticated user).
-     */
-    protected static function booted()
-    {
-        static::updating(function ($user) {
-            if (Auth::check()) {
-                $user->updated_by = Auth::user()->userid;
-            }
-        });
-    }
-
-    /**
-     * Override setKeysForSaveQuery to handle composite PK.
-     */
+    // Composite PK save logic
     protected function setKeysForSaveQuery($query)
     {
         $keyName = $this->getKeyName();
-
         if (is_array($keyName)) {
             foreach ($keyName as $keyField) {
                 $query->where($keyField, '=', $this->getAttribute($keyField));
             }
             return $query;
         }
-
-        // single primary key
         return $query->where($keyName, '=', $this->getAttribute($keyName));
     }
 
-    /**
-     * Override getKeyName for composite PK support.
-     */
     public function getKeyName()
     {
         return $this->primaryKey;
     }
 
-    /**
-     * 🔑 Tell Laravel Auth which column is the identifier
-     * Even though DB PK is composite, for login we'll use userid
-     */
+    // Auth identifier for Laravel
     public function getAuthIdentifierName()
     {
         return 'userid';
@@ -93,12 +72,13 @@ class RsUser extends Authenticatable
         return $this->userid;
     }
 
-    /**
-     * Example relationship: sessions belonging to this user.
-     */
-    public function sessions()
+    // Optional: update 'updated_by' on update
+    protected static function booted()
     {
-        return $this->hasMany(Session::class, 'user_id', 'userid')
-                    ->whereColumn('sessions.rssite', 'rsusers.rssite');
+        static::updating(function ($user) {
+            if (Auth::check()) {
+                $user->updated_by = Auth::user()->userid;
+            }
+        });
     }
 }

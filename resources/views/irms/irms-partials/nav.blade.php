@@ -1,6 +1,6 @@
 @php
     use Illuminate\Support\Facades\Storage;
-    $user = $user ?? auth()->user(); // composer provides $user but fallback safe
+    $user = $user ?? auth()->user();
     $siteDesc = $siteDesc ?? null;
 @endphp
 <nav class="app-header navbar navbar-expand bg-body">
@@ -51,7 +51,7 @@
             <!--end::Fullscreen Toggle-->
 
             <!-- Small screen: icon-only login/logout -->
-            <li class="nav-item d-md-none">
+            <!-- <li class="nav-item d-md-none">
                 @guest
                     <a class="nav-link" href="{{ route('login') }}" title="Login">
                         <i class="bi bi-box-arrow-in-right"></i>
@@ -62,7 +62,7 @@
                         <i class="bi bi-box-arrow-right"></i>
                     </a>
                 @endguest
-            </li>
+            </li> -->
 
             <!-- Auth link: shows Login for guests, Logout for authenticated users (visible on md+) -->
             <!-- <li class="nav-item d-none d-md-block">
@@ -79,22 +79,16 @@
             <!-- User Dropdown -->
             <li class="nav-item dropdown user-menu">
                 <a href="#" class="nav-link dropdown-toggle" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="{{ $user
-                                    ? ($user->profile_pic_url
-                                        ? asset($user->profile_pic_url)
-                                        : asset('uploads/user-profile/noprofile.png'))
-                                    : asset('uploads/user-profile/guest.png') }}"
-                        class="user-image rounded-circle border border-2 border-opacity-25 me-2"
-                        alt="{{ $user->userid ?? 'Guest User' }}-img">
+                    <img src="{{ $user->profile_pic_url }}"
+                            class="user-image rounded-circle border border-2 border-opacity-25 me-2"
+                            alt="{{ $user->userid ?? 'Guest User' }}-img">
                     <span class="d-none d-md-inline">{{ $user->name ?? 'Guest' }}</span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end" aria-labelledby="userDropdown">
                     <li class="user-header text-center py-3">
-                        <img src="{{ $user && $user->profile_pic_path
-                                    ? Storage::disk('public')->url($user->profile_pic_path)
-                                    : asset('uploads/user-profile/noprofile.png') }}"
-                            class="user-image rounded-circle shadow mb-2"
-                            alt="{{ $user->userid ?? 'Guest User' }}-img" />
+                        <img src="{{ $user->profile_pic_url }}"
+                                class="user-image rounded-circle shadow mb-2"
+                                alt="{{ $user->userid ?? 'Guest User' }}-img" />
                         <div class="fw-bold">{{ $user->name ?? 'Guest User' }}</div>
                         <div class="text-muted small">User ID: {{ $user->userid ?? 'Guest ID' }}</div>
                         <small>{{ $siteDesc ?? 'N/A' }}</small>
