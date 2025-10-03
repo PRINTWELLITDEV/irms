@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Irms\RsUserProfileController;
 use App\Http\Controllers\Irms\RsUserController;
 use App\Http\Controllers\Irms\RsWhseController;
 use App\Http\Controllers\Irms\RsBayLocController;
@@ -83,6 +84,11 @@ Route::prefix('irms')->middleware('check.session')->group(function () {
     //Transactions
     Route::get('/transactions', fn() => view('irms/irms-layouts/transactions'))->name('irms.transactions');
     Route::get('/transactions', [RsTransController::class, 'index'])->name('irms.transactions');
+
+    // User Profile (move this to the bottom and add a constraint)
+    Route::get('/{userid}', [RsUserProfileController::class, 'show'])
+        ->where('userid', '[A-Za-z0-9]+')
+        ->name('irms.userprofile');
 });
 
 

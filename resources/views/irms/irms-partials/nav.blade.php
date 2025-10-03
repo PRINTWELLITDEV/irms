@@ -98,7 +98,7 @@
                     </li>
                     <li class="d-flex justify-content-center gap-3 p-2">
                         @auth
-                            <a href="#" class="btn btn-outline-primary btn-sm">Profile</a>
+                            <a href="{{ route('irms.userprofile', ['userid' => $user->userid]) }}" class="btn btn-outline-primary btn-sm">Profile</a>
                             <a href="#" class="btn btn-outline-danger btn-sm"
                                 onclick="event.preventDefault(); document.getElementById('logout-form-top').submit();">
                                 Log Out
