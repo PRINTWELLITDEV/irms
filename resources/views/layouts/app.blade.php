@@ -17,7 +17,8 @@
         integrity="sha512-pYdS1fsQ+dq3SqfqLDzPteHf+jaGiFjNPRMf5liROtfPH+9qlCw7HbJxZ5/2tZRk6cY0c7yqT+GLX2FmJ8eibw=="
         crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
     @vite([
-        'resources/css/app.css'
+        'resources/css/app.css',
+        'resources/js/app.js'
     ])
 </head>
 
