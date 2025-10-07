@@ -39,11 +39,13 @@
                         <!-- Profile Details -->
                         <div class="p-4">
                             <div class="row g-3">
+                                @if(auth()->user()->userid === 'sa')
                                 <div class="col-12 col-md-12">
                                     <label class="form-label fw-semibold">Site</label>
                                     <input type="text" class="form-control" value="{{ $siteDesc ?? $user->rssite }}"
                                         readonly>
                                 </div>
+                                @endif
                                 <div class="col-12 col-md-12">
                                     <label class="form-label fw-semibold">Full Name</label>
                                     <input type="text" class="form-control" value="{{ $user->name }}" readonly>
