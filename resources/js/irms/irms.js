@@ -77,33 +77,14 @@ $(document).ready(function () {
         $("#view-user-email").text($row.data("email") || "");
         $("#view-user-level").text($row.data("level") || "");
         $("#view-user-gender").text($row.data("gender") || "");
-        $("#view-user-department").text($row.data("department") || "");
-        $("#view-user-position").text($row.data("position") || "");
+        $("#view-user-department").text($row.data("department") || "-");
+        $("#view-user-position").text($row.data("position") || "-");
         $("#view-user-create_date").text($row.data("create_date") || "");
         $("#view-user-label-name").text($row.data("name") || "");
         $("#view-user-profile").attr("src", $row.data("profile"));
-        $("#view-user-section").text($row.data("section") || "");
+        $("#view-user-section").text($row.data("section") || "-");
 
         $("#viewUserModal").modal("show");
-    });
-
-    // Profile picture preview for Add User modal
-    $("#profile_pic_url").on("change", function (e) {
-        const input = this;
-        if (input.files && input.files[0]) {
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                $("#add-user-profile-preview").attr("src", e.target.result);
-                $("#add-user-profile-preview-container").show();
-            };
-            reader.readAsDataURL(input.files[0]);
-        } else {
-            $("#add-user-profile-preview").attr(
-                "src",
-                '{{ asset("uploads/user-profile/noprofile.png") }}'
-            );
-            $("#add-user-profile-preview-container").hide();
-        }
     });
 
     // When Edit button in view modal is clicked, show edit modal with values
@@ -131,9 +112,9 @@ $(document).ready(function () {
         $("#edit-level").val(level);
         $("#edit-password").val("");
         $("#edit-existing-profile-pic").val(profile);
-        $("#edit-department").val(department);
-        $("#edit-position").val(position);
-        $("#edit-section").val(section);
+        $("#edit-department").val(department || '');
+        $("#edit-position").val(position || '');
+        $("#edit-section").val(section || '');
 
         // Hide view modal then show edit modal
         $("#viewUserModal").modal("hide");
