@@ -100,7 +100,7 @@ class RsUserController extends Controller
             $validated['department'],
             $validated['section'],
             $validated['position'],
-            $validated['gender'],
+            $validated['gender'] ?? null,
             $profile_pic_url,
             $create_date,
             $created_by,
