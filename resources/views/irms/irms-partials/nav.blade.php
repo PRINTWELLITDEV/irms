@@ -13,8 +13,7 @@
             </li>
         </ul>
         <ul class="navbar-nav ms-auto">
-            <!-- Notifications Dropdown -->
-            <li class="nav-item dropdown">
+            <!-- <li class="nav-item dropdown">
                 <a class="nav-link" href="#" id="notificationsDropdown" role="button" data-bs-toggle="dropdown"
                     aria-expanded="false">
                     <i class="far fa-bell"></i>
@@ -40,43 +39,13 @@
                     <div class="dropdown-divider"></div>
                     <a href="#" class="dropdown-item dropdown-footer"> See All Notifications </a>
                 </div>
-            </li>
-            <!--begin::Fullscreen Toggle-->
+            </li> -->
             <li class="nav-item">
                 <a class="nav-link" id="fullscreenToggle" href="#" data-lte-toggle="fullscreen">
                     <i data-lte-icon="maximize" class="bi bi-arrows-fullscreen"></i>
                     <i data-lte-icon="minimize" class="bi bi-fullscreen-exit" style="display: none"></i>
                 </a>
             </li>
-            <!--end::Fullscreen Toggle-->
-
-            <!-- Small screen: icon-only login/logout -->
-            <!-- <li class="nav-item d-md-none">
-                @guest
-                    <a class="nav-link" href="{{ route('login') }}" title="Login">
-                        <i class="bi bi-box-arrow-in-right"></i>
-                    </a>
-                @else
-                    <a class="nav-link" href="#" title="Logout"
-                        onclick="event.preventDefault(); document.getElementById('logout-form-top').submit();">
-                        <i class="bi bi-box-arrow-right"></i>
-                    </a>
-                @endguest
-            </li> -->
-
-            <!-- Auth link: shows Login for guests, Logout for authenticated users (visible on md+) -->
-            <!-- <li class="nav-item d-none d-md-block">
-                @guest
-                    <a class="nav-link" href="{{ route('login') }}">Login</a>
-                @else
-                    <a class="nav-link" href="#"
-                        onclick="event.preventDefault(); document.getElementById('logout-form-top').submit();">
-                        Logout
-                    </a>
-                @endguest
-            </li> -->
-
-            <!-- User Dropdown -->
             <li class="nav-item dropdown user-menu">
                 <a href="#" class="nav-link dropdown-toggle" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <img src="{{ $user->profile_pic_url }}"
@@ -114,7 +83,6 @@
     </div>
 </nav>
 
-<!-- Single logout form used by nav links -->
 <form id="logout-form-top" class="text-danger" action="{{ route('logout') }}" method="POST" class="d-none">
     @csrf
 </form>
