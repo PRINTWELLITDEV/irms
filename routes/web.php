@@ -82,7 +82,7 @@ Route::prefix('irms')->middleware('check.session')->group(function () {
     Route::post('/dispatching/process-goods-dispatch', [RsGoodsDispatchingController::class, 'processGoodsDispatch'])->name('goodsdispatching.processdispatch');
    
     //Transactions
-    Route::get('/transactions', fn() => view('irms/irms-layouts/transactions'))->name('irms.transactions');
+    // Route::get('/transactions', fn() => view('irms/irms-layouts/transactions'))->name('irms.transactions');
     Route::get('/transactions', [RsTransController::class, 'index'])->name('irms.transactions');
 
     // User Profile (move this to the bottom and add a constraint)
