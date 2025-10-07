@@ -1,0 +1,138 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36" version="28.2.5">
+  <diagram name="Page-1" id="i6DArAbTqU3AUpN5Czq0">
+    <mxGraphModel dx="1426" dy="767" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" background="none" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="cWni4bAGqpsDa-Hw2Dj--1" value="1. Create VM for Web Systems (IRMS)&lt;div&gt;Specs:&amp;nbsp;&lt;/div&gt;&lt;div&gt;- Ram: 2GB&lt;/div&gt;&lt;div&gt;- Cores: 16 cores&lt;/div&gt;&lt;div&gt;- Disk: 128 Disk&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;2. Install OS: Windows Server&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;3. Connect to network&lt;/div&gt;&lt;div&gt;- 192.168.XX.XX&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;3. Install&amp;nbsp;prerequisites:&lt;div&gt;- PHP&lt;/div&gt;&lt;div&gt;- XAMPP&lt;/div&gt;&lt;div&gt;- Sql Server&lt;/div&gt;&lt;/div&gt;&lt;div&gt;- Node.js&lt;/div&gt;&lt;div&gt;- Composer&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;4. Deploy IRMS Project in xampp&lt;div&gt;- Place app to xampp/htdocs/irms&lt;/div&gt;&lt;div&gt;- Point document root to public&lt;/div&gt;&lt;div&gt;- Set App URL = &quot;irms.printwell.local&quot;&lt;/div&gt;&lt;div&gt;- Run the System&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;5. Hostname / DNS configuration&lt;/div&gt;&lt;div&gt;- Add DNS Record:&amp;nbsp;&lt;/div&gt;&lt;div&gt;irms.printwell.com.ph -&amp;gt; 192.168.XX.XX&lt;/div&gt;&lt;div&gt;irms.erp.domain.com -&amp;gt; 192.168.XX.XX&lt;/div&gt;&lt;div&gt;- Configure on internal DNS Server.&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;6. FortiGate Config:&amp;nbsp;&lt;/div&gt;&lt;div&gt;Network PI-WEBSYSTEM-SVR&lt;/div&gt;&lt;div&gt;IP: 192.168.XX.XX&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;7. Access Methods:&lt;/div&gt;&lt;div&gt;A. LAN:&lt;/div&gt;&lt;div&gt;&amp;nbsp;- irms.printwell.com.ph and&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&amp;nbsp;- irms.erp.domain.com.ph&lt;/span&gt;&lt;/div&gt;&lt;div&gt;B. VPN: user connected to VPN can access irms.printwell.com.ph&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;spacingLeft=12;" vertex="1" parent="1">
+          <mxGeometry x="30" y="50" width="230" height="610" as="geometry" />
+        </mxCell>
+        <mxCell id="cWni4bAGqpsDa-Hw2Dj--9" value="" style="image;points=[];aspect=fixed;html=1;align=center;shadow=0;dashed=0;image=img/lib/allied_telesis/computer_and_terminals/Personal_Computer_with_Server.svg;" vertex="1" parent="1">
+          <mxGeometry x="423.75" y="670" width="190" height="190" as="geometry" />
+        </mxCell>
+        <mxCell id="cWni4bAGqpsDa-Hw2Dj--24" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="cWni4bAGqpsDa-Hw2Dj--10" target="cWni4bAGqpsDa-Hw2Dj--13">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="830" y="230" />
+              <mxPoint x="830" y="230" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cWni4bAGqpsDa-Hw2Dj--10" value="" style="image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/azure2/compute/Virtual_Machine.svg;" vertex="1" parent="1">
+          <mxGeometry x="768.75" y="320" width="172.5" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="cWni4bAGqpsDa-Hw2Dj--23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="cWni4bAGqpsDa-Hw2Dj--13" target="cWni4bAGqpsDa-Hw2Dj--10">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="870" y="230" />
+              <mxPoint x="870" y="230" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cWni4bAGqpsDa-Hw2Dj--13" value="" style="sketch=0;pointerEvents=1;shadow=0;dashed=0;html=1;strokeColor=none;fillColor=#505050;labelPosition=center;verticalLabelPosition=bottom;verticalAlign=top;outlineConnect=0;align=center;shape=mxgraph.office.servers.sql_server;" vertex="1" parent="1">
+          <mxGeometry x="801.25" y="60" width="110" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="cWni4bAGqpsDa-Hw2Dj--29" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.302;entryY=1.1;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="cWni4bAGqpsDa-Hw2Dj--14" target="cWni4bAGqpsDa-Hw2Dj--33">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="850" y="580" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="820" y="550" />
+              <mxPoint x="820" y="550" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cWni4bAGqpsDa-Hw2Dj--14" value="" style="image;points=[];aspect=fixed;html=1;align=center;shadow=0;dashed=0;image=img/lib/allied_telesis/computer_and_terminals/Personal_Computer_with_Server.svg;" vertex="1" parent="1">
+          <mxGeometry x="760" y="670" width="190" height="190" as="geometry" />
+        </mxCell>
+        <mxCell id="cWni4bAGqpsDa-Hw2Dj--22" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="1173.12" y="682.5" width="100" height="165" as="geometry" />
+        </mxCell>
+        <mxCell id="cWni4bAGqpsDa-Hw2Dj--18" value="" style="outlineConnect=0;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;shape=mxgraph.aws3.mobile_client;fillColor=light-dark(#777777,#373838);gradientColor=none;" vertex="1" parent="cWni4bAGqpsDa-Hw2Dj--22">
+          <mxGeometry width="100" height="165" as="geometry" />
+        </mxCell>
+        <mxCell id="cWni4bAGqpsDa-Hw2Dj--19" value="" style="html=1;strokeWidth=1;shadow=0;dashed=0;shape=mxgraph.ios7.misc.vpn;fillColor=#007AFF;strokeColor=none;buttonText=;strokeColor2=#222222;fontColor=#222222;fontSize=8;verticalLabelPosition=bottom;verticalAlign=top;align=center;sketch=0;" vertex="1" parent="cWni4bAGqpsDa-Hw2Dj--22">
+          <mxGeometry x="20" y="67.5" width="60" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="cWni4bAGqpsDa-Hw2Dj--20" value="" style="points=[[0,0.58,0],[0.09,0.58,0],[0.36,0.39,0],[0.64,0.195,0],[0.91,0,0],[1,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[1,1,0],[0,1,0],[0.09,1,0],[0.36,1,0],[0.64,1,0],[0.91,1,0],[0,0.79,0]];verticalLabelPosition=bottom;sketch=0;html=1;verticalAlign=top;aspect=fixed;align=center;pointerEvents=1;shape=mxgraph.cisco19.wifi_indicator;fillColor=#005073;strokeColor=none;" vertex="1" parent="cWni4bAGqpsDa-Hw2Dj--22">
+          <mxGeometry x="55" y="37.5" width="20" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="cWni4bAGqpsDa-Hw2Dj--21" value="" style="html=1;verticalLabelPosition=bottom;align=center;labelBackgroundColor=#ffffff;verticalAlign=top;strokeWidth=2;strokeColor=#0080F0;shadow=0;dashed=0;shape=mxgraph.ios7.icons.wifi;pointerEvents=1" vertex="1" parent="cWni4bAGqpsDa-Hw2Dj--22">
+          <mxGeometry x="20" y="36.5" width="29.7" height="21" as="geometry" />
+        </mxCell>
+        <mxCell id="cWni4bAGqpsDa-Hw2Dj--25" value="Printwell Domain Network" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="423.75" y="860" width="186.25" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="cWni4bAGqpsDa-Hw2Dj--26" value="ERP Domain Network" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="760" y="860" width="186.25" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="cWni4bAGqpsDa-Hw2Dj--27" value="Mobile WIFI / DATA &lt;br&gt;+ FortiClient VPN" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="1130" y="860" width="186.25" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="cWni4bAGqpsDa-Hw2Dj--28" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=-0.012;entryY=0.318;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="cWni4bAGqpsDa-Hw2Dj--9" target="cWni4bAGqpsDa-Hw2Dj--10">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="519" y="371" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cWni4bAGqpsDa-Hw2Dj--30" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.993;entryY=0.563;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="cWni4bAGqpsDa-Hw2Dj--18" target="cWni4bAGqpsDa-Hw2Dj--10">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="960" y="410" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="1200" y="410" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cWni4bAGqpsDa-Hw2Dj--32" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.75;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="cWni4bAGqpsDa-Hw2Dj--10" target="cWni4bAGqpsDa-Hw2Dj--18">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1248" y="370" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cWni4bAGqpsDa-Hw2Dj--33" value="PI-WEBSYSTEM-SVR&lt;div&gt;(192.168.10.14)&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="763.75" y="480" width="186.25" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="cWni4bAGqpsDa-Hw2Dj--34" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.717;entryY=0.021;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="cWni4bAGqpsDa-Hw2Dj--10" target="cWni4bAGqpsDa-Hw2Dj--9">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="560" y="410" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cWni4bAGqpsDa-Hw2Dj--35" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.742;entryY=0.016;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="cWni4bAGqpsDa-Hw2Dj--33" target="cWni4bAGqpsDa-Hw2Dj--14">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="901" y="550" />
+              <mxPoint x="901" y="550" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cWni4bAGqpsDa-Hw2Dj--36" value="Web Browser&amp;nbsp;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Search:&lt;/span&gt;&lt;div&gt;&lt;b style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;irms.printwell.com.ph&lt;/b&gt;&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=0" vertex="1" parent="1">
+          <mxGeometry x="380" y="630" width="138.25" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="cWni4bAGqpsDa-Hw2Dj--37" value="Web Browser&amp;nbsp;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Search: &lt;/span&gt;&lt;b style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;irms.erp.domain.com&lt;/b&gt;" style="text;html=1;align=right;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=0" vertex="1" parent="1">
+          <mxGeometry x="680" y="550" width="136.25" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="cWni4bAGqpsDa-Hw2Dj--38" value="Web Browser&amp;nbsp;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Search&amp;nbsp;&lt;/span&gt;&lt;div&gt;&lt;b&gt;irms.printwell.com.ph&lt;/b&gt;&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=0" vertex="1" parent="1">
+          <mxGeometry x="1070" y="640" width="126.25" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="cWni4bAGqpsDa-Hw2Dj--39" value="Display output of IRMS" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=0" vertex="1" parent="1">
+          <mxGeometry x="560" y="640" width="130" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="cWni4bAGqpsDa-Hw2Dj--40" value="Display output of IRMS" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=0" vertex="1" parent="1">
+          <mxGeometry x="1250" y="640" width="130" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="cWni4bAGqpsDa-Hw2Dj--41" value="Display output of IRMS" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=0" vertex="1" parent="1">
+          <mxGeometry x="910" y="565" width="130" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="cWni4bAGqpsDa-Hw2Dj--44" value="Query Data&lt;div&gt;View / Modify&lt;/div&gt;" style="text;html=1;align=right;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=0" vertex="1" parent="1">
+          <mxGeometry x="690" y="230" width="130" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="cWni4bAGqpsDa-Hw2Dj--45" value="&lt;div&gt;Retrieve Data&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=0" vertex="1" parent="1">
+          <mxGeometry x="880" y="230" width="130" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
