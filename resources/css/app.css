@@ -233,3 +233,137 @@ body:not(.sidebar-mini) .content-wrapper {
     /* match full aside width */
 }
 
+/* Ensure proper stacking of navbar and footer */
+nav.navbar,
+footer.app-footer {
+    position: relative;
+    z-index: 2;
+}
+
+/* --- Login Page Split Layout --- */
+body.login-bg {
+    background: linear-gradient(120deg, #1e2a78 0%, #3a8dde 100%);
+    min-height: 95vh;
+}
+.login-bg-img {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    object-fit: cover;
+    z-index: 0;
+    opacity: 0.25;
+    pointer-events: none;
+    user-select: none;
+}
+.login-split-container, .login-card {
+    position: relative;
+    z-index: 1;
+}
+.login-split-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+}
+.login-card {
+    display: flex;
+    min-height: 500px;
+    max-width: 900px;
+    width: 100%;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+    border-radius: 18px;
+    overflow: hidden;
+    background: white;
+}
+.login-visual {
+    background: linear-gradient(120deg, #1e2a78 0%, #3a8dde 100%);
+    color: #fff;
+    flex: 1.2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    min-width: 320px;
+    padding: 0;
+}
+.login-visual img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.95;
+}
+.login-form-panel {
+    flex: 1;
+    background: #fff;
+    padding: 3rem 2.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.login-form-panel h2 {
+    font-weight: 700;
+    color: #2563eb;
+    margin-bottom: 0.5rem;
+}
+.login-form-panel .form-label {
+    color: #2563eb;
+    font-weight: 500;
+}
+.login-form-panel .form-control {
+    background: #f5f7fa;
+    border: none;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+.login-form-panel .form-check-label {
+    color: #555;
+}
+.login-form-panel .btn-primary {
+    background: linear-gradient(90deg, #2563eb 0%, #3a8dde 100%);
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    padding: 0.75rem 2.5rem;
+    box-shadow: 0 2px 8px rgba(37,99,235,0.08);
+    transition: background 0.2s;
+}
+.login-form-panel .btn-primary:hover {
+    background: linear-gradient(90deg, #1741a6 0%, #2563eb 100%);
+}
+.login-form-panel .form-text {
+    color: #888;
+    font-size: 0.95em;
+}
+.login-form-panel .forgot-link {
+    color: #2563eb;
+    font-size: 0.95em;
+    text-decoration: none;
+    margin-left: 1rem;
+}
+.login-form-panel .forgot-link:hover {
+    text-decoration: underline;
+}
+.login-form-panel .create-account {
+    color: #2563eb;
+    font-size: 0.97em;
+    text-decoration: none;
+    margin-top: 1.5rem;
+    display: inline-block;
+}
+.login-form-panel .create-account:hover {
+    text-decoration: underline;
+}
+@media (max-width: 900px) {
+    .login-card { flex-direction: column; min-height: 0; }
+    .login-visual { min-height: 220px; }
+    .login-form-panel { padding: 2rem 1.2rem; }
+}
+@media (max-width: 600px) {
+    .login-card { box-shadow: none; border-radius: 0; }
+    .login-form-panel { padding: 1.2rem 0.5rem; }
+    .login-visual { min-width: 0; }
+}
+
+
+
