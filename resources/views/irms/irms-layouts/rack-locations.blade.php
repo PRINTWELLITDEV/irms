@@ -23,69 +23,137 @@
                 <div class="row">
                     <div class="col">
                         <div class="card">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <button type="button" id="btnAddRack" class="btn btn-success d-flex align-items-center me-2"
-                                            data-bs-toggle="modal" data-bs-target="#addRackModal">
-                                        <i class="bi bi-plus-circle-fill d-none d-sm-inline me-2"></i>
-                                        <span class="d-none d-sm-inline">Add Rack</span>
-                                        <i class="bi bi-plus-circle-fill d-inline d-sm-none"></i>
+                            <!-- Tabs Navigation -->
+                            <ul class="nav nav-tabs px-4 pt-3" id="rackTabs" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active" id="table-tab" data-bs-toggle="tab" data-bs-target="#tableTabPane" type="button" role="tab" aria-controls="tableTabPane" aria-selected="true">
+                                        Table
                                     </button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="map-tab" data-bs-toggle="tab" data-bs-target="#mapTabPane" type="button" role="tab" aria-controls="mapTabPane" aria-selected="false">
+                                        Map
+                                    </button>
+                                </li>
+                            </ul>
+                            <!-- Tabs Content -->
+                            <div class="tab-content p-4" id="rackTabsContent">
+                                <div class="tab-pane fade show active" id="tableTabPane" role="tabpanel" aria-labelledby="table-tab">
+                                    {{-- Existing Table Content --}}
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <button type="button" id="btnAddRack" class="btn btn-success d-flex align-items-center me-2"
+                                                data-bs-toggle="modal" data-bs-target="#addRackModal">
+                                            <i class="bi bi-plus-circle-fill d-none d-sm-inline me-2"></i>
+                                            <span class="d-none d-sm-inline">Add Rack</span>
+                                            <i class="bi bi-plus-circle-fill d-inline d-sm-none"></i>
+                                        </button>
 
-                                    <div class="input-group" style="max-width: 300px;">
-                                        <input type="text" id="rackSearch" class="form-control" placeholder="Search rack location...">
-                                        <span class="input-group-text">
-                                            <i class="bi bi-search"></i>
-                                        </span>
+                                        <div class="input-group" style="max-width: 300px;">
+                                            <input type="text" id="rackSearch" class="form-control" placeholder="Search rack location...">
+                                            <span class="input-group-text">
+                                                <i class="bi bi-search"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="table-responsive table-view">
+                                        <table id="rackTable" class="table table-striped table-bordered table-hover align-middle display">
+                                            <thead>
+                                            <tr>
+                                                <th>Rack Location</th>
+                                                <th width="10%">Warehouse</th>
+                                                <th width="10%">Bay No.</th>
+                                                <!-- <th>Description</th> -->
+                                                <th width="10%">Quantity</th>
+                                                @if(auth()->user()->userid === 'sa')
+                                                <th width="10%">Site</th>
+                                                @endif
+                                                <!-- <th width="10%">Create Date</th> -->
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            @forelse($racklocs as $rsloc)
+                                                <tr
+                                                    data-rssite="{{ $rsloc->rssite }}"
+                                                    data-rssite_desc="{{ $rsloc->rssite_desc }}"
+                                                    data-rswhse="{{ $rsloc->rswhse }}"
+                                                    data-rsbaynum="{{ $rsloc->rsbaynum }}"
+                                                    data-rsloc="{{ $rsloc->rsloc }}"
+                                                    data-rsdesc="{{ $rsloc->rsdesc }}"
+                                                    data-qty="{{ ($rsloc->qty ?? 0) == 0 ? '0' : number_format($rsloc->qty, 0) }}"
+                                                    data-create-date="{{ \Carbon\Carbon::parse($rsloc->createdate)->format('d M Y - h:i A') }}"
+                                                >
+                                                    <td>{{ $rsloc->rsloc }}</td>
+                                                    <td>{{ $rsloc->rswhse }}</td>
+                                                    <td>{{ $rsloc->rsbaynum }}</td>
+                                                    <!-- <td>{{ $rsloc->rsdesc }}</td> -->
+                                                    <td class="text-end me-3">{{ number_format($rsloc->qty, 0) }}</td>
+                                                    @if(auth()->user()->userid === 'sa')
+                                                    <td>
+                                                        {{ $rsloc->rssite_desc ?? 'N/A' }}
+                                                        <!-- <img src="{{ asset($rsloc->logo_pic_url) }}" alt="logo" class="mx-auto d-block" width="40" height="40" style="object-fit:contain;vertical-align:middle;"> -->
+                                                    </td>
+                                                    @endif
+                                                    <!-- <td>{{ \Carbon\Carbon::parse($rsloc->createdate)->format('d M Y - h:i A') }}</td> -->
+                                                </tr>
+                                            @empty
+                                            @endforelse
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
-
-                                <div class="table-responsive table-view">
-                                    <table id="rackTable" class="table table-striped table-bordered table-hover align-middle display">
-                                        <thead>
-                                        <tr>
-
-                                            <th>Rack Location</th>
-                                            <th width="10%">Warehouse</th>
-                                            <th width="10%">Bay No.</th>
-                                            <!-- <th>Description</th> -->
-                                            <th width="10%">Quantity</th>
+                                <div class="tab-pane fade" id="mapTabPane" role="tabpanel" aria-labelledby="map-tab">
+                                    <form id="rack-map-filter" class="d-flex flex-column">
+                                        <div class="row">
                                             @if(auth()->user()->userid === 'sa')
-                                            <th width="10%">Site</th>
-                                            @endif
-                                            <!-- <th width="10%">Create Date</th> -->
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        @forelse($racklocs as $rsloc)
-                                            <tr
-                                                data-rssite="{{ $rsloc->rssite }}"
-                                                data-rssite_desc="{{ $rsloc->rssite_desc }}"
-                                                data-rswhse="{{ $rsloc->rswhse }}"
-                                                data-rsbaynum="{{ $rsloc->rsbaynum }}"
-                                                data-rsloc="{{ $rsloc->rsloc }}"
-                                                data-rsdesc="{{ $rsloc->rsdesc }}"
-                                                data-qty="{{ ($rsloc->qty ?? 0) == 0 ? '0' : number_format($rsloc->qty, 0) }}"
-                                                data-create-date="{{ \Carbon\Carbon::parse($rsloc->createdate)->format('d M Y - h:i A') }}"
-                                                
-                                            >
-                                                <td>{{ $rsloc->rsloc }}</td>
-                                                <td>{{ $rsloc->rswhse }}</td>
-                                                <td>{{ $rsloc->rsbaynum }}</td>
-                                                <!-- <td>{{ $rsloc->rsdesc }}</td> -->
-                                                <td class="text-end me-3">{{ number_format($rsloc->qty, 0) }}</td>
-                                                @if(auth()->user()->userid === 'sa')
-                                                <td>
-                                                    {{ $rsloc->rssite_desc ?? 'N/A' }}
-                                                    <!-- <img src="{{ asset($rsloc->logo_pic_url) }}" alt="logo" class="mx-auto d-block" width="40" height="40" style="object-fit:contain;vertical-align:middle;"> -->
-                                                </td>
-                                                @endif
-                                                <!-- <td>{{ \Carbon\Carbon::parse($rsloc->createdate)->format('d M Y - h:i A') }}</td> -->
-                                            </tr>
-                                        @empty
-                                        @endforelse
-                                        </tbody>
-                                    </table>
+                                            <div class="col-12 col-md-4 mb-2">
+                                                <div class="input-group">
+                                                    <span class="input-group-text"><i class="bi bi-building"></i> Site: </span>
+                                                    <select name="rssite" id="mapRsSite" class="form-select" required>
+                                                        <option disabled selected>Select Site</option>
+                                                        @foreach($sites as $site)
+                                                            <option value="{{ $site->rssite }}">{{ $site->rssite_desc }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        @else
+                                            <input type="hidden" name="rssite" id="mapRsSite" value="{{ auth()->user()->rssite }}" readonly>
+                                        @endif
+
+                                        {{-- Warehouse --}}
+                                        <div class="col-12 col-md-4 mb-2">
+                                            <div class="input-group">
+                                                <span class="input-group-text"><i class="bi bi-archive"></i></span>
+                                                <select id="mapRsWhse" class="form-select" name="rswhse">
+                                                    <option value="">Select Warehouse</option>
+                                                    @foreach($warehouses as $whse)
+                                                        <option value="{{ $whse->rswhse }}" data-site="{{ $whse->rssite }}">{{ $whse->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        {{-- Bay --}}
+                                        <div class="col-12 col-md-4 mb-2">
+                                            <div class="input-group">
+                                                <span class="input-group-text"><i class="bi bi-box-seam"></i></span>
+                                                <select id="mapRsBay" class="form-select" name="rsbaynum">
+                                                    <option value="">Select Bay</option>
+                                                    @foreach($baynums as $bay)
+                                                        <option value="{{ $bay->rsbaynum }}" data-site="{{ $bay->rssite }}">{{ $bay->rsbaynum }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </form>
+                                
+                                    <div class="d-flex justify-content-center align-items-center" style="min-height: 300px;">
+                                        <div id="rack-map-grid" class="table-responsive">
+                                            
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
