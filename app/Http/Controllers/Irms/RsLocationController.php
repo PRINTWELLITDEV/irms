@@ -63,4 +63,16 @@ class RsLocationController extends Controller
 
         return redirect()->route('racklocations.index')->with('success', 'Rack location added successfully!');
     }
+
+    public function rackMapGrid(Request $request)
+    {
+        $rssite = $request->input('rssite');
+        $rswhse = $request->input('rswhse');
+        $rsbaynum = $request->input('rsbaynum');
+
+        $locations = \DB::select('EXEC sp_rack_map ?, ?, ?', [$rssite, $rswhse, $rsbaynum]);
+
+        // Return as JSON for AJAX
+        return response()->json($locations);
+    }
 }
