@@ -31,8 +31,8 @@
                                     </button>
                                 </li>
                                 <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="grid-tab" data-bs-toggle="tab" data-bs-target="#gridTabPane" type="button" role="tab" aria-controls="gridTabPane" aria-selected="false">
-                                        Grid
+                                    <button class="nav-link" id="map-tab" data-bs-toggle="tab" data-bs-target="#mapTabPane" type="button" role="tab" aria-controls="mapTabPane" aria-selected="false">
+                                        Map
                                     </button>
                                 </li>
                             </ul>
@@ -102,14 +102,60 @@
                                         </table>
                                     </div>
                                 </div>
-                                <div class="tab-pane fade" id="gridTabPane" role="tabpanel" aria-labelledby="grid-tab">
-                                    {{-- Grid Content (blank for now) --}}
-                                    <div class="text-center text-muted py-5">
-                                        <h4>Grid view coming soon...</h4>
+                                <div class="tab-pane fade" id="mapTabPane" role="tabpanel" aria-labelledby="map-tab">
+                                    <form id="rack-map-filter" class="d-flex flex-column">
+                                        <div class="row">
+                                            @if(auth()->user()->userid === 'sa')
+                                            <div class="col-12 col-md-4 mb-2">
+                                                <div class="input-group">
+                                                    <span class="input-group-text"><i class="bi bi-building"></i> Site: </span>
+                                                    <select name="rssite" id="mapRsSite" class="form-select" required>
+                                                        <option disabled selected>Select Site</option>
+                                                        @foreach($sites as $site)
+                                                            <option value="{{ $site->rssite }}">{{ $site->rssite_desc }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        @else
+                                            <input type="hidden" name="rssite" id="mapRsSite" value="{{ auth()->user()->rssite }}" readonly>
+                                        @endif
+
+                                        {{-- Warehouse --}}
+                                        <div class="col-12 col-md-4 mb-2">
+                                            <div class="input-group">
+                                                <span class="input-group-text"><i class="bi bi-archive"></i> Warehouse: </span>
+                                                <select id="mapRsWhse" class="form-select" name="rswhse">
+                                                    <option value="">Select Warehouse</option>
+                                                    @foreach($warehouses as $whse)
+                                                        <option value="{{ $whse->rswhse }}" data-site="{{ $whse->rssite }}">{{ $whse->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        {{-- Bay --}}
+                                        <div class="col-12 col-md-4">
+                                            <div class="input-group">
+                                                <span class="input-group-text"><i class="bi bi-hash"></i> Bay No: </span>
+                                                <select id="mapRsBay" class="form-select" name="rsbaynum">
+                                                    <option value="">Select Bay</option>
+                                                    @foreach($baynums as $bay)
+                                                        <option value="{{ $bay->rsbaynum }}" data-site="{{ $bay->rssite }}">{{ $bay->rsbaynum }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </form>
+                                
+                                    <div class="d-flex justify-content-center align-items-center" style="min-height: 300px;">
+                                        <div id="rack-map-grid" class="table-responsive">
+                                            
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <!-- End Tabs Content -->
                         </div>
                     </div>
                 </div>
