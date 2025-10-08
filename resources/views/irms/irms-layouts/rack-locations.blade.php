@@ -124,7 +124,7 @@
                                         {{-- Warehouse --}}
                                         <div class="col-12 col-md-4 mb-2">
                                             <div class="input-group">
-                                                <span class="input-group-text"><i class="bi bi-archive"></i> Warehouse: </span>
+                                                <span class="input-group-text"><i class="bi bi-archive"></i></span>
                                                 <select id="mapRsWhse" class="form-select" name="rswhse">
                                                     <option value="">Select Warehouse</option>
                                                     @foreach($warehouses as $whse)
@@ -135,9 +135,9 @@
                                         </div>
 
                                         {{-- Bay --}}
-                                        <div class="col-12 col-md-4">
+                                        <div class="col-12 col-md-4 mb-2">
                                             <div class="input-group">
-                                                <span class="input-group-text"><i class="bi bi-hash"></i> Bay No: </span>
+                                                <span class="input-group-text"><i class="bi bi-box-seam"></i></span>
                                                 <select id="mapRsBay" class="form-select" name="rsbaynum">
                                                     <option value="">Select Bay</option>
                                                     @foreach($baynums as $bay)
