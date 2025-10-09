@@ -263,20 +263,22 @@ $(document).ready(function () {
         ].filter(Boolean)
             .map(Number);
 
-        // Sort columns: Odd baynum = descending, Even = ascending
-        let baynumDigits = rsbaynum.match(/\d+/);
-        let isOdd = baynumDigits && parseInt(baynumDigits[0]) % 2 === 1;
-        if (isOdd) {
-            columns.sort((a, b) => b - a); // Descending for odd
-        } else {
-            columns.sort((a, b) => a - b); // Ascending for even
-        }
-
         // Slots
         let slots = [
             ...new Set(locations.map((l) => l.rsloc.match(/-(S\d+)$/)?.[1])),
         ].filter(Boolean)
             .sort();
+
+        // Sort columns: Odd baynum = descending, Even = ascending
+        let baynumDigits = rsbaynum.match(/\d+/);
+        let isOdd = baynumDigits && parseInt(baynumDigits[0]) % 2 === 1;
+        if (isOdd) {
+            columns.sort((a, b) => b - a); // Descending for odd
+            slots.sort().reverse(); 
+        } else {
+            columns.sort((a, b) => a - b); // Ascending for even
+            slots.sort(); 
+        }
 
         // If any level/column/slot is missing, fill the grid with blanks
         let html =
