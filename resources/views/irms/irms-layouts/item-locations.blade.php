@@ -48,6 +48,7 @@
                                         <tr>
                                             <th>Item Locations</th>
                                             <th>Job No.</th>
+                                            <th>Product Item</th>
                                             <th width="10%">Qty</th>
                                             <th width="5%">U/M</th>
                                             <th width="5%">Pallet No.</th>
@@ -77,6 +78,7 @@
                                             >
                                                 <td>{{ $loc->rsloc }}</td>
                                                 <td>{{ $loc->job }}</td>
+                                                <td>{{ $loc->item }} - {{ $loc->desc }}</td>
                                                 <td class="text-end">{{ ($loc->qty ?? 0) == 0 ? '0' : number_format($loc->qty, 0) }}</td>
                                                 <td>{{ $loc->um }}</td>
                                                 <td>{{ $loc->rspallet_num }}</td>
