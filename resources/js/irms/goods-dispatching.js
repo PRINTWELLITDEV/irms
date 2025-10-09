@@ -9,13 +9,13 @@ $(document).ready(function () {
             $("#rssite option:selected").text() || $("#rssite").val() || "-"
         );
         $("#details-date").text(formatDateMDY($("#date").val()));
-        $("#details-warehouse").text($("#rswhse").val() || "-");
-        $("#details-jobco").text($("#jobcodispatch").val() || "-");
-        $("#details-lot").text($("#lot").val() || "-");
-        $("#details-item").text($("#item").val() || "-");
-        $("#details-desc").text($("#desc").val() || "-");
-        $("#details-um").text($("#um").val() || "-");
-        $("#details-docno").text($("#docno").val() || "-");
+        $("#details-warehouse").text($("#rswhse").val() || "");
+        $("#details-jobco").text($("#jobcodispatch").val() || "");
+        $("#details-lot").text($("#lot").val() || "");
+        $("#details-item").text($("#item").val() || "");
+        $("#details-desc").text($("#desc").val() || "");
+        $("#details-um").text($("#um").val() || "");
+        $("#details-docno").text($("#docno").val() || "");
 
         // AJAX to get item in rsloc list
         $.ajax({
@@ -259,7 +259,7 @@ $(document).ready(function () {
                     parseFloat(qtyInput.val());
                 const rsloc = $row.find("td").eq(2).text();
                 const rspallet_num = $row.find("td").eq(3).text();
-                const um = $row.find("td").eq(5).text();
+                const um = $row.find("td").eq(6).text();
 
                 // Validate quantity
                 if (

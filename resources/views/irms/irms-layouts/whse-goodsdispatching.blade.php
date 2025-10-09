@@ -147,7 +147,7 @@
                         <h5 class="mb-0">Dispatching Details</h5>
                     </div>
                     <div class="card-body">
-                        <button type="button" id="btnBackReceiving" class="btn border-2 border-secondary d-flex align-items-center mb-2">
+                        <button type="button" id="btnBackDispatching" class="btn border-2 border-secondary d-flex align-items-center mb-2">
                             <i class="bi bi-arrow-left d-sm-inline me-2"></i>
                             <span class="d-md-inline fw-bold">Back</span>
                         </button>

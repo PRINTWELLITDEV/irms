@@ -136,6 +136,25 @@ return new class extends Migration
                 );
             END
         ");
+
+        \DB::unprepared("
+            IF OBJECT_ID('sp_dispatching_job_item_details', 'P') IS NOT NULL
+                DROP PROCEDURE sp_dispatching_job_item_details;
+        ");
+        \DB::unprepared("
+            CREATE PROCEDURE [dbo].[sp_dispatching_job_item_details]
+                @rssite NVARCHAR(8),
+                @job NVARCHAR(10)
+            AS
+            BEGIN
+                SET NOCOUNT ON;
+                SELECT TOP 1
+                    *
+                FROM rsitemloc
+                WHERE rssite = @rssite
+                  AND job = @job
+            END
+        ");
     }
 
     /**
@@ -150,6 +169,10 @@ return new class extends Migration
         \DB::unprepared("
             IF OBJECT_ID('sp_goodsdispatch_process', 'P') IS NOT NULL
                 DROP PROCEDURE sp_goodsdispatch_process;
+        ");
+        \DB::unprepared("
+            IF OBJECT_ID('sp_dispatching_job_item_details', 'P') IS NOT NULL
+                DROP PROCEDURE sp_dispatching_job_item_details;
         ");
     }
 };
