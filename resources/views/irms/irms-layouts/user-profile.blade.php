@@ -23,7 +23,7 @@
             <div class="container-fluid">
                 <div class="row g-3">
                     <div class="col-12 col-md-4 d-flex flex-column">
-                        <div class="flex-grow-1 mb-3 p-0" style="background:#fff; border-radius:14px; border:1.5px solid #e5e5e5; box-shadow:0 2px 8px #0001; position:relative; min-height:0;">
+                        <div class="flex-grow-1 mb-3 p-0" style="background:#fff; border-radius:14px; border:1.5px solid #e5e5e5; box-shadow:0 2px 8px #0001; position:relative;">
                             <div class="p-4 h-100 d-flex flex-column">
                                 <div class="d-flex align-items-center mb-3">
                                     <a href="{{ $user->profile_pic_url }}" target="_blank" data-bs-toggle="modal" data-bs-target="#profilePicModal">
@@ -93,11 +93,11 @@
                     </div>
                     <div class="col-12 col-md-8">
                         <div class="h-100" style="background: #fffcef94; border-radius:14px; border:1.5px solid #b9a98b; box-shadow:0 2px 8px #0001; position:relative;">
-                            <div class="tab-content h-100" id="profileTabContent" style="min-height:70vh;">
+                            <div class="tab-content h-100" id="profileTabContent">
                                 <div class="tab-pane fade show active" id="overview" role="tabpanel">
                                     <div class="card-header border-bottom-1 fw-semibold">
                                         <h5 class="mb-1 fw-semibold">
-                                            <i class="bi bi-person-lines-fill me-2 text-primary"></i> About Me
+                                            <i class="bi bi-person-lines-fill me-2 text-success"></i> About Me
                                         </h5>
                                     </div>
                                     <div class="card-body p-4 text-secondary">
@@ -151,17 +151,20 @@
                                 </div>
                                 <div class="tab-pane fade" id="personal" role="tabpanel">
                                     <div class="card-header fw-semibold">
-                                        <h4>Personal Information</h4>
+                                        <h5>
+                                            <i class="bi bi-file-earmark-person me-2 text-success"></i>
+                                            Personal Information
+                                        </h5>
                                     </div>
                                     <div class="card-body p-4 text-secondary">
                                         <form method="POST" action="{{ route('user-profile.update', $user->userid) }}">
                                             @csrf
                                             <div class="row">
-                                                <div class="col-12 col-md-12 mb-3">
+                                                <div class="col-12 col-md-12 mb-2">
                                                     <label class="form-label fw-semibold">Full Name</label>
                                                     <input type="text" class="form-control" name="name" value="" placeholder="{{ $user->name }}">
                                                 </div>
-                                                <div class="col-12 col-md-12 mb-3">
+                                                <div class="col-12 col-md-12 mb-2">
                                                     <label class="form-label fw-semibold">Gender</label>
                                                     <select name="gender" class="form-control">
                                                         <option value="{{ $user->gender ?? '' }}">{{ $user->gender ?? '- Select Gender -'}}</option>
@@ -169,19 +172,19 @@
                                                         <option value="Female">Female</option>
                                                     </select>
                                                 </div>
-                                                <div class="col-12 col-md-12 mb-3">
+                                                <div class="col-12 col-md-12 mb-2">
                                                     <label class="form-label fw-semibold">Department</label>
                                                     <input type="text" class="form-control" name="department" value="" placeholder="{{ $user->department }}">
                                                 </div>
-                                                <div class="col-12 col-md-12 mb-3">
+                                                <div class="col-12 col-md-12 mb-2">
                                                     <label class="form-label fw-semibold">Section</label>
                                                     <input type="text" class="form-control" name="section" value="" placeholder="{{ $user->section }}">
                                                 </div>
-                                                <div class="col-12 col-md-12 mb-3">
+                                                <div class="col-12 col-md-12 mb-2">
                                                     <label class="form-label fw-semibold">Position</label>
                                                     <input type="text" class="form-control" name="position" value="" placeholder="{{ $user->position }}">
                                                 </div>
-                                                <div class="col-12 mt-3 text-end">
+                                                <div class="col-12 text-end">
                                                     <button class="btn btn-success">Update Profile</button>
                                                 </div>
                                             </div>
@@ -190,7 +193,9 @@
                                 </div>
                                 <div class="tab-pane fade" id="account" role="tabpanel">
                                     <div class="card-header fw-semibold">
-                                        <h4>Account Information</h4>
+                                        <h5> <i class="bi bi-person-badge me-2 text-success"></i>
+                                            Account Information
+                                        </h5>
                                     </div>
                                     <div class="card-body p-4 text-secondary">
                                         <form method="POST" action="">
@@ -204,8 +209,6 @@
                                                     <label class="form-label fw-semibold">Account Email</label>
                                                     <input type="email" class="form-control" name="email" value="" placeholder="{{ $user->email }}">
                                                 </div>
-                                                </div>
-                                                
                                                 <div class="col-12 mt-3 text-end">
                                                     <button class="btn btn-success">Update Profile</button>
                                                 </div>
@@ -215,7 +218,10 @@
                                 </div>
                                 <div class="tab-pane fade" id="password" role="tabpanel">
                                     <div class="card-header fw-semibold">
-                                        <h4>Change Password</h4>
+                                        <h5>
+                                            <i class="bi bi-lock-fill me-2 text-success"></i>
+                                            Change Password
+                                        </h5>
                                     </div>
                                     <div class="card-body text-secondary">
                                         <p>This is the change password content.</p>
@@ -223,7 +229,10 @@
                                 </div>
                                 <div class="tab-pane fade" id="email" role="tabpanel">
                                     <div class="card-header fw-semibold">
-                                        <h4>Email Settings</h4>
+                                        <h5>
+                                            <i class="bi bi-envelope-fill me-2 text-success"></i>
+                                            Email Settings
+                                        </h5>
                                     </div>
                                     <div class="card-body text-secondary">
                                         <p>This is the email settings content.</p>
