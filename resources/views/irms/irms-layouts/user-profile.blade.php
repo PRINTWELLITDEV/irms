@@ -5,78 +5,229 @@
 @section('content')
 <main class="app-main">
     <div class="app-content-wrapper">
-        <div class="container-fluid py-4">
-            <div class="row justify-content-center">
-                <div class="col-12 col-lg-10">
-                    <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
-                        <!-- Top Profile Header -->
-                        <div class="d-flex flex-column flex-md-row align-items-center justify-content-between p-4"
-                            style="background: linear-gradient(90deg, #e2e4e7ff 50%, #666666ff 100%);">
-                            <div class="d-flex align-items-center w-100">
-                                <!-- Clickable Profile Image -->
-                                <a href="{{ $user->profile_pic_url }}" target="_blank" data-bs-toggle="modal" data-bs-target="#profilePicModal">
-                                    <img src="{{ $user->profile_pic_url }}" alt="Profile Picture"
-                                        class="rounded-circle border border-3 shadow me-4"
-                                        style="width: 80px; height: 80px; object-fit: cover; cursor: pointer;">
-                                </a>
-                                <div>
-                                    <h4 class="mb-1">{{ $user->name }}</h4>
-                                    <div class="text-muted small mb-1">{{ $user->email }}</div>
-                                    <div class="fw-semibold">{{ $siteDesc ?? $user->rssite }}</div>
-                                    <div class="text-muted small">Level: {{ $user->level }}</div>
-                                </div>
+        <div class="app-content-header">
+            <div class="container-fluid">
+                <div class="row align-items-center">
+                    <div class="col mb-3 d-flex align-items-center">
+                        <h1 class="d-inline-block mb-0 me-3">Profile</h1>
+                        @if(session('success'))
+                            <div id="success-alert" class="alert alert-success py-1 px-3 mb-0" style="transition: opacity 0.7s;">
+                                {{ session('success') }}
                             </div>
-                            <div class="mt-3 mt-md-0">
-                                @if(
-                                    (Auth::check() && Auth::user()->userid === $user->userid)
-                                    || Auth::user()->userid === 'sa'
-                                )
-                                    <a href=""
-                                        class="btn btn-dark fw-bold px-4">Edit</a>
-                                @endif
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="app-content-body">
+            <div class="container-fluid">
+                <div class="row g-3">
+                    <div class="col-12 col-md-4 d-flex flex-column">
+                        <div class="flex-grow-1 mb-3 p-0" style="background:#fff; border-radius:14px; border:1.5px solid #e5e5e5; box-shadow:0 2px 8px #0001; position:relative; min-height:0;">
+                            <div class="p-4 h-100 d-flex flex-column">
+                                <div class="d-flex align-items-center mb-3">
+                                    <a href="{{ $user->profile_pic_url }}" target="_blank" data-bs-toggle="modal" data-bs-target="#profilePicModal">
+                                        <img src="{{ $user->profile_pic_url }}" alt="Profile" class="rounded-circle" style="width:70px;height:70px;object-fit:cover;">
+                                    </a>
+                                    <div class="ms-3">
+                                        <div class="fw-bold fs-5">{{ $user->name }}</div>
+                                        <div class="text-muted">{{ $user->position }}</div>
+                                    </div>
+                                </div>
+                                <div class="row text-muted mb-3">
+                                    <div class="col-1 text-center"><i class="bi bi-person"></i></div>
+                                    <div class="col-2">User</div>
+                                    <div class="col-9 text-end text-dark fw-semibold">{{ $user->userid }}</div>
+                                </div>
+                                <div class="row text-muted mb-3">
+                                    <div class="col-1 text-center"><i class="bi bi-envelope"></i></div>
+                                    <div class="col-2">Email</div>
+                                    <div class="col-9 text-end text-dark fw-semibold">{{ $user->email }}</div>
+                                </div>
+                                <div class="row text-muted mb-4">
+                                    <div class="col-1 text-center"><i class="bi bi-geo-alt"></i></div>
+                                    <div class="col-2">Site</div>
+                                    <div class="col-9 text-end text-dark fw-semibold">{{ $siteDesc ?? $user->rssite }}</div>
+                                </div>
+                                <div class="row text-center border-top border-bottom">
+                                    <div class="list-group list-group-flush" id="profileTab" role="tablist">
+                                        <a href="#overview" class="list-group-item list-group-item-action d-flex align-items-center active"
+                                           data-bs-toggle="tab" role="tab">
+                                            <i class="bi bi-person-lines-fill me-2"></i> Profile Overview
+                                            <span class="ms-auto"><i class="bi bi-chevron-right"></i></span>
+                                        </a>
+                                        @if(Auth::user() == $user || Auth::user()->userid == 'sa')
+                                        <a href="#personal" class="list-group-item list-group-item-action d-flex align-items-center"
+                                           data-bs-toggle="tab" role="tab">
+                                            <i class="bi bi-file-earmark-person me-2"></i> Personal Information
+                                            <span class="ms-auto"><i class="bi bi-chevron-right"></i></span>
+                                        </a>
+                                        <a href="#account" class="list-group-item list-group-item-action d-flex align-items-center"
+                                           data-bs-toggle="tab" role="tab">
+                                            <i class="bi bi-person-badge me-2"></i> Account Information
+                                            <span class="ms-auto"><i class="bi bi-chevron-right"></i></span>
+                                        </a>
+                                        <a href="#password" class="list-group-item list-group-item-action d-flex align-items-center"
+                                           data-bs-toggle="tab" role="tab">
+                                            <i class="bi bi-shield-lock me-2"></i> Change Password
+                                            <span class="ms-auto"><i class="bi bi-chevron-right"></i></span>
+                                        </a>
+                                        <a href="#email" class="list-group-item list-group-item-action d-flex align-items-center"
+                                           data-bs-toggle="tab" role="tab">
+                                            <i class="bi bi-envelope me-2"></i> Email settings
+                                            <span class="ms-auto"><i class="bi bi-chevron-right"></i></span>
+                                        </a>
+                                        @endif
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <!-- Profile Details -->
-                        <div class="p-4">
-                            <div class="row g-3">
-                                @if(auth()->user()->userid === 'sa')
-                                <div class="col-12 col-md-12">
-                                    <label class="form-label fw-semibold">Site</label>
-                                    <input type="text" class="form-control" value="{{ $siteDesc ?? $user->rssite }}"
-                                        readonly>
+                        <div class="flex-grow-1 card shadow-sm" style="background:#f6eaff; border-radius:14px; border:1.5px solid #b9a98b; box-shadow:0 2px 8px #0001; position:relative;">
+                            <div class="card-header fw-semibold" style="font-size:1.1rem;">
+                                Hello card
+                            </div>
+                            <div class="card-body text-secondary" style="font-size:1.05rem;">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor incididunt
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-8">
+                        <div class="h-100" style="background: #fffcef94; border-radius:14px; border:1.5px solid #b9a98b; box-shadow:0 2px 8px #0001; position:relative;">
+                            <div class="tab-content h-100" id="profileTabContent" style="min-height:70vh;">
+                                <div class="tab-pane fade show active" id="overview" role="tabpanel">
+                                    <div class="card-header border-bottom-1 fw-semibold">
+                                        <h5 class="mb-1 fw-semibold">
+                                            <i class="bi bi-person-lines-fill me-2 text-primary"></i> About Me
+                                        </h5>
+                                    </div>
+                                    <div class="card-body p-4 text-secondary">
+                                        <h5 class="fw-semibold mb-3">Personal Details</h5>
+                                        <div class="row">
+                                            <div class="col-12 col-md-10">
+                                                <div class="row mb-2">
+                                                    <div class="col-4 col-sm-4 fw-semibold">Full Name</div>
+                                                    <div class="col-1 text-center">:</div>
+                                                    <div class="col-7 col-sm-7 text-dark">{{ $user->name ?? '-' }}</div>
+                                                </div>
+                                                <div class="row mb-2">
+                                                    <div class="col-4 col-sm-4 fw-semibold">Company</div>
+                                                    <div class="col-1 text-center">:</div>
+                                                    <div class="col-7 col-sm-7 text-dark">{{ $siteDesc ?? $user->rssite ?? '-' }}</div>
+                                                </div>
+
+                                                <div class="row mb-2">
+                                                    <div class="col-4 col-sm-4 fw-semibold">Company Address</div>
+                                                    <div class="col-1 text-center">:</div>
+                                                    <div class="col-7 col-sm-7 text-dark">{{ $siteAddress ?? '-' }}</div>
+                                                </div>
+                                                <div class="row mb-2">
+                                                    <div class="col-4 col-sm-4 fw-semibold">Email</div>
+                                                    <div class="col-1 text-center">:</div>
+                                                    <div class="col-7 col-sm-7 text-dark">{{ $user->email ?? 'support@example.com' }}</div>
+                                                </div>
+                                                <div class="row mb-2">
+                                                    <div class="col-4 col-sm-4 fw-semibold">Department</div>
+                                                    <div class="col-1 text-center">:</div>
+                                                    <div class="col-7 col-sm-7 text-dark">{{ $user->department ?? '-' }}</div>
+                                                </div>
+                                                <div class="row mb-2">
+                                                    <div class="col-4 col-sm-4 fw-semibold">Section</div>
+                                                    <div class="col-1 text-center">:</div>
+                                                    <div class="col-7 col-sm-7 text-dark">{{ $user->section ?? '-' }}</div>
+                                                </div>
+                                                <div class="row mb-2">
+                                                    <div class="col-4 col-sm-4 fw-semibold">Position</div>
+                                                    <div class="col-1 text-center">:</div>
+                                                    <div class="col-7 col-sm-7 text-dark">{{ $user->position ?? '-' }}</div>
+                                                </div>
+                                                <div class="row mb-2">
+                                                    <div class="col-4 col-sm-4 fw-semibold">Joined IRMS</div>
+                                                    <div class="col-1 text-center">:</div>
+                                                    <div class="col-7 col-sm-7 text-dark">{{ \Carbon\Carbon::parse($user->created_at)->format('d F Y') }}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                @endif
-                                <div class="col-12 col-md-12">
-                                    <label class="form-label fw-semibold">Full Name</label>
-                                    <input type="text" class="form-control" value="{{ $user->name }}" readonly>
+                                <div class="tab-pane fade" id="personal" role="tabpanel">
+                                    <div class="card-header fw-semibold">
+                                        <h4>Personal Information</h4>
+                                    </div>
+                                    <div class="card-body p-4 text-secondary">
+                                        <form method="POST" action="{{ route('user-profile.update', $user->userid) }}">
+                                            @csrf
+                                            <div class="row">
+                                                <div class="col-12 col-md-12 mb-3">
+                                                    <label class="form-label fw-semibold">Full Name</label>
+                                                    <input type="text" class="form-control" name="name" value="" placeholder="{{ $user->name }}">
+                                                </div>
+                                                <div class="col-12 col-md-12 mb-3">
+                                                    <label class="form-label fw-semibold">Gender</label>
+                                                    <select name="gender" class="form-control">
+                                                        <option value="{{ $user->gender ?? '' }}">{{ $user->gender ?? '- Select Gender -'}}</option>
+                                                        <option value="Male">Male</option>
+                                                        <option value="Female">Female</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-12 col-md-12 mb-3">
+                                                    <label class="form-label fw-semibold">Department</label>
+                                                    <input type="text" class="form-control" name="department" value="" placeholder="{{ $user->department }}">
+                                                </div>
+                                                <div class="col-12 col-md-12 mb-3">
+                                                    <label class="form-label fw-semibold">Section</label>
+                                                    <input type="text" class="form-control" name="section" value="" placeholder="{{ $user->section }}">
+                                                </div>
+                                                <div class="col-12 col-md-12 mb-3">
+                                                    <label class="form-label fw-semibold">Position</label>
+                                                    <input type="text" class="form-control" name="position" value="" placeholder="{{ $user->position }}">
+                                                </div>
+                                                <div class="col-12 mt-3 text-end">
+                                                    <button class="btn btn-success">Update Profile</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
-                                <div class="col-12 col-md-6">
-                                    <label class="form-label fw-semibold">User ID</label>
-                                    <input type="text" class="form-control" value="{{ $user->userid }}" readonly>
+                                <div class="tab-pane fade" id="account" role="tabpanel">
+                                    <div class="card-header fw-semibold">
+                                        <h4>Account Information</h4>
+                                    </div>
+                                    <div class="card-body p-4 text-secondary">
+                                        <form method="POST" action="">
+                                            @csrf
+                                            <div class="row">
+                                                <div class="col-12 col-md-12 mb-3">
+                                                    <label class="form-label fw-semibold">User ID</label>
+                                                    <input type="text" class="form-control" name="userid" value="" placeholder="{{ $user->userid }}">
+                                                </div>
+                                                <div class="col-12 col-md-12 mb-3">
+                                                    <label class="form-label fw-semibold">Account Email</label>
+                                                    <input type="email" class="form-control" name="email" value="" placeholder="{{ $user->email }}">
+                                                </div>
+                                                </div>
+                                                
+                                                <div class="col-12 mt-3 text-end">
+                                                    <button class="btn btn-success">Update Profile</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
-                                <div class="col-12 col-md-6">
-                                    <label class="form-label fw-semibold">Email</label>
-                                    <input type="text" class="form-control" value="{{ $user->email }}" readonly>
+                                <div class="tab-pane fade" id="password" role="tabpanel">
+                                    <div class="card-header fw-semibold">
+                                        <h4>Change Password</h4>
+                                    </div>
+                                    <div class="card-body text-secondary">
+                                        <p>This is the change password content.</p>
+                                    </div>
                                 </div>
-                                <div class="col-12 col-md-6">
-                                    <label class="form-label fw-semibold">Gender</label>
-                                    <input type="text" class="form-control" value="{{ $user->gender }}" readonly>
-                                </div>
-                                <div class="col-12 col-md-6">
-                                    <label class="form-label fw-semibold">Level</label>
-                                    <input type="text" class="form-control" value="{{ $user->level }}" readonly>
-                                </div>
-                                <div class="col-12 col-md-4">
-                                    <label class="form-label fw-semibold">Department</label>
-                                    <input type="text" class="form-control" value="{{ $user->department }}" readonly>
-                                </div>
-                                <div class="col-12 col-md-4">
-                                    <label class="form-label fw-semibold">Section</label>
-                                    <input type="text" class="form-control" value="{{ $user->section }}" readonly>
-                                </div>
-                                <div class="col-12 col-md-4">
-                                    <label class="form-label fw-semibold">Position</label>
-                                    <input type="text" class="form-control" value="{{ $user->position }}" readonly>
+                                <div class="tab-pane fade" id="email" role="tabpanel">
+                                    <div class="card-header fw-semibold">
+                                        <h4>Email Settings</h4>
+                                    </div>
+                                    <div class="card-body text-secondary">
+                                        <p>This is the email settings content.</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>

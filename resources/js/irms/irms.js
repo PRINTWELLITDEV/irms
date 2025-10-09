@@ -263,8 +263,14 @@ $(document).ready(function () {
         ].filter(Boolean)
             .map(Number);
 
-        // Sort columns as needed (see previous logic for odd/even bay)
-        // ...
+        // Sort columns: Odd baynum = descending, Even = ascending
+        let baynumDigits = rsbaynum.match(/\d+/);
+        let isOdd = baynumDigits && parseInt(baynumDigits[0]) % 2 === 1;
+        if (isOdd) {
+            columns.sort((a, b) => b - a); // Descending for odd
+        } else {
+            columns.sort((a, b) => a - b); // Ascending for even
+        }
 
         // Slots
         let slots = [
@@ -295,6 +301,18 @@ $(document).ready(function () {
 });
 
 document.addEventListener("DOMContentLoaded", function () {
+    // Scroll to tab-content on mobile when a tab is clicked
+    const tabLinks = document.querySelectorAll('#profileTab a[data-bs-toggle="tab"]');
+    const tabContent = document.getElementById('profileTabContent');
+
+    tabLinks.forEach(link => {
+        link.addEventListener('shown.bs.tab', function () {
+            if (window.innerWidth <= 768 && tabContent) {
+                tabContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    });
+
     // Fade in content wrapper
     const wrapper = document.querySelector(".app-content-wrapper");
     if (wrapper) {
@@ -464,9 +482,8 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-$(
-    "#viewUserModal, #editUserModal, #viewWarehouseModal, #editWarehouseModal, #viewBayModal, #viewRackModal"
-).on("hide.bs.modal", function () {
+$("#viewUserModal, #editUserModal, #viewWarehouseModal, #editWarehouseModal, #viewBayModal, #viewRackModal")
+.on("hide.bs.modal", function () {
     if (document.activeElement && this.contains(document.activeElement)) {
         document.activeElement.blur();
     }

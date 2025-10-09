@@ -87,9 +87,8 @@ Route::prefix('irms')->middleware('check.session')->group(function () {
     Route::get('/transactions', [RsTransController::class, 'index'])->name('irms.transactions');
 
     // User Profile (move this to the bottom and add a constraint)
-    Route::get('/{userid}', [RsUserProfileController::class, 'show'])
-        ->where('userid', '[A-Za-z0-9]+')
-        ->name('irms.userprofile');
+    Route::get('/{userid}', [RsUserProfileController::class, 'show'])->where('userid', '[A-Za-z0-9]+')->name('irms.userprofile');
+    Route::post('/user-profile/{userid}/update', [RsUserProfileController::class, 'update'])->name('user-profile.update');
 });
 
 
