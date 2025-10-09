@@ -6,6 +6,8 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
+    'App\\Console\\Commands\\LogActiveUsers' => $baseDir . '/app/Console/Commands/LogActiveUsers.php',
+    'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
     'App\\Http\\Controllers\\AuthController' => $baseDir . '/app/Http/Controllers/AuthController.php',
     'App\\Http\\Controllers\\Auth\\ConfirmPasswordController' => $baseDir . '/app/Http/Controllers/Auth/ConfirmPasswordController.php',
     'App\\Http\\Controllers\\Auth\\ForgotPasswordController' => $baseDir . '/app/Http/Controllers/Auth/ForgotPasswordController.php',
@@ -26,6 +28,7 @@ return array(
     'App\\Http\\Controllers\\Irms\\RsUserProfileController' => $baseDir . '/app/Http/Controllers/Irms/RsUserProfileController.php',
     'App\\Http\\Controllers\\Irms\\RsWhseController' => $baseDir . '/app/Http/Controllers/Irms/RsWhseController.php',
     'App\\Http\\Middleware\\CheckSession' => $baseDir . '/app/Http/Middleware/CheckSession.php',
+    'App\\Http\\Middleware\\UpdateRsUserLastSeen' => $baseDir . '/app/Http/Middleware/UpdateRsUserLastSeen.php',
     'App\\Listeners\\UpdateSessionUser' => $baseDir . '/app/Listeners/UpdateSessionUser.php',
     'App\\Models\\IRMS' => $baseDir . '/app/Models/IRMS.php',
     'App\\Models\\IrmsSite' => $baseDir . '/app/Models/IrmsSite.php',
@@ -159,6 +162,8 @@ return array(
     'Database\\Seeders\\IrmsSiteSeeder' => $baseDir . '/database/seeders/IrmsSiteSeeder.php',
     'Database\\Seeders\\RsBayLocSeeder' => $baseDir . '/database/seeders/RsBayLocSeeder.php',
     'Database\\Seeders\\RsLocSeeder' => $baseDir . '/database/seeders/RsLocSeeder.php',
+    'Database\\Seeders\\RsusersSeeder' => $baseDir . '/database/seeders/RsusersSeeder.php',
+    'Database\\Seeders\\RswhseSeeder' => $baseDir . '/database/seeders/RswhseSeeder.php',
     'DateError' => $vendorDir . '/symfony/polyfill-php83/Resources/stubs/DateError.php',
     'DateException' => $vendorDir . '/symfony/polyfill-php83/Resources/stubs/DateException.php',
     'DateInvalidOperationException' => $vendorDir . '/symfony/polyfill-php83/Resources/stubs/DateInvalidOperationException.php',

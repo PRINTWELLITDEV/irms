@@ -80,6 +80,7 @@
         const dataD = randArray(site_labels.length, 10, 80);
         const dataE = randArray(site_labels.length, 5, 95);
         const dataF = randArray(site_labels.length, 5, 95);
+        const dataG = [0];
 
         // Bar / Pie / Line / chart2 (unchanged)
         createChart("chart_bar", function () {
@@ -165,20 +166,82 @@
             };
         });
 
-        createChart("chart_pie", function () {
-            return {
-                type: "pie",
-                data: {
-                    labels: site_labels,
-                    datasets: [
-                        {
-                            data: dataD,
-                            backgroundColor: ["#ff6384", "#36a2eb", "#ffcd56"],
+        document.addEventListener("DOMContentLoaded", function () {
+            // Ensure Chart.js and createChart() exist before continuing
+            if (
+                typeof Chart === "undefined" ||
+                typeof createChart === "undefined"
+            ) {
+                console.error(
+                    "Chart.js or createChart() not found — make sure they’re loaded in your layout."
+                );
+                return;
+            }
+
+            // Get data from Laravel (these are arrays from your controller)
+            const labels = Array.isArray(window.CHART_LABELS)
+                ? window.CHART_LABELS
+                : [];
+            const data = Array.isArray(window.CHART_DATA)
+                ? window.CHART_DATA
+                : [];
+
+            console.log("Chart Labels:", labels);
+            console.log("Chart Data:", data);
+
+            // If no data, skip chart creation
+            if (labels.length === 0 || data.length === 0) {
+                console.warn(
+                    "No chart data available for Active Users per Site"
+                );
+                return;
+            }
+
+            // Function to generate unique colors
+            function generateColors(num) {
+                const colors = [
+                    "#ff6384",
+                    "#36a2eb",
+                    "#ffcd56",
+                    "#4bc0c0",
+                    "#9966ff",
+                    "#ff9f40",
+                ];
+                return Array.from(
+                    { length: num },
+                    (_, i) => colors[i % colors.length]
+                );
+            }
+
+            // Create the pie chart
+            createChart("chart_pie", function () {
+                return {
+                    type: "pie",
+                    data: {
+                        labels: labels,
+                        datasets: [
+                            {
+                                data: data,
+                                backgroundColor: generateColors(data.length),
+                                hoverOffset: 4,
+                            },
+                        ],
+                    },
+                    options: {
+                        maintainAspectRatio: false,
+                        responsive: true,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: "Active Users per Site",
+                            },
+                            legend: {
+                                position: "bottom",
+                            },
                         },
-                    ],
-                },
-                options: { maintainAspectRatio: false, responsive: true },
-            };
+                    },
+                };
+            });
         });
 
         createChart("chart_line", function () {

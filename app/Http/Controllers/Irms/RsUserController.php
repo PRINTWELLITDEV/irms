@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Irms;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\View;
 use Illuminate\Http\Request;
 
 use App\Models\IrmsSite;
@@ -76,7 +77,7 @@ class RsUserController extends Controller
             return redirect()->back()->withInput()->withErrors(['error' => 'User ID already exists.']);
         }
 
-        if($request->hasFile('profile_pic_url')){
+        if ($request->hasFile('profile_pic_url')) {
             $file = $request->file('profile_pic_url');
             $filename = uniqid() . '_' . $validated['userid'] . '.png';
             $file->move(public_path('uploads/user-profile'), $filename);
@@ -110,6 +111,51 @@ class RsUserController extends Controller
         return redirect('/irms/manage-users')->with('success', "$userid user successfully!");
     }
 
+    // =========================================================
+    // NEW METHOD: FETCH ACTIVE USER METRICS FOR DASHBOARD/CHART
+    // =========================================================
+    public function getActiveUsersTableData()
+    {
+        // 1. Fetch data for the Table (Currently Online Users)
+        // NOTE: Your 'sp_currently_online_users' stored procedure MUST filter by last_seen_at
+        $onlineUsers = DB::connection('sqlsrv')->select('EXEC sp_currently_online_users');
+
+        // 2. Render ONLY the table body using a new partial view
+        // This is efficient as it only returns the minimal HTML needed to update the table
+        return \View::make('irms.irms-partials.active_users_table_body', [
+            'onlineUsers' => $onlineUsers
+        ])->render();
+    }
+
+
+    public function dashboardMetrics()
+    {
+        // 1. Fetch data for the Chart (Active Users per Site)
+        $activeSitesData = DB::connection('sqlsrv')->select('EXEC sp_active_users_per_site');
+
+        // Format the data for Chart.js
+        $chartLabels = [];
+        $chartData = [];
+        foreach ($activeSitesData as $site) {
+            $chartLabels[] = $site->rssite_desc;
+            $chartData[] = (int) $site->total_active_users;
+        }
+
+        // 2. We no longer fetch the table data here, it will be handled by AJAX
+        // We'll pass an empty array or null for initial render/fallbacks.
+
+        $user = auth()->user()->userid ?? null;
+
+        // Pass all data to the designated view
+        return view('irms.irms-layouts.dashboard', [
+            'chartLabels' => $chartLabels, // Use the dynamically fetched data
+            'chartData' => $chartData,     // Use the dynamically fetched data
+            'onlineUsers' => [],           // Pass empty array since AJAX will load it
+            'user' => $user
+        ]);
+    }
+
+
     public function view($userid)
     {
         if (auth()->user()->userid !== 'sa') {
@@ -124,6 +170,7 @@ class RsUserController extends Controller
             'sites' => $sites,
         ]);
     }
+
 
     public function edit(Request $request)
     {
@@ -147,7 +194,7 @@ class RsUserController extends Controller
         ]);
 
         // Handle profile picture upload
-        if($request->hasFile('profile_pic_url')){
+        if ($request->hasFile('profile_pic_url')) {
             $file = $request->file('profile_pic_url');
             $filename = uniqid() . '_' . $userid . '.png';
             $file->move(public_path('uploads/user-profile'), $filename);

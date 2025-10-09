@@ -12,6 +12,7 @@ use App\Http\Controllers\Irms\RsGoodsReceivingController;
 use App\Http\Controllers\Irms\RsGoodsDispatchingController;
 use App\Http\Controllers\Irms\RsTransController;
 
+
 // Home route
 // Route::get('/', function () {
 //     return view('home');
@@ -40,15 +41,16 @@ Route::get('/irms/session', function () {
 });
 
 // Dashboard (protected)
-Route::get('/irms', function () {
-    return view('irms.irms-layouts.dashboard');
-})->name('dashboard')->middleware('auth');
+Route::get('/irms', [RsUserController::class, 'dashboardMetrics'])->name('dashboard')->middleware('auth');
 
 Route::prefix('irms')->middleware('check.session')->group(function () {
     // User management
     Route::get('/manage-users', [RsUserController::class, 'index'])->name('rsusers.index');
     Route::post('/manage-users/store', [RsUserController::class, 'store'])->name('rsusers.store');
     Route::put('/manage-users/update', [RsUserController::class, 'update'])->name('rsusers.update');
+    Route::get('/metrics', [RsUserController::class, 'dashboardMetrics'])->name('irms.metrics');
+    Route::get('/active-users-data', [RsUserController::class, 'getActiveUsersTableData'])->name('active.users.data');
+
 
     // Warehouse
     Route::get('/warehouse', [RsWhseController::class, 'index'])->name('warehouse.index');
@@ -80,7 +82,7 @@ Route::prefix('irms')->middleware('check.session')->group(function () {
     Route::post('/dispatching/job-item-details', [RsGoodsDispatchingController::class, 'getJobItemDetails'])->name('goodsdispatching.jobitemdetails');
     Route::post('/dispatching/item-in-rsloc-list', [RsGoodsDispatchingController::class, 'getItemInRsLocList'])->name('goodsdispatching.iteminrsloclist');
     Route::post('/dispatching/process-goods-dispatch', [RsGoodsDispatchingController::class, 'processGoodsDispatch'])->name('goodsdispatching.processdispatch');
-   
+
     //Transactions
     // Route::get('/transactions', fn() => view('irms/irms-layouts/transactions'))->name('irms.transactions');
     Route::get('/transactions', [RsTransController::class, 'index'])->name('irms.transactions');

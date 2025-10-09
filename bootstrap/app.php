@@ -11,6 +11,11 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        // Register your middleware for the 'web' group (runs on all web routes)
+        $middleware->web(append: [
+            \App\Http\Middleware\UpdateRsUserLastSeen::class, // <-- ADDED HERE
+        ]);
+
         // Register route middleware aliases here
         $middleware->alias([
             'check.session' => \App\Http\Middleware\CheckSession::class,

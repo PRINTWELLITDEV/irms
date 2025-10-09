@@ -552,6 +552,8 @@ class ComposerStaticInitc514d8f7b9fc5970bdd94287905ef584
     );
 
     public static $classMap = array (
+        'App\\Console\\Commands\\LogActiveUsers' => __DIR__ . '/../..' . '/app/Console/Commands/LogActiveUsers.php',
+        'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Http\\Controllers\\AuthController' => __DIR__ . '/../..' . '/app/Http/Controllers/AuthController.php',
         'App\\Http\\Controllers\\Auth\\ConfirmPasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/ConfirmPasswordController.php',
         'App\\Http\\Controllers\\Auth\\ForgotPasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/ForgotPasswordController.php',
@@ -572,6 +574,7 @@ class ComposerStaticInitc514d8f7b9fc5970bdd94287905ef584
         'App\\Http\\Controllers\\Irms\\RsUserProfileController' => __DIR__ . '/../..' . '/app/Http/Controllers/Irms/RsUserProfileController.php',
         'App\\Http\\Controllers\\Irms\\RsWhseController' => __DIR__ . '/../..' . '/app/Http/Controllers/Irms/RsWhseController.php',
         'App\\Http\\Middleware\\CheckSession' => __DIR__ . '/../..' . '/app/Http/Middleware/CheckSession.php',
+        'App\\Http\\Middleware\\UpdateRsUserLastSeen' => __DIR__ . '/../..' . '/app/Http/Middleware/UpdateRsUserLastSeen.php',
         'App\\Listeners\\UpdateSessionUser' => __DIR__ . '/../..' . '/app/Listeners/UpdateSessionUser.php',
         'App\\Models\\IRMS' => __DIR__ . '/../..' . '/app/Models/IRMS.php',
         'App\\Models\\IrmsSite' => __DIR__ . '/../..' . '/app/Models/IrmsSite.php',
@@ -705,6 +708,8 @@ class ComposerStaticInitc514d8f7b9fc5970bdd94287905ef584
         'Database\\Seeders\\IrmsSiteSeeder' => __DIR__ . '/../..' . '/database/seeders/IrmsSiteSeeder.php',
         'Database\\Seeders\\RsBayLocSeeder' => __DIR__ . '/../..' . '/database/seeders/RsBayLocSeeder.php',
         'Database\\Seeders\\RsLocSeeder' => __DIR__ . '/../..' . '/database/seeders/RsLocSeeder.php',
+        'Database\\Seeders\\RsusersSeeder' => __DIR__ . '/../..' . '/database/seeders/RsusersSeeder.php',
+        'Database\\Seeders\\RswhseSeeder' => __DIR__ . '/../..' . '/database/seeders/RswhseSeeder.php',
         'DateError' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/DateError.php',
         'DateException' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/DateException.php',
         'DateInvalidOperationException' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/DateInvalidOperationException.php',
