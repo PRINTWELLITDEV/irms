@@ -209,9 +209,11 @@
                                                     <label class="form-label fw-semibold">Account Email</label>
                                                     <input type="email" class="form-control" name="email" value="" placeholder="{{ $user->email }}">
                                                 </div>
+                                                @if(Route::has('update.accountinfo'))
                                                 <div class="col-12 mt-3 text-end">
                                                     <button class="btn btn-success">Update Profile</button>
                                                 </div>
+                                                @endif
                                             </div>
                                         </form>
                                     </div>
@@ -223,8 +225,37 @@
                                             Change Password
                                         </h5>
                                     </div>
-                                    <div class="card-body text-secondary">
-                                        <p>This is the change password content.</p>
+                                    <div class="card-body p-4 text-secondary">
+                                        <form method="POST" action="">
+                                            @csrf
+                                            <div class="row">
+                                                <div class="col-12 col-md-12 mb-3">
+                                                    <label class="form-label fw-semibold">Current Password</label>
+                                                    <input type="password" class="form-control" name="current_password" placeholder="Enter current password">
+                                                </div>
+                                                <div class="col-12 col-md-12 mb-3">
+                                                    <label class="form-label fw-semibold">New Password</label>
+                                                    <input type="password" class="form-control" name="new_password" placeholder="Enter new password">
+                                                </div>
+                                                <div class="col-12 col-md-12 mb-3">
+                                                    <label class="form-label fw-semibold">Confirm New Password</label>
+                                                    <input type="password" class="form-control" name="confirm_new_password" placeholder="Confirm new password">
+                                                </div>
+                                                <div class="col-12 mt-3 text-end">
+                                                    <button class="btn btn-success">Change Password</button>
+                                                    <button class="btn btn-secondary">Reset</button>
+                                                </div>
+                                            </div>
+                                        </form>
+
+                                                </div>
+                                                @if(Route::has('update.accountinfo'))
+                                                <div class="col-12 mt-3 text-end">
+                                                    <button class="btn btn-success">Update Profile</button>
+                                                </div>
+                                                @endif
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="email" role="tabpanel">
