@@ -21,7 +21,7 @@
                         name="userid"
                         value="{{ old('userid', $rememberedUserId ?? '') }}"
                         required autofocus
-                        placeholder="Enter your user ID">
+                        placeholder="Enter your User ID">
                     @error('userid')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -34,7 +34,7 @@
                         class="form-control @error('password') is-invalid @enderror"
                         name="password"
                         required
-                        placeholder="Enter your password">
+                        placeholder="Enter your Password">
                     @error('password')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -60,9 +60,9 @@
                         NEXT &rarr;
                     </button>
                 </div>
-                <div class="text-center">
+                <!-- <div class="text-center">
                     <a href="" class="create-account">Create account</a>
-                </div>
+                </div> -->
             </form>
         </div>
     </div>

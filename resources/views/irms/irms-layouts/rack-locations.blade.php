@@ -108,7 +108,7 @@
                                             @if(auth()->user()->userid === 'sa')
                                             <div class="col-12 col-md-4 mb-2">
                                                 <div class="input-group">
-                                                    <span class="input-group-text"><i class="bi bi-building"></i> Site: </span>
+                                                    <span class="input-group-text"><i class="bi bi-building"></i></span>
                                                     <select name="rssite" id="mapRsSite" class="form-select" required>
                                                         <option disabled selected>Select Site</option>
                                                         @foreach($sites as $site)

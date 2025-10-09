@@ -243,7 +243,7 @@ footer.app-footer {
 /* --- Login Page Split Layout --- */
 body.login-bg {
     background: linear-gradient(120deg, #1e2a78 0%, #3a8dde 100%);
-    min-height: 95vh;
+    min-height: 100vh;
 }
 .login-bg-img {
     position: fixed;
@@ -364,6 +364,3 @@ body.login-bg {
     .login-form-panel { padding: 1.2rem 0.5rem; }
     .login-visual { min-width: 0; }
 }
-
-
-
