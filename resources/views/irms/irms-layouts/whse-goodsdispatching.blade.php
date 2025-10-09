@@ -127,7 +127,7 @@
                                                 <span class="input-group-text fixed-label" id="docno-label">
                                                     Doc No: <small><span class="text-secondary ms-1 small">(Opt.)</span></small>
                                                 </span>
-                                                <input type="text" class="form-control" id="docno" name="docno">
+                                                <input type="text" class="form-control" id="docno" name="docno" autocomplete="off">
                                             </div>
                                         </div>
                                     </div>
