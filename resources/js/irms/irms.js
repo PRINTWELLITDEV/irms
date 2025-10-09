@@ -2,33 +2,59 @@ import "bootstrap";
 
 import "admin-lte";
 
-import './datatables.js';
-import './goods-receiving.js';
-import './goods-dispatching.js';
-import './charts.js';
+import "./datatables.js";
+import "./goods-receiving.js";
+import "./goods-dispatching.js";
+import "./charts.js";
 
 // window.appUrl = "{{ url('') }}";
 // window.sessionCheckUrl = "{{ url('/irms/session') }}";
 // window.loginUrl = "{{ route('login') }}";
 
+// In your Blade file or main JS file that runs after the table is loaded
+
+// Enhanced client-side listener for real-time updates
+window.Echo.channel("active-users").listen("UserStatusUpdated", (e) => {
+    const row = document.querySelector(`#user-row-${e.userId}`);
+
+    if (e.status === "offline" && row) {
+        // 1. Instant removal for logout events
+        row.remove();
+        console.log(`User ${e.userId} logged out and row removed.`);
+    } else if (
+        e.status === "online" &&
+        typeof updateActiveUsersTable === "function"
+    ) {
+        // 2. Refresh the whole table for login events (if polling function exists)
+        // This is simpler than creating a new row manually.
+        updateActiveUsersTable();
+        console.log(
+            `User ${e.userId} logged in. Triggering full table refresh.`
+        );
+    }
+});
+
 setInterval(function () {
     const currentPath = window.location.pathname;
     if (currentPath.indexOf("/irms") !== -1) {
         fetch(window.sessionCheckUrl)
-        .then((response) => response.json())
-        .then((data) => {
-            if (!data.valid) {
-                window.location.href = window.loginUrl;
-            }
-        });
+            .then((response) => response.json())
+            .then((data) => {
+                if (!data.valid) {
+                    window.location.href = window.loginUrl;
+                }
+            });
     }
 }, 5000);
 
 $(document).ready(function () {
-    const isSa = $("select#rssite").length > 0 && $("input[name='rssite']").length === 0;
+    const isSa =
+        $("select#rssite").length > 0 && $("input[name='rssite']").length === 0;
 
     function setFieldsEnabled(enabled) {
-        $("#date, #rswhse, #jobcoreceive, #jobcodispatch, #lot, #item, #pallet_size, #um, #rsbaynum, #docno").prop("disabled", !enabled);
+        $(
+            "#date, #rswhse, #jobcoreceive, #jobcodispatch, #lot, #item, #pallet_size, #um, #rsbaynum, #docno"
+        ).prop("disabled", !enabled);
     }
 
     if (isSa) {
@@ -112,9 +138,9 @@ $(document).ready(function () {
         $("#edit-level").val(level);
         $("#edit-password").val("");
         $("#edit-existing-profile-pic").val(profile);
-        $("#edit-department").val(department || '');
-        $("#edit-position").val(position || '');
-        $("#edit-section").val(section || '');
+        $("#edit-department").val(department || "");
+        $("#edit-position").val(position || "");
+        $("#edit-section").val(section || "");
 
         // Hide view modal then show edit modal
         $("#viewUserModal").modal("hide");
@@ -279,7 +305,7 @@ $(document).ready(function () {
     // Reset fields when site is changed
     $("#rssite").on("change", function () {
         // Set date to today
-        const today = new Date().toISOString().split('T')[0];
+        const today = new Date().toISOString().split("T")[0];
         $("#date").val(today);
 
         // Select first option for warehouse and bay
@@ -287,20 +313,20 @@ $(document).ready(function () {
         $("#rsbaynum").prop("selectedIndex", 0);
 
         // Reset other fields
-        $("#jobco").val('');
-        $("#lot").val('');
-        $("#item").val('');
-        $("#pallet_size").val('');
-        $("#um").val('');
-        $("#docno").val('');
-        $("#item-desc").text('');
+        $("#jobco").val("");
+        $("#lot").val("");
+        $("#item").val("");
+        $("#pallet_size").val("");
+        $("#um").val("");
+        $("#docno").val("");
+        $("#item-desc").text("");
     });
 
     // Disable date greater than today
-    const dateInput = document.getElementById('date');
+    const dateInput = document.getElementById("date");
     if (dateInput) {
-        const today = new Date().toISOString().split('T')[0];
-        dateInput.setAttribute('max', today);
+        const today = new Date().toISOString().split("T")[0];
+        dateInput.setAttribute("max", today);
     }
 
     // Cache form data in localStorage
@@ -398,7 +424,7 @@ $(document).ready(function () {
     //                 rswhse: $("#rswhse").val(),
     //                 rsbaynum: $("#rsbaynum").val(),
     //                 rsloc: $row.find('td').eq(2).text(),
-    //                 rslot: $("#lot").val(), 
+    //                 rslot: $("#lot").val(),
     //                 rspallet_num: $row.find('input[type="text"]').eq(0).val(),
     //                 job: $("#jobcoreceive").val(),
     //                 item: $("#item").val(),
@@ -653,9 +679,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 3000); // show for 3 seconds
     }
 
-
-
-
     //Rack Location Add Form - Filter Warehouse and Bay Number based on selected Site
     const siteSelect = document.getElementById("rssite");
     const whseSelect = document.getElementById("rswhse");
@@ -717,33 +740,36 @@ document.addEventListener("DOMContentLoaded", function () {
 
     $("#jobcoreceive").on("input", function () {
         const job = $(this).val();
-        const lotInput = document.getElementById('lot');
+        const lotInput = document.getElementById("lot");
         let rssite = $("#rssite").val() || $("input[name='rssite']").val();
         if (!rssite) return;
 
         $.ajax({
-            url: window.appUrl + '/irms/receiving/job-item-details',
-            method: 'POST',
+            url: window.appUrl + "/irms/receiving/job-item-details",
+            method: "POST",
             data: {
                 job: job,
                 rssite: rssite,
-                _token: $('input[name="_token"]').val()
+                _token: $('input[name="_token"]').val(),
             },
             success: function (data) {
                 if (data.length > 0) {
-                    $("#item").val(data[0].item || '');
-                    $("#um").val(data[0].u_m || '');
+                    $("#item").val(data[0].item || "");
+                    $("#um").val(data[0].u_m || "");
                     let itemdesc;
                     if (data[0].description && data[0].Uf_itemdesc_ext) {
-                        itemdesc = data[0].description + ' - ' + data[0].Uf_itemdesc_ext;
+                        itemdesc =
+                            data[0].description +
+                            " - " +
+                            data[0].Uf_itemdesc_ext;
                     } else if (data[0].description) {
                         itemdesc = data[0].description;
                     } else if (data[0].Uf_itemdesc_ext) {
                         itemdesc = data[0].Uf_itemdesc_ext;
                     } else {
-                        itemdesc = '';
+                        itemdesc = "";
                     }
-                    $("#desc").val(itemdesc || '');
+                    $("#desc").val(itemdesc || "");
 
                     let palletSize = data[0].Uf_Item_PalletSize;
                     let palletSizeNum = parseFloat(palletSize);
@@ -752,36 +778,37 @@ document.addEventListener("DOMContentLoaded", function () {
                     } else if (palletSizeNum % 1 === 0) {
                         palletSize = palletSizeNum.toString();
                     } else {
-                        palletSize = palletSizeNum.toFixed(2).replace(/\.00$/, "");
+                        palletSize = palletSizeNum
+                            .toFixed(2)
+                            .replace(/\.00$/, "");
                     }
                     $("#pallet_size").val(palletSize);
-                    lotInput.value = job ? job + '-1' : '';
+                    lotInput.value = job ? job + "-1" : "";
                 } else {
-                    $("#item").val('');
-                    $("#um").val('');
-                    $("#desc").val('');
-                    $("#pallet_size").val('');
-                    lotInput.value = '';
+                    $("#item").val("");
+                    $("#um").val("");
+                    $("#desc").val("");
+                    $("#pallet_size").val("");
+                    lotInput.value = "";
                 }
-            }
+            },
         });
     });
-
 
     $("#jobcodispatch").on("input", function () {
         const job = $(this).val();
         const rssite = $("#rssite").val() || $("input[name='rssite']").val();
-        const lotInputDispatch = document.getElementById('lot');
+        const lotInputDispatch = document.getElementById("lot");
 
         if (!job || !rssite) return;
 
         $.ajax({
-            url: window.appUrl + '/irms/dispatching/job-item-details',
+            url: window.appUrl + "/irms/dispatching/job-item-details",
             method: "POST",
             data: {
                 jobco: job,
                 rssite: rssite,
-                _token: $('input[name="_token"]').val()
+                _token: $('input[name="_token"]').val(),
             },
             success: function (data) {
                 if (data && Object.keys(data).length > 0) {
@@ -790,21 +817,22 @@ document.addEventListener("DOMContentLoaded", function () {
                     $("#um").val(data.um || "");
                     $("#desc").val(data.desc || "");
 
-                    lotInputDispatch.value = job ? job + '-1' : '';
+                    lotInputDispatch.value = job ? job + "-1" : "";
                 } else {
-                    $("#rswhse").val('');
-                    $("#item").val('');
-                    $("#um").val('');
-                    $("#desc").val('');
-                    lotInputDispatch.value = '';
+                    $("#rswhse").val("");
+                    $("#item").val("");
+                    $("#um").val("");
+                    $("#desc").val("");
+                    lotInputDispatch.value = "";
                 }
-                
-            }
+            },
         });
     });
 });
 
-$('#viewUserModal, #editUserModal, #viewWarehouseModal, #editWarehouseModal, #viewBayModal, #viewRackModal').on('hide.bs.modal', function () {
+$(
+    "#viewUserModal, #editUserModal, #viewWarehouseModal, #editWarehouseModal, #viewBayModal, #viewRackModal"
+).on("hide.bs.modal", function () {
     if (document.activeElement && this.contains(document.activeElement)) {
         document.activeElement.blur();
     }

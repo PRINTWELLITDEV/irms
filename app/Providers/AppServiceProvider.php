@@ -2,7 +2,10 @@
 
 namespace App\Providers;
 
+use App\Listeners\SetUserStatusOnline;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Auth\Events\Login;
+use Illuminate\Support\Facades\Event;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -29,5 +32,10 @@ class AppServiceProvider extends ServiceProvider
             }
             $view->with(['user' => $user, 'siteDesc' => $siteDesc]);
         });
+
+        Event::listen(
+            Login::class,
+            [SetUserStatusOnline::class, 'handle']
+        );
     }
 }

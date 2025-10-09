@@ -116,15 +116,10 @@ class RsUserController extends Controller
     // =========================================================
     public function getActiveUsersTableData()
     {
-        // 1. Fetch data for the Table (Currently Online Users)
-        // NOTE: Your 'sp_currently_online_users' stored procedure MUST filter by last_seen_at
-        $onlineUsers = DB::connection('sqlsrv')->select('EXEC sp_currently_online_users');
 
-        // 2. Render ONLY the table body using a new partial view
-        // This is efficient as it only returns the minimal HTML needed to update the table
-        return \View::make('irms.irms-partials.active_users_table_body', [
-            'onlineUsers' => $onlineUsers
-        ])->render();
+        $onlineUsers = RsUser::where('status', 'online')->get(); // This returns a Collection of RsUser models (which have a 'status' property)
+
+        return view('irms.irms-partials.active_users_table_body', compact('onlineUsers'));
     }
 
 

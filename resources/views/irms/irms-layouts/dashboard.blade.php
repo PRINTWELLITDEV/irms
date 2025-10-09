@@ -275,8 +275,6 @@
             // 1. Load data immediately on page load
             updateActiveUsersTable();
 
-            // 2. Set the interval to refresh the table every 5 seconds (5000ms)
-            setInterval(updateActiveUsersTable, 5000);
         }
     });
     </script>

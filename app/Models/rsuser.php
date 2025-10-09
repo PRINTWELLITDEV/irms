@@ -35,6 +35,7 @@ class RsUser extends Authenticatable
         'department', 'section', 'position', 'level',
         'create_date', 'updated_date', 'updated_by', 'updated_by_sql',
         'gender', 'profile_pic_url', 'remember_token', 'last_seen_at',
+        'status',
     ];
 
     // Accessor for profile image
