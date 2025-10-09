@@ -4,66 +4,93 @@ $(document).ready(function () {
     $("#goodsDispatchingForm").on("submit", function (e) {
         e.preventDefault();
 
-        // Pass all form data to the summary in dispatching-details-form
-        $("#details-site").text(
-            $("#rssite option:selected").text() || $("#rssite").val() || "-"
-        );
-        $("#details-date").text(formatDateMDY($("#date").val()));
-        $("#details-warehouse").text($("#rswhse").val() || "");
-        $("#details-jobco").text($("#jobcodispatch").val() || "");
-        $("#details-lot").text($("#lot").val() || "");
-        $("#details-item").text($("#item").val() || "");
-        $("#details-desc").text($("#desc").val() || "");
-        $("#details-um").text($("#um").val() || "");
-        $("#details-docno").text($("#docno").val() || "");
-
-        // AJAX to get item in rsloc list
+        // Fetch qtyOnHand before showing details
         $.ajax({
-            url: window.appUrl + "/irms/dispatching/item-in-rsloc-list",
+            url: window.appUrl + "/irms/dispatching/job-item-details",
             method: "POST",
             data: {
                 rssite: $("#rssite").val() || $("input[name='rssite']").val(),
-                job: $("#jobcodispatch").val(),
+                jobco: $("#jobcodispatch").val(),
                 _token: $('input[name="_token"]').val(),
             },
             success: function (data) {
-                const tbody = $("#dispatchingTable tbody");
-                tbody.empty();
-                if (data.length > 0) {
-                    data.forEach(function (row, idx) {
-                        let qtyNum = parseFloat(row.qty);
-                        let qty =
-                            isNaN(qtyNum) || qtyNum === 0
-                                ? "0"
-                                : qtyNum % 1 === 0
-                                ? qtyNum.toString()
-                                : qtyNum.toFixed(2).replace(/\.00$/, "");
-                        tbody.append(`
-                            <tr>
-                                <td>${idx + 1}</td>
-                                <td class="text-center align-middle"><input type="checkbox" name="select_row[]" value="${
-                                    idx + 1
-                                }" class="big-checkbox"></td>
-                                <td>${row.rsloc}</td>
-                                <td>${row.rspallet_num || ""}</td>
-                                <td class="text-end">${qty}</td>
-                                <td class="text-end"><input type="text" class="form-control text-end" value="" disabled></td>
-                                <td>${row.um || ""}</td>
-                                <td></td>
-                            </tr>
-                        `);
-                    });
-                } else {
-                    tbody.append(
-                        '<tr><td colspan="8" class="text-center">No Rack Location found.</td></tr>'
-                    );
-                }
-            },
-        });
+                // Set hidden input for qtyOnHand
+                $("#qtyOnHand").val(data.qtyOnHand || "0");
 
-        // Hide form, show details
-        $(".card:has(#goodsDispatchingForm)").hide();
-        $("#dispatching-details").fadeIn();
+                // After getting data.qtyOnHand from AJAX
+                // Format qtyOnHand with commas and decimals only if needed
+                let qtyOnHand = parseFloat(data.qtyOnHand || "0");
+                let qtyOnHandDisplay =
+                    isNaN(qtyOnHand) || qtyOnHand === 0
+                        ? "0"
+                        : qtyOnHand % 1 === 0
+                            ? qtyOnHand.toLocaleString()
+                            : qtyOnHand.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }).replace(/\.00$/, "");
+
+                $("#details-qty-on-hand").text(qtyOnHandDisplay);
+
+                // Now update the rest of the details as before
+                $("#details-site").text(
+                    $("#rssite option:selected").text() || $("#rssite").val() || "-"
+                );
+                $("#details-date").text(formatDateMDY($("#date").val()));
+                $("#details-warehouse").text($("#rswhse").val() || "");
+                $("#details-jobco").text($("#jobcodispatch").val() || "");
+                $("#details-lot").text($("#lot").val() || "");
+                $("#details-item").text($("#item").val() || "");
+                $("#details-desc").text($("#desc").val() || "");
+                $("#details-um").text($("#um").val() || "");
+                $("#details-docno").text($("#docno").val() || "");
+
+                // AJAX to get item in rsloc list (as before)
+                $.ajax({
+                    url: window.appUrl + "/irms/dispatching/item-in-rsloc-list",
+                    method: "POST",
+                    data: {
+                        rssite: $("#rssite").val() || $("input[name='rssite']").val(),
+                        job: $("#jobcodispatch").val(),
+                        _token: $('input[name="_token"]').val(),
+                    },
+                    success: function (data) {
+                        const tbody = $("#dispatchingTable tbody");
+                        tbody.empty();
+                        if (data.length > 0) {
+                            data.forEach(function (row, idx) {
+                                let qtyNum = parseFloat(row.qty);
+                                let qty =
+                                    isNaN(qtyNum) || qtyNum === 0
+                                        ? "0"
+                                        : qtyNum % 1 === 0
+                                        ? qtyNum.toString()
+                                        : qtyNum.toFixed(2).replace(/\.00$/, "");
+                                tbody.append(`
+                                    <tr>
+                                        <td>${idx + 1}</td>
+                                        <td class="text-center align-middle"><input type="checkbox" name="select_row[]" value="${
+                                            idx + 1
+                                        }" class="big-checkbox"></td>
+                                        <td>${row.rsloc}</td>
+                                        <td>${row.rspallet_num || ""}</td>
+                                        <td class="text-end">${qty}</td>
+                                        <td class="text-end"><input type="text" class="form-control text-end" value="" disabled></td>
+                                        <td>${row.um || ""}</td>
+                                        <td></td>
+                                    </tr>
+                                `);
+                            });
+                        } else {
+                            tbody.append(
+                                '<tr><td colspan="8" class="text-center">No Rack Location found.</td></tr>'
+                            );
+                        }
+                    },
+                });
+
+                // Hide form, show details
+                $(".card:has(#goodsDispatchingForm)").hide();
+                $("#dispatching-details").fadeIn();
+            }
+        });
     });
 
     // Back button to return to form
@@ -340,6 +367,33 @@ $(document).ready(function () {
                 });
             },
         });
+    });
+
+    // After user selects Job/CO or on form submit, fetch job item details
+    $.ajax({
+        url: window.appUrl + "/irms/dispatching/job-item-details",
+        method: "POST",
+        data: {
+            rssite: $("#rssite").val() || $("input[name='rssite']").val(),
+            jobco: $("#jobcodispatch").val(),
+            _token: $('input[name="_token"]').val(),
+        },
+        success: function (data) {
+            // Set hidden input for qtyOnHand (if you use it elsewhere)
+            $("#qtyOnHand").val(data.qtyOnHand || "0");
+
+            // After getting data.qtyOnHand from AJAX
+            let qtyOnHand = parseFloat(data.qtyOnHand || "0");
+            let qtyOnHandDisplay =
+                isNaN(qtyOnHand) || qtyOnHand === 0
+                    ? "0"
+                    : qtyOnHand % 1 === 0
+                    ? qtyOnHand.toString()
+                    : qtyOnHand.toFixed(2).replace(/\.00$/, "");
+
+            // Update the details section
+            $("#details-qty-on-hand").text(qtyOnHandDisplay);
+        }
     });
 
     function formatDateMDY(dateStr) {

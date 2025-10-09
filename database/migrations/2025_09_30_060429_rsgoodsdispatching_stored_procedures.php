@@ -149,7 +149,8 @@ return new class extends Migration
             BEGIN
                 SET NOCOUNT ON;
                 SELECT TOP 1
-                    *
+                    *,
+                    (SELECT SUM(qty) FROM rsitemloc WHERE rssite = @rssite AND job = @job) AS qtyOnHand
                 FROM rsitemloc
                 WHERE rssite = @rssite
                   AND job = @job

@@ -183,9 +183,13 @@
                                         </div>
                                     </div>
                                     <div class="row mb-2">
-                                        <div class="col-12">
+                                        <div class="col-6">
                                             <span class="fw-bold">Item:</span>
                                             <span id="details-item" class="ms-2"></span>
+                                        </div>
+                                        <div class="col-6">
+                                            <span class="fw-bold">Qty on Hand:</span>
+                                            <span id="details-qty-on-hand" class="ms-2"></span>
                                         </div>
                                     </div>
                                     <div class="row mb-2">
