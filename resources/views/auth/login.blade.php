@@ -6,11 +6,14 @@
 <img src="{{ asset('uploads/img/login-visual.jpg') }}" alt="Login Background" class="login-bg-img" />
 <div class="login-split-container">
     <div class="login-card">
-        <div class="login-visual">
-            <img src="{{ asset('uploads/img/login-visual.jpg') }}" alt="Login Visual" />
+        <div class="login-visual position-relative">
+            <div class="login-app-logo">
+                <img src="{{ asset('uploads/img/irms-logo.png') }}" alt="IRMS Logo">
+            </div>
+            <img class="login-visual-img" src="{{ asset('uploads/img/login-visual.jpg') }}" alt="Login Visual" />
         </div>
         <div class="login-form-panel">
-            <h2>Welcome to IRMS!</h2>
+            <h2>Log in to IRMS!</h2>
             <div class="mb-3 form-text">Inventory Rack Management System – Secure access for your inventory and rack operations.</div>
             <form method="POST" action="{{ route('login.submit') }}">
                 @csrf
@@ -60,9 +63,11 @@
                         NEXT &rarr;
                     </button>
                 </div>
-                <!-- <div class="text-center">
-                    <a href="" class="create-account">Create account</a>
-                </div> -->
+                @if (Route::has('register'))
+                <div class="text-center">
+                    <a href="{{ route('register') }}" class="create-account">Create account</a>
+                </div>
+                @endif
             </form>
         </div>
     </div>

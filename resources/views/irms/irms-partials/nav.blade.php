@@ -40,12 +40,12 @@
                     <a href="#" class="dropdown-item dropdown-footer"> See All Notifications </a>
                 </div>
             </li> -->
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <a class="nav-link" id="fullscreenToggle" href="#" data-lte-toggle="fullscreen">
                     <i data-lte-icon="maximize" class="bi bi-arrows-fullscreen"></i>
                     <i data-lte-icon="minimize" class="bi bi-fullscreen-exit" style="display: none"></i>
                 </a>
-            </li>
+            </li> -->
             <li class="nav-item dropdown user-menu">
                 <a href="#" class="nav-link dropdown-toggle" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <img src="{{ $user->profile_pic_url }}"
@@ -54,9 +54,9 @@
                     <span class="d-none d-md-inline">{{ $user->name ?? 'Guest' }}</span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end" aria-labelledby="userDropdown">
-                    <li class="user-header text-center py-3">
+                    <li class="user-header text-center">
                         <img src="{{ $user->profile_pic_url }}"
-                                class="user-image rounded-circle shadow mb-2"
+                                class="user-image rounded-circle shadow"
                                 alt="{{ $user->userid ?? 'Guest User' }}-img" />
                         <div class="fw-bold">{{ $user->name ?? 'Guest User' }}</div>
                         <div class="text-muted small">User ID: {{ $user->userid ?? 'Guest ID' }}</div>
@@ -65,7 +65,7 @@
                     <li>
                         <hr class="dropdown-divider">
                     </li>
-                    <li class="d-flex justify-content-center gap-3 p-2">
+                    <li class="d-flex justify-content-center gap-5 p-2">
                         @auth
                             <a href="{{ route('irms.userprofile', ['userid' => $user->userid]) }}" class="btn btn-outline-primary btn-sm">Profile</a>
                             <a href="#" class="btn btn-outline-danger btn-sm"
