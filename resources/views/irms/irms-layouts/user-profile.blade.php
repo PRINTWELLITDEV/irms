@@ -23,8 +23,8 @@
             <div class="container-fluid">
                 <div class="row g-3">
                     <div class="col-12 col-md-4 d-flex flex-column">
-                        <div class="flex-grow-1 mb-3 p-0" style="background:#fff; border-radius:14px; border:1.5px solid #e5e5e5; box-shadow:0 2px 8px #0001; position:relative;">
-                            <div class="p-4 h-100 d-flex flex-column">
+                        <div class="flex-grow-1 mb-3 p-0">
+                            <div class="p-4 h-100 d-flex flex-column profile-menu">
                                 <div class="d-flex align-items-center mb-3">
                                     <a href="{{ $user->profile_pic_url }}" target="_blank" data-bs-toggle="modal" data-bs-target="#profilePicModal">
                                         <img src="{{ $user->profile_pic_url }}" alt="Profile" class="rounded-circle" style="width:70px;height:70px;object-fit:cover;">
@@ -82,17 +82,10 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="flex-grow-1 card shadow-sm" style="background:#f6eaff; border-radius:14px; border:1.5px solid #b9a98b; box-shadow:0 2px 8px #0001; position:relative;">
-                            <div class="card-header fw-semibold" style="font-size:1.1rem;">
-                                Hello card
-                            </div>
-                            <div class="card-body text-secondary" style="font-size:1.05rem;">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor incididunt
-                            </div>
-                        </div>
+                        
                     </div>
                     <div class="col-12 col-md-8">
-                        <div class="h-100" style="background: #fffcef94; border-radius:14px; border:1.5px solid #b9a98b; box-shadow:0 2px 8px #0001; position:relative;">
+                        <div class="h-100 profile-tab-content">
                             <div class="tab-content h-100" id="profileTabContent">
                                 <div class="tab-pane fade show active" id="overview" role="tabpanel">
                                     <div class="card-header border-bottom-1 fw-semibold">
@@ -245,15 +238,6 @@
                                                     <button class="btn btn-success">Change Password</button>
                                                     <button class="btn btn-secondary">Reset</button>
                                                 </div>
-                                            </div>
-                                        </form>
-
-                                                </div>
-                                                @if(Route::has('update.accountinfo'))
-                                                <div class="col-12 mt-3 text-end">
-                                                    <button class="btn btn-success">Update Profile</button>
-                                                </div>
-                                                @endif
                                             </div>
                                         </form>
                                     </div>
