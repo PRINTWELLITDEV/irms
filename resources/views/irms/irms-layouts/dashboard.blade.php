@@ -255,26 +255,38 @@
                 'X-Requested-With': 'XMLHttpRequest',
             }
         })
-        .then(response => response.text())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.text();
+        })
         .then(html => {
-            // Replace the old content with the new HTML, automatically removing inactive users
+            // Replace the old content with the new HTML, automatically reflecting changes
             tableBody.innerHTML = html;
         })
         .catch(error => {
             console.error('Real-Time Active User Update Error:', error);
-            tableBody.innerHTML = '<tr><td colspan="5" class="text-center text-danger">Error loading data.</td></tr>';
+            // Optionally, stop the interval or show an error to the user
+            // tableBody.innerHTML = '<tr><td colspan="5" class="text-center text-danger">Error loading data.</td></tr>';
         });
     }
 
     // Initialize the chart and polling when the document is ready
     document.addEventListener("DOMContentLoaded", function() {
-        // ... existing initDashboardCharts();
+        initDashboardCharts();
 
         // Check if the table body exists before starting the polling (only for 'sa' user)
         if (document.getElementById('active-users-table-body')) {
             // 1. Load data immediately on page load
             updateActiveUsersTable();
 
+            // 2. Poll for updates every 10 seconds (adjust as needed)
+            // Use a variable to store the interval ID if you need to stop it later
+            const activeUsersInterval = setInterval(updateActiveUsersTable, 1000); // 10000ms = 10 seconds
+
+            // Optional: Log the interval ID for potential cleanup on navigation
+            console.log("Active users polling started. Interval ID:", activeUsersInterval);
         }
     });
     </script>

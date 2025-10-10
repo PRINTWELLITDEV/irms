@@ -6,7 +6,6 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
-use Carbon\Carbon;
 use App\Models\RsUser;
 
 class UpdateRsUserLastSeen

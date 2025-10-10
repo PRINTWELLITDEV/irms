@@ -18,19 +18,13 @@ window.Echo.channel("active-users").listen("UserStatusUpdated", (e) => {
     const row = document.querySelector(`#user-row-${e.userId}`);
 
     if (e.status === "offline" && row) {
-        // 1. Instant removal for logout events
-        row.remove();
+        // row.remove();
         console.log(`User ${e.userId} logged out and row removed.`);
     } else if (
         e.status === "online" &&
         typeof updateActiveUsersTable === "function"
     ) {
-        // 2. Refresh the whole table for login events (if polling function exists)
-        // This is simpler than creating a new row manually.
         updateActiveUsersTable();
-        console.log(
-            `User ${e.userId} logged in. Triggering full table refresh.`
-        );
     }
 });
 
