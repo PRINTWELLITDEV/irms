@@ -4,6 +4,10 @@
 /* Import AdminLTE */
 @import "admin-lte/dist/css/adminlte.css";
 
+.alert {
+    transition: opacity 0.7s;
+}
+
 /* Aside */
 .brand-image {
     width: 35px;

@@ -303,6 +303,16 @@ $(document).ready(function () {
 });
 
 document.addEventListener("DOMContentLoaded", function () {
+    const alert = document.getElementById("alerts");
+    if (alert) {
+        setTimeout(() => {
+            alert.style.opacity = "0";
+            setTimeout(() => {
+                alert.style.display = "none";
+            }, 700); // matches the transition duration
+        }, 3000); // show for 3 seconds
+    }
+
     // Scroll to tab-content on mobile when a tab is clicked
     const tabLinks = document.querySelectorAll('#profileTab a[data-bs-toggle="tab"]');
     const tabContent = document.getElementById('profileTabContent');
@@ -323,15 +333,56 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 100);
     }
 
-    const alert = document.getElementById("alerts");
-    if (alert) {
-        setTimeout(() => {
-            alert.style.opacity = "0";
-            setTimeout(() => {
-                alert.style.display = "none";
-            }, 700); // matches the transition duration
-        }, 3000); // show for 3 seconds
-    }
+    // Change Password Form Submission with Fetch API
+    const form = document.getElementById('changePasswordForm');
+    if (!form) return;
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const msg = document.getElementById('changePasswordMsg');
+        msg.innerHTML = '';
+        const formData = new FormData(form);
+
+        fetch(form.action, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': form.querySelector('input[name="_token"]').value,
+                'Accept': 'application/json'
+            },
+            body: formData
+        })
+        .then(async response => {
+            const data = await response.json();
+            if (response.ok) {
+                msg.innerHTML = `<div id="changePasswordAlert" class="alert alert-success">${data.message}</div>`;
+                form.reset();
+                setTimeout(() => {
+                    const alert = document.getElementById('changePasswordAlert');
+                    if (alert) {
+                        alert.style.transition = "opacity 0.7s";
+                        alert.style.opacity = "0";
+                        setTimeout(() => alert.remove(), 700);
+                    }
+                }, 1500); // Show for 1.5 seconds, then fade out
+            } else {
+                let errorMsg = data.message || 'An error occurred.';
+                if (data.errors) {
+                    errorMsg = Object.values(data.errors).join('<br>');
+                }
+                msg.innerHTML = `<div id="changePasswordAlert" class="alert alert-danger">${errorMsg}</div>`;
+                setTimeout(() => {
+                    const alert = document.getElementById('changePasswordAlert');
+                    if (alert) {
+                        alert.style.transition = "opacity 0.7s";
+                        alert.style.opacity = "0";
+                        setTimeout(() => alert.remove(), 700);
+                    }
+                }, 2500); // Show error a bit longer
+            }
+        })
+        .catch(() => {
+            msg.innerHTML = `<div class="alert alert-danger">Server error. Please try again.</div>`;
+        });
+    });
 
     //Rack Location Add Form - Filter Warehouse and Bay Number based on selected Site
     const siteSelect = document.getElementById("rssite");

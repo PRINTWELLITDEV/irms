@@ -46,4 +46,23 @@ class RsUserProfileController extends Controller
 
         return redirect()->back()->with('success', 'Profile updated successfully!');
     }
+    
+    public function changePassword(Request $request, $userid)
+    {
+        $request->validate([
+            'current_password' => 'required',
+            'new_password' => 'required|min:6|confirmed',
+        ]);
+
+        $user = \App\Models\RsUser::where('userid', $userid)->firstOrFail();
+
+        if (!\Hash::check($request->current_password, $user->password)) {
+            return response()->json(['message' => 'Current password is incorrect.'], 422);
+        }
+
+        $user->password = bcrypt($request->new_password);
+        $user->save();
+
+        return response()->json(['message' => 'Password changed successfully.']);
+    }
 }

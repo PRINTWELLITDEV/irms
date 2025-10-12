@@ -72,11 +72,11 @@
                                             <i class="bi bi-shield-lock me-2"></i> Change Password
                                             <span class="ms-auto"><i class="bi bi-chevron-right"></i></span>
                                         </a>
-                                        <a href="#email" class="list-group-item list-group-item-action d-flex align-items-center"
+                                        <!-- <a href="#email" class="list-group-item list-group-item-action d-flex align-items-center"
                                            data-bs-toggle="tab" role="tab">
                                             <i class="bi bi-envelope me-2"></i> Email settings
                                             <span class="ms-auto"><i class="bi bi-chevron-right"></i></span>
-                                        </a>
+                                        </a> -->
                                         @endif
                                     </div>
                                 </div>
@@ -213,13 +213,14 @@
                                 </div>
                                 <div class="tab-pane fade" id="password" role="tabpanel">
                                     <div class="card-header fw-semibold">
-                                        <h5>
+                                        <h5 class="d-flex align-items-center">
                                             <i class="bi bi-lock-fill me-2 text-success"></i>
                                             Change Password
                                         </h5>
                                     </div>
-                                    <div class="card-body p-4 text-secondary">
-                                        <form method="POST" action="">
+                                    <div class="card-body px-4 text-secondary">
+                                        <span id="changePasswordMsg" class="ms-3 flex-grow-1 text-start"></span>
+                                        <form id="changePasswordForm" method="POST" action="{{ route('user-profile.change-password', $user->userid) }}">
                                             @csrf
                                             <div class="row">
                                                 <div class="col-12 col-md-12 mb-3">
@@ -232,11 +233,11 @@
                                                 </div>
                                                 <div class="col-12 col-md-12 mb-3">
                                                     <label class="form-label fw-semibold">Confirm New Password</label>
-                                                    <input type="password" class="form-control" name="confirm_new_password" placeholder="Confirm new password">
+                                                    <input type="password" class="form-control" name="new_password_confirmation" placeholder="Confirm new password">
                                                 </div>
                                                 <div class="col-12 mt-3 text-end">
-                                                    <button class="btn btn-success">Change Password</button>
-                                                    <button class="btn btn-secondary">Reset</button>
+                                                    <button type="submit" class="btn btn-success">Change Password</button>
+                                                    <button type="reset" class="btn btn-secondary">Reset</button>
                                                 </div>
                                             </div>
                                         </form>

@@ -89,6 +89,7 @@ Route::prefix('irms')->middleware('check.session')->group(function () {
     // User Profile (move this to the bottom and add a constraint)
     Route::get('/{userid}', [RsUserProfileController::class, 'show'])->where('userid', '[A-Za-z0-9]+')->name('irms.userprofile');
     Route::post('/user-profile/{userid}/update', [RsUserProfileController::class, 'update'])->name('user-profile.update');
+    Route::post('/user-profile/{userid}/change-password', [RsUserProfileController::class, 'changePassword'])->name('user-profile.change-password');
 });
 
 
