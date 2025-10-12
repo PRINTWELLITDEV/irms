@@ -389,3 +389,8 @@ body.login-bg {
     .login-visual { min-height: 180px; }
     .login-visual-img { opacity: 0.6; }
 }
+
+/* email view */
+.card {
+    margin: 2rem;
+}
