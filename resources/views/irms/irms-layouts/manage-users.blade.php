@@ -313,9 +313,11 @@
                     </div>
                 </div>
                 <div class="modal-footer d-flex justify-content-between">
+                    @if (Route::has('rsusers.destroy'))
                     <button type="button" class="btn btn-danger" id="btnDeleteUser">
                         <i class="bi bi-trash"></i> Delete
                     </button>
+                    @endif
                     <button type="button" class="btn btn-warning" id="btnEditUser">
                         <i class="bi bi-pencil-square"></i> Edit
                     </button>

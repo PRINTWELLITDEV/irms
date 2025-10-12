@@ -231,9 +231,11 @@
                     </table>
                 </div>
                 <div class="modal-footer flex-wrap justify-content-between">
+                    @if (Route::has('warehouse.destroy'))
                     <button type="button" class="btn btn-danger" id="btnDeleteWarehouse">
                         <i class="bi bi-trash"></i> Delete
                     </button>
+                    @endif
                     <button type="button" class="btn btn-warning"
                             data-bs-target="#editWarehouseModal"
                             data-bs-toggle="modal"

@@ -424,6 +424,10 @@ table.table td img {
     .profile-tab-content .row > div[class^="col-"] {
         font-size: 0.95rem !important;
     }
+    .profile-tab-content .form-control {
+        min-width: 100px !important;
+        font-size: 0.9rem !important;
+    }
     .profile-menu .list-group-item {
         font-size: 0.97rem !important;
         padding: 0.5rem 0.5rem !important;
@@ -464,5 +468,9 @@ table.table td img {
     }
     .profile-tab-content .row > div[class^="col-"] {
         font-size: 0.7rem !important;
+    }
+    .profile-tab-content .form-control {
+        min-width: 100px !important;
+        font-size: 0.75rem !important;
     }
 }
