@@ -23,10 +23,11 @@
     <div class="glass-bg-overlay d-flex align-items-center justify-content-center text-light">
         <div class="container">
             <div class="row justify-content-center">
-                <div class="col-lg-10 col-xl-8 text-center glass-panel p-5 rounded-4 shadow-lg">
+                <div class="col-lg-10 col-xl-8 text-center glass-panel p-5 rounded-4 pt-0">
 
-                    <h1 class="display-3 fw-bold mb-3 text-shadow">IRMS</h1>
-                    <p class="lead mb-5 pb-3 text-shadow">
+                    <h1 class="display-1 fw-bold mb-3" id="irms-home-text">Inventory Rack Management System</h1>
+                     <!-- <img src="{{ asset('uploads\img\logo-irms.png') }}" alt="logo-irms" class="img-thumbnail mb-3" style="height : 19vh; min-width: 12rem;"> -->
+                    <p class="lead mb-5 pb-3">
                         Your Integrated Inventory and Racking Management System.
                     </p>
 

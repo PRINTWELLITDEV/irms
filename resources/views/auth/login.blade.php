@@ -13,7 +13,7 @@
             <img class="login-visual-img" src="{{ asset('uploads/img/login-visual.jpg') }}" alt="Login Visual" />
         </div>
         <div class="login-form-panel">
-            <h2>Log in to IRMS!</h2>
+            <h1>Log in to IRMS!</h1>
             <div class="mb-3 form-text">Inventory Rack Management System – Secure access for your inventory and rack operations.</div>
             <form method="POST" action="{{ route('login.submit') }}">
                 @csrf

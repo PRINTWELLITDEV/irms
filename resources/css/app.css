@@ -4,6 +4,15 @@
 /* Import AdminLTE */
 @import "admin-lte/dist/css/adminlte.css";
 
+#irms-home-text {
+    font-family:  sans-serif ,'trade-gothic-next' ,'Century Schoolbook';
+    text-transform: uppercase;
+    font-weight: bold;
+    color: #ffffff;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    letter-spacing: -1.74px;
+}
+
 .app-main {
     min-height: 100vh !important;
 }
@@ -19,7 +28,7 @@
     color:#0e2b96;
 }
 .app-footer .pi-link {
-    color: #0e2b96;
+    /* color: #0e2b96; */
     font-family: 'Century Schoolbook', serif;
     font-weight: bold;
     font-style: italic;
@@ -36,7 +45,7 @@
 } */
 
 /* Center glass-panel and fix padding for all screens */
-.glass-bg-container {
+/* .glass-bg-container {
     height: 60vh;
     display: flex;
     align-items: center;
@@ -57,14 +66,14 @@
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     border: 1px solid rgba(255, 255, 255, 0.3);
-}
+} */
 
 /* --------------------------------------
                 1. Glassmorphism Setup
     -------------------------------------- */
 
 
-.glass-panel {
+/* .glass-panel {
     background: rgba(255, 255, 255, 0.15);
     border-radius: 16px;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
@@ -72,18 +81,18 @@
     -webkit-backdrop-filter: blur(8px);
     border: 1px solid rgba(255, 255, 255, 0.3);
     transform-style: preserve-3d;
-}
+} */
 
 /* --------------------------------------
                 2. Glass Cards (Logged-in view)
     -------------------------------------- */
-.glass-card {
+/* .glass-card {
     background: rgba(255, 255, 255, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(5px);
     color: white !important;
     transition: all 0.3s ease;
-    position: relative; /* for absolute positioned icon */
+    position: relative;
     overflow: hidden;
 }
 
@@ -91,8 +100,8 @@
     background: rgba(255, 255, 255, 0.2);
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
     transform: translateY(-5px);
-    text-decoration: none; /* remove underline on hover */
-}
+    text-decoration: none;
+} */
 
 /* --------------------------------------
                 3. Glass Button (Guest view)
@@ -132,7 +141,7 @@
     z-index: 10;
     height: 100vh;
     padding: 2rem;
-    background-color: rgba(0, 0, 0, 0.2); /* Optional dark tint over carousel */
+    background-color: rgba(0, 0, 0, 0.4); /* Optional dark tint over carousel */
 }
 
 /* Optional: Object-fit for background images */
@@ -264,9 +273,8 @@ body:not(.sidebar-mini) .content-wrapper {
     /* match full aside width */
 }
 
-/* Ensure proper stacking of navbar and footer */
-nav.navbar,
-footer.app-footer {
+/* Ensure proper stacking of navbar */
+nav.navbar{
     position: relative;
     z-index: 2;
 }
