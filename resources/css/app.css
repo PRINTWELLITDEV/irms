@@ -111,6 +111,37 @@
     text-decoration: none;
 }
 
+/* --------------------------------------
+        4. Carousel Background
+    -------------------------------------- */
+
+/* Carousel full background */
+#backgroundCarousel {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 0;
+    overflow: hidden;
+}
+
+/* Overlay content wrapper */
+.glass-bg-overlay {
+    position: relative;
+    z-index: 10;
+    height: 100vh;
+    padding: 2rem;
+    background-color: rgba(0, 0, 0, 0.2); /* Optional dark tint over carousel */
+}
+
+/* Optional: Object-fit for background images */
+.carousel-item img {
+    object-fit: cover;
+    height: 100vh;
+}
+
+
 
 
 /* Responsive adjustments for mobile */
@@ -243,7 +274,7 @@ footer.app-footer {
 /* --- Login Page Split Layout --- */
 body.login-bg {
     background: linear-gradient(120deg, #1e2a78 0%, #3a8dde 100%);
-    min-height: 100vh;
+    /* min-height: 100vh; */
 }
 .login-bg-img {
     position: fixed;
@@ -298,9 +329,9 @@ body.login-bg {
     left: 50%;
     transform: translateX(-50%);
     z-index: 2;
-    
+
     box-shadow: 0 10px 20px rgba(0,0,0,0.10);
-    
+
 }
 .login-app-logo img {
     background-color: #fff;
