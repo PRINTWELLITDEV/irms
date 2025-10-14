@@ -4,9 +4,6 @@
 /* Import AdminLTE */
 @import "admin-lte/dist/css/adminlte.css";
 
-.alert {
-    transition: opacity 0.7s;
-}
 
 /* Aside */
 .brand-image {
@@ -17,9 +14,9 @@
 }
 
 /* Layout Wrapper */
-.app-main {
+/* .app-main {
     min-height: 100vh !important;
-}
+} */
 
 /* Content Wrapper */
 .app-content-wrapper {
@@ -35,7 +32,7 @@
 }
 
 /* Footer */
-/* .app-footer {
+.app-footer {
     padding: 0rem 1.5rem !important;
     border-top: 1px solid #dee2e6;
     text-align: center;
@@ -59,7 +56,7 @@
 }
 .app-footer .pi-link:hover {
     text-decoration: underline;
-} */
+}
 
 /* Table */
 .table-view {

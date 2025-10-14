@@ -148,10 +148,10 @@
                                         </div>
                                         </div>
                                     </form>
-                                
+
                                     <div class="d-flex justify-content-center align-items-center" style="min-height: 300px;">
                                         <div id="rack-map-grid" class="table-responsive">
-                                            
+
                                         </div>
                                     </div>
                                 </div>
