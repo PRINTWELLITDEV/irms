@@ -23,15 +23,15 @@
         {{-- ... Carousel Inner Content ... --}}
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img src="{{ asset('uploads/img/rack_wallpaper_4.jpg') }}" class="d-block w-100 vh-100 object-fit-cover"
+                <img src="{{ asset('uploads/img/rack_wallpaper_4.jpg') }}" loading="lazy" class="d-block w-100 vh-100 object-fit-cover"
                     alt="Warehouse 1">
             </div>
             <div class="carousel-item">
-                <img src="{{ asset('uploads/img/rack_wallpaper_5.jpg') }}" class="d-block w-100 vh-100 object-fit-cover"
+                <img src="{{ asset('uploads/img/rack_wallpaper_5.jpg') }}" loading="lazy" class="d-block w-100 vh-100 object-fit-cover"
                     alt="Warehouse 2">
             </div>
             <div class="carousel-item">
-                <img src="{{ asset('uploads/img/rack_wallpaper_6.jpg') }}" class="d-block w-100 vh-100 object-fit-cover"
+                <img src="{{ asset('uploads/img/rack_wallpaper_6.jpg') }}" loading="lazy" class="d-block w-100 vh-100 object-fit-cover"
                     alt="Warehouse 3">
             </div>
         </div>
@@ -41,30 +41,35 @@
     <div class="glass-bg-overlay d-flex align-items-center justify-content-center text-light">
         <div class="container">
             <div class="row justify-content-center">
-                <div class="col-lg-10 col-xl-8 text-center glass-panel p-5 rounded-4 pt-0">
+                <div class="col-lg-10 col-xl-8 text-center glass-panel p-5 rounded-4 pt-0 justify-content-center">
 
-                    <h1 class="display-1 fw-bold mb-2 text-wrap" id="irms-home-text"><span
-                            style="color: #154064; text-shadow: 1px 1px 18px white;">I</span>nventory <span
-                            style="color: #154064;">R</span>ack <span style="color: #154064;">M</span>anagement <span
-                            style="color: #154064;">S</span>ystem</h1>
+                    <h1 class="display-1 fw-bold mb-2 text-wrap" id="irms-home-text">
+                        <!-- <span style="color: #154064;">I</span> -->
+                        Inventory
+                        <!-- <span style="color: #154064;">R</span> -->
+                        Rack
+                        <!-- <span style="color: #154064;">M</span> -->
+                        Management
+                        <!-- <span style="color: #154064;">S</span> -->
+                        System</h1>
                     <p class="lead" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold;">
-                        <i class="bi bi-check-circle bg-gradient-lime"></i> Integrated Inventory. <i
-                            class="bi bi-check-circle"></i> Absolute Control. <i class="bi bi-check-circle"></i> Seamless
+                        <i class="bi bi-check-circle bg-gradient-lime"></i>Integrated Inventory.  <i
+                            class="bi bi-check-circle"></i>Absolute Control.  <i class="bi bi-check-circle"></i>Seamless
                         Management
                     </p>
 
                     <div class="row d-flex justify-content-center align-items-center mb-4 gap-0">
                         <div class="col-sm-2">
                             <img src="{{ asset('uploads/sites-img/pi-logo.png') }}" alt="printwell-logo"
-                                style="width: 6rem; height: 5rem;">
+                                style="width: 6rem; height: 5rem;" class="logo-img-small">
                         </div>
                         <div class="col-sm-4">
                             <img src="{{ asset('uploads/sites-img/fpc-logo.png') }}" alt="fpc-logo"
-                                style="width: 10rem; height: 9rem;">
+                                style="width: 10rem; height: 9rem;" class="logo-img-large">
                         </div>
                         <div class="col-sm-2">
                             <img src="{{ asset('uploads/sites-img/pwpc-logo.png') }}" alt="pwpc-logo"
-                                style="width: 6rem; height: 5rem;">
+                                style="width: 6rem; height: 5rem;" class="logo-img-small">
                         </div>
                     </div>
 

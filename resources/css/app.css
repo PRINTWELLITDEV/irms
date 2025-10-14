@@ -4,6 +4,17 @@
 /* Import AdminLTE */
 @import "admin-lte/dist/css/adminlte.css";
 
+/* #irms-home-text {
+    font-family: sans-serif, "trade-gothic-next", "Century Schoolbook";
+    text-transform: uppercase;
+    font-weight: bold;
+    color: #ffffff;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    letter-spacing: -1.74px;
+     font-size: 3rem;
+    line-height: 1.1;
+} */
+
 #irms-home-text {
     font-family: sans-serif, "trade-gothic-next", "Century Schoolbook";
     text-transform: uppercase;
@@ -11,6 +22,20 @@
     color: #ffffff;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
     letter-spacing: -1.74px;
+    line-height: 1.1;
+    /* Responsive Font Size: Override display-1 with media queries for better control */
+    font-size: 3rem;
+}
+
+@media (min-width: 768px) {
+    #irms-home-text {
+        font-size: 5rem;
+    }
+}
+@media (min-width: 992px) {
+    #irms-home-text {
+        font-size: 6rem;
+    }
 }
 
 .app-main {
@@ -23,7 +48,10 @@
 /* Footer */
 .app-footer {
     /* background: #f8f9fa; */
+    margin-top: auto;
     padding: 1rem;
+    background-color: #f8f9fa;
+    border-top: 1px solid #e9ecef;
 }
 .app-footer a {
     text-decoration: none;
@@ -109,14 +137,15 @@
                 3. Glass Button (Guest view)
     -------------------------------------- */
 .glass-button {
-    background: #007bff;
+    background: #154064 !important;
+    border-color: #154064;
     color: white;
     border: 1px solid rgba(255, 255, 255, 0.5);
     transition: all 0.3s ease;
 }
 
 .glass-button:hover {
-    background: #0056b3;
+    background: #0c2a41 !important;
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
     transform: scale(1.05);
     text-decoration: none;
@@ -146,13 +175,41 @@
     height: 100%; /* Use 100% to fill the entire container, or 100vh to fill viewport */
     z-index: 10;
     padding: 2rem;
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: rgba(0, 0, 0, 0.35);
 }
 
 /* Optional: Object-fit for background images */
 .carousel-item img {
     object-fit: cover;
     height: 100vh;
+}
+
+/* Target the icons in the lead paragraph */
+.glass-bg-overlay .lead i.bi-check-circle {
+    /* Set icons to white or a bright accent color */
+    color: #ffd700; /* Example: Gold */
+    margin-right: 5px;
+}
+
+/* Logo Responsiveness */
+.logo-img-small,
+.logo-img-large {
+    transition: transform 0.3s;
+}
+.logo-img-small:hover,
+.logo-img-large:hover {
+    transform: scale(1.1);
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 
 /* Responsive adjustments for mobile */
@@ -178,6 +235,16 @@
     .card-body {
         padding: 1rem !important;
     }
+
+    .logo-img-small {
+        width: 5rem !important;
+        height: 4.5rem !important;
+    }
+
+    .logo-img-large {
+        width: 9rem !important;
+        height: 8rem !important;
+    }
 }
 
 /* Ensure cards stack vertically on mobile */
@@ -189,6 +256,18 @@
     .glass-card {
         width: 100% !important;
         margin-bottom: 1rem !important;
+    }
+}
+
+@media (min-width: 992px) {
+    .logo-img-small {
+        width: 6rem !important; /* Original size */
+        height: 5rem !important;
+    }
+
+    .logo-img-large {
+        width: 10rem !important; /* Original size */
+        height: 9rem !important;
     }
 }
 
