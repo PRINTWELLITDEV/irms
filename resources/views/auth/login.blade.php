@@ -4,7 +4,7 @@
 
 @section('content')
 <img src="{{ asset('uploads/img/login-visual.jpg') }}" alt="Login Background" class="login-bg-img" />
-<div class="login-split-container">
+<div class="login-split-container" data-aos="fade-down">
     <div class="login-card">
         <div class="login-visual position-relative">
             <div class="login-app-logo">

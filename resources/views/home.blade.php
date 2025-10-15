@@ -41,7 +41,7 @@
     <div class="glass-bg-overlay d-flex align-items-center justify-content-center text-light">
         <div class="container">
             <div class="row justify-content-center">
-                <div class="col-lg-10 col-xl-8 text-center glass-panel p-5 rounded-4 pt-0 justify-content-center">
+                <div class="col-lg-10 col-xl-8 text-center glass-panel p-5 rounded-4 pt-0 justify-content-center" data-aos="fade-up">
 
                     <h1 class="display-1 fw-bold mb-2 text-wrap" id="irms-home-text">
                         <!-- <span style="color: #154064;">I</span> -->
@@ -52,22 +52,22 @@
                         Management
                         <!-- <span style="color: #154064;">S</span> -->
                         System</h1>
-                    <p class="lead" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold;">
-                        <i class="bi bi-check-circle bg-gradient-lime"></i>Integrated Inventory.  <i
-                            class="bi bi-check-circle"></i>Absolute Control.  <i class="bi bi-check-circle"></i>Seamless
-                        Management
+                    <p class="lead" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold;" data-aos="zoom-in" data-aos-delay="1000">
+                        <i class="bi bi-check-circle bg-gradient-lime"></i>Integrated Inventory
+                        <i class="bi bi-check-circle"></i>Absolute Control
+                        <i class="bi bi-check-circle"></i>Seamless Management
                     </p>
 
                     <div class="row d-flex justify-content-center align-items-center mb-4 gap-0">
-                        <div class="col-sm-2">
-                            <img src="{{ asset('uploads/sites-img/pi-logo.png') }}" alt="printwell-logo"
+                        <div class="col-sm-2" data-aos="fade-right" data-aos-delay="800">
+                            <img src="{{ asset('uploads/sites-img/pi-logo2.png') }}" alt="printwell-logo"
                                 style="width: 6rem; height: 5rem;" class="logo-img-small">
                         </div>
-                        <div class="col-sm-4">
+                        <div class="col-sm-4" data-aos="zoom-in" data-aos-delay="1000">
                             <img src="{{ asset('uploads/sites-img/fpc-logo.png') }}" alt="fpc-logo"
                                 style="width: 10rem; height: 9rem;" class="logo-img-large">
                         </div>
-                        <div class="col-sm-2">
+                        <div class="col-sm-2" data-aos="fade-left" data-os-delay="800">
                             <img src="{{ asset('uploads/sites-img/pwpc-logo.png') }}" alt="pwpc-logo"
                                 style="width: 6rem; height: 5rem;" class="logo-img-small">
                         </div>
@@ -76,7 +76,7 @@
                     @guest
                         {{-- 3. Added the ID 'login-link' to the login button --}}
                         <a href="{{ route('login') }}" class="btn btn-primary btn-lg px-5 glass-button"
-                            id="login-link">Login</a>
+                            id="login-link" data-aos="fade-up" data-aos-delay="1100">Login</a>
                     @else
                         {{-- ... Your logged-in content ... --}}
                         <div class="row g-4 justify-content-center mt-5 pt-3">
