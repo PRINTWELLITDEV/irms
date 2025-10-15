@@ -17,8 +17,7 @@
         integrity="sha512-pYdS1fsQ+dq3SqfqLDzPteHf+jaGiFjNPRMf5liROtfPH+9qlCw7HbJxZ5/2tZRk6cY0c7yqT+GLX2FmJ8eibw=="
         crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    @vite([
+    <link href="aos-master/dist/aos.css" rel="stylesheet"> @vite([
         'resources/css/app.css',
         'resources/js/app.js'
     ])
@@ -39,7 +38,7 @@
         @include('partials.footer')
     </div>
 
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="aos-master/dist/aos.js"></script>
     <script>
         AOS.init({
             duration: 1200, // Duration of the animation

@@ -23,25 +23,25 @@
         {{-- ... Carousel Inner Content ... --}}
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img src="{{ asset('uploads/img/rack_wallpaper_4.jpg') }}" loading="lazy" class="d-block w-100 vh-100 object-fit-cover"
-                    alt="Warehouse 1">
+                <img src="{{ asset('uploads/img/rack_wallpaper_4.jpg') }}" loading="lazy"
+                    class="d-block w-100 vh-100 object-fit-cover" alt="Warehouse 1">
             </div>
             <div class="carousel-item">
-                <img src="{{ asset('uploads/img/rack_wallpaper_5.jpg') }}" loading="lazy" class="d-block w-100 vh-100 object-fit-cover"
-                    alt="Warehouse 2">
+                <img src="{{ asset('uploads/img/rack_wallpaper_5.jpg') }}" loading="lazy"
+                    class="d-block w-100 vh-100 object-fit-cover" alt="Warehouse 2">
             </div>
             <div class="carousel-item">
-                <img src="{{ asset('uploads/img/rack_wallpaper_6.jpg') }}" loading="lazy" class="d-block w-100 vh-100 object-fit-cover"
-                    alt="Warehouse 3">
+                <img src="{{ asset('uploads/img/rack_wallpaper_6.jpg') }}" loading="lazy"
+                    class="d-block w-100 vh-100 object-fit-cover" alt="Warehouse 3">
             </div>
         </div>
     </div>
 
-    {{-- Overlay Content on top of carousel --}}
     <div class="glass-bg-overlay d-flex align-items-center justify-content-center text-light">
         <div class="container">
             <div class="row justify-content-center">
-                <div class="col-lg-10 col-xl-8 text-center glass-panel p-5 rounded-4 pt-0 justify-content-center" data-aos="fade-up">
+                <div class="col-lg-10 col-xl-8 text-center glass-panel p-5 rounded-4 pt-0 justify-content-center"
+                    data-aos="fade-up">
 
                     <h1 class="display-1 fw-bold mb-2 text-wrap" id="irms-home-text">
                         <!-- <span style="color: #154064;">I</span> -->
@@ -51,8 +51,10 @@
                         <!-- <span style="color: #154064;">M</span> -->
                         Management
                         <!-- <span style="color: #154064;">S</span> -->
-                        System</h1>
-                    <p class="lead" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold;" data-aos="zoom-in" data-aos-delay="1000">
+                        System
+                    </h1>
+                    <p class="lead" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold;" data-aos="zoom-in"
+                        data-aos-delay="1000">
                         <i class="bi bi-check-circle bg-gradient-lime"></i>Integrated Inventory
                         <i class="bi bi-check-circle"></i>Absolute Control
                         <i class="bi bi-check-circle"></i>Seamless Management
@@ -75,8 +77,8 @@
 
                     @guest
                         {{-- 3. Added the ID 'login-link' to the login button --}}
-                        <a href="{{ route('login') }}" class="btn btn-primary btn-lg px-5 glass-button"
-                            id="login-link" data-aos="fade-up" data-aos-delay="1100">Login</a>
+                        <a href="{{ route('login') }}" class="btn btn-primary btn-lg px-5 glass-button" id="login-link"
+                            data-aos="fade-up" data-aos-delay="1100">Login</a>
                     @else
                         {{-- ... Your logged-in content ... --}}
                         <div class="row g-4 justify-content-center mt-5 pt-3">
