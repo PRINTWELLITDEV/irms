@@ -1,20 +1,7 @@
 @extends('layouts.app')
 @section('title', 'IRMS')
 
-@section('style')
-    <style>
-        html,
-        body {
-            height: 100%;
-            margin: 0;
-        }
-
-        body {
-            display: flex;
-            flex-direction: column;
-        }
-    </style>
-@endsection
+@section('body-class', 'home-body')
 
 @section('content')
 

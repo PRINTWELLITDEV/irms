@@ -4,41 +4,6 @@
 /* Import AdminLTE */
 @import "admin-lte/dist/css/adminlte.css";
 
-/* #irms-home-text {
-    font-family: sans-serif, "trade-gothic-next", "Century Schoolbook";
-    text-transform: uppercase;
-    font-weight: bold;
-    color: #ffffff;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-    letter-spacing: -1.74px;
-     font-size: 3rem;
-    line-height: 1.1;
-} */
-
-#irms-home-text {
-    font-family: sans-serif, "trade-gothic-next", "Century Schoolbook";
-    text-transform: uppercase;
-    font-weight: bold;
-    color: #ffffff;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-    letter-spacing: -1.74px;
-    line-height: 1.1;
-    /* Responsive Font Size: Override display-1 with media queries for better control */
-    font-size: 3rem;
-    /* animation: textGlow 3s ease-in-out infinite, fadeIn 1s ease-out; */
-}
-
-@media (min-width: 768px) {
-    #irms-home-text {
-        font-size: 5rem;
-    }
-}
-@media (min-width: 992px) {
-    #irms-home-text {
-        font-size: 6rem;
-    }
-}
-
 .app-main {
     position: relative;
     z-index: 1;
@@ -48,20 +13,17 @@
 
 /* Footer */
 .app-footer {
-    /* background: #f8f9fa; */
-    margin-top: auto;
+    background: #f8f9fa;
     padding: 1rem;
-    background-color: #f8f9fa;
-    border-top: 1px solid #e9ecef;
 }
-.app-footer a {
+.app-footer a{
     text-decoration: none;
     font-weight: bold;
-    color: #0e2b96;
+    color:#0e2b96;
 }
 .app-footer .pi-link {
-    /* color: #0e2b96; */
-    font-family: "Century Schoolbook", serif;
+    color: #0e2b96;
+    font-family: 'Century Schoolbook', serif;
     font-weight: bold;
     font-style: italic;
     text-decoration: none;
@@ -104,6 +66,7 @@
                 1. Glassmorphism Setup
     -------------------------------------- */
 
+
 /* .glass-panel {
     background: rgba(255, 255, 255, 0.15);
     border-radius: 16px;
@@ -138,15 +101,14 @@
                 3. Glass Button (Guest view)
     -------------------------------------- */
 .glass-button {
-    background: #154064 !important;
-    border-color: #154064;
+    background: #007bff;
     color: white;
     border: 1px solid rgba(255, 255, 255, 0.5);
     transition: all 0.3s ease;
 }
 
 .glass-button:hover {
-    background: #0c2a41 !important;
+    background: #0056b3;
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
     transform: scale(1.05);
     text-decoration: none;
@@ -191,11 +153,6 @@
     color: #ffd700; /* Example: Gold */
     margin-right: 5px;
 }
-
-/* .glass-panel .logo-img-small,
-.glass-panel .logo-img-large {
-    animation: pulse 4s ease-in-out infinite;
-} */
 
 /* Logo Responsiveness */
 .logo-img-small,
@@ -282,16 +239,6 @@
     .card-body {
         padding: 1rem !important;
     }
-
-    .logo-img-small {
-        width: 5rem !important;
-        height: 4.5rem !important;
-    }
-
-    .logo-img-large {
-        width: 9rem !important;
-        height: 8rem !important;
-    }
 }
 
 /* Ensure cards stack vertically on mobile */
@@ -306,26 +253,13 @@
     }
 }
 
-@media (min-width: 992px) {
-    .logo-img-small {
-        width: 6rem !important; /* Original size */
-        height: 5rem !important;
-    }
-
-    .logo-img-large {
-        width: 10rem !important; /* Original size */
-        height: 9rem !important;
-    }
-}
-
 /* --- Existing imports and styles above --- */
 
 /* smoother content reveal */
 .content-wrapper {
     opacity: 0;
     transform: translateY(8px);
-    transition: opacity 450ms cubic-bezier(0.22, 1, 0.36, 1),
-        transform 450ms cubic-bezier(0.22, 1, 0.36, 1);
+    transition: opacity 450ms cubic-bezier(.22, 1, .36, 1), transform 450ms cubic-bezier(.22, 1, .36, 1);
     will-change: opacity, transform;
 }
 
@@ -336,8 +270,7 @@
 
 /* smoother card hover */
 .card {
-    transition: transform 350ms cubic-bezier(0.22, 1, 0.36, 1),
-        box-shadow 350ms cubic-bezier(0.22, 1, 0.36, 1);
+    transition: transform 350ms cubic-bezier(.22, 1, .36, 1), box-shadow 350ms cubic-bezier(.22, 1, .36, 1);
     will-change: transform, box-shadow;
 }
 
@@ -349,15 +282,14 @@
 /* small improvement for modals / dropdowns */
 .dropdown-menu,
 .modal-content {
-    transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1),
-        opacity 260ms ease;
+    transition: transform 260ms cubic-bezier(.22, 1, .36, 1), opacity 260ms ease;
     will-change: transform, opacity;
 }
 
 /* Sidebar width + smooth collapse */
 .app-sidebar {
     width: 230px;
-    transition: width 300ms cubic-bezier(0.22, 1, 0.36, 1), opacity 250ms ease;
+    transition: width 300ms cubic-bezier(.22, 1, .36, 1), opacity 250ms ease;
     will-change: width, opacity;
     overflow: hidden;
 }
@@ -389,7 +321,7 @@
 
 /* adjust content area if you use left margin */
 .content-wrapper {
-    transition: margin-left 300ms cubic-bezier(0.22, 1, 0.36, 1);
+    transition: margin-left 300ms cubic-bezier(.22, 1, .36, 1);
 }
 
 /* when collapsed reduce left offset (adjust selector according your layout) */
@@ -404,31 +336,56 @@ body:not(.sidebar-mini) .content-wrapper {
     /* match full aside width */
 }
 
-/* Ensure proper stacking of navbar */
-nav.navbar {
+/* Home page styles */
+nav.navbar,
+footer.app-footer {
     position: relative;
     z-index: 2;
 }
+.home-body {
+    display: flex;
+    flex-direction: column;
+}
+#irms-home-text {
+    font-family: sans-serif, "trade-gothic-next", "Century Schoolbook";
+    text-transform: uppercase;
+    font-weight: bold;
+    color: #ffffff;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    letter-spacing: -1.74px;
+    line-height: 1.1;
+    /* Responsive Font Size: Override display-1 with media queries for better control */
+    font-size: 3rem;
+    /* animation: textGlow 3s ease-in-out infinite, fadeIn 1s ease-out; */
+}
+
+
+@media (min-width: 768px) {
+    #irms-home-text {
+        font-size: 5rem;
+    }
+}
+@media (min-width: 992px) {
+    #irms-home-text {
+        font-size: 6rem;
+    }
+}
 
 /* --- Login Page Split Layout --- */
-body.login-bg {
+.login-body {
     background: linear-gradient(120deg, #1e2a78 0%, #3a8dde 100%);
-    /* min-height: 100vh; */
+    min-height: 100vh;
 }
 .login-bg-img {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
+    top: 0; left: 0; width: 100vw; height: 100vh;
     object-fit: cover;
     z-index: 0;
     opacity: 0.25;
     pointer-events: none;
     user-select: none;
 }
-.login-split-container,
-.login-card {
+.login-split-container, .login-card {
     position: relative;
     z-index: 1;
 }
@@ -472,13 +429,14 @@ body.login-bg {
     left: 50%;
     transform: translateX(-50%);
     z-index: 2;
-
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    
+    box-shadow: 0 10px 20px rgba(0,0,0,0.10);
+    
 }
 .login-app-logo img {
     background-color: #fff;
     border-radius: 12px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.10);
     padding: 10px 26px;
     height: 150px;
     width: auto;
@@ -517,7 +475,7 @@ body.login-bg {
     font-weight: 600;
     letter-spacing: 1px;
     padding: 0.75rem 2.5rem;
-    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.08);
+    box-shadow: 0 2px 8px rgba(37,99,235,0.08);
     transition: background 0.2s;
 }
 .login-form-panel .btn-primary:hover {
@@ -547,42 +505,20 @@ body.login-bg {
     text-decoration: underline;
 }
 @media (max-width: 900px) {
-    .login-card {
-        flex-direction: column;
-        min-height: 0;
-    }
-    .login-visual {
-        min-height: 220px;
-    }
-    .login-form-panel {
-        padding: 2rem 1.2rem;
-    }
+    .login-card { flex-direction: column; min-height: 0; }
+    .login-visual { min-height: 220px; }
+    .login-form-panel { padding: 2rem 1.2rem; }
 }
 @media (max-width: 600px) {
-    .login-card {
-        box-shadow: none;
-        border-radius: 0;
-    }
-    .login-visual {
-        min-height: 200px;
-    }
-    .login-app-logo {
-        top: 40px;
-    }
-    .login-form-panel {
-        padding: 1.2rem 0.5rem;
-    }
-    .login-visual {
-        min-width: 0;
-    }
+    .login-card { box-shadow: none; border-radius: 0; }
+    .login-visual { min-height: 200px; }
+    .login-app-logo { top: 40px; }
+    .login-form-panel { padding: 1.2rem 0.5rem; }
+    .login-visual { min-width: 0; }
 }
 @media (max-width: 400px) {
-    .login-visual {
-        min-height: 180px;
-    }
-    .login-visual-img {
-        opacity: 0.6;
-    }
+    .login-visual { min-height: 180px; }
+    .login-visual-img { opacity: 0.6; }
 }
 
 /* email view */

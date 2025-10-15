@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('body-class', 'login-bg')
+@section('body-class', 'login-body')
 
 @section('content')
 <img src="{{ asset('uploads/img/login-visual.jpg') }}" alt="Login Background" class="login-bg-img" />
