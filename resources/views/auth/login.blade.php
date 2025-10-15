@@ -1,10 +1,10 @@
 @extends('layouts.app')
 
-@section('body-class', 'login-bg')
+@section('body-class', 'login-body')
 
 @section('content')
 <img src="{{ asset('uploads/img/login-visual.jpg') }}" alt="Login Background" class="login-bg-img" />
-<div class="login-split-container">
+<div class="login-split-container" data-aos="fade-down">
     <div class="login-card">
         <div class="login-visual position-relative">
             <div class="login-app-logo">
@@ -13,7 +13,7 @@
             <img class="login-visual-img" src="{{ asset('uploads/img/login-visual.jpg') }}" alt="Login Visual" />
         </div>
         <div class="login-form-panel">
-            <h2>Log in to IRMS!</h2>
+            <h1>Log in to IRMS!</h1>
             <div class="mb-3 form-text">Inventory Rack Management System – Secure access for your inventory and rack operations.</div>
             <form method="POST" action="{{ route('login.submit') }}">
                 @csrf
@@ -72,7 +72,4 @@
         </div>
     </div>
 </div>
-@endsection
-@section('footer')
-    @include('partials.footer')
 @endsection

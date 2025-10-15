@@ -5,7 +5,10 @@
 @import "admin-lte/dist/css/adminlte.css";
 
 .app-main {
+    position: relative;
+    z-index: 1;
     min-height: 100vh !important;
+    flex: 1;
 }
 
 /* Footer */
@@ -36,7 +39,7 @@
 } */
 
 /* Center glass-panel and fix padding for all screens */
-.glass-bg-container {
+/* .glass-bg-container {
     height: 60vh;
     display: flex;
     align-items: center;
@@ -57,14 +60,14 @@
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     border: 1px solid rgba(255, 255, 255, 0.3);
-}
+} */
 
 /* --------------------------------------
                 1. Glassmorphism Setup
     -------------------------------------- */
 
 
-.glass-panel {
+/* .glass-panel {
     background: rgba(255, 255, 255, 0.15);
     border-radius: 16px;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
@@ -72,18 +75,18 @@
     -webkit-backdrop-filter: blur(8px);
     border: 1px solid rgba(255, 255, 255, 0.3);
     transform-style: preserve-3d;
-}
+} */
 
 /* --------------------------------------
                 2. Glass Cards (Logged-in view)
     -------------------------------------- */
-.glass-card {
+/* .glass-card {
     background: rgba(255, 255, 255, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(5px);
     color: white !important;
     transition: all 0.3s ease;
-    position: relative; /* for absolute positioned icon */
+    position: relative;
     overflow: hidden;
 }
 
@@ -91,8 +94,8 @@
     background: rgba(255, 255, 255, 0.2);
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
     transform: translateY(-5px);
-    text-decoration: none; /* remove underline on hover */
-}
+    text-decoration: none;
+} */
 
 /* --------------------------------------
                 3. Glass Button (Guest view)
@@ -111,7 +114,107 @@
     text-decoration: none;
 }
 
+/* --------------------------------------
+        4. Carousel Background
+    -------------------------------------- */
 
+/* Carousel full background */
+#backgroundCarousel {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 0;
+    overflow: hidden;
+}
+
+/* Overlay content wrapper */
+.glass-bg-overlay {
+    position: absolute; /* or fixed, if you want it to scroll with the viewport */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%; /* Use 100% to fill the entire container, or 100vh to fill viewport */
+    z-index: 10;
+    padding: 2rem;
+    background-color: rgba(0, 0, 0, 0.35);
+}
+
+/* Optional: Object-fit for background images */
+.carousel-item img {
+    object-fit: cover;
+    height: 100vh;
+}
+
+/* Target the icons in the lead paragraph */
+.glass-bg-overlay .lead i.bi-check-circle {
+    /* Set icons to white or a bright accent color */
+    color: #ffd700; /* Example: Gold */
+    margin-right: 5px;
+}
+
+/* Logo Responsiveness */
+.logo-img-small,
+.logo-img-large {
+    transition: transform 0.3s;
+}
+.logo-img-small:hover,
+.logo-img-large:hover {
+    transform: scale(1.1);
+}
+
+.glass-panel {
+    animation: fadeIn 1.5s ease-out 0.5s both; /* 'both' keeps final state, 0.5s delay */
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes textGlow {
+    0% {
+        text-shadow: 0 0 5px rgba(255, 255, 255, 0.4);
+    }
+    50% {
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.8),
+            0 0 20px rgba(255, 255, 255, 0.5);
+    }
+    100% {
+        text-shadow: 0 0 5px rgba(255, 255, 255, 0.4);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
 
 /* Responsive adjustments for mobile */
 @media (max-width: 576px) {
@@ -233,15 +336,43 @@ body:not(.sidebar-mini) .content-wrapper {
     /* match full aside width */
 }
 
-/* Ensure proper stacking of navbar and footer */
+/* Home page styles */
 nav.navbar,
 footer.app-footer {
     position: relative;
     z-index: 2;
 }
+.home-body {
+    display: flex;
+    flex-direction: column;
+}
+#irms-home-text {
+    font-family: sans-serif, "trade-gothic-next", "Century Schoolbook";
+    text-transform: uppercase;
+    font-weight: bold;
+    color: #ffffff;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    letter-spacing: -1.74px;
+    line-height: 1.1;
+    /* Responsive Font Size: Override display-1 with media queries for better control */
+    font-size: 3rem;
+    /* animation: textGlow 3s ease-in-out infinite, fadeIn 1s ease-out; */
+}
+
+
+@media (min-width: 768px) {
+    #irms-home-text {
+        font-size: 5rem;
+    }
+}
+@media (min-width: 992px) {
+    #irms-home-text {
+        font-size: 6rem;
+    }
+}
 
 /* --- Login Page Split Layout --- */
-body.login-bg {
+.login-body {
     background: linear-gradient(120deg, #1e2a78 0%, #3a8dde 100%);
     min-height: 100vh;
 }

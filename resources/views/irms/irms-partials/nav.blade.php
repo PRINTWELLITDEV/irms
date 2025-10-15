@@ -12,40 +12,8 @@
                 </a>
             </li>
         </ul>
-        <ul class="navbar-nav ms-auto">
-            <!-- <li class="nav-item dropdown">
-                <a class="nav-link" href="#" id="notificationsDropdown" role="button" data-bs-toggle="dropdown"
-                    aria-expanded="false">
-                    <i class="far fa-bell"></i>
-                    <span class="badge bg-warning rounded-pill">3</span>
-                </a>
-                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
-                    <span class="dropdown-item dropdown-header">15 Notifications</span>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item">
-                        <i class="bi bi-envelope me-2"></i> 4 new messages
-                        <span class="float-end text-secondary fs-7">3 mins</span>
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item">
-                        <i class="bi bi-people-fill me-2"></i> 8 friend requests
-                        <span class="float-end text-secondary fs-7">12 hours</span>
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item">
-                        <i class="bi bi-file-earmark-fill me-2"></i> 3 new reports
-                        <span class="float-end text-secondary fs-7">2 days</span>
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item dropdown-footer"> See All Notifications </a>
-                </div>
-            </li> -->
-            <!-- <li class="nav-item">
-                <a class="nav-link" id="fullscreenToggle" href="#" data-lte-toggle="fullscreen">
-                    <i data-lte-icon="maximize" class="bi bi-arrows-fullscreen"></i>
-                    <i data-lte-icon="minimize" class="bi bi-fullscreen-exit" style="display: none"></i>
-                </a>
-            </li> -->
+        <ul class="navbar-nav ms-auto bg-opacity-50">
+
             <li class="nav-item dropdown user-menu">
                 <a href="#" class="nav-link dropdown-toggle" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <img src="{{ $user->profile_pic_url }}"
