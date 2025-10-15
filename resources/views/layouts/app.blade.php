@@ -16,13 +16,15 @@
     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
         integrity="sha512-pYdS1fsQ+dq3SqfqLDzPteHf+jaGiFjNPRMf5liROtfPH+9qlCw7HbJxZ5/2tZRk6cY0c7yqT+GLX2FmJ8eibw=="
         crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
-    @vite([
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link href="aos-master/dist/aos.css" rel="stylesheet"> @vite([
         'resources/css/app.css',
         'resources/js/app.js'
     ])
 </head>
 
 <body class="@yield('body-class', 'fixed-header fixed-footer bg-body-tertiary')">
+
     <div id="app">
         {{-- Navbar --}}
         @include('partials.nav')
@@ -35,6 +37,14 @@
         {{-- Footer --}}
         @include('partials.footer')
     </div>
+
+    <script src="aos-master/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 1200, // Duration of the animation
+            once: true,     // Whether animation should happen only once - true is usually better for landing pages
+        });
+    </script>
 </body>
 
 </html>
