@@ -6,7 +6,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
-class RsusersSeeder extends Seeder
+class RsUsersSeeder extends Seeder
 {
     /**
      * Run the database seeds.

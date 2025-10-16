@@ -159,8 +159,6 @@ return array(
     'Database\\Seeders\\IrmsSiteSeeder' => $baseDir . '/database/seeders/IrmsSiteSeeder.php',
     'Database\\Seeders\\RsBayLocSeeder' => $baseDir . '/database/seeders/RsBayLocSeeder.php',
     'Database\\Seeders\\RsLocSeeder' => $baseDir . '/database/seeders/RsLocSeeder.php',
-    'Database\\Seeders\\RsusersSeeder' => $baseDir . '/database/seeders/RsusersSeeder.php',
-    'Database\\Seeders\\RswhseSeeder' => $baseDir . '/database/seeders/RswhseSeeder.php',
     'DateError' => $vendorDir . '/symfony/polyfill-php83/Resources/stubs/DateError.php',
     'DateException' => $vendorDir . '/symfony/polyfill-php83/Resources/stubs/DateException.php',
     'DateInvalidOperationException' => $vendorDir . '/symfony/polyfill-php83/Resources/stubs/DateInvalidOperationException.php',
