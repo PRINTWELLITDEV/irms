@@ -20,6 +20,7 @@ $(document).ready(function () {
 
     // Users table
     const usersTable = $("#users-table").DataTable({
+        pageLength: 5,
         fixedHeader: true,
         columnControl: ["order", ['colVisDropdown']],
         ordering: {

@@ -19,21 +19,15 @@
                     </div>
                 </div>
             </div>
+        </div>
 
         <div class="app-content">
             <div class="container-fluid">
-                    <div class="row">
+                <div class="row">
                     <div class="col">
                         <div class="card">
                             <div class="card-body">
                                 <div class="d-flex justify-content-end align-items-center mb-3">
-                                    <!-- <button type="button" id="btnAddRack" class="btn btn-success d-flex align-items-center me-2"
-                                            data-bs-toggle="modal" data-bs-target="#addRackModal">
-                                        <i class="bi bi-plus-circle-fill d-none d-sm-inline me-2"></i>
-                                        <span class="d-none d-sm-inline">Add Item Locations</span>
-                                        <i class="bi bi-plus-circle-fill d-inline d-sm-none"></i>
-                                    </button> -->
-
                                     <div class="input-group" style="max-width: 300px;">
                                         <input type="text" id="itemSearch" class="form-control" placeholder="Search Item location...">
                                         <span class="input-group-text">

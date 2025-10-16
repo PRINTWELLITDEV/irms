@@ -15,16 +15,17 @@ use App\Http\Controllers\Irms\RsGoodsDispatchingController;
 use App\Http\Controllers\Irms\RsTransController;
 
 // Home route
-// Route::get('/', function () {
-//     return view('home');
-// })->name('home');
-
 Route::get('/', function () {
-    if (auth()->check()) {
-        return redirect('/irms');
-    }
     return view('home');
 })->name('home');
+
+// Route::get('/', function () {
+//     if (auth()->check()) {
+//         return redirect('/irms');
+//     }else{
+//         return view('home');
+//     }
+// })->name('home');
 
 // if already logged in, redirect to irms dashboard
 Route::get('login', [LoginController::class, 'showhomeForm'])->name('home');

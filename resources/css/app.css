@@ -4,17 +4,12 @@
 /* Import AdminLTE */
 @import "admin-lte/dist/css/adminlte.css";
 
-.app-main {
-    position: relative;
-    z-index: 1;
-    min-height: 100vh !important;
-    flex: 1;
-}
+
 
 /* Footer */
 .app-footer {
     background: #f8f9fa;
-    padding: 1rem;
+    padding: 0 1rem;
 }
 .app-footer a{
     text-decoration: none;
@@ -31,129 +26,32 @@
 .app-footer .pi-link:hover {
     text-decoration: underline;
 }
-
-/* In your CSS file (e.g., public/css/styles.css) */
-/* #home-background {
-    background-image: url( );
-    background-size: cover;
-} */
-
-/* Center glass-panel and fix padding for all screens */
-/* .glass-bg-container {
-    height: 60vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    overflow-x: hidden;
+.app-main {
+    min-height: 100vh !important;
 }
-
-.glass-panel {
-    margin: 0 auto;
-    padding: 2.5rem;
-    border-radius: 16px;
-    max-width: 600px;
-    width: 100%;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-} */
-
-/* --------------------------------------
-                1. Glassmorphism Setup
-    -------------------------------------- */
-
-
-/* .glass-panel {
-    background: rgba(255, 255, 255, 0.15);
-    border-radius: 16px;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    transform-style: preserve-3d;
-} */
-
-/* --------------------------------------
-                2. Glass Cards (Logged-in view)
-    -------------------------------------- */
-/* .glass-card {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(5px);
-    color: white !important;
-    transition: all 0.3s ease;
+/* Home Page */
+.home-body {
+    background: #000;
+    color: #fff;
     position: relative;
     overflow: hidden;
+    min-height: 100vh !important;
 }
-
-.glass-card:hover {
-    background: rgba(255, 255, 255, 0.2);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
-    transform: translateY(-5px);
-    text-decoration: none;
-} */
-
-/* --------------------------------------
-                3. Glass Button (Guest view)
-    -------------------------------------- */
-.glass-button {
-    background: #007bff;
-    color: white;
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    transition: all 0.3s ease;
-}
-
-.glass-button:hover {
-    background: #0056b3;
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-    transform: scale(1.05);
-    text-decoration: none;
-}
-
-/* --------------------------------------
-        4. Carousel Background
-    -------------------------------------- */
-
-/* Carousel full background */
-#backgroundCarousel {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    z-index: 0;
-    overflow: hidden;
-}
-
-/* Overlay content wrapper */
 .glass-bg-overlay {
-    position: absolute; /* or fixed, if you want it to scroll with the viewport */
+    position: fixed; /* or fixed, if you want it to scroll with the viewport */
+    width: 100%;
+    height: 100%;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%; /* Use 100% to fill the entire container, or 100vh to fill viewport */
     z-index: 10;
-    padding: 2rem;
-    background-color: rgba(0, 0, 0, 0.35);
+    background-color: rgba(0, 0, 0, 0.596);
+    backdrop-filter: blur(0.2rem);
 }
-
-/* Optional: Object-fit for background images */
-.carousel-item img {
-    object-fit: cover;
-    height: 100vh;
-}
-
-/* Target the icons in the lead paragraph */
 .glass-bg-overlay .lead i.bi-check-circle {
     /* Set icons to white or a bright accent color */
     color: #ffd700; /* Example: Gold */
     margin-right: 5px;
 }
-
 /* Logo Responsiveness */
 .logo-img-small,
 .logo-img-large {
@@ -164,217 +62,94 @@
     transform: scale(1.1);
 }
 
-.glass-panel {
-    animation: fadeIn 1.5s ease-out 0.5s both; /* 'both' keeps final state, 0.5s delay */
-}
-
-@keyframes pulse {
-    0% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(1.05);
-    }
-    100% {
-        transform: scale(1);
-    }
-}
-
-@keyframes textGlow {
-    0% {
-        text-shadow: 0 0 5px rgba(255, 255, 255, 0.4);
-    }
-    50% {
-        text-shadow: 0 0 10px rgba(255, 255, 255, 0.8),
-            0 0 20px rgba(255, 255, 255, 0.5);
-    }
-    100% {
-        text-shadow: 0 0 5px rgba(255, 255, 255, 0.4);
-    }
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes fadeInScale {
-    from {
-        opacity: 0;
-        transform: scale(0.95);
-    }
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
-}
-
-/* Responsive adjustments for mobile */
-@media (max-width: 576px) {
-    .glass-panel {
-        padding: 1.5rem;
-        border-radius: 10px;
-        max-width: 98vw;
-    }
-    .glass-card {
-        padding: 1rem !important;
-        font-size: 1rem !important;
-    }
-    .display-3 {
-        font-size: 2rem !important;
-    }
-    .lead {
-        font-size: 1rem !important;
-    }
-    .glass-bg-container {
-        padding: 1rem !important;
-    }
-    .card-body {
-        padding: 1rem !important;
-    }
-}
-
-/* Ensure cards stack vertically on mobile */
-@media (max-width: 768px) {
-    .row.g-4.justify-content-center.mt-5.pt-3 {
-        flex-direction: column !important;
-        align-items: center !important;
-    }
-    .glass-card {
-        width: 100% !important;
-        margin-bottom: 1rem !important;
-    }
-}
-
-/* --- Existing imports and styles above --- */
-
-/* smoother content reveal */
-.content-wrapper {
-    opacity: 0;
-    transform: translateY(8px);
-    transition: opacity 450ms cubic-bezier(.22, 1, .36, 1), transform 450ms cubic-bezier(.22, 1, .36, 1);
-    will-change: opacity, transform;
-}
-
-.content-wrapper.visible {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* smoother card hover */
-.card {
-    transition: transform 350ms cubic-bezier(.22, 1, .36, 1), box-shadow 350ms cubic-bezier(.22, 1, .36, 1);
-    will-change: transform, box-shadow;
-}
-
-.card:hover {
-    transform: translateY(-6px) translateZ(0);
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
-}
-
-/* small improvement for modals / dropdowns */
-.dropdown-menu,
-.modal-content {
-    transition: transform 260ms cubic-bezier(.22, 1, .36, 1), opacity 260ms ease;
-    will-change: transform, opacity;
-}
-
-/* Sidebar width + smooth collapse */
-.app-sidebar {
-    width: 230px;
-    transition: width 300ms cubic-bezier(.22, 1, .36, 1), opacity 250ms ease;
-    will-change: width, opacity;
-    overflow: hidden;
-}
-
-/* collapsed (icon-only) width */
-.app-sidebar.sidebar-mini {
-    width: 64px;
-}
-
-/* temporary class during transition (optional) */
-.app-sidebar.sidebar-collapsing {
-    transition-duration: 320ms;
-}
-
-/* hide text labels when collapsed */
-.app-sidebar.sidebar-mini .brand-text,
-.app-sidebar.sidebar-mini .sidebar-wrapper .nav-link p,
-.app-sidebar.sidebar-mini .sidebar-wrapper .nav-header {
-    opacity: 0;
-    transition: opacity 180ms ease;
-    pointer-events: none;
-}
-
-/* keep icons visible and centered */
-.app-sidebar .nav-icon,
-.app-sidebar .brand-image {
-    transition: transform 300ms ease;
-}
-
-/* adjust content area if you use left margin */
-.content-wrapper {
-    transition: margin-left 300ms cubic-bezier(.22, 1, .36, 1);
-}
-
-/* when collapsed reduce left offset (adjust selector according your layout) */
-body.sidebar-mini .content-wrapper {
-    margin-left: 64px;
-    /* match collapsed aside width */
-}
-
-/* when expanded ensure original offset */
-body:not(.sidebar-mini) .content-wrapper {
-    margin-left: 230px;
-    /* match full aside width */
-}
-
-/* Home page styles */
-nav.navbar,
-footer.app-footer {
-    position: relative;
-    z-index: 2;
-}
-.home-body {
-    display: flex;
-    flex-direction: column;
-}
 #irms-home-text {
-    font-family: sans-serif, "trade-gothic-next", "Century Schoolbook";
-    text-transform: uppercase;
-    font-weight: bold;
-    color: #ffffff;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-    letter-spacing: -1.74px;
-    line-height: 1.1;
-    /* Responsive Font Size: Override display-1 with media queries for better control */
-    font-size: 3rem;
-    /* animation: textGlow 3s ease-in-out infinite, fadeIn 1s ease-out; */
+    color: #fff;
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
+}
+.glass-button {
+    color: white;
+    border: 3px solid rgba(255, 255, 255, 0.719);
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
 }
 
-
-@media (min-width: 768px) {
-    #irms-home-text {
-        font-size: 5rem;
-    }
+.glass-button:hover {
+    color: white;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+    transform: scale(1.05);
+    background: rgba(255, 255, 255, 0.26);
 }
+.company-logos img{
+    width: 6rem !important;
+    height: 6rem !important;
+}
+
 @media (min-width: 992px) {
     #irms-home-text {
         font-size: 6rem;
     }
+    .glass-button {
+        font-size: 1.25rem;
+        padding: 0.75rem 2.5rem;
+    }
+    .company-logos img{
+        width: 8rem !important;
+        height: 8rem !important;
+    }
 }
+@media (min-width: 768px) {
+    #irms-home-text {
+        font-size: 5rem;
+    }
+    .glass-button {
+        font-size: 1.1rem;
+        padding: 0.65rem 2rem;
+    }
+    .company-logos img{
+        width: 7rem !important;
+        height: 7rem !important;
+    }
+}
+@media (max-width: 576px) {
+    #irms-home-text {
+        font-size: 2rem;
+    }
+    .glass-button {
+        font-size: 1rem;
+        padding: 0.5rem 1.5rem;
+    }
+    .company-logos img{
+        width: 5rem !important;
+        height: 5rem !important;
+    }
+}
+@media (max-width: 400px) {
+    #irms-home-text {
+        font-size: 1.8rem;
+    }
+    .glass-button {
+        font-size: 0.9rem;
+        padding: 0.4rem 1.2rem;
+    }
+    .glass-panel p{
+        font-size: 0.8rem !important;
+    }
+    .company-logos img{
+        width: 4rem !important;
+        height: 4rem !important;
+    }
+}
+
+
+
 
 /* --- Login Page Split Layout --- */
 .login-body {
     background: linear-gradient(120deg, #1e2a78 0%, #3a8dde 100%);
-    min-height: 100vh;
+    position: relative;
+    overflow: hidden;
+    min-height: 100vh !important;
 }
 .login-bg-img {
     position: fixed;
@@ -390,7 +165,7 @@ footer.app-footer {
     z-index: 1;
 }
 .login-split-container {
-    min-height: 100vh;
+    min-height: 90vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -505,23 +280,21 @@ footer.app-footer {
     text-decoration: underline;
 }
 @media (max-width: 900px) {
-    .login-card { flex-direction: column; min-height: 0; }
+    .login-card { flex-direction: column; min-height: 0; box-shadow: none; border-radius: 0;}
     .login-visual { min-height: 220px; }
+    .login-app-logo img { height: 250px; }
     .login-form-panel { padding: 2rem 1.2rem; }
 }
 @media (max-width: 600px) {
-    .login-card { box-shadow: none; border-radius: 0; }
     .login-visual { min-height: 200px; }
-    .login-app-logo { top: 40px; }
+    .login-app-logo { top: 1.5rem; }
+    .login-app-logo img { height: 150px; }
     .login-form-panel { padding: 1.2rem 0.5rem; }
     .login-visual { min-width: 0; }
 }
 @media (max-width: 400px) {
-    .login-visual { min-height: 180px; }
+    .login-visual { min-height: 150px; }
+    .login-app-logo img { height: 100px; }
     .login-visual-img { opacity: 0.6; }
 }
 
-/* email view */
-.card {
-    margin: 2rem;
-}

@@ -23,9 +23,9 @@
     ])
 </head>
 
-<body class="@yield('body-class', 'fixed-header fixed-footer bg-body-tertiary')">
+<body class="@yield('body-class') fixed-header fixed-footer">
 
-    <div id="app">
+    <div id="app-wrapper">
         {{-- Navbar --}}
         @include('partials.nav')
 
