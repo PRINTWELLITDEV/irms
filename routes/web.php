@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\Irms\IrmsController;
+use App\Http\Controllers\Irms\RsSiteController;
 use App\Http\Controllers\Irms\RsUserProfileController;
 use App\Http\Controllers\Irms\RsUserController;
 use App\Http\Controllers\Irms\RsWhseController;
@@ -62,6 +64,10 @@ Route::get('/irms', function () {
 })->name('dashboard')->middleware('auth');
 
 Route::prefix('irms')->middleware('check.session')->group(function () {
+    // Site management
+    Route::get('/manage-sites', [RsSiteController::class, 'index'])->name('sites.index');
+    Route::post('/manage-sites/store', [RsSiteController::class, 'store'])->name('sites.store');
+
     // User management
     Route::get('/manage-users', [RsUserController::class, 'index'])->name('rsusers.index');
     Route::post('/manage-users/store', [RsUserController::class, 'store'])->name('rsusers.store');

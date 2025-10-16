@@ -84,8 +84,10 @@
                                     }
                                 @endphp
                                 <div class="col-4 col-sm-2" data-aos="{{ $aos }}" data-aos-delay="{{ $delay }}">
-                                    <img src="{{ asset($site->logo_pic_url) }}" alt="{{ $site->rssite_desc ?? 'Company Logo' }}"
-                                         class="logo-img-small">
+                                    <a href="{{ $site->site_link }}" target="_blank">
+                                        <img src="{{ asset($site->logo_pic_url) }}" alt="{{ $site->rssite_desc ?? 'Company Logo' }}"
+                                             class="logo-img-small">
+                                    </a>
                                 </div>
                             @endif
                         @endforeach

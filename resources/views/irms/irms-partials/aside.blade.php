@@ -34,7 +34,13 @@
                     </a>
                 </li>
                 @if(auth()->user()->userid === 'sa')
-                <li class="nav-header">Manage Users</li>
+                <li class="nav-header">Administration</li>
+                <li class="nav-item">
+                    <a href="{{ url('/irms/manage-sites') }}" class="nav-link{{ request()->is('irms/manage-sites') ? ' active' : '' }}">
+                        <i class="nav-icon bi bi-geo-alt"></i>
+                        <p>Sites</p>
+                    </a>
+                </li>
                 <li class="nav-item">
                     <a href="{{ url('/irms/manage-users') }}" class="nav-link{{ request()->is('irms/manage-users') ? ' active' : '' }}">
                         <i class="nav-icon fas fa-users"></i>

@@ -27,7 +27,7 @@ class HomeController extends Controller
     {
         $sites = IrmsSite::whereNotNull('logo_pic_url')
             ->where('logo_pic_url', '!=', '')
-            ->orderby('rssite_desc' , 'desc')
+            ->orderby('create_date' , 'asc')
             ->get();
 
         return view('home', compact('sites'));

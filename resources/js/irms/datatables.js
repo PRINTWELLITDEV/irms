@@ -18,6 +18,24 @@ $.extend($.fn.dataTable.defaults, {
 
 $(document).ready(function () {
 
+    // Sites table
+    const sitesTable = $("#sites-table").DataTable({
+        pageLength: 5,
+        fixedHeader: true,
+        columnControl: ["order", ['colVisDropdown']],
+        ordering: {
+            indicators: false,
+            handler: true,
+        },
+        responsive: true,
+        language: {
+            emptyTable: "No sites found",
+        },
+    });
+    $("#siteSearch").on("keyup", function () {
+        sitesTable.search(this.value).draw();
+    });
+
     // Users table
     const usersTable = $("#users-table").DataTable({
         pageLength: 5,
@@ -29,7 +47,7 @@ $(document).ready(function () {
         },
         responsive: true,
         language: {
-            emptyTable: "No warehouses found",
+            emptyTable: "No users found",
         },
     });
     $("#userSearch").on("keyup", function () {

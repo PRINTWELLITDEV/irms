@@ -20,7 +20,7 @@ class RsUserProfileController extends Controller
 
     public function update(Request $request, $userid)
     {
-        $user = \App\Models\RsUser::where('userid', $userid)->firstOrFail();
+        $user = RsUser::where('userid', $userid)->firstOrFail();
 
         $validated = $request->validate([
             'name' => 'nullable|max:255',
