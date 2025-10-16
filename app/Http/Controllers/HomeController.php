@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Models\IrmsSite;
+
 class HomeController extends Controller
 {
     /**
@@ -23,6 +25,11 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $sites = IrmsSite::whereNotNull('logo_pic_url')
+            ->where('logo_pic_url', '!=', '')
+            ->orderby('rssite_desc' , 'desc')
+            ->get();
+
+        return view('home', compact('sites'));
     }
 }

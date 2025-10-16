@@ -13,17 +13,25 @@ use App\Http\Controllers\Irms\RsItemLocController;
 use App\Http\Controllers\Irms\RsGoodsReceivingController;
 use App\Http\Controllers\Irms\RsGoodsDispatchingController;
 use App\Http\Controllers\Irms\RsTransController;
+use App\Http\Controllers\HomeController;
 
 // Home route
 // Route::get('/', function () {
 //     return view('home');
 // })->name('home');
 
+// Route::get('/', function () {
+//     if (auth()->check()) {
+//         return redirect('/irms');
+//     }else{
+//         return view('home');
+//     }
+// })->name('home');
 Route::get('/', function () {
     if (auth()->check()) {
         return redirect('/irms');
-    }else{
-        return view('home');
+    } else {
+        return app(HomeController::class)->index();
     }
 })->name('home');
 

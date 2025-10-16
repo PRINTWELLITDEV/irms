@@ -54,7 +54,7 @@
                     </p>
 
                     <div class="company-logos row d-flex justify-content-center align-items-center mb-4 gap-0">
-                        <div class="col-sm-2" data-aos="fade-right" data-aos-delay="900">
+                        <!-- <div class="col-sm-2" data-aos="fade-right" data-aos-delay="900">
                             <img src="{{ asset('uploads/sites-img/pi-logo2.png') }}" alt="printwell-logo"
                                  class="logo-img-small">
                         </div>
@@ -65,7 +65,30 @@
                         <div class="col-sm-2" data-aos="fade-left" data-aos-delay="1100">
                             <img src="{{ asset('uploads/sites-img/pwpc-logo.png') }}" alt="pwpc-logo"
                                  class="logo-img-small">
-                        </div>
+                        </div> -->
+                        @php
+                            $logoCount = $sites->count();
+                        @endphp
+                        @foreach($sites as $site)
+                            @if($site->logo_pic_url && file_exists(public_path($site->logo_pic_url)))
+                                @php
+                                    if ($loop->first) {
+                                        $aos = 'fade-right';
+                                        $delay = 900;
+                                    } elseif ($loop->last) {
+                                        $aos = 'fade-left';
+                                        $delay = 900 + ($logoCount - 1) * 100;
+                                    } else {
+                                        $aos = 'zoom-in';
+                                        $delay = 900 + $loop->index * 100;
+                                    }
+                                @endphp
+                                <div class="col-4 col-sm-2" data-aos="{{ $aos }}" data-aos-delay="{{ $delay }}">
+                                    <img src="{{ asset($site->logo_pic_url) }}" alt="{{ $site->rssite_desc ?? 'Company Logo' }}"
+                                         class="logo-img-small">
+                                </div>
+                            @endif
+                        @endforeach
                     </div>
 
                     @guest
