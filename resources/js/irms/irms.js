@@ -482,13 +482,6 @@ document.addEventListener("DOMContentLoaded", function () {
             },
         });
     });
-});
-
-$("#viewUserModal, #editUserModal, #viewWarehouseModal, #editWarehouseModal, #viewBayModal, #viewRackModal")
-.on("hide.bs.modal", function () {
-    if (document.activeElement && this.contains(document.activeElement)) {
-        document.activeElement.blur();
-    }
 
     // Change Password Form Submission with Fetch API
     const form = document.getElementById('changePasswordForm');
@@ -540,4 +533,11 @@ $("#viewUserModal, #editUserModal, #viewWarehouseModal, #editWarehouseModal, #vi
             msg.innerHTML = `<div class="alert alert-danger">Server error. Please try again.</div>`;
         });
     });
+});
+
+$("#viewUserModal, #editUserModal, #viewWarehouseModal, #editWarehouseModal, #viewBayModal, #viewRackModal")
+.on("hide.bs.modal", function () {
+    if (document.activeElement && this.contains(document.activeElement)) {
+        document.activeElement.blur();
+    }
 });
