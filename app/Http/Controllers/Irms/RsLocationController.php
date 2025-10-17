@@ -15,6 +15,9 @@ class RsLocationController extends Controller
 {
     public function index()
     {
+        if (auth()->user()->level > 3) {
+            abort(403, 'Unauthorized');
+        }
         // Fetch rack locations using the stored procedure
         // $racklocs = DB::select('EXEC sp_view_rslocs');
         $user = auth()->user();

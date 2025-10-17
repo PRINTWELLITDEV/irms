@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 
 use App\Models\IrmsSite;
 use App\Models\RsUser;
+use App\Models\RsLevel;
 
 
 
@@ -16,12 +17,13 @@ class RsUserController extends Controller
 {
     public function index()
     {
-        if (auth()->user()->userid !== 'sa') {
+        if (auth()->user()->level != 1 && auth()->user()->level != 2) {
             abort(403, 'Unauthorized');
         }
         // Call the stored procedure to get users
         $users = \DB::select('EXEC sp_view_users');
         $sites = \DB::table('irms_site')->get();
+        $levels = RsLevel::orderBy('level')->get();
 
         // Get the current user's site description
         $site = IrmsSite::where('rssite', auth()->user()->rssite)->first();
@@ -33,7 +35,7 @@ class RsUserController extends Controller
                 'users' => $users
             ]);
         }
-        return view('irms.irms-layouts.manage-users', compact('users', 'sites', 'site_desc'));
+        return view('irms.irms-layouts.manage-users', compact('users', 'sites', 'site_desc', 'levels'));
     }
 
     public function show($userid)
@@ -89,7 +91,7 @@ class RsUserController extends Controller
         $hashedPassword = bcrypt($validated['password']);
         $create_date = now();
         $created_by = auth()->user()->userid ?? 'system';
-        $level = $validated['level'] ?? 1;
+        $level = $validated['level'] ?? null;
 
         \DB::statement('EXEC sp_add_user ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?', [
             $validated['rssite'],

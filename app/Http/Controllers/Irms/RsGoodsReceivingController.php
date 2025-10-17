@@ -19,6 +19,9 @@ class RsGoodsReceivingController extends Controller
      */
     public function index()
     {
+        if (auth()->user()->level > 3) {
+            abort(403, 'Unauthorized');
+        }
         $sites = IrmsSite::all();
         $warehouses = Rswhse::all();
         $baylocs = RsBayLoc::all();

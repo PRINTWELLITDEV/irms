@@ -9,6 +9,14 @@ use App\Models\RsUser;
 
 class IrmsController extends Controller
 {
+    public function index()
+    {
+        if (auth()->user()->level > 3) {
+            // abort(403, 'Unauthorized');
+            return response()->view('irms.irms-layouts.home', [], 403);
+        }
+        return view('irms.irms-layouts.dashboard');
+    }
     public static function getSiteDesc()
     {
         $rssite = Auth::user()->rssite ?? null;

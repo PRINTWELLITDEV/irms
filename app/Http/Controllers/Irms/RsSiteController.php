@@ -12,6 +12,10 @@ class RsSiteController extends Controller
     //
     public function index()
     {
+        if (auth()->user()->level != 1) {
+            abort(403, 'Unauthorized');
+            // return response()->view('irms.irms-errors.unauthorized', [], 403);
+        }
         $sites = IrmsSite::orderBy('create_date', 'asc')->get();
         return view('irms.irms-layouts.manage-sites', compact('sites'));
     }
