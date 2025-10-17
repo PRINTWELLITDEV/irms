@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Irms;
 use App\Http\Controllers\Controller;
 use App\Models\IrmsSite;
 use App\Models\RsUser;
+use App\Models\RsLevel;
 use Illuminate\Http\Request;
 
 class RsUserProfileController extends Controller
@@ -18,7 +19,8 @@ class RsUserProfileController extends Controller
         $site = IrmsSite::where('rssite', $user->rssite)->first();
         $siteDesc = $site ? $site->rssite_desc : $user->rssite;
         $siteAddress = $site ? $site->address : 'N/A';
-        return view('irms.irms-layouts.user-profile', compact('user', 'siteDesc', 'siteAddress'));
+        $leveldesc = RsLevel::where('level', $user->level)->value('description');
+        return view('irms.irms-layouts.user-profile', compact('user', 'siteDesc', 'siteAddress', 'leveldesc'));
     }
 
     public function update(Request $request, $userid)

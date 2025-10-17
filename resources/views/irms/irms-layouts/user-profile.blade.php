@@ -131,7 +131,12 @@
                                                 <div class="row mb-2">
                                                     <div class="col-4 col-sm-4 fw-semibold">Position</div>
                                                     <div class="col-1 text-center">:</div>
-                                                    <div class="col-7 col-sm-7 text-dark">{{ $user->position ?? '-' }}</div>
+                                                    <div class="col-7 col-sm-7 text-dark">{{ $user->position?? '-' }}</div>
+                                                </div>
+                                                <div class="row mb-2">
+                                                    <div class="col-4 col-sm-4 fw-semibold">Access Level</div>
+                                                    <div class="col-1 text-center">:</div>
+                                                    <div class="col-7 col-sm-7 text-dark">{{ $user->level .' - '. $leveldesc ?? '-' }}</div>
                                                 </div>
                                                 <div class="row mb-2">
                                                     <div class="col-4 col-sm-4 fw-semibold">Joined IRMS</div>
