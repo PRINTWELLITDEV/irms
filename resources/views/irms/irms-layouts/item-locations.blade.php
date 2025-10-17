@@ -46,7 +46,7 @@
                                             <th width="10%">Qty</th>
                                             <th width="5%">U/M</th>
                                             <th width="5%">Pallet No.</th>
-                                            @if(auth()->user()->userid === 'sa')
+                                            @if(auth()->user()->level == 1)
                                                 <th width="10%">Site</th>
                                             @endif
                                             <!-- <th width="10%">Create Date</th> -->
@@ -76,7 +76,7 @@
                                                 <td class="text-end">{{ ($loc->qty ?? 0) == 0 ? '0' : number_format($loc->qty, 0) }}</td>
                                                 <td>{{ $loc->um }}</td>
                                                 <td>{{ $loc->rspallet_num }}</td>
-                                                @if(auth()->user()->userid === 'sa')
+                                                @if(auth()->user()->level == 1)
                                                     <td>{{ $loc->rssite_desc ?? 'N/A' }}</td>
                                                 @endif
                                             </tr>

@@ -46,7 +46,7 @@
                                         <thead>
                                             <tr>
                                                 <th>Bay Number</th>
-                                                @if(auth()->user()->userid === 'sa')
+                                                @if(auth()->user()->level == 1)
                                                 <th width="10%">Site</th>
                                                 @endif
                                                 <!-- <th width="10%">Created Date</th> -->
@@ -65,7 +65,7 @@
                                                     
                                                     <td>{{ $bay->rsbaynum }}</td>
 
-                                                    @if(auth()->user()->userid === 'sa')
+                                                    @if(auth()->user()->level == 1)
                                                     <td>
                                                         {{ $bay->rssite_desc ?? 'N/A' }}
                                                         <!-- <img src="{{ asset($bay->logo_pic_url) }}" alt="logo" class="mx-auto d-block" width="40" height="40" style="object-fit:contain;vertical-align:middle;"> -->
@@ -102,7 +102,7 @@
                     <div class="modal-body">
                         <table class="table table-responsive mb-0 table-borderless">
                             <tbody>
-                                @if(auth()->user()->userid === 'sa')
+                                @if(auth()->user()->level == 1)
                                 <tr>
                                     <th class="w-40">Site:</th>
                                     <td><span id="view-bay-site-desc">-</span></td>
@@ -146,7 +146,7 @@
                     <div class="modal-body">
 
                         <div class="mb-3">
-                            @if(auth()->user()->userid === 'sa')
+                            @if(auth()->user()->level == 1)
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-building"></i></span>
                                 <select name="rssite" id="rssite" class="form-select" required>

@@ -65,7 +65,7 @@
                                                 <th width="10%">Bay No.</th>
                                                 <!-- <th>Description</th> -->
                                                 <th width="10%">Quantity</th>
-                                                @if(auth()->user()->userid === 'sa')
+                                                @if(auth()->user()->level == 1)
                                                 <th width="10%">Site</th>
                                                 @endif
                                                 <!-- <th width="10%">Create Date</th> -->
@@ -88,7 +88,7 @@
                                                     <td>{{ $rsloc->rsbaynum }}</td>
                                                     <!-- <td>{{ $rsloc->rsdesc }}</td> -->
                                                     <td class="text-end me-3">{{ number_format($rsloc->qty, 0) }}</td>
-                                                    @if(auth()->user()->userid === 'sa')
+                                                    @if(auth()->user()->level == 1)
                                                     <td>
                                                         {{ $rsloc->rssite_desc ?? 'N/A' }}
                                                         <!-- <img src="{{ asset($rsloc->logo_pic_url) }}" alt="logo" class="mx-auto d-block" width="40" height="40" style="object-fit:contain;vertical-align:middle;"> -->
@@ -105,7 +105,7 @@
                                 <div class="tab-pane fade" id="mapTabPane" role="tabpanel" aria-labelledby="map-tab">
                                     <form id="rack-map-filter" class="d-flex flex-column">
                                         <div class="row">
-                                            @if(auth()->user()->userid === 'sa')
+                                            @if(auth()->user()->level == 1)
                                             <div class="col-12 col-md-4 mb-2">
                                                 <div class="input-group">
                                                     <span class="input-group-text"><i class="bi bi-building"></i></span>
@@ -239,7 +239,7 @@
                 <div class="modal-body">
 
                     <div class="mb-3">
-                        @if(auth()->user()->userid === 'sa')
+                        @if(auth()->user()->level == 1)
                         <div class="input-group">
                             <span class="input-group-text"><i class="bi bi-building"></i></span>
                             <select name="rssite" id="rssite" class="form-select" required>

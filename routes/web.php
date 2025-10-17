@@ -64,6 +64,9 @@ Route::get('/irms', function () {
 })->name('dashboard')->middleware('auth');
 
 Route::prefix('irms')->middleware('check.session')->group(function () {
+    // Dashboard
+    Route::get('/', [IrmsController::class, 'index'])->name('dashboard');
+
     // Site management
     Route::get('/manage-sites', [RsSiteController::class, 'index'])->name('sites.index');
     Route::post('/manage-sites/store', [RsSiteController::class, 'store'])->name('sites.store');
@@ -72,7 +75,7 @@ Route::prefix('irms')->middleware('check.session')->group(function () {
     Route::get('/manage-users', [RsUserController::class, 'index'])->name('rsusers.index');
     Route::post('/manage-users/store', [RsUserController::class, 'store'])->name('rsusers.store');
     Route::put('/manage-users/update', [RsUserController::class, 'update'])->name('rsusers.update');
-
+    
     // Warehouse
     Route::get('/warehouse', [RsWhseController::class, 'index'])->name('warehouse.index');
     Route::post('/warehouse/store', [RsWhseController::class, 'store'])->name('warehouse.store');

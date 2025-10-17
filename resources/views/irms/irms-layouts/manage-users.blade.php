@@ -120,6 +120,7 @@
                             <div class="col-12 col-md-8">
                                 <div class="mb-3">
                                     <!-- <label for="rssite" class="form-label">Site</label> -->
+                                     @if(auth()->user()->level == 1)
                                     <div class="input-group">
                                         <span class="input-group-text">
                                             <i class="bi bi-building"></i>
@@ -134,6 +135,9 @@
                                         </select>
                                     </div>
                                     @error('rssite') <div class="text-danger small">{{ $message }}</div> @enderror
+                                    @else
+                                    <input type="hidden" name="rssite" value="{{ auth()->user()->rssite }}">
+                                    @endif
                                 </div>
                                 <div class="mb-3">
                                     <!-- <label for="userid" class="form-label">User ID</label> -->
@@ -356,7 +360,7 @@
                             </div>
                             <!-- User Info Column -->
                             <div class="col-12 col-md-8">
-                                @if(auth()->user()->userid === 'sa')
+                                @if(auth()->user()->level == 1)
                                 <div class="mb-3">
                                     <div class="input-group">
                                         <span class="input-group-text">
@@ -418,9 +422,9 @@
                                             </span>
                                             <select name="level" id="edit-level" class="form-select" required>
                                                 <option disabled selected>Select level</option>
-                                                @for($i=1; $i<=10; $i++)
-                                                    <option value="{{ $i }}">{{ $i }}</option>
-                                                @endfor
+                                                @foreach($levels as $level)
+                                                    <option value="{{ $level->level }}" {{ old('level') == $level->level ? 'selected' : '' }}>{{ $level->level }} - {{ $level->role }}</option>
+                                                @endforeach
                                             </select>
                                         </div>
                                     </div>

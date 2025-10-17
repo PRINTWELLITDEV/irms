@@ -50,7 +50,7 @@
                                             <th width="5%">Qty</th>
                                             <th width="5%">U/M</th>
                                             <th width="5%">Doc No.</th>
-                                            @if(auth()->user()->userid === 'sa')
+                                            @if(auth()->user()->level == 1)
                                                 <th width="10%">Site</th>
                                             @endif
                                         </tr>
@@ -81,7 +81,7 @@
                                                 <td class="text-end">{{ ($trx->qty ?? 0) == 0 ? '0' : number_format($trx->qty, 0) }}</td>
                                                 <td>{{ $trx->um }}</td>
                                                 <td>{{ $trx->docnum }}</td>
-                                                @if(auth()->user()->userid === 'sa')
+                                                @if(auth()->user()->level == 1)
                                                     <td>{{ $trx->rssite_desc }}</td>
                                                 @endif
                                             </tr>

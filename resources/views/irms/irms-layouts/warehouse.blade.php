@@ -48,7 +48,7 @@
                                                 <th width="10%">Warehouse</th>
                                                 <th>Description</th>
                                                 <!-- <th width="20%">Address</th> -->
-                                                @if(auth()->user()->userid === 'sa')
+                                                @if(auth()->user()->level == 1)
                                                 <th width="10%">Site</th>
                                                 @endif
                                                 <!-- <th width="5%">Action</th> -->
@@ -64,7 +64,7 @@
                                                     <td>{{ $whse->rswhse }}</td>
                                                     <td>{{ $whse->name }}</td>
                                                     <!-- <td>{{ $whse->addr }}</td> -->
-                                                    @if(auth()->user()->userid === 'sa')
+                                                    @if(auth()->user()->level == 1)
                                                     <td>
                                                         {{ $whse->rssite_desc ?? 'N/A' }}
                                                         <!-- <img src="{{ asset($whse->logo_pic_url) }}" class="me-1" width="40" height="40" style="object-fit:contain;vertical-align:middle;"> -->
@@ -99,7 +99,7 @@
                     <div class="modal-body">
 
                         <div class="mb-3">
-                            @if(auth()->user()->userid === 'sa')
+                            @if(auth()->user()->level == 1)
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-building"></i></span>
                                 <select name="rssite" id="rssite" class="form-select" required>
@@ -163,7 +163,7 @@
                     <div class="modal-body">
                         <input type="hidden" id="edit-orig-rssite" name="orig_rssite">
                         <input type="hidden" id="edit-orig-rswhse" name="orig_rswhse">
-                        @if(auth()->user()->userid === 'sa')
+                        @if(auth()->user()->level == 1)
                         <div class="mb-3">
                             <label for="edit-rssite" class="form-label">Site</label>
                             <select name="rssite" id="edit-rssite" class="form-select" required>

@@ -34,7 +34,7 @@
                             </div>
                             <div class="card-body">
                                 @php
-                                    $isSa = auth()->user()->userid === 'sa';
+                                    $isSa = auth()->user()->level == 1;
                                 @endphp
 
                                 <form id="goodsReceivingForm" method="POST" action="{{ route('goodsreceiving.process') }}">
@@ -192,7 +192,7 @@
                             <form id="receiving-details-form">
                                 <div class="bg-light p-3 rounded shadow-sm">
                                     <div class="row mb-2">
-                                        @if(auth()->user()->userid === 'sa')
+                                        @if(auth()->user()->level == 1)
                                         <div class="col-12">
                                             <span class="fw-bold">Site:</span>
                                             <span id="details-site" class="ms-2"></span>
