@@ -18,7 +18,7 @@ class RsUserController extends Controller
     public function index()
     {
         if (auth()->user()->level != 1 && auth()->user()->level != 2) {
-            abort(403, 'Unauthorized');
+            abort(401, 'Unauthorized');
         }
         // Call the stored procedure to get users
         $users = \DB::select('EXEC sp_view_users');

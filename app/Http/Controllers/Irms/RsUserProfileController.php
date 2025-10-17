@@ -11,6 +11,9 @@ class RsUserProfileController extends Controller
 {
     public function show($userid)
     {
+        if ((auth()->user()->level > 3) && (auth()->user()->userid != $userid)) {
+            abort(401, 'Unauthorized');
+        }
         $user = RsUser::where('userid', $userid)->firstOrFail();
         $site = IrmsSite::where('rssite', $user->rssite)->first();
         $siteDesc = $site ? $site->rssite_desc : $user->rssite;
@@ -54,7 +57,7 @@ class RsUserProfileController extends Controller
             'new_password' => 'required|min:6|confirmed',
         ]);
 
-        $user = \App\Models\RsUser::where('userid', $userid)->firstOrFail();
+        $user = RsUser::where('userid', $userid)->firstOrFail();
 
         if (!\Hash::check($request->current_password, $user->password)) {
             return response()->json(['message' => 'Current password is incorrect.'], 422);

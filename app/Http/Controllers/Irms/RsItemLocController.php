@@ -15,7 +15,7 @@ class RsItemLocController extends Controller
     public function index()
     {
         if (auth()->user()->level > 3) {
-            abort(403, 'Unauthorized');
+            abort(401, 'Unauthorized');
         }
         $user = auth()->user();
         $userSite = $user->rssite;

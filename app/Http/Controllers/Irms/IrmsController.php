@@ -12,8 +12,8 @@ class IrmsController extends Controller
     public function index()
     {
         if (auth()->user()->level > 3) {
-            // abort(403, 'Unauthorized');
-            return response()->view('irms.irms-layouts.home', [], 403);
+            // abort(401, 'Unauthorized');
+            return response()->view('irms.irms-layouts.home', [], 401);
         }
         return view('irms.irms-layouts.dashboard');
     }
