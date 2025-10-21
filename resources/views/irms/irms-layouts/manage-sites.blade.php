@@ -56,6 +56,12 @@
                                         </thead>
                                         <tbody>
                                             @foreach($sites as $site)
+                                                @php
+                                                    $logo_pic_url = $site->logo_pic_url ?? 'uploads/user-profile/noprofile.png';
+                                                    if (!file_exists(public_path($logo_pic_url)) || !$logo_pic_url) {
+                                                        $logo_pic_url = 'uploads/user-profile/noprofile.png';
+                                                    }
+                                                @endphp
                                                 <tr>
                                                     <td>{{ $site->rssite }}</td>
                                                     <td>{{ $site->rssite_desc }}</td>
@@ -69,7 +75,7 @@
                                                     </td>
                                                     <td>
                                                         @if($site->logo_pic_url)
-                                                            <img src="{{ asset($site->logo_pic_url) }}" alt="Site Logo" class="img-thumbnail" style="max-width: 100px; max-height: 100px;">
+                                                            <img src="{{ asset($logo_pic_url) }}" alt="Site Logo" class="img-thumbnail" style="max-width: 100px; max-height: 100px;">
                                                         @else
                                                             N/A
                                                         @endif
