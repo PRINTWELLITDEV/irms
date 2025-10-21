@@ -35,6 +35,7 @@ class RsUserController extends Controller
                 'users' => $users
             ]);
         }
+
         return view('irms.irms-layouts.manage-users', compact('users', 'sites', 'site_desc', 'levels'));
     }
 

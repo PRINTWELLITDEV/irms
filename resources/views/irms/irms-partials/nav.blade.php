@@ -1,7 +1,6 @@
 @php
-    use Illuminate\Support\Facades\Storage;
-    $user = $user ?? auth()->user();
-    $siteDesc = $siteDesc ?? null;
+    use App\Http\Controllers\Irms\IrmsController;
+    $profile_pic_url = IrmsController::getprofile();
 @endphp
 <nav class="app-header navbar navbar-expand bg-body">
     <div class="container-fluid">
@@ -16,14 +15,14 @@
 
             <li class="nav-item dropdown user-menu">
                 <a href="#" class="nav-link dropdown-toggle" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="{{ $user->profile_pic_url }}"
+                    <img src="{{ asset($profile_pic_url) }}"
                             class="user-image rounded-circle border border-2 border-opacity-25 me-2"
                             alt="{{ $user->userid ?? 'Guest User' }}-img">
                     <span class="d-none d-md-inline">{{ $user->name ?? 'Guest' }}</span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end" aria-labelledby="userDropdown">
                     <li class="user-header text-center">
-                        <img src="{{ $user->profile_pic_url }}"
+                        <img src="{{ asset($profile_pic_url) }}"
                                 class="user-image rounded-circle shadow"
                                 alt="{{ $user->userid ?? 'Guest User' }}-img" />
                         <div class="fw-bold">{{ $user->name ?? 'Guest User' }}</div>
