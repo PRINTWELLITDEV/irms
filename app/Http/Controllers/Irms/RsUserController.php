@@ -84,7 +84,7 @@ class RsUserController extends Controller
             $file->move(public_path('uploads/user-profile'), $filename);
             $profile_pic_url = 'uploads/user-profile/' . $filename;
         } else {
-            $profile_pic_url = 'uploads/user-profile/noprofile.png';
+            $profile_pic_url = null;
         }
 
         $userid = $validated['userid'];
