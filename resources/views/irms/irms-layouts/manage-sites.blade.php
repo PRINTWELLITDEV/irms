@@ -57,15 +57,17 @@
                                         <tbody>
                                             @foreach($sites as $site)
                                                 @php
-                                                    $logo_pic_url = $site->logo_pic_url ?? 'uploads/user-profile/noprofile.png';
+                                                    $logo_pic_url = $site->logo_pic_url ?? 'uploads/sites-img/no-logo.png';
                                                     if (!file_exists(public_path($logo_pic_url)) || !$logo_pic_url) {
-                                                        $logo_pic_url = null;
+                                                        $logo_pic_url = 'uploads/sites-img/no-logo.png';
                                                     }
                                                 @endphp
                                                 <tr>
                                                     <td>{{ $site->rssite }}</td>
                                                     <td>{{ $site->rssite_desc }}</td>
-                                                    <td>{{ $site->address }}</td>
+                                                    <td class="text-wrap" style="word-break: break-word; max-width: 250px;">
+                                                        {{ $site->address }}
+                                                    </td>
                                                     <td>
                                                         @if($site->site_link)
                                                             <a href="{{ $site->site_link }}" target="_blank">{{ $site->site_link }}</a>
@@ -74,11 +76,7 @@
                                                         @endif
                                                     </td>
                                                     <td>
-                                                        @if($logo_pic_url)
-                                                            <img src="{{ asset($logo_pic_url) }}" alt="Site Logo" class="img-thumbnail" style="max-width: 100px; max-height: 100px;">
-                                                        @else
-                                                            N/A
-                                                        @endif
+                                                        <img src="{{ asset($logo_pic_url) }}" alt="Site Logo" class="img-thumbnail" style="max-width: 100px; max-height: 100px;">   
                                                     </td>
                                                 </tr>
                                             @endforeach
