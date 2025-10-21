@@ -11,8 +11,6 @@ use App\Models\IrmsSite;
 use App\Models\RsUser;
 use App\Models\RsLevel;
 
-
-
 class RsUserController extends Controller
 {
     public function index()
