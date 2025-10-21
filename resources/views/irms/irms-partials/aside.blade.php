@@ -34,7 +34,7 @@
     <div class="sidebar-wrapper">
         <nav class="mt-2">
             <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="navigation" aria-label="Main navigation" data-accordion="false" id="navigation">
-                @if(auth()->user()->level > 3)
+                @if(auth()->user()->level > 3 || auth()->user()->level == 0)
                     <li class="nav-item">
                         <a href="#" class="nav-link{{ request()->is('irms/no-access') ? ' active' : '' }}">
                             <i class="nav-icon fas fa-exclamation-triangle"></i>
@@ -42,6 +42,7 @@
                         </a>
                     </li>
                 @endif
+
                 @if(auth()->user()->level >= 1 && auth()->user()->level <= 3)
                 <li class="nav-item">
                     <a href="{{ url('/irms') }}" class="nav-link{{ request()->is('irms') ? ' active' : '' }}">
@@ -49,23 +50,24 @@
                         <p>Dashboard</p>
                     </a>
                 </li>
-                @endif
-                @if(auth()->user()->level <= 2)
-                <li class="nav-header">Administration</li>
-                    @if(auth()->user()->level == 1)
-                    <li class="nav-item">
-                        <a href="{{ url('/irms/manage-sites') }}" class="nav-link{{ request()->is('irms/manage-sites') ? ' active' : '' }}">
-                            <i class="nav-icon bi bi-geo-alt"></i>
-                            <p>Sites</p>
-                        </a>
-                    </li>
-                    @endif    
-                <li class="nav-item">
-                    <a href="{{ url('/irms/manage-users') }}" class="nav-link{{ request()->is('irms/manage-users') ? ' active' : '' }}">
-                        <i class="nav-icon fas fa-users"></i>
-                        <p>Users</p>
-                    </a>
-                </li>
+                
+                    @if(auth()->user()->level <= 2)
+                    <li class="nav-header">Administration</li>
+                        @if(auth()->user()->level == 1)
+                        <li class="nav-item">
+                            <a href="{{ url('/irms/manage-sites') }}" class="nav-link{{ request()->is('irms/manage-sites') ? ' active' : '' }}">
+                                <i class="nav-icon bi bi-geo-alt"></i>
+                                <p>Sites</p>
+                            </a>
+                        </li>
+                        @endif    
+                        <li class="nav-item">
+                            <a href="{{ url('/irms/manage-users') }}" class="nav-link{{ request()->is('irms/manage-users') ? ' active' : '' }}">
+                                <i class="nav-icon fas fa-users"></i>
+                                <p>Users</p>
+                            </a>
+                        </li>
+                    @endif
                 @endif
                 @if(auth()->user()->level >= 1 && auth()->user()->level <= 3)
                 <li class="nav-header">Warehouse and Locations</li>

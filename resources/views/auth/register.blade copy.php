@@ -1,25 +1,34 @@
 @extends('layouts.app')
-@section('body-class', 'register-body')
+
 @section('content')
 <div class="container my-5">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header bg-secondary text-white h5">{{ __('Create an IRMS Account') }}</div>
+                <div class="card-header">{{ __('Register') }}</div>
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('register') }}">
                         @csrf
+
                         <div class="row mb-3">
-                            <label class="col-md-4 col-form-label text-md-end">Site</label>
-                            <div class="col-md-6 d-flex gap-3">
-                                @foreach ($sites as $site)
-                                    <input type="radio" id="site-{{ $site->rssite }}" class="site-radio" name="rssite" value="{{ $site->rssite }}">
-                                    <label for="site-{{ $site->rssite }}" class="site-label">
-                                        <img src="{{ asset($site->logo_pic_url) }}" alt="{{ $site->site_desc }}">
-                                        <div class="small mt-1 text-center">{{ $site->rssite_desc }}</div>
-                                    </label>
-                                @endforeach
+                            <label for="rssite" class="col-md-4 col-form-label text-md-end">{{ __('Site') }}</label>
+
+                            <div class="col-md-6">
+                                <select name="rssite" id="" class="form-select @error('rssite') is-invalid @enderror" required>
+                                    <option value="">-- Select Site --</option>
+                                    @foreach($sites as $site)
+                                        <option value="{{ $site->rssite }}" {{ old('rssite') == $site->rssite ? 'selected' : '' }}>
+                                            {{ $site->rssite_desc }}
+                                        </option>
+                                    @endforeach
+                                </select>
+
+                                @error('rssite')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
                             </div>
                         </div>
 

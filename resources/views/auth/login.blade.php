@@ -66,7 +66,7 @@
                     </div>
                     @if (Route::has('register'))
                     <div class="text-center">
-                        <a href="{{ route('register') }}" class="create-account">Create account</a>
+                        <a href="{{ route('register') }}" class="create-account">Create Account</a>
                     </div>
                     @endif
                 </form>

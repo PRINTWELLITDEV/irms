@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Irms\IrmsController;
@@ -37,6 +38,18 @@ Route::get('/', function () {
     }
 })->name('home');
 
+// Register
+if (config('app.env') !== 'production') {
+    Route::get('register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+    Route::post('register', [RegisterController::class, 'register'])->name('register.submit');
+}
+
+// Password Reset Routes
+Route::get('password/reset', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
+Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+Route::get('password/reset/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
+Route::post('password/reset', [ResetPasswordController::class, 'reset'])->name('password.update');
+
 // if already logged in, redirect to irms dashboard
 Route::get('login', [LoginController::class, 'showhomeForm'])->name('home');
 Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
@@ -52,18 +65,12 @@ Route::get('/irms/session', function () {
     return response()->json(['valid' => $sessionExists && auth()->check()]);
 });
 
-// Password Reset Routes
-Route::get('password/reset', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
-Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
-Route::get('password/reset/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
-Route::post('password/reset', [ResetPasswordController::class, 'reset'])->name('password.update');
-
 // Dashboard (protected)
 Route::get('/irms', function () {
     return view('irms.irms-layouts.dashboard');
 })->name('dashboard')->middleware('auth');
 
-Route::prefix('irms')->middleware('check.session')->group(function () {
+Route::prefix('irms')->middleware('auth')->group(function () {
     // Dashboard
     Route::get('/', [IrmsController::class, 'index'])->name('dashboard');
 

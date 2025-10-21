@@ -22,7 +22,7 @@ $(document).ready(function () {
     const sitesTable = $("#sites-table").DataTable({
         pageLength: 5,
         fixedHeader: true,
-        columnControl: ["order", ['colVisDropdown']],
+        columnControl: ["order", ['searchList']],
         ordering: {
             indicators: false,
             handler: true,
@@ -40,7 +40,7 @@ $(document).ready(function () {
     const usersTable = $("#users-table").DataTable({
         pageLength: 5,
         fixedHeader: true,
-        columnControl: ["order", ['colVisDropdown']],
+        columnControl: ["order", ['searchList']],
         ordering: {
             indicators: false,
             handler: true,

@@ -4,21 +4,19 @@
 /* Import AdminLTE */
 @import "admin-lte/dist/css/adminlte.css";
 
-
-
 /* Footer */
 .app-footer {
     background: #f8f9fa;
     padding: 0 1rem;
 }
-.app-footer a{
+.app-footer a {
     text-decoration: none;
     font-weight: bold;
-    color:#0e2b96;
+    color: #0e2b96;
 }
 .app-footer .pi-link {
     color: #0e2b96;
-    font-family: 'Century Schoolbook', serif;
+    font-family: "Century Schoolbook", serif;
     font-weight: bold;
     font-style: italic;
     text-decoration: none;
@@ -28,6 +26,8 @@
 }
 .app-main {
     min-height: 100vh !important;
+    padding: 0 !important;
+    margin: 0 !important;
 }
 /* Home Page */
 .home-body {
@@ -64,7 +64,7 @@
 
 #irms-home-text {
     color: #fff;
-    text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
 }
 .glass-button {
     color: white;
@@ -80,7 +80,7 @@
     transform: scale(1.05);
     background: rgba(255, 255, 255, 0.26);
 }
-.company-logos img{
+.company-logos img {
     width: 6rem !important;
     height: 6rem !important;
 }
@@ -93,7 +93,7 @@
         font-size: 1.25rem;
         padding: 0.75rem 2.5rem;
     }
-    .company-logos img{
+    .company-logos img {
         width: 8rem !important;
         height: 8rem !important;
     }
@@ -106,7 +106,7 @@
         font-size: 1.1rem;
         padding: 0.65rem 2rem;
     }
-    .company-logos img{
+    .company-logos img {
         width: 7rem !important;
         height: 7rem !important;
     }
@@ -119,7 +119,7 @@
         font-size: 1rem;
         padding: 0.5rem 1.5rem;
     }
-    .company-logos img{
+    .company-logos img {
         width: 5rem !important;
         height: 5rem !important;
     }
@@ -132,17 +132,14 @@
         font-size: 0.9rem;
         padding: 0.4rem 1.2rem;
     }
-    .glass-panel p{
+    .glass-panel p {
         font-size: 0.8rem !important;
     }
-    .company-logos img{
+    .company-logos img {
         width: 4rem !important;
         height: 4rem !important;
     }
 }
-
-
-
 
 /* --- Login Page Split Layout --- */
 .login-body {
@@ -153,14 +150,18 @@
 }
 .login-bg-img {
     position: fixed;
-    top: 0; left: 0; width: 100vw; height: 100vh;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
     object-fit: cover;
     z-index: 0;
     opacity: 0.25;
     pointer-events: none;
     user-select: none;
 }
-.login-split-container, .login-card {
+.login-split-container,
+.login-card {
     position: relative;
     z-index: 1;
 }
@@ -204,14 +205,13 @@
     left: 50%;
     transform: translateX(-50%);
     z-index: 2;
-    
-    box-shadow: 0 10px 20px rgba(0,0,0,0.10);
-    
+
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 }
 .login-app-logo img {
     background-color: #fff;
     border-radius: 12px;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.10);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
     padding: 10px 26px;
     height: 150px;
     width: auto;
@@ -250,7 +250,7 @@
     font-weight: 600;
     letter-spacing: 1px;
     padding: 0.75rem 2.5rem;
-    box-shadow: 0 2px 8px rgba(37,99,235,0.08);
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.08);
     transition: background 0.2s;
 }
 .login-form-panel .btn-primary:hover {
@@ -280,21 +280,90 @@
     text-decoration: underline;
 }
 @media (max-width: 900px) {
-    .login-card { flex-direction: column; min-height: 0; box-shadow: none; border-radius: 0;}
-    .login-visual { min-height: 220px; }
-    .login-app-logo img { height: 250px; }
-    .login-form-panel { padding: 2rem 1.2rem; }
+    .login-card {
+        flex-direction: column;
+        min-height: 0;
+        box-shadow: none;
+        border-radius: 0;
+    }
+    .login-visual {
+        min-height: 220px;
+    }
+    .login-app-logo img {
+        height: 250px;
+    }
+    .login-form-panel {
+        padding: 2rem 1.2rem;
+    }
 }
 @media (max-width: 600px) {
-    .login-visual { min-height: 200px; }
-    .login-app-logo { top: 1.5rem; }
-    .login-app-logo img { height: 150px; }
-    .login-form-panel { padding: 1.2rem 0.5rem; }
-    .login-visual { min-width: 0; }
+    .login-visual {
+        min-height: 200px;
+    }
+    .login-app-logo {
+        top: 1.5rem;
+    }
+    .login-app-logo img {
+        height: 150px;
+    }
+    .login-form-panel {
+        padding: 1.2rem 0.5rem;
+    }
+    .login-visual {
+        min-width: 0;
+    }
 }
 @media (max-width: 400px) {
-    .login-visual { min-height: 150px; }
-    .login-app-logo img { height: 100px; }
-    .login-visual-img { opacity: 0.6; }
+    .login-visual {
+        min-height: 150px;
+    }
+    .login-app-logo img {
+        height: 100px;
+    }
+    .login-visual-img {
+        opacity: 0.6;
+    }
 }
 
+/* --- Register Page --- */
+.register-body {
+    background: #f0f2f5;
+    min-height: 100vh !important;
+}
+.site-radio {
+    display: none;
+}
+.site-label {
+    cursor: pointer;
+    transition: border-color 0.2s;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 4px;
+}
+.site-radio:checked + .site-label {
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px #007bff33;
+}
+.site-label img {
+    width: 70px;
+    height: 70px;
+    object-fit: contain;
+}
+@media (min-width: 768px) {
+    .register-body .row.justify-content-center {
+        margin: 0;
+    }
+    .register-body .row.justify-content-center .col-md-8 {
+        padding: 0;
+        min-width: 700px;
+    }
+    .site-label img {
+        width: 80px;
+        height: 80px;
+    }
+}
