@@ -39,10 +39,10 @@ Route::get('/', function () {
 })->name('home');
 
 // Register
-if (config('app.env') !== 'production') {
+// if (config('app.env') !== 'production') {
     Route::get('register', [RegisterController::class, 'showRegistrationForm'])->name('register');
     Route::post('register', [RegisterController::class, 'register'])->name('register.submit');
-}
+// }
 
 // Password Reset Routes
 Route::get('password/reset', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
