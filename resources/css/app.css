@@ -330,10 +330,12 @@
     background: #f0f2f5;
     min-height: 100vh !important;
 }
-.site-radio {
+.register-body .slide { display: none; }
+.register-body .slide.active { display: block; }
+.register-body .site-radio {
     display: none;
 }
-.site-label {
+.register-body .site-label {
     cursor: pointer;
     transition: border-color 0.2s;
     border: 2px solid #ccc;
@@ -345,15 +347,37 @@
     width: 100%;
     padding: 4px;
 }
-.site-radio:checked + .site-label {
+.register-body .site-radio:checked + .site-label {
     border-color: #007bff;
     box-shadow: 0 0 0 2px #007bff33;
 }
-.site-label img {
+.register-body .site-label img {
     width: 70px;
     height: 70px;
     object-fit: contain;
 }
+.register-body .employment-radio {
+    display: none;
+}
+.register-body .employment-label {
+    cursor: pointer;
+    font-size: 1.25rem;
+    font-weight: 600;
+    padding: 4rem 5rem;
+    border: 2px solid #ccc;
+    border-radius: 12px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+.register-body .employment-label:hover {
+    border-color: #007bff;
+    box-shadow: 0 0 10px #007bff33;
+}
+.register-body .employment-radio:checked + .employment-label {
+    border-color: #007bff;
+    background: #1169c7;
+    color: #ffffff;
+}
+
 @media (min-width: 768px) {
     .register-body .row.justify-content-center {
         margin: 0;
@@ -362,7 +386,7 @@
         padding: 0;
         min-width: 700px;
     }
-    .site-label img {
+    .register-body .site-label img {
         width: 80px;
         height: 80px;
     }

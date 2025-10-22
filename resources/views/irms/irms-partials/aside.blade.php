@@ -1,6 +1,5 @@
 @php
     use App\Http\Controllers\Irms\IrmsController;
-    $profile_pic_url = IrmsController::getprofile();
     $site_image = IrmsController::getSiteImage();
     $site_desc = IrmsController::getSiteDesc();
 @endphp
@@ -19,7 +18,7 @@
     </div>
     <div class="sidebar-brand">
         @if(auth()->user()->level == 1)
-            <img src="{{ asset($profile_pic_url) }}" alt="Super Admin Logo" class="brand-image shadow rounded-circle" />
+            <img src="{{ asset(auth()->user()->profile_pic_url) }}" alt="Super Admin Logo" class="brand-image shadow rounded-circle" />
             <span class="brand-text fw-light">
                 Super Admin
             </span>

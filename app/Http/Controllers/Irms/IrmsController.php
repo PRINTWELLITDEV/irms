@@ -34,15 +34,4 @@ class IrmsController extends Controller
         }
         return $logo_pic_url;
     }
-    public static function getprofile()
-    {
-        $userid = Auth::user()->userid ?? null;
-        $user = RsUser::where('userid', $userid)->first();
-        $profile_pic_url = $user ? $user->profile_pic_url : 'uploads/user-profile/noprofile.png';
-        // $profile_pic_url = $user->profile_pic_url ?? 'uploads/user-profile/noprofile.png';
-        if (!file_exists(public_path($profile_pic_url)) || !$profile_pic_url) {
-            $profile_pic_url = 'uploads/user-profile/noprofile.png';
-        }
-        return $profile_pic_url;
-    }
 }

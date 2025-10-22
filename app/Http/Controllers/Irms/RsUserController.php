@@ -90,7 +90,6 @@ class RsUserController extends Controller
         $hashedPassword = bcrypt($validated['password']);
         $create_date = now();
         $created_by = auth()->user()->userid ?? 'system';
-        $level = $validated['level'] ?? null;
 
         \DB::statement('EXEC sp_add_user ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?', [
             $validated['rssite'],
@@ -105,7 +104,7 @@ class RsUserController extends Controller
             $profile_pic_url,
             $create_date,
             $created_by,
-            $level
+            $validated['level'] ?? null,
         ]);
 
         return redirect('/irms/manage-users')->with('success', "$userid user successfully!");
@@ -126,10 +125,10 @@ class RsUserController extends Controller
         ]);
     }
 
-    public function edit(Request $request)
-    {
-        return view('users.edit', compact('rsUser'));
-    }
+    // public function edit(Request $request)
+    // {
+    //     return view('users.edit', compact('rsUser'));
+    // }
 
     public function update(Request $request)
     {
@@ -154,7 +153,16 @@ class RsUserController extends Controller
             $file->move(public_path('uploads/user-profile'), $filename);
             $profile_pic_url = 'uploads/user-profile/' . $filename;
         } else {
-            $profile_pic_url = $request->input('existing_profile_pic_url', 'uploads/user-profile/noprofile.png');
+            // Always store only the relative path, even if the input is a full URL
+            $existing = $request->input('existing_profile_pic_url');
+            if ($existing) {
+                // Remove domain and public path if present
+                $profile_pic_url = preg_replace('#^https?://[^/]+/irms/public/#', '', $existing);
+                // If asset() was used, also remove leading slash
+                $profile_pic_url = ltrim($profile_pic_url, '/');
+            } else {
+                $profile_pic_url = null;
+            }
         }
 
         $updated_by = auth()->user()->userid ?? 'system';
@@ -171,7 +179,7 @@ class RsUserController extends Controller
                 $validated['department'],
                 $validated['section'],
                 $validated['position'],
-                $validated['gender'],
+                $validated['gender'] ?? null,
                 $profile_pic_url,
                 $level,
                 $hashedPassword,
