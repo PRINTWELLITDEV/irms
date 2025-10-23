@@ -70,19 +70,14 @@ Route::get('/irms', function () {
     return view('irms.irms-layouts.dashboard');
 })->name('dashboard')->middleware('auth');
 
-Route::prefix('irms')->middleware('auth')->group(function () {
-    // Dashboard
-    Route::get('/', [IrmsController::class, 'index'])->name('dashboard');
+Route::get('/dashboard/{userid}', [RsUserController::class, 'levelExclusivity']);
 
-    // Site management
-    Route::get('/manage-sites', [RsSiteController::class, 'index'])->name('sites.index');
-    Route::post('/manage-sites/store', [RsSiteController::class, 'store'])->name('sites.store');
-
+Route::prefix('irms')->middleware('check.session')->group(function () {
     // User management
     Route::get('/manage-users', [RsUserController::class, 'index'])->name('rsusers.index');
     Route::post('/manage-users/store', [RsUserController::class, 'store'])->name('rsusers.store');
     Route::put('/manage-users/update', [RsUserController::class, 'update'])->name('rsusers.update');
-    
+
     // Warehouse
     Route::get('/warehouse', [RsWhseController::class, 'index'])->name('warehouse.index');
     Route::post('/warehouse/store', [RsWhseController::class, 'store'])->name('warehouse.store');
@@ -116,7 +111,7 @@ Route::prefix('irms')->middleware('auth')->group(function () {
     Route::post('/dispatching/job-item-details', [RsGoodsDispatchingController::class, 'getJobItemDetails'])->name('goodsdispatching.jobitemdetails');
     Route::post('/dispatching/item-in-rsloc-list', [RsGoodsDispatchingController::class, 'getItemInRsLocList'])->name('goodsdispatching.iteminrsloclist');
     Route::post('/dispatching/process-goods-dispatch', [RsGoodsDispatchingController::class, 'processGoodsDispatch'])->name('goodsdispatching.processdispatch');
-   
+
     //Transactions
     // Route::get('/transactions', fn() => view('irms/irms-layouts/transactions'))->name('irms.transactions');
     Route::get('/transactions', [RsTransController::class, 'index'])->name('irms.transactions');

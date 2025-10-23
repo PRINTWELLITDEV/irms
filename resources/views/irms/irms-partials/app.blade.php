@@ -17,14 +17,14 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/2.3.4/css/dataTables.dataTables.min.css">
     <link href="https://cdn.datatables.net/columncontrol/1.1.0/css/columnControl.dataTables.min.css" rel="stylesheet">
 </head>
-<body class="layout-fixed fixed-header fixed-footer sidebar-expand-lg sidebar-mini sidebar-collapse bg-body-tertiary app-loaded">
+<body class="layout-fixed fixed-header fixed-footer sidebar-expand-lg sidebar-mini bg-body-tertiary app-loaded">
     <div class="app-wrapper">
         {{-- Navbar --}}
         @include('irms.irms-partials.nav')
 
         {{-- Sidebar --}}
         @include('irms.irms-partials.aside')
-        
+
         {{-- Main Content --}}
         @yield('content')
 
