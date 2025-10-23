@@ -37,13 +37,13 @@ class RsUserProfileController extends Controller
         ]);
 
         // Handle profile picture upload
-        if($request->hasFile('profile_pic_url')){
+        if ($request->hasFile('profile_pic_url')) {
             $file = $request->file('profile_pic_url');
-            $filename = uniqid() . '_' . $userid . '.png';
+            $filename = uniqid() . '_' . $userid . '.' . $file->getClientOriginalExtension();
             $file->move(public_path('uploads/user-profile'), $filename);
             $profile_pic_url = 'uploads/user-profile/' . $filename;
         } else {
-            $profile_pic_url = $validated['existing_profile_pic_url'];
+            $profile_pic_url = RsUser::where('userid', $userid)->value('profile_pic_url');
         }
 
         // Update other fields
@@ -58,8 +58,8 @@ class RsUserProfileController extends Controller
 
         $user->save();
 
-            return redirect()->back()->with('success', 'Profile updated successfully!');
-        }
+        return redirect()->back()->with('success', 'Profile updated successfully!');
+    }
     
     public function changePassword(Request $request, $userid)
     {

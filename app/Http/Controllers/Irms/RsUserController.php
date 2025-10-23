@@ -157,9 +157,7 @@ class RsUserController extends Controller
             $existing = $request->input('existing_profile_pic_url');
             if ($existing) {
                 // Remove domain and public path if present
-                $profile_pic_url = preg_replace('#^https?://[^/]+/irms/public/#', '', $existing);
-                // If asset() was used, also remove leading slash
-                $profile_pic_url = ltrim($profile_pic_url, '/');
+                $profile_pic_url = RsUser::where('userid', $userid)->value('profile_pic_url');
             } else {
                 $profile_pic_url = null;
             }
