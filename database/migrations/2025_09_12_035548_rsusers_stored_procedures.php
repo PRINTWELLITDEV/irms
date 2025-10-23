@@ -99,7 +99,6 @@ return new class extends Migration
                 @section NVARCHAR(255),
                 @position NVARCHAR(255),
                 @gender NVARCHAR(10),
-                @profile_pic_url NVARCHAR(255),
                 @level INT,
                 @password NVARCHAR(255),
                 @updated_by NVARCHAR(8)
@@ -114,7 +113,6 @@ return new class extends Migration
                     section = @section,
                     position = @position,
                     gender = @gender,
-                    profile_pic_url = @profile_pic_url,
                     level = @level,
                     password = CASE WHEN @password IS NOT NULL AND @password <> '' THEN @password ELSE password END,
                     updated_by = @updated_by

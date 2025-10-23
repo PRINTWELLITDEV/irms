@@ -36,32 +36,27 @@ class RsUserProfileController extends Controller
             'profile_pic_url' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
         ]);
 
-        // Handle profile picture upload
+        // Handle profile picture upload separately with Eloquent
         if ($request->hasFile('profile_pic_url')) {
             $file = $request->file('profile_pic_url');
             $filename = uniqid() . '_' . $userid . '.' . $file->getClientOriginalExtension();
             $file->move(public_path('uploads/user-profile'), $filename);
-            $profile_pic_url = 'uploads/user-profile/' . $filename;
-        } else {
-            // Get the existing value
-            $existing = RsUser::where('userid', $userid)->value('profile_pic_url');
-            // Remove domain and public path if present
-            $profile_pic_url = preg_replace('#^https?://[^/]+/irms/public/#', '', $existing);
-            // Remove leading slash if present
-            $profile_pic_url = ltrim($profile_pic_url, '/');
+            RsUser::where('userid', $userid)->update(['profile_pic_url' => 'uploads/user-profile/' . $filename]);
         }
 
-        // Update other fields
-        $user->name = $validated['name'] ?? $user->name;
-        $user->gender = $validated['gender'] ?? $user->gender;
-        $user->department = $validated['department'] ?? $user->department;
-        $user->section = $validated['section'] ?? $user->section;
-        $user->position = $validated['position'] ?? $user->position;
-        $user->updated_date = now();
-        $user->updated_by = auth()->user()->userid ?? 'system';
-        $user->profile_pic_url = $profile_pic_url;
-
-        $user->save();
+        // Call sp_update_profile with only the fields in the form
+        \DB::statement('EXEC sp_update_profile ?, ?, ?, ?, ?, ?, ?, ?',
+            [
+                $user->rssite,
+                $userid,
+                $validated['name'] ?? null,
+                $validated['gender'] ?? null,
+                $validated['department'] ?? null,
+                $validated['section'] ?? null,
+                $validated['position'] ?? null,
+                auth()->user()->userid ?? 'system'
+            ]
+        );
 
         return redirect()->back()->with('success', 'Profile updated successfully!');
     }
