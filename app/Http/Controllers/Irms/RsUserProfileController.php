@@ -43,7 +43,12 @@ class RsUserProfileController extends Controller
             $file->move(public_path('uploads/user-profile'), $filename);
             $profile_pic_url = 'uploads/user-profile/' . $filename;
         } else {
-            $profile_pic_url = RsUser::where('userid', $userid)->value('profile_pic_url');
+            // Get the existing value
+            $existing = RsUser::where('userid', $userid)->value('profile_pic_url');
+            // Remove domain and public path if present
+            $profile_pic_url = preg_replace('#^https?://[^/]+/irms/public/#', '', $existing);
+            // Remove leading slash if present
+            $profile_pic_url = ltrim($profile_pic_url, '/');
         }
 
         // Update other fields

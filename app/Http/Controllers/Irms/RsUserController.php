@@ -147,20 +147,18 @@ class RsUserController extends Controller
         ]);
 
         // Handle profile picture upload
-        if($request->hasFile('profile_pic_url')){
+        if ($request->hasFile('profile_pic_url')) {
             $file = $request->file('profile_pic_url');
-            $filename = uniqid() . '_' . $userid . '.png';
+            $filename = uniqid() . '_' . $userid . '.' . $file->getClientOriginalExtension();
             $file->move(public_path('uploads/user-profile'), $filename);
             $profile_pic_url = 'uploads/user-profile/' . $filename;
         } else {
-            // Always store only the relative path, even if the input is a full URL
-            $existing = $request->input('existing_profile_pic_url');
-            if ($existing) {
-                // Remove domain and public path if present
-                $profile_pic_url = RsUser::where('userid', $userid)->value('profile_pic_url');
-            } else {
-                $profile_pic_url = null;
-            }
+            // Get the existing value
+            $existing = RsUser::where('userid', $userid)->value('profile_pic_url');
+            // Remove domain and public path if present
+            $profile_pic_url = preg_replace('#^https?://[^/]+/irms/public/#', '', $existing);
+            // Remove leading slash if present
+            $profile_pic_url = ltrim($profile_pic_url, '/');
         }
 
         $updated_by = auth()->user()->userid ?? 'system';
