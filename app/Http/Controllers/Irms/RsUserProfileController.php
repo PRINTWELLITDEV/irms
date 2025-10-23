@@ -33,36 +33,33 @@ class RsUserProfileController extends Controller
             'department' => 'nullable|max:50',
             'section' => 'nullable|max:50',
             'position' => 'nullable|max:50',
-            'profile_pic_url' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'profile_pic_url' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
         ]);
 
-        if ($request->hasFile('profile_pic_url')) {
+        // Handle profile picture upload
+        if($request->hasFile('profile_pic_url')){
             $file = $request->file('profile_pic_url');
-            $filename = $user->userid . '.' . $file->getClientOriginalExtension();
+            $filename = uniqid() . '_' . $userid . '.png';
             $file->move(public_path('uploads/user-profile'), $filename);
             $profile_pic_url = 'uploads/user-profile/' . $filename;
         } else {
-            // Use the existing value from the database
-            $profile_pic_url = $user->profile_pic_url;
+            $profile_pic_url = $validated['existing_profile_pic_url'];
         }
 
-        // Only pass values if not empty, else pass null
-        $params = [
-            $user->rssite,
-            $user->userid,
-            $validated['name'] ?: null,
-            $validated['gender'] ?: null,
-            $validated['department'] ?: null,
-            $validated['section'] ?: null,
-            $validated['position'] ?: null,
-            $profile_pic_url ?: null,
-            auth()->user()->userid ?? 'system'
-        ];
+        // Update other fields
+        $user->name = $validated['name'] ?? $user->name;
+        $user->gender = $validated['gender'] ?? $user->gender;
+        $user->department = $validated['department'] ?? $user->department;
+        $user->section = $validated['section'] ?? $user->section;
+        $user->position = $validated['position'] ?? $user->position;
+        $user->updated_date = now();
+        $user->updated_by = auth()->user()->userid ?? 'system';
+        $user->profile_pic_url = $profile_pic_url;
 
-        \DB::statement('EXEC sp_update_profile ?, ?, ?, ?, ?, ?, ?, ?', $params);
+        $user->save();
 
-        return redirect()->back()->with('success', 'Profile updated successfully!');
-    }
+            return redirect()->back()->with('success', 'Profile updated successfully!');
+        }
     
     public function changePassword(Request $request, $userid)
     {

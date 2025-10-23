@@ -155,7 +155,7 @@
                                         </h5>
                                     </div>
                                     <div class="card-body p-4 text-secondary">
-                                        <form method="POST" action="{{ route('user-profile.update', $user->userid) }}">
+                                        <form method="POST" action="{{ route('user-profile.update', $user->userid) }}" enctype="multipart/form-data">
                                             @csrf
                                             <input type="hidden" id="edit-existing-profile-pic" name="existing_profile_pic_url" value="{{ $user->profile_pic_url }}">
                                             <div class="row">
@@ -172,27 +172,27 @@
                                                 </div>
                                                 <div class="col-12 col-md-12 mb-2">
                                                     <label class="form-label fw-semibold">Full Name</label>
-                                                    <input type="text" class="form-control" name="name" value="" placeholder="{{ $user->name }}">
+                                                    <input type="text" class="form-control" name="name" value="{{ old('name', $user->name) }}" placeholder="Full Name">
                                                 </div>
                                                 <div class="col-12 col-md-12 mb-2">
                                                     <label class="form-label fw-semibold">Gender</label>
                                                     <select name="gender" class="form-control">
-                                                        <option value="{{ $user->gender ?? '' }}">{{ $user->gender ?? '- Select Gender -'}}</option>
-                                                        <option value="Male">Male</option>
-                                                        <option value="Female">Female</option>
+                                                        <option value="">{{ $user->gender ?? '- Select Gender -'}}</option>
+                                                        <option value="Male" {{ old('gender', $user->gender) == 'Male' ? 'selected' : '' }}>Male</option>
+                                                        <option value="Female" {{ old('gender', $user->gender) == 'Female' ? 'selected' : '' }}>Female</option>
                                                     </select>
                                                 </div>
                                                 <div class="col-12 col-md-12 mb-2">
                                                     <label class="form-label fw-semibold">Department</label>
-                                                    <input type="text" class="form-control" name="department" value="" placeholder="{{ $user->department }}">
+                                                    <input type="text" class="form-control" name="department" value="{{ old('department', $user->department) }}" placeholder="Department">
                                                 </div>
                                                 <div class="col-12 col-md-12 mb-2">
                                                     <label class="form-label fw-semibold">Section</label>
-                                                    <input type="text" class="form-control" name="section" value="" placeholder="{{ $user->section }}">
+                                                    <input type="text" class="form-control" name="section" value="{{ old('section', $user->section) }}" placeholder="Section">
                                                 </div>
                                                 <div class="col-12 col-md-12 mb-2">
                                                     <label class="form-label fw-semibold">Position</label>
-                                                    <input type="text" class="form-control" name="position" value="" placeholder="{{ $user->position }}">
+                                                    <input type="text" class="form-control" name="position" value="{{ old('position', $user->position) }}" placeholder="Position">
                                                 </div>
                                                 <div class="col-12 text-end">
                                                     <button class="btn btn-success">Save Changes</button>
