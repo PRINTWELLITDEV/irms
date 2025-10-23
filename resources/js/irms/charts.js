@@ -236,74 +236,7 @@
 
         // Real-time chart: push random y values every second
         // Real-time chart: push random y values every second
-        (function createRealTimeChart() {
-            const el = document.getElementById("realTimeAreaChart");
-            if (!el) return;
 
-            el.style.height = "250px";
-            el.height = 250;
-            const ctxRT = el.getContext("2d");
-
-            const config = {
-                type: "line",
-                data: {
-                    datasets: [
-                        {
-                            label: "Live Transactions",
-                            backgroundColor: "rgba(75,192,192,0.4)",
-                            borderColor: "rgb(75,192,192)",
-                            fill: "origin",
-                            data: dataD,
-                        },
-                    ],
-                },
-                options: {
-                    maintainAspectRatio: false,
-                    responsive: true,
-                    scales: {
-                        x: {
-                            type: "realtime", // <--- Change type from 'time' to 'realtime'
-                            realtime: {
-                                // <--- ADD THIS BLOCK
-                                delay: 2000,
-                                onRefresh: (chart) => {
-                                    chart.data.datasets.forEach((dataset) => {
-                                        dataset.data.push({
-                                            x: Date.now(),
-                                            y: randInt(0, 120), // Use your randInt function
-                                        });
-                                    });
-                                },
-                            },
-                            time: {
-                                unit: "second",
-                                tooltipFormat: "HH:mm:ss",
-                            },
-                            ticks: {
-                                source: "auto",
-                            },
-                            grid: {
-                                display: false,
-                            },
-                        },
-                        y: {
-                            beginAtZero: true,
-                        },
-                    },
-                    plugins: {
-                        legend: {
-                            display: true,
-                        },
-                        tooltip: {
-                            mode: "index",
-                            intersect: false,
-                        },
-                    },
-                },
-            };
-
-            const myRealTimeChart = new Chart(ctxRT, config);
-        })();
 
         /* ===== Fixed: initialize myChart here (guarded) ===== */
         try {

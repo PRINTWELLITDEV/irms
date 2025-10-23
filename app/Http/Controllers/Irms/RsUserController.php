@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Irms;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
@@ -180,5 +181,13 @@ class RsUserController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->withInput()->withErrors(['error' => $e->getMessage()]);
         }
+    }
+
+    public function levelExclusivity($userid)
+    {
+        $user = User::find($userid);
+        $level = $user ? $user->level : null;
+
+        return view('irms.irms-layouts.dashboard', ['level' => $level]);
     }
 }
