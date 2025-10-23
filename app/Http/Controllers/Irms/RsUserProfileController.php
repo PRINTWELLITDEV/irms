@@ -33,7 +33,18 @@ class RsUserProfileController extends Controller
             'department' => 'nullable|max:50',
             'section' => 'nullable|max:50',
             'position' => 'nullable|max:50',
+            'profile_pic_url' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
+
+        if ($request->hasFile('profile_pic_url')) {
+            $file = $request->file('profile_pic_url');
+            $filename = $user->userid . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('uploads/user-profile'), $filename);
+            $profile_pic_url = 'uploads/user-profile/' . $filename;
+        } else {
+            // Use the existing value from the database
+            $profile_pic_url = $user->profile_pic_url;
+        }
 
         // Only pass values if not empty, else pass null
         $params = [
@@ -44,6 +55,7 @@ class RsUserProfileController extends Controller
             $validated['department'] ?: null,
             $validated['section'] ?: null,
             $validated['position'] ?: null,
+            $profile_pic_url ?: null,
             auth()->user()->userid ?? 'system'
         ];
 

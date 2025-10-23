@@ -157,7 +157,19 @@
                                     <div class="card-body p-4 text-secondary">
                                         <form method="POST" action="{{ route('user-profile.update', $user->userid) }}">
                                             @csrf
+                                            <input type="hidden" id="edit-existing-profile-pic" name="existing_profile_pic_url" value="{{ $user->profile_pic_url }}">
                                             <div class="row">
+                                                <div class="col-12 col-md-12 mb-2 text-center">
+                                                    <img id="edit-user-profile-preview"
+                                                         src="{{ $user->profile_pic_url ? asset($user->profile_pic_url) : asset('uploads/user-profile/noprofile.png') }}"
+                                                         alt="profile preview"
+                                                         class="rounded-circle mb-2 border"
+                                                         width="150" height="150">
+                                                </div>
+                                                <div class="col-12 col-md-12 mb-2">
+                                                    <label class="form-label fw-semibold">Profile Picture</label>
+                                                    <input type="file" name="profile_pic_url" id="edit_profile_pic" class="form-control" accept="image/png, image/jpeg, image/jpg, image/webp">
+                                                </div>
                                                 <div class="col-12 col-md-12 mb-2">
                                                     <label class="form-label fw-semibold">Full Name</label>
                                                     <input type="text" class="form-control" name="name" value="" placeholder="{{ $user->name }}">
@@ -183,7 +195,8 @@
                                                     <input type="text" class="form-control" name="position" value="" placeholder="{{ $user->position }}">
                                                 </div>
                                                 <div class="col-12 text-end">
-                                                    <button class="btn btn-success">Update Profile</button>
+                                                    <button class="btn btn-success">Save Changes</button>
+                                                    <button type="reset" class="btn btn-secondary">Reset</button>
                                                 </div>
                                             </div>
                                         </form>
