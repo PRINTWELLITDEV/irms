@@ -99,6 +99,7 @@ Route::prefix('irms')->middleware('auth')->group(function () {
     //Item Locations
     // Route::get('/item-locations', fn() => view('irms/irms-layouts/item-locations'))->name('irms.itemlocations');
     Route::get('/item-locations', [RsItemLocController::class, 'index'])->name('irms.itemlocations');
+    Route::post('/item-locations/job-details', [RsItemLocController::class, 'jobDetails'])->name('itemloc.jobDetails');
 
     // Goods Receiving
     Route::get('/receiving', [RsGoodsReceivingController::class, 'index'])->name('goodsreceiving.index');

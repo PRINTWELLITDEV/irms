@@ -60,7 +60,7 @@
 
 /* Table */
 .table-view {
-    min-height: 40vh;
+    /* min-height: 40vh; */
     overflow-y: hidden;
     position: relative;
 }
@@ -104,6 +104,8 @@ table.table td img {
     min-width: 120px;
     justify-content: flex-end;
 }
+
+/* item location */
 
 /* Make modal profile image bigger and responsive */
 .profile-pic {
