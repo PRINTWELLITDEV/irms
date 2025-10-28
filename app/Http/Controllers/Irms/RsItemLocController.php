@@ -38,32 +38,45 @@ class RsItemLocController extends Controller
         return view('irms.irms-layouts.item-locations', compact('itemlocs', 'sites'));
     }
 
-    public function jobDetails(Request $request)
+    // public function jobDetails(Request $request)
+    // {
+    //     $job = $request->input('job');
+    //     $rssite = $request->input('rssite');
+
+    //     // $details = \DB::table('rsitemloc')
+    //     //     ->select(
+    //     //         'rssite',
+    //     //         'rspallet_num',
+    //     //         'job',
+    //     //         'rsloc',
+    //     //         'qty',
+    //     //         'um',
+    //     //         'datercvd',
+    //     //         'createdby AS rcvd_by'
+    //     //     )
+    //     //     ->where('job', $job)
+    //     //     ->when($rssite, function ($query) use ($rssite) {
+    //     //         $query->where('rssite', $rssite);
+    //     //     })
+    //     //     ->orderBy('job')
+    //     //     ->orderBy('rsloc')
+    //     //     ->get();
+
+    //     $details = \DB::select('EXEC sp_job_details @job = ?, @rssite = ?', [$job, $rssite]);
+
+    //     return response()->json($details);
+    // }
+
+    public function showJobDetails($job, Request $request)
     {
-        $job = $request->input('job');
-        $rssite = $request->input('rssite');
+        $user = auth()->user();
+        $rssite = $user->level == 1 ? null : $user->rssite;
 
-        // $details = \DB::table('rsitemloc')
-        //     ->select(
-        //         'rssite',
-        //         'rspallet_num',
-        //         'job',
-        //         'rsloc',
-        //         'qty',
-        //         'um',
-        //         'datercvd',
-        //         'createdby AS rcvd_by'
-        //     )
-        //     ->where('job', $job)
-        //     ->when($rssite, function ($query) use ($rssite) {
-        //         $query->where('rssite', $rssite);
-        //     })
-        //     ->orderBy('job')
-        //     ->orderBy('rsloc')
-        //     ->get();
-
+        // Get summary info for the job (first row)
+        $summary = \DB::selectOne('EXEC sp_view_rsitemlocs @job = ?, @rssite = ?', [$job, $rssite]);
+        // Get rack list for the job
         $details = \DB::select('EXEC sp_job_details @job = ?, @rssite = ?', [$job, $rssite]);
 
-        return response()->json($details);
+        return view('irms.irms-layouts.item-job-details', compact('summary', 'details', 'job'));
     }
 }

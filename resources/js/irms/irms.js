@@ -302,55 +302,55 @@ $(document).ready(function () {
     }
 
     //item Locations Table Row Data Attributes
-    $("#item-job-view").hide();
-    $("#itemloc-table tbody").on("click", "tr", function () {
-        const $row = $(this);
-        const $job = $row.data("job");
-        const $rssite = $row.data("rssite");
-        const $rssiteDesc = $row.data("rssite-desc");
-        // Fill summary details
-        $("#item-details-jobco").text($row.data("job") || "");
-        $("#item-details-item").text($row.data("item") || "");
-        $("#item-details-description").text($row.data("desc") || "");
-        $("#item-details-total_qty").text($row.data("totalqty") || "0");
-        $("#item-details-um").text($row.data("um") || "");
-        $("#item-details-warehouse").text($row.data("rswhse") || "");
-        $("#item-details-site").text($row.data("rssite") || "");
-        $("#item-details-site-desc").text($rssiteDesc || "");
+    // $("#item-job-view").hide();
+    // $("#itemloc-table tbody").on("click", "tr", function () {
+    //     const $row = $(this);
+    //     const $job = $row.data("job");
+    //     const $rssite = $row.data("rssite");
+    //     const $rssiteDesc = $row.data("rssite-desc");
+    //     // Fill summary details
+    //     $("#item-details-jobco").text($row.data("job") || "");
+    //     $("#item-details-item").text($row.data("item") || "");
+    //     $("#item-details-description").text($row.data("desc") || "");
+    //     $("#item-details-total_qty").text($row.data("totalqty") || "0");
+    //     $("#item-details-um").text($row.data("um") || "");
+    //     $("#item-details-warehouse").text($row.data("rswhse") || "");
+    //     $("#item-details-site").text($row.data("rssite") || "");
+    //     $("#item-details-site-desc").text($rssiteDesc || "");
 
-        // Show the item-job-view card
-        $("#item-list-view").hide();
-        $("#item-job-view").fadeIn();
+    //     // Show the item-job-view card
+    //     $("#item-list-view").hide();
+    //     $("#item-job-view").fadeIn();
 
-        // AJAX to get rack list for this job
-        $.post({
-            url: window.appUrl + "/irms/item-locations/job-details",
-            data: {
-                job: $job,
-                rssite: $rssite,
-                _token: window.csrfToken
-            },
-            success: function (data) {
-                let html = "";
-                data.forEach(function (row) {
-                    html += `<tr>
-                        <td>${row.rsloc}</td>
-                        <td>${row.rspallet_num || ""}</td>
-                        <td class="text-end">${Number(row.qty).toLocaleString(undefined, {maximumFractionDigits:0})}</td>
-                        <td>${row.um}</td>
-                        <td>${row.rcvd_by}</td>
-                        <td>${row.datercvd ? row.datercvd.substring(0, 10) : ""}</td>
-                    </tr>`;
-                });
-                $("#job-details-body").html(html);
-            }
-        });
-    });
+    //     // AJAX to get rack list for this job
+    //     $.post({
+    //         url: window.appUrl + "/irms/item-locations/job-details",
+    //         data: {
+    //             job: $job,
+    //             rssite: $rssite,
+    //             _token: window.csrfToken
+    //         },
+    //         success: function (data) {
+    //             let html = "";
+    //             data.forEach(function (row) {
+    //                 html += `<tr>
+    //                     <td>${row.rsloc}</td>
+    //                     <td>${row.rspallet_num || ""}</td>
+    //                     <td class="text-end">${Number(row.qty).toLocaleString(undefined, {maximumFractionDigits:0})}</td>
+    //                     <td>${row.um}</td>
+    //                     <td>${row.rcvd_by}</td>
+    //                     <td>${row.datercvd ? row.datercvd.substring(0, 10) : ""}</td>
+    //                 </tr>`;
+    //             });
+    //             $("#job-details-body").html(html);
+    //         }
+    //     });
+    // });
 
-    $("#btnBackItems").on("click", function () {
-        $("#item-job-view").hide();
-        $("#item-list-view").fadeIn();
-    });
+    // $("#btnBackItems").on("click", function () {
+    //     $("#item-job-view").hide();
+    //     $("#item-list-view").fadeIn();
+    // });
 });
 
 document.addEventListener("DOMContentLoaded", function () {

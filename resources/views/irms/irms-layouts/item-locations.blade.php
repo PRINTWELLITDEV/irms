@@ -53,7 +53,9 @@
                                         
                                         <tbody>
                                             @foreach($itemlocs as $loc)
-                                                <tr data-job="{{ $loc->job }}" data-rssite="{{ $loc->rssite }}" data-rssite-desc="{{ $loc->rssite_desc }}"
+                                                <tr onclick="window.location='{{ route('itemloc.showJobDetails', ['job' => $loc->job]) }}'"
+                                                    style="cursor:pointer;"
+                                                    data-job="{{ $loc->job }}" data-rssite="{{ $loc->rssite }}" data-rssite-desc="{{ $loc->rssite_desc }}"
                                                     data-item="{{ $loc->item }}" data-desc="{{ $loc->desc }}"
                                                     data-totalqty="{{ ($loc->totalqty ?? 0) == 0 ? '0' : number_format($loc->totalqty, 0) }}" data-um="{{ $loc->um }}"
                                                     data-rswhse="{{ $loc->rswhse }}">
@@ -76,86 +78,11 @@
                         </div>
                     </div>
                 </div>
-
-                <div id="item-job-view" class="card">
-                    <div class="card-header d-flex align-items-center">
-                        <button type="button" id="btnBackItems" class="btn border border-secondary d-flex align-items-center">
-                            <i class="bi bi-arrow-left d-sm-inline me-2"></i>
-                            <span>Back</span>
-                        </button>
-                        <h5 class="card-title fw-bold ms-2">Item Details </h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="bg-secondary bg-opacity-50 p-2 mb-3 rounded">
-                            <div class="bg-light p-3 rounded shadow-sm">
-                                <div class="row mb-2">
-                                    @if(auth()->user()->level == 1)
-                                    <div class="col-4">
-                                        <span class="fw-bold">Site:</span>
-                                        <span id="item-details-site-desc" class="ms-2"></span>
-                                    </div>
-                                    @endif
-                                    <div class="col-6">
-                                        <span class="fw-bold">Warehouse:</span>
-                                        <span id="item-details-warehouse" class="ms-2"></span>
-                                    </div>
-                                </div>
-                                <div class="row mb-2">
-                                    <div class="col-4">
-                                        <span class="fw-bold">Job:</span>
-                                        <span id="item-details-jobco" class="ms-2"></span>
-                                    </div>
-                                    <div class="col-8">
-                                        <span class="fw-bold">Item:</span>
-                                        <span id="item-details-item" class="ms-2"></span>
-                                    </div>
-                                </div>
-                                <div class="row mb-2">
-                                    <div class="col-4">
-                                        <span class="fw-bold">Total Qty:</span>
-                                        <span id="item-details-total_qty" class="ms-2"></span>
-                                    </div>
-                                    <div class="col-4">
-                                        <span class="fw-bold">U/M:</span>
-                                        <span id="item-details-um" class="ms-2"></span>
-                                    </div>
-                                </div>
-                                <div class="row mb-2">
-                                    <div class="col-12">
-                                        <span class="fw-bold">Description:</span>
-                                        <span id="item-details-description" class="ms-2"></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="d-flex justify-content-center align-items-center">
-                            <table id="job-rack-list" class="table table-striped table-bordered table-hover align-middle">
-                                <thead>
-                                    <tr>
-                                        <th>Rack Location</th>
-                                        <th width="10%">Pallet No.</th>
-                                        <th width="10%">Quantity</th>
-                                        <th width="5%">U/M</th>
-                                        <th width="15%">Received By</th>
-                                        <th width="15%">Date Received</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="job-details-body">
-                                    
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
 </main>
 
-<meta name="csrf-token" content="{{ csrf_token() }}">
-<script>
-    window.csrfToken = "{{ csrf_token() }}";
-</script>
+
 
 @endsection

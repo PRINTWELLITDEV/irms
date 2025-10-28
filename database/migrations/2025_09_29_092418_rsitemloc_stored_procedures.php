@@ -17,35 +17,36 @@ return new class extends Migration
         // Create sp_view_rsitemlocs
         \DB::unprepared('
             CREATE PROCEDURE sp_view_rsitemlocs
-                @rssite VARCHAR(8) = NULL
+                @rssite NVARCHAR(10) = NULL,
+				@job NVARCHAR (15) = NULL
             AS
             SELECT
-                i.rssite,
-                rswhse,
-                rsbaynum,
-                job,
-                item,
-                [desc],
-                SUM(qty) AS [totalqty],
-                um,
-                s.rssite_desc
-            FROM
-                rsitemloc i
-                INNER JOIN irms_site s ON s.rssite = i.rssite
-            WHERE
-                job IS NOT NULL
+				i.rssite,
+				i.rswhse,
+				i.rsbaynum,
+				i.job,
+				i.item,
+				i.[desc],
+				SUM(i.qty) AS totalqty,
+				i.um,
+				s.rssite_desc
+			FROM
+				rsitemloc AS i
+				INNER JOIN irms_site AS s ON s.rssite = i.rssite
+			WHERE
+				(@job IS NULL OR i.job = @job)
 				AND (@rssite IS NULL OR i.rssite = @rssite)
-            GROUP BY
-                i.rssite,
-                rswhse,
-                rsbaynum,
-                job,
-                item,
-                [desc],
-                um,
-                s.rssite_desc
-            ORDER BY
-                job;
+			GROUP BY
+				i.rssite,
+				i.rswhse,
+				i.rsbaynum,
+				i.job,
+				i.item,
+				i.[desc],
+				i.um,
+				s.rssite_desc
+			ORDER BY
+				i.job;
         ');
     }
 
