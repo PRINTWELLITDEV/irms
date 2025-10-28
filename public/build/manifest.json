@@ -22,7 +22,11 @@
     "isEntry": true
   },
   "resources/js/irms/irms.js": {
+<<<<<<< Updated upstream
     "file": "assets/irms-CC_vKHUp.js",
+=======
+    "file": "assets/irms-BfTxXVc5.js",
+>>>>>>> Stashed changes
     "name": "irms",
     "src": "resources/js/irms/irms.js",
     "isEntry": true,

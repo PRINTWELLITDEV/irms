@@ -96,7 +96,7 @@ class RegisterController extends Controller
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             // Add other fields as needed
         ]);
-        $level = 0; // default level for new users
+        $level = 3; // default level for new users
         DB::statement('EXEC sp_rsuser_register ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?',
             [
                 $data['rssite'],
