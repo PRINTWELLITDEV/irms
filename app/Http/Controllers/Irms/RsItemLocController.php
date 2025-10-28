@@ -28,39 +28,10 @@ class RsItemLocController extends Controller
         // }
         if (auth()->user()->level == 1) {
             // Admins see all sites
-            $itemlocs = DB::table('rsitemloc')
-                ->select(
-                    'rssite',
-                    'rswhse',
-                    'rsbaynum',
-                    'job',
-                    'item',
-                    'desc',
-                    DB::raw('SUM(qty) AS totalqty'),
-                    'um'
-                )
-                ->whereNotNull('job')
-                ->groupBy('rssite', 'rswhse', 'rsbaynum', 'job', 'item', 'desc', 'um')
-                ->orderBy('job')
-                ->get();
+            $itemlocs = \DB::select('EXEC sp_view_rsitemlocs @rssite = ?', [null]);
         } else {
             // Other users see only their site
-            $itemlocs = DB::table('rsitemloc')
-                ->select(
-                    'rssite',
-                    'rswhse',
-                    'rsbaynum',
-                    'job',
-                    'item',
-                    'desc',
-                    DB::raw('SUM(qty) AS totalqty'),
-                    'um'
-                )
-                ->where('rssite', $userSite)
-                ->whereNotNull('job')
-                ->groupBy('rssite', 'rswhse', 'rsbaynum', 'job', 'item', 'desc', 'um')
-                ->orderBy('job')
-                ->get();
+            $itemlocs = \DB::select('EXEC sp_view_rsitemlocs @rssite = ?', [$userSite]);
         }
 
         $sites = IrmsSite::all();
@@ -72,24 +43,26 @@ class RsItemLocController extends Controller
         $job = $request->input('job');
         $rssite = $request->input('rssite');
 
-        $details = \DB::table('rsitemloc')
-            ->select(
-                'rssite',
-                'rspallet_num',
-                'job',
-                'rsloc',
-                'qty',
-                'um',
-                'datercvd',
-                'createdby AS rcvd_by'
-            )
-            ->where('job', $job)
-            ->when($rssite, function ($query) use ($rssite) {
-                $query->where('rssite', $rssite);
-            })
-            ->orderBy('job')
-            ->orderBy('rsloc')
-            ->get();
+        // $details = \DB::table('rsitemloc')
+        //     ->select(
+        //         'rssite',
+        //         'rspallet_num',
+        //         'job',
+        //         'rsloc',
+        //         'qty',
+        //         'um',
+        //         'datercvd',
+        //         'createdby AS rcvd_by'
+        //     )
+        //     ->where('job', $job)
+        //     ->when($rssite, function ($query) use ($rssite) {
+        //         $query->where('rssite', $rssite);
+        //     })
+        //     ->orderBy('job')
+        //     ->orderBy('rsloc')
+        //     ->get();
+
+        $details = \DB::select('EXEC sp_job_details @job = ?, @rssite = ?', [$job, $rssite]);
 
         return response()->json($details);
     }

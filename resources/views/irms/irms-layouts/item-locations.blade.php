@@ -41,9 +41,10 @@
                                         <thead>
                                         <tr>
                                             <th width="10%">Job No.</th>
-                                            <th>Product Item</th>
+                                            <th width="30%">Product Item</th>
                                             <th width="10%">Quantity</th>
                                             <!-- <th width="5%">U/M</th> -->
+                                            <th width="10%">Warehouse</th>
                                             @if(auth()->user()->level == 1)
                                                 <th width="10%">Site</th>
                                             @endif
@@ -52,7 +53,7 @@
                                         
                                         <tbody>
                                             @foreach($itemlocs as $loc)
-                                                <tr data-job="{{ $loc->job }}" data-rssite="{{ $loc->rssite }}"
+                                                <tr data-job="{{ $loc->job }}" data-rssite="{{ $loc->rssite }}" data-rssite-desc="{{ $loc->rssite_desc }}"
                                                     data-item="{{ $loc->item }}" data-desc="{{ $loc->desc }}"
                                                     data-totalqty="{{ ($loc->totalqty ?? 0) == 0 ? '0' : number_format($loc->totalqty, 0) }}" data-um="{{ $loc->um }}"
                                                     data-rswhse="{{ $loc->rswhse }}">
@@ -62,8 +63,9 @@
                                                         <div class="small text-muted">{{ $loc->desc }}</div>
                                                     </td>
                                                     <td class="text-end">{{ ($loc->totalqty ?? 0) == 0 ? '0' : number_format($loc->totalqty, 0) }} {{ $loc->um }}</td>
+                                                    <td>{{ $loc->rswhse }}</td>
                                                     @if(auth()->user()->level == 1)
-                                                        <td>{{ $loc->rssite }}</td>
+                                                        <td>{{ $loc->rssite_desc }}</td>
                                                     @endif
                                                 </tr>
                                             @endforeach
@@ -90,7 +92,7 @@
                                     @if(auth()->user()->level == 1)
                                     <div class="col-4">
                                         <span class="fw-bold">Site:</span>
-                                        <span id="item-details-site" class="ms-2"></span>
+                                        <span id="item-details-site-desc" class="ms-2"></span>
                                     </div>
                                     @endif
                                     <div class="col-6">
@@ -129,7 +131,7 @@
 
                         <div class="d-flex justify-content-center align-items-center">
                             <table id="job-rack-list" class="table table-striped table-bordered table-hover align-middle">
-                                <thead class="table-dark">
+                                <thead>
                                     <tr>
                                         <th>Rack Location</th>
                                         <th width="10%">Pallet No.</th>

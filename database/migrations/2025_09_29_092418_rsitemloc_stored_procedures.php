@@ -19,15 +19,33 @@ return new class extends Migration
             CREATE PROCEDURE sp_view_rsitemlocs
                 @rssite VARCHAR(8) = NULL
             AS
-            SELECT 
-                i.*,
-                u.name AS createdby_name,
-                s.rssite_desc, s.address, s.logo_pic_url
-            FROM rsitemloc i
-            INNER JOIN irms_site s ON s.rssite = i.rssite
-            LEFT JOIN rsusers u ON i.createdby = u.userid
-            WHERE (@rssite IS NULL OR i.rssite = @rssite)
-            ORDER BY i.rssite, i.rswhse, i.rsloc
+            SELECT
+                i.rssite,
+                rswhse,
+                rsbaynum,
+                job,
+                item,
+                [desc],
+                SUM(qty) AS [totalqty],
+                um,
+                s.rssite_desc
+            FROM
+                rsitemloc i
+                INNER JOIN irms_site s ON s.rssite = i.rssite
+            WHERE
+                job IS NOT NULL
+				AND (@rssite IS NULL OR i.rssite = @rssite)
+            GROUP BY
+                i.rssite,
+                rswhse,
+                rsbaynum,
+                job,
+                item,
+                [desc],
+                um,
+                s.rssite_desc
+            ORDER BY
+                job;
         ');
     }
 

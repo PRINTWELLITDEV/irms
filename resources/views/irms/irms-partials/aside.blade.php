@@ -105,7 +105,7 @@
                 </li>
                 <li class="nav-item">
                     <a href="{{ url('/irms/dispatching') }}" class="nav-link{{ request()->is('irms/dispatching') ? ' active' : '' }}">
-                        <i class="nav-icon fas fa-truck"></i>
+                        <i class="nav-icon fas fa-truck-loading"></i>
                         <p>Goods Dispatching</p>
                     </a>
                 </li>

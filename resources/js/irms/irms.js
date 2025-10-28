@@ -307,6 +307,7 @@ $(document).ready(function () {
         const $row = $(this);
         const $job = $row.data("job");
         const $rssite = $row.data("rssite");
+        const $rssiteDesc = $row.data("rssite-desc");
         // Fill summary details
         $("#item-details-jobco").text($row.data("job") || "");
         $("#item-details-item").text($row.data("item") || "");
@@ -315,10 +316,11 @@ $(document).ready(function () {
         $("#item-details-um").text($row.data("um") || "");
         $("#item-details-warehouse").text($row.data("rswhse") || "");
         $("#item-details-site").text($row.data("rssite") || "");
+        $("#item-details-site-desc").text($rssiteDesc || "");
 
         // Show the item-job-view card
-        $("#item-job-view").show();
         $("#item-list-view").hide();
+        $("#item-job-view").fadeIn();
 
         // AJAX to get rack list for this job
         $.post({
@@ -347,7 +349,7 @@ $(document).ready(function () {
 
     $("#btnBackItems").on("click", function () {
         $("#item-job-view").hide();
-        $("#item-list-view").show();
+        $("#item-list-view").fadeIn();
     });
 });
 
