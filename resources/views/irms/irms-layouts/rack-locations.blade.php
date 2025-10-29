@@ -30,11 +30,13 @@
                                         Table
                                     </button>
                                 </li>
+                                @if(config('app.env') !== 'production')
                                 <li class="nav-item" role="presentation">
                                     <button class="nav-link" id="map-tab" data-bs-toggle="tab" data-bs-target="#mapTabPane" type="button" role="tab" aria-controls="mapTabPane" aria-selected="false">
                                         Map
                                     </button>
                                 </li>
+                                @endif
                             </ul>
                             <!-- Tabs Content -->
                             <div class="tab-content p-4" id="rackTabsContent">
