@@ -14,8 +14,8 @@
         <div class="app-content">
             <div class="container-fluid">
                 <div class="card card-primary">
+                    @if(config('app.env') !== 'production')
                     <div class="card-body">
-
                         <div class="row mb-3 wrap">
                             <div class="col-3 text-center text-white align-items-center">
                                 <div class="small-box bg-success">
@@ -162,6 +162,21 @@
                             </div>
                         </div>
                     </div>
+                    @else
+                    <div class="col-12">
+                        <div class="alert alert-info m-4">
+                            <h5 class="alert-heading">IRMS Dashboard</h5>
+                            <p>Welcome to the IRMS (Inventory and Rack Management System) Dashboard. This platform is designed to help you efficiently manage inventory and rack locations across various sites.</p>
+                            <hr>
+                            <div class="alert alert-warning mt-3">
+                                <strong>Note:</strong> This dashboard is currently under development. Some features and data may not be final.<br>
+                                <span class="text-success">You can still use the system for your inventory and rack management needs.</span>
+                            </div>
+                            <p class="mb-0">For assistance or more information, please contact the system administrator.</p>
+                        </div>
+                    </div>
+                    @endif
+
                 </div>
             </div>
         </div>
