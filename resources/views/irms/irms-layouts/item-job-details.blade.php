@@ -54,9 +54,9 @@
                                         <th>Rack Location</th>
                                         <th>Pallet No.</th>
                                         <th>Quantity</th>
-                                        <th>U/M</th>
-                                        <th>Received By</th>
-                                        <th>Date Received</th>
+                                        <th >U/M</th>
+                                        <th width="10%">Received By</th>
+                                        <th width="10%">Date Received</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -66,7 +66,7 @@
                                             <td>{{ $row->rspallet_num }}</td>
                                             <td class="text-end">{{ number_format($row->qty ?? 0, 0) }}</td>
                                             <td>{{ $row->um }}</td>
-                                            <td>{{ $row->rcvd_by }}</td>
+                                            <td><a href="{{ route('irms.userprofile', ['userid' => $row->rcvd_by_id]) }}">{{ $row->rcvd_by_name }}</a></td>
                                             <td>{{ $row->datercvd ? \Carbon\Carbon::parse($row->datercvd)->format('Y-m-d') : '' }}</td>
                                         </tr>
                                     @empty

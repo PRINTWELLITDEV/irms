@@ -106,18 +106,10 @@ table.table td img {
 }
 
 /* item location */
-/* #item-list-view, #item-job-view {
-    transition: opacity 0.4s, visibility 0.4s;
-    opacity: 1;
-    visibility: visible;
+#job-details-table a{
+    text-decoration: none;
+    color: #0e2b96;
 }
-.hidden-view {
-    opacity: 0 !important;
-    visibility: hidden !important;
-    pointer-events: none;
-    position: absolute;
-    width: 100%;
-} */
 
 /* Make modal profile image bigger and responsive */
 .profile-pic {

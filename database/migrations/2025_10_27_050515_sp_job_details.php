@@ -27,11 +27,13 @@ return new class extends Migration
                     qty,
                     um,
                     datercvd,
-                    createdby AS rcvd_by,
+                    createdby AS rcvd_by_id,
+                    u.name AS rcvd_by_name,
                     s.rssite_desc
                 FROM
                     rsitemloc i
                     INNER JOIN irms_site s ON s.rssite = i.rssite
+					INNER JOIN rsusers u ON u.userid = i.createdby
                 WHERE
                     job = @job
                     AND (@rssite IS NULL OR i.rssite = @rssite)
@@ -46,6 +48,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        DB::unprepared('DROP PROCEDURE IF EXISTS sp_job_details');
+        DB::unprepared("IF OBJECT_ID('sp_job_details', 'P') IS NOT NULL DROP PROCEDURE sp_job_details;");
     }
 };

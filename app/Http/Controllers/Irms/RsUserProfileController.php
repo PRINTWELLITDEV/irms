@@ -12,9 +12,10 @@ class RsUserProfileController extends Controller
 {
     public function show($userid)
     {
-        if (( (auth()->user()->level > 3) && auth()->user()->level == null) || (auth()->user()->userid != $userid)) {
+        if ( (auth()->user()->level > 3) && auth()->user()->level == null) {
             abort(401, 'Unauthorized');
         }
+
         $user = RsUser::where('userid', $userid)->firstOrFail();
         $site = IrmsSite::where('rssite', $user->rssite)->first();
         $siteDesc = $site ? $site->rssite_desc : $user->rssite;
