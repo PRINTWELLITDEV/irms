@@ -20,7 +20,8 @@ class LoginController extends Controller
     public function showhomeForm()
     {
         if (Auth::check()) {
-            return redirect()->route('dashboard');
+            // 👇 FIXED: redirect to IRMS instead of dashboard
+            return redirect()->route('irms.dashboard');
         }
 
         return view('auth.login');
@@ -29,7 +30,8 @@ class LoginController extends Controller
     public function showLoginForm()
     {
         if (Auth::check()) {
-            return redirect()->route('dashboard');
+            // 👇 FIXED: redirect to IRMS instead of dashboard
+            return redirect()->route('irms.dashboard');
         }
 
         return view('auth.login');
@@ -40,28 +42,31 @@ class LoginController extends Controller
      */
     public function login(Request $request)
     {
-        // Validate input
         $credentials = $request->validate([
-            'userid'   => ['required', 'string'],
-            'password' => ['required', 'string'],
+            'userid' => 'required|string',
+            'password' => 'required|string',
         ]);
 
-        // Find user by userid
         $user = RsUser::where('userid', $credentials['userid'])->first();
 
-        try {
-            if ($user && Hash::check($credentials['password'], $user->password)) {
-                return $this->doLogin($request, $user);
-            }
-        } catch (\RuntimeException $e) {
-            // Optionally log the error: \Log::error($e);
-            // Fall through to show the same error as invalid credentials
+        if (!$user || !Hash::check($credentials['password'], $user->password)) {
+            return back()->withErrors(['userid' => 'Invalid user ID or password']);
         }
 
-        // ❌ Login failed
-        throw ValidationException::withMessages([
-            'userid' => [trans('auth.failed')],
+        Auth::login($user, $request->filled('remember'));
+        $request->session()->regenerate();
+
+        Session::put('user', [
+            'rssite' => $user->rssite,
+            'name' => $user->name,
+            'userid' => $user->userid,
         ]);
+
+        DB::table('sessions')
+            ->where('id', Session::getId())
+            ->update(['rssite' => $user->rssite]);
+
+        return redirect()->route('irms.dashboard');
     }
 
     /**
@@ -75,33 +80,26 @@ class LoginController extends Controller
         session([
             'user' => [
                 'rssite' => $user->rssite,
-                'name'   => $user->name,
+                'name' => $user->name,
                 'userid' => $user->userid,
-                'profile_pic_url'  => $user->profile_pic_url ? $user->profile_pic_url : 'uploads/user-profile/noprofile.png',
+                'profile_pic_url' => $user->profile_pic_url
+                    ? $user->profile_pic_url
+                    : 'uploads/user-profile/noprofile.png',
             ]
         ]);
 
         Session::save();
 
-        // 🔥 manually update sessions table
         $sessionId = Session::getId();
 
         DB::table('sessions')
-        ->where('id', $sessionId)
-        ->update([
-            'rssite'  => $user->rssite,
-            // 'rsuserid' => (string) $user->getAttribute('userid'),
-        ]);
+            ->where('id', $sessionId)
+            ->update([
+                'rssite' => $user->rssite,
+            ]);
 
-        // ✅ store checkbox preference in a cookie (30 days)
-        if ($request->filled('remember')) {
-            Cookie::queue('remember_checked', true, 60 * 24 * 30); // 30 days
-        } else {
-            Cookie::queue(Cookie::forget('remember_checked'));
-        }
-
-
-        return redirect()->intended(route('dashboard'));
+        // ✅ FIXED: redirect to IRMS instead of undefined 'dashboard'
+        return redirect()->intended(route('irms.dashboard'));
     }
 
     /**
@@ -116,4 +114,6 @@ class LoginController extends Controller
 
         return redirect()->route('home');
     }
+
+
 }
