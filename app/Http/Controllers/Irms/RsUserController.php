@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 use App\Models\IrmsSite;
@@ -183,11 +184,17 @@ class RsUserController extends Controller
         }
     }
 
-    public function levelExclusivity($userid)
+    public function levelExclusivity()
     {
-        $user = User::find($userid);
-        $level = $user ? $user->level : null;
+        $user = Auth::user();
 
-        return view('irms.irms-layouts.dashboard', ['level' => $level]);
+        if(!$user){
+            return redirect()->route('login')->withErrors('Session expired, please login again');
+        }
+
+        $level = (int) $user->level;
+
+        return view('irms.irms-layouts.dashboard', compact('user', 'level'));
+
     }
 }

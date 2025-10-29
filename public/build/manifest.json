@@ -22,11 +22,15 @@
     "isEntry": true
   },
   "resources/js/irms/irms.js": {
+<<<<<<< HEAD
 <<<<<<< Updated upstream
     "file": "assets/irms-CC_vKHUp.js",
 =======
     "file": "assets/irms-BfTxXVc5.js",
 >>>>>>> Stashed changes
+=======
+    "file": "assets/irms-DP3-23gq.js",
+>>>>>>> fd9219d ([FE] Add a heat map for the rack location)
     "name": "irms",
     "src": "resources/js/irms/irms.js",
     "isEntry": true,

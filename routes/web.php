@@ -66,11 +66,9 @@ Route::get('/irms/session', function () {
 });
 
 // Dashboard (protected)
-Route::get('/irms', function () {
-    return view('irms.irms-layouts.dashboard');
-})->name('dashboard')->middleware('auth');
-
-Route::get('/dashboard/{userid}', [RsUserController::class, 'levelExclusivity']);
+Route::get('/irms', [RsUserController::class, 'levelExclusivity'])
+    ->name('irms.dashboard')
+    ->middleware('auth');
 
 Route::prefix('irms')->middleware('check.session')->group(function () {
     // User management

@@ -26,7 +26,7 @@
                                             </div>
                                             <div class="info-box-content">
                                                 <div class="info-box-text">
-                                                    Bookmarks
+                                                    sa
                                                 </div>
                                                 <div class="info-box-number">
                                                     10,000
@@ -167,34 +167,34 @@
                                     <div class="col-sm-12 col-md-3 text-center text-white align-items-center">
                                         <div class="info-box text-bg-success bg-gradient">
                                             <div class="info-box-icon">
-                                                <i class="bi bi-bookmark-fill"></i>
+                                                <i class="bi bi-grid-3x3"></i>
                                             </div>
                                             <div class="info-box-content">
                                                 <div class="info-box-text">
-                                                    Bookmarks
+                                                    Overall Rack Utilization %
                                                 </div>
                                                 <div class="info-box-number">
-                                                    10,000
+                                                    58%
                                                 </div>
                                                 <div class="progress">
                                                     <div class="progress-bar progress-bar-striped progress-bar-animated"
                                                         style="width:70%"></div>
                                                 </div>
-                                                <span class="progress-description">Hellooooo</span>
+                                                <span class="progress-description">234/512</span>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-sm-12 col-md-3 text-center align-items-center">
                                         <div class="info-box text-bg-warning bg-gradient">
                                             <div class="info-box-icon">
-                                                <i class="bi bi-bookmark-fill"></i>
+                                                <i class="bi bi-box-seam"></i>
                                             </div>
                                             <div class="info-box-content">
                                                 <div class="info-box-text">
-                                                    Bookmarks
+                                                    Total Goods (Active Inventory)
                                                 </div>
                                                 <div class="info-box-number">
-                                                    10,000
+                                                    213 Total Stocks
                                                 </div>
                                                 <div class="progress">
                                                     <div class="progress-bar" style="width:70%"></div>
@@ -206,11 +206,11 @@
                                     <div class="col-sm-12 col-md-3 text-center text-white align-items-center">
                                         <div class="info-box text-bg-primary bg-gradient">
                                             <div class="info-box-icon">
-                                                <i class="bi bi-bookmark-fill"></i>
+                                                <i class="bi bi-truck"></i>
                                             </div>
                                             <div class="info-box-content">
                                                 <div class="info-box-text">
-                                                    Bookmarks
+                                                    Goods Movement (Today)
                                                 </div>
                                                 <div class="info-box-number">
                                                     10,000
@@ -246,52 +246,66 @@
 
                                     </div>
 
-                                    <div class="row mb-3">
-                                        <div class="row m-0">
-                                            <div class="col-sm-12 col-md-7 mb-1">
-                                                <div class="card">
-                                                    <div class="card-header bg-success bg-gradient text-white">
-                                                        <h3 class="card-title">Available Occupancy per Sites</h3>
-                                                    </div>
-                                                    <div class="card-body">
-                                                        <canvas id="chart_bar" style="height: 190px;"></canvas>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-12 col-md-5 mb-4">
-                                                <div class="card">
-                                                    <div class="card-header bg-danger bg-gradient text-white">
-                                                        <h3 class="card-title">Active User per Site</h3>
-                                                    </div>
-                                                    <div class="card-body">
-                                                        <canvas id="chart_pie" style="height: 190px;"></canvas>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                    <div class="row my-2">
 
+                                        <div class="col-sm-12 col-md-6 mb-1">
+                                            <div class="card">
+                                                <div class="card-content">
+                                                    <div class="card-header bg-success bg-gradient text-white">
+                                                        <h3 class="card-title">Goods Movement Trend</h3>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <canvas id="chart_line" style="height: 190px;"></canvas>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
+
+                                        <div class="col-sm-12 col-md-6 mb-1">
+                                            <div class="card">
+                                                <div class="card-content">
+                                                    <div class="card-header bg-danger bg-gradient text-white">
+                                                        <h3 class="card-title">Rack Utilization by Warehouse</h3>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <canvas id="stacked_bar" style="height: 190px;"></canvas>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                     </div>
 
-                                    <div class="row mb-3">
-                                        <div class="col-12 col-md-5">
+                                    <div class="row mb-1">
+                                        <div class="col-12 col-md-6 mb-2">
                                             <div class="card shadow-md">
                                                 <div class="card-header bg-primary bg-gradient text-white">
-                                                    <h3 class="card-title">Total Receiving & Dispatching per Week</h3>
+                                                    <h3 class="card-title">Rack Map</h3>
                                                 </div>
                                                 <div class="card-body">
-                                                    <canvas id="chart_line" style="height: 190px;"></canvas>
+                                                    <div id="chart-heatmap"></div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-12 col-md-7">
+                                        <div class="col-12 col-md-6 mb-2">
                                             <div class="card">
-                                                <div class="card">
-                                                    <div class="card-header bg-dark bg-gradient text-white">Monthly Cap
-                                                        Report</div>
-                                                    <div class="card-body">
-
-                                                        <table class="table"></table>
-
+                                                <div class="card-header bg-warning bg-gradient">
+                                                    <h3 class="card-title">Team Activity</h3>
+                                                </div>
+                                                <div class="card-body" style="max-height: 220px;">
+                                                    <div class="table-responsive table-view">
+                                                        <table
+                                                            class="table-striped table-bordered table-hover align-middle display"
+                                                            id="rackTable">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Users</th>
+                                                                    <th>Activity</th>
+                                                                    <th>Time</th>
+                                                                    <th>Date</th>
+                                                                </tr>
+                                                            </thead>
+                                                        </table>
                                                     </div>
                                                 </div>
                                             </div>
@@ -315,7 +329,7 @@
                                             </div>
                                             <div class="info-box-content">
                                                 <div class="info-box-text">
-                                                    Bookmarks
+                                                    My Warehouse Occupancy
                                                 </div>
                                                 <div class="info-box-number">
                                                     10,000
@@ -335,7 +349,7 @@
                                             </div>
                                             <div class="info-box-content">
                                                 <div class="info-box-text">
-                                                    Bookmarks
+                                                    Goods Received Today
                                                 </div>
                                                 <div class="info-box-number">
                                                     10,000
@@ -354,7 +368,7 @@
                                             </div>
                                             <div class="info-box-content">
                                                 <div class="info-box-text">
-                                                    Bookmarks
+                                                    Goods Dispatched Today
                                                 </div>
                                                 <div class="info-box-number">
                                                     10,000
@@ -373,7 +387,7 @@
                                             </div>
                                             <div class="info-box-content">
                                                 <div class="info-box-text">
-                                                    Users
+                                                    Pending Transactions
                                                 </div>
                                                 <div class="info-box-number">
                                                     10,000
@@ -391,33 +405,32 @@
                                     </div>
 
                                     <div class="row mb-3">
-                                        <div class="row m-0">
-                                            <div class="col-sm-12 col-md-7 mb-1">
-                                                <div class="card">
-                                                    <div class="card-header bg-success bg-gradient text-white">
-                                                        <h3 class="card-title">Available Occupancy per Sites</h3>
-                                                    </div>
-                                                    <div class="card-body">
-                                                        <canvas id="chart_bar" style="height: 190px;"></canvas>
-                                                    </div>
+                                        <div class="col-sm-12 col-md-7 mb-1">
+                                            <div class="card">
+                                                <div class="card-header bg-success bg-gradient text-white">
+                                                    <h3 class="card-title">Daily Goods Movement Today</h3>
+                                                </div>
+                                                <div class="card-body">
+                                                    <canvas id="chart_bar" style="height: 250px;"></canvas>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-12 col-md-5 mb-4">
-                                                <div class="card">
-                                                    <div class="card-header bg-danger bg-gradient text-white">
-                                                        <h3 class="card-title">Active User per Site</h3>
-                                                    </div>
-                                                    <div class="card-body">
-                                                        <canvas id="chart_pie" style="height: 190px;"></canvas>
-                                                    </div>
-                                                </div>
-                                            </div>
-
                                         </div>
+                                        <div class="col-sm-12 col-md-5 mb-4">
+                                            <div class="card">
+                                                <div class="card-header bg-danger bg-gradient text-white">
+                                                    <h3 class="card-title">Rack Utilization</h3>
+                                                </div>
+                                                <div class="card-body">
+                                                    <canvas id="chart_pie" style="height: 150px;"></canvas>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                     </div>
 
                                     <div class="row mb-3">
-                                        <div class="col-12 col-md-5">
+
+                                        <div class="col-12 col-md-6">
                                             <div class="card shadow-md">
                                                 <div class="card-header bg-primary bg-gradient text-white">
                                                     <h3 class="card-title">Total Receiving & Dispatching per Week</h3>
@@ -427,20 +440,43 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-12 col-md-7">
+
+                                        <div class="col-12 col-md-6">
                                             <div class="card">
-                                                <div class="card">
-                                                    <div class="card-header bg-dark bg-gradient text-white">Monthly Cap
-                                                        Report</div>
-                                                    <div class="card-body">
-
-                                                        <table class="table"></table>
-
+                                                <div class="card-header bg-warning bg-gradient">
+                                                    <h3 class="card-title">
+                                                        Monthly Cap Report
+                                                    </h3>
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="table-responsive table-view">
+                                                        <table
+                                                            class="table-striped table-bordered table-hover align-middle display"
+                                                            id="activityUsers">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Users</th>
+                                                                    <th>Activity</th>
+                                                                    <th>Time</th>
+                                                                    <th>Date</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td id="view-rack-warehouse"></td>
+                                                                    <td id="view-rack-baynum"></td>
+                                                                    <td id="view-rack-location"></td>
+                                                                    <td id="view-rack-description"></td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+
                                     </div>
+
                                 </div>
 
                             </div>
