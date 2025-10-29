@@ -11,6 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
+        DB::unprepared("IF OBJECT_ID('sp_job_details', 'P') IS NOT NULL DROP PROCEDURE sp_job_details;");
         DB::unprepared('
             CREATE PROCEDURE sp_job_details
                 @job NVARCHAR(50),

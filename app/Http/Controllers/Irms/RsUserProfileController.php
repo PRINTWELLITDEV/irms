@@ -20,8 +20,8 @@ class RsUserProfileController extends Controller
         $site = IrmsSite::where('rssite', $user->rssite)->first();
         $siteDesc = $site ? $site->rssite_desc : $user->rssite;
         $siteAddress = $site ? $site->address : 'N/A';
-        $leveldesc = RsLevel::where('level', $user->level)->value('description');
-        return view('irms.irms-layouts.user-profile', compact('user', 'siteDesc', 'siteAddress', 'leveldesc'));
+        $levelrole = RsLevel::where('level', $user->level)->value('role');
+        return view('irms.irms-layouts.user-profile', compact('user', 'siteDesc', 'siteAddress', 'levelrole'));
     }
 
     public function update(Request $request, $userid)
