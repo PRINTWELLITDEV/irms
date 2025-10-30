@@ -84,6 +84,7 @@ $(document).ready(function () {
             "Saturday",
         ];
 
+
         const rack_labels = ["Rack 1", "Rack 2", "Rack 3", "Rack 4"];
 
         // generate random data for each dataset
@@ -194,6 +195,48 @@ $(document).ready(function () {
                     ],
                 },
                 options: { maintainAspectRatio: false, responsive: true },
+            };
+        });
+
+        createChart("stacked_bar", function () {
+            return {
+                type: "bar",
+                data: {
+                    labels: rack_labels,
+                    datasets: [
+                        {
+                            label: "Warehouse 1",
+                            data: rack_data,
+                            borderColor: "#4bc0c0",
+                            backgroundColor: "rgba(75,192,192,0.2)",
+                            fill: true,
+                        },
+                        {
+                            label: "Warehouse 2",
+                            data: rack_data,
+                            borderColor: "#c0a94bff",
+                            backgroundColor: "rgba(205, 184, 60, 0.2)",
+                            fill: true,
+                        },
+                    ],
+                },
+                options: {
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: "Rack Utilization by Warehouse",
+                        },
+                    },
+                    responsive: true,
+                    scales: {
+                        x: {
+                            stacked: true,
+                        },
+                        y: {
+                            stacked: true,
+                        },
+                    },
+                },
             };
         });
 
@@ -411,6 +454,156 @@ $(document).ready(function () {
         initDashboardCharts();
     }
 })();
+
+//Heatmap
+
+document.addEventListener("DOMContentLoaded", function () {
+    function generateData(count, yrange) {
+        var i = 1;
+        var series = [];
+        while (i < count) {
+            var x = "S" + (i + 1).toString();
+            var y =
+                Math.floor(Math.random() * (yrange.max - yrange.min + 1)) +
+                yrange.min;
+
+            series.push({
+                x: x,
+                y: y,
+            });
+            i++;
+        }
+        return series;
+
+        // while(i <= 20){
+        //     var x = 2;
+
+        // }
+    }
+
+    var options = {
+        series: [
+            {
+                name: "",
+                data: generateData(20, {
+                    min: 0,
+                    max: 100,
+                }),
+            },
+            {
+                name: "A1-L2",
+                data: generateData(20, {
+                    min: 0,
+                    max: 100,
+                }),
+            },
+            {
+                name: "A1-L1",
+                data: generateData(20, {
+                    min: 0,
+                    max: 100,
+                }),
+            },
+            {
+                name: "A2-L1",
+                data: generateData(20, {
+                    min: 0,
+                    max: 100,
+                }),
+            },
+            {
+                name: "A2-L2",
+                data: generateData(20, {
+                    min: 0,
+                    max: 100,
+                }),
+            },
+            {
+                name: "B1-L2",
+                data: generateData(20, {
+                    min: 0,
+                    max: 100,
+                }),
+            },
+            {
+                name: "B1-L1",
+                data: generateData(20, {
+                    min: 0,
+                    max: 100,
+                }),
+            },
+            {
+                name: "B2-L1",
+                data: generateData(20, {
+                    min: 0,
+                    max: 100,
+                }),
+            },
+            {
+                name: "B2-L2",
+                data: generateData(20, {
+                    min: 0,
+                    max: 100,
+                }),
+            },
+        ],
+        chart: {
+            height: 350,
+            type: "heatmap",
+        },
+        plotOptions: {
+            heatmap: {
+                shadeIntensity: 0.5,
+                radius: 0,
+                useFillColorAsStroke: true,
+                colorScale: {
+                    ranges: [
+                        {
+                            from: 0,
+                            to: 30,
+                            name: "Vacant",
+                            color: "#00A100",
+                        },
+                        {
+                            from: 31,
+                            to: 60,
+                            name: "Partial",
+                            color: "#128FD9",
+                        },
+                        {
+                            from: 61,
+                            to: 90,
+                            name: "Occupied",
+                            color: "#FF0000",
+                        },
+                        {
+                            from: 91,
+                            to: 100,
+                            name: "Damage",
+                            color: "#FFB200",
+                        },
+                    ],
+                },
+            },
+        },
+        dataLabels: {
+            enabled: false,
+        },
+        stroke: {
+            width: 1,
+        },
+        title: {
+            text: "Warehouse 1",
+        },
+    };
+
+    var chart = new ApexCharts(
+        document.querySelector("#chart-heatmap"),
+        options
+    );
+    chart.render();
+});
+
 
 //Heatmap
 

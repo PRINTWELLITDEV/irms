@@ -10,6 +10,13 @@
                     <h1>Welcome to IRMS Dashboard</h1>
                 </div>
             </div>
+    <main class="app-main">
+        <div class="app-content-wrapper">
+            <div class="app-content-header">
+                <div class="container-fluid">
+                    <h1>Welcome to IRMS Dashboard</h1>
+                </div>
+            </div>
 
             <div class="app-content">
 
@@ -316,6 +323,7 @@
                                     </div>
 
                                 </div>
+
                             </div>
 
                         @elseif(auth()->user()->level == 3)
@@ -491,6 +499,7 @@
 
 
                                 </div>
+
                             </div>
                         @else
                                 <div class="card card-primary">
