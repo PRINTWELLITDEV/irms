@@ -77,5 +77,12 @@ return new class extends Migration {
                 DROP PROCEDURE sp_GetGoodsReceivedCount;
             END
         ');
+
+        DB::unprepared('
+        IF EXISTS (SELECT * FROM sys.objects WHERE type = \'P\' AND name = \'sp_GetWarehouseOccupancy\')
+        BEGIN
+            DROP PROCEDURE sp_GetWarehouseOccupancy;
+        END
+        ');
     }
 };

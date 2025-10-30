@@ -69,7 +69,7 @@ Route::get('/irms/session', function () {
 // Dashboard (protected)
 Route::get('/irms', [RsUserController::class, 'levelExclusivity'])
     ->name('irms.dashboard')
-    ->middleware('auth');
+    ->middleware(['auth']); // add additional middleware you need (check.session, ensure.level)
 
 Route::get('irms', [DashboardController::class, 'getGoodsCount'])
     ->name('irms.dashboard')

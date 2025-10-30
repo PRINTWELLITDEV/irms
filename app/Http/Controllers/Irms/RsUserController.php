@@ -187,14 +187,12 @@ class RsUserController extends Controller
     public function levelExclusivity()
     {
         $user = Auth::user();
+        $level = isset($user->level) ? (int)$user->level : null;
 
-        if(!$user){
-            return redirect()->route('login')->withErrors('Session expired, please login again');
-        }
+        // Optional: block unauthorized levels here
+        // if (! in_array($level, [1,2,3], true)) abort(403);
 
-        $level = (int) $user->level;
-
-        return view('irms.irms-layouts.dashboard', compact('user', 'level'));
+        return view('irms.irms-layouts.dashboard', compact('user','level'));
 
     }
 }
