@@ -18,6 +18,8 @@
     "dependencies": {
         "admin-lte": "^4.0.0-rc3",
         "axios": "^1.11.0",
-        "lodash": "^4.17.21"
+        "lodash": "^4.17.21",
+        "moment": "^2.30.1",
+        "sweetalert2": "^11.26.3"
     }
 }
