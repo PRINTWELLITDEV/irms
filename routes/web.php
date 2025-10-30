@@ -85,15 +85,18 @@ Route::prefix('irms')->middleware('auth')->group(function () {
     
     // Warehouse
     Route::get('/warehouse', [RsWhseController::class, 'index'])->name('warehouse.index');
+    Route::get('/warehouse/warehouse-list', [RsWhseController::class, 'whseList'])->name('warehouse.whselist');
     Route::post('/warehouse/store', [RsWhseController::class, 'store'])->name('warehouse.store');
     Route::put('/warehouse/update', [RsWhseController::class, 'update'])->name('warehouse.update');
 
     // Bay location
     Route::get('/bay-locations', [RsBayLocController::class, 'index'])->name('baylocs.index');
+    Route::get('/bay-locations/bay-list', [RsBayLocController::class, 'bayList'])->name('baylocs.baylist');
     Route::post('/bay-locations/store', [RsBayLocController::class, 'store'])->name('baylocs.store');
 
     //Rack Locations
     Route::get('/rack-locations', [RsLocationController::class, 'index'])->name('racklocations.index');
+    Route::get('/rack-locations/rack-list', [RsLocationController::class, 'rackList'])->name('racklocations.racklist');
     Route::post('/rack-locations/store', [RsLocationController::class, 'store'])->name('racklocations.store');
 
     //Item Locations

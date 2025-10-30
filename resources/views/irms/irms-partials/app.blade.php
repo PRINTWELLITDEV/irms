@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/2.3.4/css/dataTables.dataTables.min.css">
     <link href="https://cdn.datatables.net/columncontrol/1.1.0/css/columnControl.dataTables.min.css" rel="stylesheet">
 </head>
-<body class="layout-fixed fixed-header fixed-footer sidebar-expand-lg bg-body-tertiary">
+<body class="layout-fixed fixed-header fixed-footer sidebar-hide sidebar-expand-lg bg-body-tertiary">
     <div class="app-wrapper">
         {{-- Navbar --}}
         @include('irms.irms-partials.nav')
@@ -42,6 +42,9 @@
         window.appUrl = "{{ url('') }}";
         window.sessionCheckUrl = "{{ url('/irms/session') }}";
         window.loginUrl = "{{ route('login') }}";
+
+        window.sessionSuccess = @json(session('success'));
+        window.sessionError = @json($errors->first());
     </script>
 </body>
 </html>

@@ -1,21 +1,21 @@
 @extends('irms.irms-partials.app')
 @section('title', 'IRMS Warehouse')
 @section('content')
-<main class="app-main">
+<main class="app-main" data-user-level="{{ auth()->user()->level }}">
     <div class="app-content-wrapper">
         <div class="app-content-header">
             <div class="container-fluid">
                 <div class="row align-items-center">
                     <div class="col mb-3 d-flex align-items-center">
                         <h1 class="d-inline-block mb-0 me-3">Warehouse</h1>
-                        @if(session('success'))
-                            <div id="alerts" class="alert alert-success py-1 px-3 mb-0" style="transition: opacity 0.7s;">
+                        <!-- @if(session('success')) -->
+                            <!-- <div id="alerts" class="alert alert-success py-1 px-3 mb-0" style="transition: opacity 0.7s;">
                                 {{ session('success') }}
-                            </div>
-                        @endif
-                        @if($errors->any())
-                            <div id="alerts" class="alert alert-danger py-1 px-3 mb-0" style="transition: opacity 0.7s;">{{ $errors->first() }}</div>
-                        @endif
+                            </div> -->
+                        <!-- @endif -->
+                        <!-- @if($errors->any()) -->
+                            <!-- <div id="alerts" class="alert alert-danger py-1 px-3 mb-0" style="transition: opacity 0.7s;">{{ $errors->first() }}</div> -->
+                        <!-- @endif -->
                     </div>
                 </div>
             </div>
@@ -54,25 +54,8 @@
                                                 <!-- <th width="5%">Action</th> -->
                                             </tr>
                                         </thead>
-                                        <tbody>
-                                            @forelse($warehouses as $whse)
-                                                <tr data-rssite="{{ $whse->rssite }}"
-                                                    data-rssite_desc="{{ $whse->rssite_desc}}"
-                                                    data-rswhse="{{ $whse->rswhse }}"
-                                                    data-name="{{ $whse->name }}"
-                                                    data-addr="{{ $whse->addr }}">
-                                                    <td>{{ $whse->rswhse }}</td>
-                                                    <td>{{ $whse->name }}</td>
-                                                    <!-- <td>{{ $whse->addr }}</td> -->
-                                                    @if(auth()->user()->level == 1)
-                                                    <td>
-                                                        {{ $whse->rssite_desc ?? 'N/A' }}
-                                                        <!-- <img src="{{ asset($whse->logo_pic_url) }}" class="me-1" width="40" height="40" style="object-fit:contain;vertical-align:middle;"> -->
-                                                    </td>
-                                                    @endif
-                                                </tr>
-                                            @empty
-                                            @endforelse
+                                        <tbody id="warehouseTableBody">
+                                            
                                         </tbody>
                                     </table>
                                 </div>
@@ -141,7 +124,8 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Save</button>
+                        <!-- <button type="submit" class="btn btn-primary">Save</button> -->
+                        <button type="button" class="btn btn-primary" id="btnSaveWarehouse">Save</button>
                     </div>
                 </form>
             </div>
@@ -191,7 +175,8 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-warning">Update</button>
+                        <!-- <button type="submit" class="btn btn-warning">Update</button> -->
+                        <button type="button" class="btn btn-warning" id="btnUpdateWarehouse">Update</button>
                     </div>
                 </form>
             </div>
@@ -246,4 +231,5 @@
             </div>
         </div>
     </div>
+    
 @endsection

@@ -15,22 +15,39 @@ class RsBayLocController extends Controller
 {
     public function index()
     {
-        if (auth()->user()->level > 3) {
+        if (auth()->user()->level > 3 && auth()->user()->level <= 0) {
             abort(401, 'Unauthorized');
         }
+        // $user = auth()->user();
+        // $userSite = $user->rssite;
+        // $userid = $user->userid;
+
+        // if ($userid === 'sa') {
+        //     // Show all bay locations for super admin
+        //     $baylocs = \DB::select('EXEC sp_view_baylocs', [null]);
+        // } else {
+        //     $baylocs = \DB::select('EXEC sp_view_baylocs ?', [$userSite]);
+        // }
+        
+        $sites = IrmsSite::all();
+        // return view('irms.irms-layouts.bay-locations', compact('baylocs', 'sites'));
+        return view('irms.irms-layouts.bay-locations', compact('sites'));
+
+    }
+
+    public function bayList(Request $request)
+    {
         $user = auth()->user();
         $userSite = $user->rssite;
-        $userid = $user->userid;
+        // $userid = $user->userid;
 
-        if ($userid === 'sa') {
-            // Show all bay locations for super admin
+        if (auth()->user()->level == 1) {
             $baylocs = \DB::select('EXEC sp_view_baylocs', [null]);
         } else {
             $baylocs = \DB::select('EXEC sp_view_baylocs ?', [$userSite]);
         }
-        
-        $sites = IrmsSite::all();
-        return view('irms.irms-layouts.bay-locations', compact('baylocs', 'sites'));
+
+        return response()->json($baylocs);
     }
 
     /**
@@ -41,22 +58,33 @@ class RsBayLocController extends Controller
         $validated = $request->validate([
             'rssite' => 'required|max:8',
             'rsbaynum' => 'required|max:5',
+        ], [
+            'rssite.required' => 'The Site field is required.',
+            'rssite.max' => 'The Site field must not exceed 8 characters.',
+            'rsbaynum.required' => 'The Bay Number field is required.',
+            'rsbaynum.max' => 'The Bay Number field must not exceed 5 characters.',
         ]);
 
-        if (RsBayLoc::where('rsbaynum', $validated['rsbaynum'])->exists()) {
-            return redirect()->back()->withInput()->withErrors(['error' => 'Bay location number already exists.']);
+        if (RsBayLoc::where('rsbaynum', $validated['rsbaynum'])
+                     ->where('rssite', $validated['rssite'])
+                     ->exists()) {
+            return response()->json(['message' => 'Bay location number already exists for this site.'], 422);
         }
 
+        $bay = $validated['rsbaynum'];
         $createdby = auth()->user()->userid ?? 'system';
         $createdate = now();
 
-        DB::statement('EXEC sp_add_baylocs ?, ?, ?, ?', [
-            $validated['rssite'],
-            $validated['rsbaynum'],
-            $createdate,
-            $createdby,
-        ]);
-
-        return redirect()->route('baylocs.index')->with('success', 'Bay location added successfully!');
+        try {
+            DB::statement('EXEC sp_add_baylocs ?, ?, ?, ?', [
+                $validated['rssite'],
+                $validated['rsbaynum'],
+                $createdate,
+                $createdby,
+            ]);
+            return response()->json(['message' => "Bay $bay added successfully!"]);
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
     }
 }

@@ -2,7 +2,7 @@
 @section('title', 'IRMS Bay Locations')
 @section('content')
 
-<main class="app-main">
+<main class="app-main" data-user-level="{{ auth()->user()->level }}">
     <div class="app-content-wrapper">
         <div class="app-content-header">
             <div class="container-fluid">
@@ -54,29 +54,8 @@
                                                 <!-- <th width="8%">Action</th>  -->
                                             </tr>
                                         </thead>
-                                        <tbody>
-                                            @forelse($baylocs as $bay)
-                                                <tr
-                                                data-rssite="{{ $bay->rssite }}"
-                                                data-rssite_desc="{{ $bay->rssite_desc}}"
-                                                data-rsbaynum="{{ $bay->rsbaynum }}"
-                                                data-create-date="{{ \Carbon\Carbon::parse($bay->createdate)->format('d M Y - h:i A') }}"
-                                                data-createdby="{{ $bay->name }}">
-                                                    
-                                                    <td>{{ $bay->rsbaynum }}</td>
-
-                                                    @if(auth()->user()->level == 1)
-                                                    <td>
-                                                        {{ $bay->rssite_desc ?? 'N/A' }}
-                                                        <!-- <img src="{{ asset($bay->logo_pic_url) }}" alt="logo" class="mx-auto d-block" width="40" height="40" style="object-fit:contain;vertical-align:middle;"> -->
-                                                    </td>
-                                                    @endif
-                                                    <!-- <td>{{ \Carbon\Carbon::parse($bay->createdate)->format('d M Y - h:i A') }}</td> -->
-                                                    <!-- <td>{{ $bay->name }}</td> -->
-                                                    
-                                                </tr>
-                                            @empty
-                                            @endforelse
+                                        <tbody id="baylocTableBody">
+                                            
                                         </tbody>
                                     </table>
                                 </div>
@@ -174,13 +153,11 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-success">Save</button>
+                        <!-- <button type="submit" class="btn btn-success">Save</button> -->
+                        <button type="button" class="btn btn-success">Save</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-
-
-
 @endsection

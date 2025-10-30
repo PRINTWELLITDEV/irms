@@ -1,11 +1,16 @@
 import "bootstrap";
-
 import "admin-lte";
-
+// import Swal from "sweetalert2";
+import "./charts.js";
 import "./datatables.js";
+
+import "./rswhse.js";
+import "./rsbayloc.js";
+import "./rsloc.js";
+
 import "./goods-receiving.js";
 import "./goods-dispatching.js";
-import "./charts.js";
+
 
 // window.appUrl = "{{ url('') }}";
 // window.sessionCheckUrl = "{{ url('/irms/session') }}";
@@ -22,26 +27,26 @@ setInterval(function () {
                 }
             });
     }
-}, 5000);
+}, 3600000);
 
 $(document).ready(function () {
     const isSa =
         $("select#rssite").length > 0 && $("input[name='rssite']").length === 0;
 
-    function setFieldsEnabled(enabled) {
-        $(
-            "#date, #rswhse, #jobcoreceive, #jobcodispatch, #lot, #item, #pallet_size, #um, #rsbaynum, #docno"
-        ).prop("disabled", !enabled);
-    }
+    // function setFieldsEnabled(enabled) {
+    //     $(
+    //         "#date, #rswhse, #jobcoreceive, #jobcodispatch, #lot, #item, #pallet_size, #um, #rsbaynum, #docno"
+    //     ).prop("disabled", !enabled);
+    // }
 
-    if (isSa) {
-        setFieldsEnabled(false);
-        $("#rssite").on("change", function () {
-            setFieldsEnabled(true);
-        });
-    } else {
-        setFieldsEnabled(true);
-    }
+    // if (isSa) {
+    //     setFieldsEnabled(false);
+    //     $("#rssite").on("change", function () {
+    //         setFieldsEnabled(true);
+    //     });
+    // } else {
+    //     setFieldsEnabled(true);
+    // }
 
     // Row click to show modal (if you want a view modal for item locations)
     $("#itemloc-table tbody").on("click", "tr", function () {
@@ -133,57 +138,6 @@ $(document).ready(function () {
             };
             reader.readAsDataURL(input.files[0]);
         }
-    });
-
-    // Show warehouse view modal when a row is clicked
-    $("#warehouse-table tbody").on("click", "tr", function () {
-        const $row = $(this);
-        // Store current row data for use in edit modal
-        $("#editWarehouseBtn")
-            .data("rssite", $row.data("rssite"))
-            .data("site_desc", $row.data("site_desc"))
-            .data("rswhse", $row.data("rswhse"))
-            .data("name", $row.data("name"))
-            .data("addr", $row.data("addr"));
-        // Fill view modal
-        $("#view-warehouse-site-desc").text($row.data("rssite_desc") || "");
-        $("#view-warehouse-code").text($row.data("rswhse") || "");
-        $("#view-warehouse-name").text($row.data("name") || "");
-        $("#view-warehouse-addr").text($row.data("addr") || "");
-        $("#view-warehouse-label-name").text($row.data("name") || "");
-        $("#viewWarehouseModal").modal("show");
-    });
-
-    // When Edit button in view modal is clicked, show edit modal with values
-    $("#editWarehouseBtn").on("click", function () {
-        const rssite = $(this).data("rssite");
-        const rswhse = $(this).data("rswhse");
-        const name = $(this).data("name");
-        const addr = $(this).data("addr");
-        // Set select value for site
-        $("#edit-rssite").val(rssite);
-        // Set input values
-        $("#edit-rswhse").val(rswhse);
-        $("#edit-name").val(name);
-        $("#edit-addr").val(addr);
-        // Set hidden original keys
-        $("#edit-orig-rssite").val(rssite);
-        $("#edit-orig-rswhse").val(rswhse);
-
-        $("#viewWarehouseModal").modal("hide");
-        $("#editWarehouseModal").modal("show");
-    });
-
-    $("#rackTable tbody").on("click", "tr", function () {
-        const $row = $(this);
-
-        $("#view-rack-warehouse").text($row.data("rswhse") || "");
-        $("#view-rack-baynum").text($row.data("rsbaynum") || "");
-        $("#view-rack-location").text($row.data("rsloc") || "");
-        $("#view-rack-description").text($row.data("rsdesc") || "");
-        $("#view-rack-quantity").text($row.data("qty") || "0");
-        $("#view-rack-createDate").text($row.data("createDate") || "");
-        $("#viewRackModal").modal("show");
     });
 
     // --- Rack Map Filter: Show warehouse and bay options depending on rssite (map tab) ---
@@ -300,69 +254,18 @@ $(document).ready(function () {
         html += "</tbody></table>";
         $("#rack-map-grid").html(html);
     }
-
-    //item Locations Table Row Data Attributes
-    // $("#item-job-view").hide();
-    // $("#itemloc-table tbody").on("click", "tr", function () {
-    //     const $row = $(this);
-    //     const $job = $row.data("job");
-    //     const $rssite = $row.data("rssite");
-    //     const $rssiteDesc = $row.data("rssite-desc");
-    //     // Fill summary details
-    //     $("#item-details-jobco").text($row.data("job") || "");
-    //     $("#item-details-item").text($row.data("item") || "");
-    //     $("#item-details-description").text($row.data("desc") || "");
-    //     $("#item-details-total_qty").text($row.data("totalqty") || "0");
-    //     $("#item-details-um").text($row.data("um") || "");
-    //     $("#item-details-warehouse").text($row.data("rswhse") || "");
-    //     $("#item-details-site").text($row.data("rssite") || "");
-    //     $("#item-details-site-desc").text($rssiteDesc || "");
-
-    //     // Show the item-job-view card
-    //     $("#item-list-view").hide();
-    //     $("#item-job-view").fadeIn();
-
-    //     // AJAX to get rack list for this job
-    //     $.post({
-    //         url: window.appUrl + "/irms/item-locations/job-details",
-    //         data: {
-    //             job: $job,
-    //             rssite: $rssite,
-    //             _token: window.csrfToken
-    //         },
-    //         success: function (data) {
-    //             let html = "";
-    //             data.forEach(function (row) {
-    //                 html += `<tr>
-    //                     <td>${row.rsloc}</td>
-    //                     <td>${row.rspallet_num || ""}</td>
-    //                     <td class="text-end">${Number(row.qty).toLocaleString(undefined, {maximumFractionDigits:0})}</td>
-    //                     <td>${row.um}</td>
-    //                     <td>${row.rcvd_by}</td>
-    //                     <td>${row.datercvd ? row.datercvd.substring(0, 10) : ""}</td>
-    //                 </tr>`;
-    //             });
-    //             $("#job-details-body").html(html);
-    //         }
-    //     });
-    // });
-
-    // $("#btnBackItems").on("click", function () {
-    //     $("#item-job-view").hide();
-    //     $("#item-list-view").fadeIn();
-    // });
 });
 
 document.addEventListener("DOMContentLoaded", function () {
-    const alert = document.getElementById("alerts");
-    if (alert) {
-        setTimeout(() => {
-            alert.style.opacity = "0";
-            setTimeout(() => {
-                alert.style.display = "none";
-            }, 700); // matches the transition duration
-        }, 3000); // show for 3 seconds
-    }
+    // const alert = document.getElementById("alerts");
+    // if (alert) {
+    //     setTimeout(() => {
+    //         alert.style.opacity = "0";
+    //         setTimeout(() => {
+    //             alert.style.display = "none";
+    //         }, 700); // matches the transition duration
+    //     }, 3000); // show for 3 seconds
+    // }
 
     // Scroll to tab-content on mobile when a tab is clicked
     const tabLinks = document.querySelectorAll('#profileTab a[data-bs-toggle="tab"]');
@@ -388,9 +291,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const siteSelect = document.getElementById("rssite");
     const whseSelect = document.getElementById("rswhse");
     const baySelect = document.getElementById("rsbaynum");
-    // const rslocInput = document.getElementById("rsloc");
-    // const rsdecInput = document.getElementById("rsdec");
-    // const descInput = document.getElementById("desc");
+    const rslocInput = document.getElementById("rsloc");
+    const rsdecInput = document.getElementById("rsdec");
+    const descInput = document.getElementById("desc");
 
     function filterOptions(select, siteValue) {
         if (!select) return; // Prevent error if element doesn't exist
@@ -435,13 +338,13 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Auto-fill Lot when typing in Job / CO
-    // const jobcoInput = document.getElementById('jobcoreceive');
-    // const lotInput = document.getElementById('lot');
-    // if (jobcoInput && lotInput) {
-    //     jobcoInput.addEventListener('input', function () {
-    //         lotInput.value = this.value ? this.value + '-1' : '';
-    //     });
-    // }
+    const jobcoInput = document.getElementById('jobcoreceive');
+    const lotInput = document.getElementById('lot');
+    if (jobcoInput && lotInput) {
+        jobcoInput.addEventListener('input', function () {
+            lotInput.value = this.value ? this.value + '-1' : '';
+        });
+    }
 
     $("#jobcoreceive").on("input", function () {
         const job = $(this).val();

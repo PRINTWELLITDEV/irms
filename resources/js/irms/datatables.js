@@ -55,67 +55,59 @@ $(document).ready(function () {
     });
 
     // Warehouse table
-    const warehouseTable = $("#warehouse-table").DataTable({
-        fixedHeader: true,
-        columnControl: ["order", ['searchList']],
-        ordering: {
-            indicators: false,
-            handler: true,
-        },
-        responsive: true,
-        language: {
-            emptyTable: "No warehouses found",
-        },
-    });
-    $("#whseSearch").on("keyup", function () {
-        warehouseTable.search(this.value).draw();
-    });
+    // const warehouseTable = $("#warehouse-table").DataTable({
+    //     fixedHeader: true,
+    //     columnControl: ["order", ['searchList']],
+    //     ordering: {
+    //         indicators: false,
+    //         handler: true,
+    //     },
+    //     responsive: true,
+    //     language: {
+    //         emptyTable: "No warehouses found",
+    //     },
+    // });
+    // $("#whseSearch").on("keyup", function () {
+    //     warehouseTable.search(this.value).draw();
+    // });
 
     // Bay Location table
-    const bayLocationTable = $("#bayloc-table").DataTable({
-        fixedHeader: true,
-        columnControl: ["order", ['searchList']],
-        ordering: {
-            indicators: false,
-            handler: true,
-        },
-        responsive: true,
-        language: {
-            emptyTable: "No Bay found",
-        },
-    });
+    // const bayLocationTable = $("#bayloc-table").DataTable({
+    //     fixedHeader: true,
+    //     columnControl: ["order", ['searchList']],
+    //     ordering: {
+    //         indicators: false,
+    //         handler: true,
+    //     },
+    //     responsive: true,
+    //     language: {
+    //         emptyTable: "No Bay found",
+    //     },
+    // });
+    // //Bay Location Search Function
+    // $("#baylocSearch").on("keyup", function () {
+    //     bayLocationTable.search(this.value).draw();
+    // });
 
-    //Bay Location Search Function
-    $("#baylocSearch").on("keyup", function () {
-        bayLocationTable.search(this.value).draw();
-    });
-
-    //Bay Location Table row selection function
-    $("#bayloc-table tbody").on("click", "tr", function () {
-        const $row = $(this);
-        $("#view-bay-number").text($row.data("rsbaynum") || "");
-        $("#view-created-date").text($row.data("createDate") || "");
-        $("#view-created-by").text($row.data("createdby") || "");
-        $("#view-bay-site-desc").text($row.data("rssite_desc") || "");
-        $("#viewBayModal").modal("show");
-    });
+    
+    
 
     // Rack Location table
-    const rackTable = $("#rackTable").DataTable({
-        fixedHeader: true,
-        columnControl: ["order", ['searchList']],
-        ordering: {
-            indicators: false,
-            handler: true,
-        },
-        responsive: true,
-        language: {
-            emptyTable: "No Rack found",
-        },
-    });
-    $("#rackSearch").on("keyup", function () {
-        rackTable.search(this.value).draw();
-    });
+    // const rackTable = $("#rackTable").DataTable({
+    //     fixedHeader: true,
+    //     columnControl: ["order", ['searchList']],
+    //     ordering: {
+    //         indicators: false,
+    //         handler: true,
+    //     },
+    //     responsive: true,
+    //     language: {
+    //         emptyTable: "No Rack found",
+    //     },
+    // });
+    // $("#rackSearch").on("keyup", function () {
+    //     rackTable.search(this.value).draw();
+    // });
 
     // Item Locations table
     const itemLocTable = $("#itemloc-table").DataTable({
