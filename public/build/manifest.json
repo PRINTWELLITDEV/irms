@@ -8,7 +8,7 @@
     ]
   },
   "resources/css/irms.css": {
-    "file": "assets/irms-FUW7SSz4.css",
+    "file": "assets/irms-GuLyLAEr.css",
     "src": "resources/css/irms.css",
     "isEntry": true,
     "names": [
@@ -22,15 +22,7 @@
     "isEntry": true
   },
   "resources/js/irms/irms.js": {
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-    "file": "assets/irms-CC_vKHUp.js",
-=======
-    "file": "assets/irms-BfTxXVc5.js",
->>>>>>> Stashed changes
-=======
-    "file": "assets/irms-DP3-23gq.js",
->>>>>>> fd9219d ([FE] Add a heat map for the rack location)
+    "file": "assets/irms-Bu7SJQoL.js",
     "name": "irms",
     "src": "resources/js/irms/irms.js",
     "isEntry": true,

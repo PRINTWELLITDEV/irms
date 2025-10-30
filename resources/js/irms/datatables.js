@@ -17,12 +17,11 @@ $.extend($.fn.dataTable.defaults, {
 });
 
 $(document).ready(function () {
-
     // Sites table
     const sitesTable = $("#sites-table").DataTable({
         pageLength: 5,
         fixedHeader: true,
-        columnControl: ["order", ['searchList']],
+        columnControl: ["order", ["searchList"]],
         ordering: {
             indicators: false,
             handler: true,
@@ -40,7 +39,7 @@ $(document).ready(function () {
     const usersTable = $("#users-table").DataTable({
         pageLength: 5,
         fixedHeader: true,
-        columnControl: ["order", ['searchList']],
+        columnControl: ["order", ["searchList"]],
         ordering: {
             indicators: false,
             handler: true,
@@ -57,7 +56,7 @@ $(document).ready(function () {
     // Warehouse table
     const warehouseTable = $("#warehouse-table").DataTable({
         fixedHeader: true,
-        columnControl: ["order", ['searchList']],
+        columnControl: ["order", ["searchList"]],
         ordering: {
             indicators: false,
             handler: true,
@@ -74,7 +73,7 @@ $(document).ready(function () {
     // Bay Location table
     const bayLocationTable = $("#bayloc-table").DataTable({
         fixedHeader: true,
-        columnControl: ["order", ['searchList']],
+        columnControl: ["order", ["searchList"]],
         ordering: {
             indicators: false,
             handler: true,
@@ -103,7 +102,7 @@ $(document).ready(function () {
     // Rack Location table
     const rackTable = $("#rackTable").DataTable({
         fixedHeader: true,
-        columnControl: ["order", ['searchList']],
+        columnControl: ["order", ["searchList"]],
         ordering: {
             indicators: false,
             handler: true,
@@ -113,14 +112,31 @@ $(document).ready(function () {
             emptyTable: "No Rack found",
         },
     });
+
     $("#rackSearch").on("keyup", function () {
         rackTable.search(this.value).draw();
     });
 
+    // Transaction History table
+    $("#transHistory").DataTable({
+        fixedHeader: true,
+        columnControl: ["order", ["searchList"]],
+        ordering: {
+            indicators: false,
+            handler: true,
+        },
+        responsive: true,
+        language: {
+            emptyTable: "No Transaction found",
+        },
+    });
+
+
+
     // Item Locations table
     const itemLocTable = $("#itemloc-table").DataTable({
         fixedHeader: true,
-        columnControl: ["order", ['searchList']],
+        columnControl: ["order", ["searchList"]],
         ordering: {
             indicators: false,
             handler: true,
@@ -139,7 +155,7 @@ $(document).ready(function () {
     // Item Locations job-rack-list table
     const jobRackListTable = $("#job-details-table").DataTable({
         fixedHeader: true,
-        columnControl: ["order", ['searchList']],
+        columnControl: ["order", ["searchList"]],
         ordering: {
             indicators: false,
             handler: true,
@@ -158,7 +174,7 @@ $(document).ready(function () {
     // Transaction table
     const transTable = $("#transaction-table").DataTable({
         fixedHeader: true,
-        columnControl: ["order", ['searchList']],
+        columnControl: ["order", ["searchList"]],
         ordering: {
             indicators: false,
             handler: true,
@@ -173,5 +189,4 @@ $(document).ready(function () {
     $("#transSearch").on("keyup", function () {
         transTable.search(this.value).draw();
     });
-
 });
