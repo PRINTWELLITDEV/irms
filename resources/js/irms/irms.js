@@ -234,6 +234,20 @@ $(document).ready(function () {
             slots.sort(); 
         }
 
+        // Function to get background color based on quantity
+        function getQtyColor(qty) {
+            if (qty <= 0) return "rgb(204, 255, 204)";
+            else if (qty <= 2000) return "rgb(178, 255, 153)";
+            else if (qty <= 4000) return "rgb(230, 255, 128)";
+            else if (qty <= 6000) return "rgb(255, 255, 102)";
+            else if (qty <= 8000) return "rgb(255, 230, 102)";
+            else if (qty <= 10000) return "rgb(255, 179, 51)";
+            else if (qty <= 12000) return "rgb(255, 128, 0)";
+            else if (qty <= 14000) return "rgb(255, 77, 77)";
+            else if (qty <= 16000) return "rgb(204, 0, 0)";
+            else return "rgb(128, 0, 0)";
+        }
+
         // If any level/column/slot is missing, fill the grid with blanks
         let html =
             '<table class="table table-bordered text-center align-middle"><tbody>';
@@ -244,9 +258,15 @@ $(document).ready(function () {
                 slots.forEach((slot) => {
                     let rsloc = `${rsbaynum}-${level}-C${colStr}-${slot}`;
                     let found = locations.find((l) => l.rsloc === rsloc);
-                    html += `<td style="min-width:32px;height:100px;vertical-align:middle;font-size:0.8em;">${
-                        found ? found.rsloc : ""
-                    }</td>`;
+                    let qty = found ? Math.floor(found.qty || 0) : 0;
+                    let bgColor = getQtyColor(qty);
+                    let textColor = qty > 10000 ? "color:white;" : ""; // White text for dark green backgrounds
+                    
+                    html += `
+                    <td style="min-width:32px;height:100px;vertical-align:middle;font-size:0.8em;background-color:${bgColor};${textColor}">
+                        ${found ? `<div>${found.rsloc}</div><div class="fw-bold">${qty.toLocaleString()}</div>` : ""}
+                    </td>
+                    `;
                 });
             });
             html += "</tr>";

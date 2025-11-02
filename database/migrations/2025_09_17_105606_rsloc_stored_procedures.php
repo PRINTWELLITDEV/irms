@@ -14,7 +14,6 @@ return new class extends Migration
         // Drop if exists
         \DB::unprepared("IF OBJECT_ID('sp_view_rslocs', 'P') IS NOT NULL DROP PROCEDURE sp_view_rslocs");
         \DB::unprepared("IF OBJECT_ID('sp_add_rslocs', 'P') IS NOT NULL DROP PROCEDURE sp_add_rslocs");
-        \DB::unprepared("IF OBJECT_ID('sp_rack_map', 'P') IS NOT NULL DROP PROCEDURE sp_rack_map");
 
         // Create sp_view_rslocs
         \DB::unprepared('
@@ -31,7 +30,7 @@ return new class extends Migration
             WHERE (@rssite IS NULL OR l.rssite = @rssite)
             ORDER BY l.rssite, l.rswhse,
                 l.qty DESC,
-				l.rsloc
+                l.rsloc
         ');
 
         // Create sp_add_rslocs
@@ -49,22 +48,6 @@ return new class extends Migration
             INSERT INTO rslocation (rssite, rswhse, rsbaynum, rsloc, rsdesc, qty, createdate, createdby)
             VALUES (@rssite, @rswhse, @rsbaynum, @rsloc, @rsdesc, @qty, @createdate, @createdby);
         ');
-
-        // Create sp_rack_map
-        \DB::unprepared('
-            CREATE PROCEDURE sp_rack_map
-                @rssite NVARCHAR(8),
-                @rswhse NVARCHAR(10),
-                @rsbaynum NVARCHAR(5)
-            AS
-            BEGIN
-                SELECT *
-                FROM rslocation
-                WHERE rssite = @rssite
-                  AND rswhse = @rswhse
-                  AND rsbaynum = @rsbaynum
-            END
-        ');
     }
 
     /**
@@ -74,6 +57,5 @@ return new class extends Migration
     {
         \DB::unprepared("IF OBJECT_ID('sp_view_rslocs', 'P') IS NOT NULL DROP PROCEDURE sp_view_rslocs");
         \DB::unprepared("IF OBJECT_ID('sp_add_rslocs', 'P') IS NOT NULL DROP PROCEDURE sp_add_rslocs");
-        \DB::unprepared("IF OBJECT_ID('sp_rack_map', 'P') IS NOT NULL DROP PROCEDURE sp_rack_map");
     }
 };

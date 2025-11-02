@@ -21,10 +21,7 @@ function renderRackLocTable(data, userLevel) {
                     <td>${rack.rsloc}</td>
                     <td>${rack.rswhse}</td>
                     <td>${rack.rsbaynum}</td>
-                    <td class="text-end">${Number(rack.qty || 0).toLocaleString(
-                        undefined,
-                        { maximumFractionDigits: 0 }
-                    )}</td>
+                    <td class="text-end"> ${Number(rack.qty || 0).toLocaleString(undefined,{ maximumFractionDigits: 0 })} </td>
                     ${
                         userLevel == 1
                             ? `<td>${rack.rssite_desc || "N/A"}</td>`
