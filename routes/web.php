@@ -17,7 +17,6 @@ use App\Http\Controllers\Irms\RsGoodsReceivingController;
 use App\Http\Controllers\Irms\RsGoodsDispatchingController;
 use App\Http\Controllers\Irms\RsTransController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\DashboardController;
 
 // Home route
 // Route::get('/', function () {
@@ -71,12 +70,6 @@ Route::get('/irms', [RsUserController::class, 'levelExclusivity'])
     ->name('irms.dashboard')
     ->middleware(['auth']); // add additional middleware you need (check.session, ensure.level)
 
-Route::get('irms', [DashboardController::class, 'getGoodsCount'])
-    ->name('irms.dashboard')
-    ->middleware('auth');
-
-
-//IRMS
 Route::prefix('irms')->middleware('check.session')->group(function () {
     // User management
     Route::get('/manage-users', [RsUserController::class, 'index'])->name('rsusers.index');

@@ -1,12 +1,15 @@
 // Datables
 $(document).ready(function () {
-    $("#transHistory tbody").on("click", "tr", function () {
+    $("#activityUsers tbody").on("click", "tr", function () {
         const $row = $(this);
 
         $("#view-rack-warehouse").text($row.data("rswhse") || "");
         $("#view-rack-baynum").text($row.data("rsbaynum") || "");
         $("#view-rack-location").text($row.data("rsloc") || "");
         $("#view-rack-description").text($row.data("rsdesc") || "");
+        $("#view-rack-quantity").text($row.data("qty") || "0");
+        $("#view-rack-createDate").text($row.data("createDate") || "");
+        $("#viewRackModal").modal("show");
     });
 });
 
