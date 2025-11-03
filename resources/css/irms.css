@@ -346,6 +346,13 @@ table.table td img {
     position: relative;
     min-height: 75vh
 }
+
+/* All About Dashboard */
+.info-box-content{
+    min-height: 115px;
+}
+
+
 /* --- Profile Layout Responsive --- */
 @media (max-width: 991.98px) {
     .profile-menu,

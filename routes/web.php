@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Irms\DashboardController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -68,7 +69,11 @@ Route::get('/irms/session', function () {
 // Dashboard (protected)
 Route::get('/irms', [RsUserController::class, 'levelExclusivity'])
     ->name('irms.dashboard')
-    ->middleware(['auth']); // add additional middleware you need (check.session, ensure.level)
+    ->middleware('auth');
+
+Route::get('irms', [DashboardController::class, 'index'])
+    ->name('irms.dashboard')
+    ->middleware('auth');
 
 Route::prefix('irms')->middleware('check.session')->group(function () {
     // User management

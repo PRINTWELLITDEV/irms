@@ -12,31 +12,32 @@ return new class extends Migration {
         // 1. Goods Dispatched Count (Today)
         DB::unprepared('
             CREATE PROCEDURE sp_GetGoodsDispatchedCount(@UserId VARCHAR(50))
-            AS
-            BEGIN
-                SELECT COUNT(*) AS GoodsDispatchedCount
-                FROM rstrans t
-                INNER JOIN rsusers u ON t.createdby = u.userid
-                WHERE u.userid = @UserId
-                AND t.trxtype = \'D\'
-                AND CAST(t.trxdate AS DATE) = CAST(GETDATE() AS DATE);
-            END
+                AS
+                    BEGIN
+                        SELECT COUNT(*) AS GoodsDispatchedCount
+                        FROM rstrans t
+                        INNER JOIN rsusers u ON t.createdby = u.userid
+                        WHERE u.userid = @UserId
+                        AND t.trxtype = \'D\'
+                        AND CAST(t.trxdate AS DATE) = CAST(GETDATE() AS DATE);
+                    END
         ');
 
         // 2. Goods Received Count (Today)
         DB::unprepared('
-            CREATE PROCEDURE sp_GetGoodsReceivedCount(@UserId VARCHAR(50))
+        CREATE PROCEDURE sp_GetGoodsReceivedCount(@UserId VARCHAR(50))
             AS
-            BEGIN
-                SELECT COUNT(*) AS GoodsReceivedCount
-                FROM rstrans t
-                INNER JOIN rsusers u ON t.createdby = u.userid
-                WHERE u.userid = @UserId
-                AND t.trxtype = \'R\'
-                AND CAST(t.trxdate AS DATE) = CAST(GETDATE() AS DATE);
-            END
+                BEGIN
+                    SELECT COUNT(*) AS GoodsReceivedCount
+                    FROM rstrans t
+                    INNER JOIN rsusers u ON t.createdby = u.userid
+                    WHERE u.userid = @UserId
+                    AND t.trxtype = \'R\'
+                    AND CAST(t.trxdate AS DATE) = CAST(GETDATE() AS DATE);
+                END
         ');
 
+        // 3. Warehouse Vacancy
         DB::unprepared('
         CREATE PROCEDURE sp_GetWarehouseOccupancy(@site VARCHAR(10))
         AS
@@ -54,6 +55,28 @@ return new class extends Migration {
             -- Filters the table rows ONCE based on the input parameter
             WHERE rssite = @site;
         END
+        ');
+
+        //4. Percentage of Received Goods by the user input
+        DB::unprepared('
+        CREATE PROCEDURE sp_GetPercentageReceivedGoods(@site VARCHAR(10), @UserId VARCHAR(50))
+        AS
+            BEGIN
+                SELECT
+                (
+                    CAST(
+                        (SELECT COUNT(*) FROM rstrans t
+                        INNER JOIN rslocation l ON t.rsloc = l.rsloc
+                        WHERE t.trxtype = \'R\' AND t.rssite = @site AND t.createdby = @UserId)
+                    AS FLOAT)
+                    /
+                    (SELECT COUNT(*) FROM rstrans t
+                    INNER JOIN rslocation l ON t.rsloc = l.rsloc
+                    WHERE t.rssite = @site AND t.createdby = @UserId
+                    )
+                )
+                * 100;
+            END
         ');
     }
 
@@ -83,6 +106,13 @@ return new class extends Migration {
         BEGIN
             DROP PROCEDURE sp_GetWarehouseOccupancy;
         END
+        ');
+
+        DB::unprepared('
+            IF EXISTS (SELECT * FROM sys.objects WHERE type = \'P\' AND name = \'sp_GetPercentageReceivedGoods\')
+            BEGIN
+                DROP PROCEDURE sp_GetPercentageReceivedGoods;
+            END
         ');
     }
 };

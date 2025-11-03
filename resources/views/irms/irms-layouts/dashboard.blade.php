@@ -15,7 +15,7 @@
                 <div class="container-fluid">
                     @if(config('app.env') !== 'production')
 
-                        @if (isset($level) && $level == 1)
+                        @if (auth()->user()->level == 1)
                             <div class="card card-primary">
                                 <div class="card-body">
                                     <div class="row mb-3 wrap">
@@ -140,7 +140,7 @@
                                 </div>
                             </div>
 
-                        @elseif(isset($level) && $level == 2)
+                        @elseif(auth()->user()->level == 2)
 
                             <div class="card card-primary">
                                 <div class="card-body">
@@ -283,7 +283,7 @@
                                 </div>
                             </div>
 
-                        @elseif(isset($level) && $level == 3)
+                        @elseif(auth()->user()->level == 3)
 
                             <div class="card card-primary">
                                 <div class="card-body">
@@ -296,28 +296,28 @@
                                                 </div>
                                                 <div class="info-box-content">
                                                     <div class="info-box-text">Warehouse Occupancy</div>
-                                                    <div class="info-box-number">Still Development</div>
+                                                    <div class="info-box-number">{{ $vacantRackPer }}%</div>
                                                     <div class="progress">
                                                         <div class="progress-bar progress-bar-striped progress-bar-animated"
-                                                            style="width:70%"></div>
+                                                            style="width: {{ $vacantRackPer }}%"></div>
                                                     </div>
-                                                    <span class="progress-description">Hellooooo</span>
+                                                    <span class="progress-description">Heooooo</span>
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div class="col-sm-12 col-md-3 text-center align-items-center">
-                                            <div class="info-box text-bg-warning bg-gradient">
+                                            <div class="info-box text-bg-warning bg-gradient" style="min-height: 120px;">
                                                 <div class="info-box-icon">
-                                                    <i class="bi bi-bookmark-fill"></i>
+                                                    <i class="bi bi-arrow-right-square-fill"></i>
                                                 </div>
                                                 <div class="info-box-content">
                                                     <div class="info-box-text">Goods Received Today</div>
-                                                    <div class="info-box-number">10,000</div>
+                                                    <div class="info-box-number">{{ $goodsReceivedCount }}</div>
                                                     <div class="progress">
-                                                        <div class="progress-bar" style="width:70%"></div>
+                                                        <div class="progress-bar" style="width: {{ $goodsReceivedCount }}%"></div>
                                                     </div>
-                                                    <span class="progress-description">Hellooooo</span>
+                                                    <span class="progress-description"></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -325,11 +325,11 @@
                                         <div class="col-sm-12 col-md-3 text-center text-white align-items-center">
                                             <div class="info-box text-bg-primary bg-gradient">
                                                 <div class="info-box-icon">
-                                                    <i class="bi bi-bookmark-fill"></i>
+                                                    <i class="bi bi-truck"></i>
                                                 </div>
                                                 <div class="info-box-content">
                                                     <div class="info-box-text">Goods Dispatched Today</div>
-                                                    <div class="info-box-number">10,000</div>
+                                                    <div class="info-box-number">{{ $goodsDispatchedCount }}</div>
                                                     <div class="progress">
                                                         <div class="progress-bar" style="width:70%"></div>
                                                     </div>
@@ -357,30 +357,30 @@
                                         </div>
 
                                         <div class="row mb-3">
-                                            <div class="col-sm-12 col-md-7 mb-1">
+                                            <div class="col-sm-12 col-md-6 mb-1">
                                                 <div class="card">
                                                     <div class="card-header bg-success bg-gradient text-white">
                                                         <h3 class="card-title">Daily Goods Movement Today</h3>
                                                     </div>
                                                     <div class="card-body">
-                                                        <canvas id="chart_bar" style="height: 250px;"></canvas>
+                                                        <canvas id="chart_bar" style="height: 200px;"></canvas>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-12 col-md-5 mb-4">
+                                            <div class="col-sm-12 col-md-6 mb-1">
                                                 <div class="card">
                                                     <div class="card-header bg-danger bg-gradient text-white">
                                                         <h3 class="card-title">Rack Utilization</h3>
                                                     </div>
                                                     <div class="card-body">
-                                                        <canvas id="chart_pie" style="height: 150px;"></canvas>
+                                                        <canvas id="chart_pie" style="height: 200px;"></canvas>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div class="row mb-3">
-                                            <div class="col-12 col-md-6">
+                                            <div class="col-sm-12 col-md-6">
                                                 <div class="card shadow-md">
                                                     <div class="card-header bg-primary bg-gradient text-white">
                                                         <h3 class="card-title">Total Receiving & Dispatching per Week</h3>
@@ -391,7 +391,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-12 col-md-6">
+                                            <div class="col-sm-12 col-md-6">
                                                 <div class="card">
                                                     <div class="card-header bg-warning bg-gradient">
                                                         <h3 class="card-title">Monthly Cap Report</h3>
