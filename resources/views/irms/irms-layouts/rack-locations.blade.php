@@ -255,7 +255,7 @@
                                 <select name="rswhse" id="rswhse" class="form-select" required>
                                     <option disabled selected>Select Warehouse</option>
                                     @foreach($warehouses as $whse)
-                                        @if(auth()->user()->userid === 'sa' || $whse->rssite === auth()->user()->rssite)
+                                        @if(auth()->user()->level == 1 || $whse->rssite === auth()->user()->rssite)
                                             <option value="{{ $whse->rswhse }}" data-site="{{ $whse->rssite }}">
                                                 {{ $whse->name }}
                                             </option>
@@ -271,7 +271,7 @@
                                 <select name="rsbaynum" id="rsbaynum" class="form-select" required>
                                     <option disabled selected>Select Bay Number</option>
                                     @foreach($baynums as $bay)
-                                        @if(auth()->user()->userid === 'sa' || $bay->rssite === auth()->user()->rssite)
+                                        @if(auth()->user()->level == 1 || $bay->rssite === auth()->user()->rssite)
                                             <option value="{{ $bay->rsbaynum }}" data-site="{{ $bay->rssite }}">
                                                 {{ $bay->rsbaynum }}
                                             </option>

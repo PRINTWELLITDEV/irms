@@ -14,7 +14,7 @@ return new class extends Migration
         // Drop if exists
         \DB::unprepared("IF OBJECT_ID('sp_rack_map', 'P') IS NOT NULL DROP PROCEDURE sp_rack_map");
 
-        // Create sp_rack_map
+        // Create sp_rack_map with job details
         \DB::unprepared('
             CREATE PROCEDURE sp_rack_map
                 @rssite NVARCHAR(8),
@@ -22,11 +22,22 @@ return new class extends Migration
                 @rsbaynum NVARCHAR(5)
             AS
             BEGIN
-                SELECT *
-                FROM rslocation
-                WHERE rssite = @rssite
-                  AND rswhse = @rswhse
-                  AND rsbaynum = @rsbaynum
+                SELECT 
+                    rl.rssite,
+                    rl.rswhse,
+                    rl.rsbaynum,
+                    rl.rsloc,
+                    rl.rsdesc,
+                    rl.qty,
+                    rl.createdate,
+                    ril.job,
+                    ril.item
+                FROM rslocation rl
+                LEFT JOIN rsitemloc ril ON ril.rsloc = rl.rsloc AND ril.rssite = rl.rssite
+                WHERE rl.rssite = @rssite
+                  AND rl.rswhse = @rswhse
+                  AND rl.rsbaynum = @rsbaynum
+                ORDER BY rl.rsloc
             END
         ');
     }

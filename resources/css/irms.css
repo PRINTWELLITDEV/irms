@@ -105,6 +105,22 @@ table.table td img {
     justify-content: flex-end;
 }
 
+/* Rack and Map Location */
+#rack-map-grid {
+    cursor: grab;
+    user-select: none;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+#rack-map-grid:active {
+    cursor: grabbing;
+}
+
+#rack-map-grid table {
+    min-width: max-content;
+}
+
 /* item location */
 #job-details-table a{
     text-decoration: none;

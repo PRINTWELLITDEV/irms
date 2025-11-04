@@ -13,15 +13,17 @@ function renderRackLocTable(data, userLevel) {
                     data-qty="${rack.qty || 0}"
                     data-create-date="${
                         rack.createdate
-                            ? moment(rack.createdate).format(
-                                  "DD MMMM YYYY"
-                              )
+                            ? moment(rack.createdate).format("DD MMMM YYYY")
                             : ""
                     }">
                     <td>${rack.rsloc}</td>
                     <td>${rack.rswhse}</td>
                     <td>${rack.rsbaynum}</td>
-                    <td class="text-end"> ${Number(rack.qty || 0).toLocaleString(undefined,{ maximumFractionDigits: 0 })} </td>
+                    <td class="text-end"> ${Number(
+                        rack.qty || 0
+                    ).toLocaleString(undefined, {
+                        maximumFractionDigits: 0,
+                    })} </td>
                     ${
                         userLevel == 1
                             ? `<td>${rack.rssite_desc || "N/A"}</td>`
@@ -131,3 +133,230 @@ $("#rackTable tbody").on("click", "tr", function () {
     $("#view-rack-createDate").text($row.attr("data-create-date") || "");
     $("#viewRackModal").modal("show");
 });
+
+// --- Rack Map Filter: Show warehouse and bay options depending on rssite (map tab) ---
+// Map tab filter logic
+const mapSiteSelect = document.getElementById("mapRsSite");
+const mapWhseSelect = document.getElementById("mapRsWhse");
+const mapBaySelect = document.getElementById("mapRsBay");
+
+function filterMapOptions(select, siteValue) {
+    if (!select) return;
+    Array.from(select.options).forEach((option) => {
+        if (!option.value) return;
+        option.style.display =
+            option.getAttribute("data-site") === siteValue ? "" : "none";
+    });
+    // Reset selection if current is hidden
+    if (
+        select.selectedIndex > 0 &&
+        select.options[select.selectedIndex].style.display === "none"
+    ) {
+        select.selectedIndex = 0;
+    }
+}
+
+// For 'sa', filter on change
+if (mapSiteSelect && mapWhseSelect && mapBaySelect) {
+    mapSiteSelect.addEventListener("change", function () {
+        mapWhseSelect.selectedIndex = 0;
+        mapBaySelect.selectedIndex = 0;
+        filterMapOptions(mapWhseSelect, this.value);
+        filterMapOptions(mapBaySelect, this.value);
+    });
+
+    // Initial filter on page load if old value exists
+    if (mapSiteSelect.value) {
+        filterMapOptions(mapWhseSelect, mapSiteSelect.value);
+        filterMapOptions(mapBaySelect, mapSiteSelect.value);
+    }
+}
+
+$("#mapRsSite, #mapRsWhse, #mapRsBay").on("change", function () {
+    let rssite = $("#mapRsSite").val();
+    let rswhse = $("#mapRsWhse").val();
+    let rsbaynum = $("#mapRsBay").val();
+
+    if (rssite && rswhse && rsbaynum) {
+        $.post({
+            url: window.appUrl + "/irms/rack-locations/map-grid",
+            data: {
+                rssite: rssite,
+                rswhse: rswhse,
+                rsbaynum: rsbaynum,
+                _token: $('input[name="_token"]').val(),
+            },
+            success: function (data) {
+                renderRackMapGrid(data, rsbaynum);
+            },
+        });
+    }
+});
+
+function renderRackMapGrid(locations, rsbaynum) {
+    // Levels
+    let levels = [
+        ...new Set(locations.map((l) => l.rsloc.match(/-(L\d+)-/)?.[1])),
+    ]
+        .filter(Boolean)
+        .sort(
+            (a, b) =>
+                parseInt(b.replace("L", "")) - parseInt(a.replace("L", ""))
+        );
+
+    // Columns (C01, C02, ...)
+    let columns = [
+        ...new Set(
+            locations.map((l) => {
+                let m = l.rsloc.match(/-C(\d+)-S/);
+                return m ? m[1] : null;
+            })
+        ),
+    ]
+        .filter(Boolean)
+        .map(Number);
+
+    // Slots
+    let slots = [
+        ...new Set(locations.map((l) => l.rsloc.match(/-(S\d+)$/)?.[1])),
+    ]
+        .filter(Boolean)
+        .sort();
+
+    // Sort columns: Odd baynum = descending, Even = ascending
+    let baynumDigits = rsbaynum.match(/\d+/);
+    let isOdd = baynumDigits && parseInt(baynumDigits[0]) % 2 === 1;
+    if (isOdd) {
+        columns.sort((a, b) => b - a);
+        slots.sort().reverse();
+    } else {
+        columns.sort((a, b) => a - b);
+        slots.sort();
+    }
+
+    // Function to get background color based on quantity comparison
+    function getQtyColor(currentQty, originalQty) {
+        if (currentQty <= 0)
+            return "linear-gradient(180deg, rgba(231, 255, 231, 1) 0%, rgba(198, 253, 198, 1) 100%)";
+
+        let percentage = (currentQty / originalQty) * 100;
+        if (percentage >= 100)
+            return "linear-gradient(180deg, rgba(139, 0, 0, 1) 0%, rgba(80, 0, 0, 1) 100%)";
+        else if (percentage >= 90)
+            return "linear-gradient(180deg, rgba(255, 140, 0, 1) 0%, rgba(255, 140, 0, 1) 0%, rgba(139, 0, 0, 1) 100%)";
+        else if (percentage >= 80)
+            return "linear-gradient(180deg, rgba(255, 140, 0, 1) 0%, rgba(255, 140, 0, 1) 50%, rgba(139, 0, 0, 1) 100%)";
+        else if (percentage >= 70)
+            return "linear-gradient(180deg, rgba(255, 140, 0, 1) 0%, rgba(255, 140, 0, 1) 100%, rgba(139, 0, 0, 1) 100%)";
+        else if (percentage >= 60)
+            return "linear-gradient(180deg, rgba(255, 215, 0, 1) 0%, rgba(255, 140, 0, 1) 0%, rgba(255, 69, 0, 1) 100%)";
+        else if (percentage >= 50)
+            return "linear-gradient(180deg, rgba(255, 215, 0, 1) 0%, rgba(255, 140, 0, 1) 50%, rgba(255, 69, 0, 1) 100%)";
+        else if (percentage >= 40)
+            return "linear-gradient(180deg, rgba(255, 215, 0, 1) 0%, rgba(255, 140, 0, 1) 100%, rgba(255, 69, 0, 1) 100%)";
+        else if (percentage >= 30)
+            return "linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(50, 205, 50, 1) 0%, rgba(255, 217, 47, 1) 100%)";
+        else if (percentage >= 20)
+            return "linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(50, 205, 50, 1) 50%, rgba(255, 217, 47, 1) 100%)";
+        else if (percentage >= 10)
+            return "linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(50, 205, 50, 1) 100%, rgba(255, 217, 47, 1) 100%)";
+        else
+            return "linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(50, 205, 50, 1) 100%, rgba(255, 217, 47, 1) 100%)";
+    }
+
+    let html =
+        '<table class="table table-bordered text-center align-middle"><tbody>';
+    levels.forEach((level) => {
+        html += "<tr>";
+        columns.forEach((colNum) => {
+            let colStr = colNum.toString().padStart(2, "0");
+            slots.forEach((slot) => {
+                let rsloc = `${rsbaynum}-${level}-C${colStr}-${slot}`;
+                let found = locations.find((l) => l.rsloc === rsloc);
+                let currentQty = found ? Math.floor(found.qty || 0) : 0;
+                let originalQty = found
+                    ? Math.floor(found.original_qty || 0)
+                    : 0;
+                let bgColor = getQtyColor(currentQty, originalQty);
+
+                // Determine text color for readability
+                let textColor = "";
+                if (originalQty > 0) {
+                    let percentage = (currentQty / originalQty) * 100;
+                    textColor =
+                        percentage >= 85 ? "color:white;" : "color:black;";
+                } else {
+                    textColor =
+                        currentQty > 10000 ? "color:white;" : "color:black;";
+                }
+
+                // Display format: current / original (if original exists)
+                let qtyDisplay = "";
+                if (originalQty > 0) {
+                    qtyDisplay = "<br>" + currentQty.toLocaleString();
+                    qtyDisplay += ` / ${originalQty.toLocaleString()}`;
+                    let percentage = (currentQty / originalQty) * 100;
+                    // Show 2 decimal places if percentage is below 1%
+                    let formattedPercentage =
+                        percentage < 1
+                            ? percentage.toFixed(2)
+                            : Math.round(percentage);
+                    qtyDisplay += ` <br>(${formattedPercentage}%)`;
+                } else {
+                    qtyDisplay = "<br>Empty<br>(0%)";
+                }
+
+                html += `
+                    <td style="min-width:60px;height:120px;vertical-align:middle;font-size:0.8em;background:${bgColor};${textColor};padding:4px;">
+                        ${
+                            found
+                                ? `<div class="fw-bold">${found.rsloc}</div><div class="fw-bold small">${qtyDisplay}</div>`
+                                : ""
+                        }
+                    </td>
+                    `;
+            });
+        });
+        html += "</tr>";
+    });
+    html += "</tbody></table>";
+    $("#rack-map-grid").html(html);
+
+    // Enable horizontal scroll
+    enableHorizontalScroll();
+}
+
+// Add this after the renderRackMapGrid function
+function enableHorizontalScroll() {
+    const container = document.getElementById('rack-map-grid');
+    if (!container) return;
+
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+
+    container.addEventListener('mousedown', (e) => {
+        isDown = true;
+        container.style.cursor = 'grabbing';
+        startX = e.pageX - container.offsetLeft;
+        scrollLeft = container.scrollLeft;
+    });
+
+    container.addEventListener('mouseleave', () => {
+        isDown = false;
+        container.style.cursor = 'grab';
+    });
+
+    container.addEventListener('mouseup', () => {
+        isDown = false;
+        container.style.cursor = 'grab';
+    });
+
+    container.addEventListener('mousemove', (e) => {
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - container.offsetLeft;
+        const walk = (x - startX) * 2; // Scroll speed multiplier
+        container.scrollLeft = scrollLeft - walk;
+    });
+}

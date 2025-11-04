@@ -105,9 +105,71 @@ class RsLocationController extends Controller
         $rswhse = $request->input('rswhse');
         $rsbaynum = $request->input('rsbaynum');
 
+        // Get rack locations with job info
         $locations = \DB::select('EXEC sp_rack_map ?, ?, ?', [$rssite, $rswhse, $rsbaynum]);
 
-        // Return as JSON for AJAX
-        return response()->json($locations);
+        // Map rssite to connection name
+        $connections = [
+            'PI-SP' => 'pisp_con',
+            'FP-SP' => 'fpsp_con',
+            'PIGRP-SP' => 'pigrpsp_con',
+        ];
+        $connection = $connections[$rssite] ?? null;
+
+        // Group locations by rsloc to handle multiple jobs per location
+        $grouped = [];
+        foreach ($locations as $location) {
+            $rsloc = $location->rsloc;
+            if (!isset($grouped[$rsloc])) {
+                $grouped[$rsloc] = [
+                    'rssite' => $location->rssite,
+                    'rswhse' => $location->rswhse,
+                    'rsbaynum' => $location->rsbaynum,
+                    'rsloc' => $location->rsloc,
+                    'rsdesc' => $location->rsdesc,
+                    'qty' => $location->qty,
+                    'createdate' => $location->createdate,
+                    'jobs' => [],
+                    'original_qty' => 0
+                ];
+            }
+            
+            // Add job to the list if exists
+            if ($location->job && $location->item) {
+                $grouped[$rsloc]['jobs'][] = [
+                    'job' => $location->job,
+                    'item' => $location->item
+                ];
+            }
+        }
+
+        // Fetch original pallet sizes for all jobs
+        foreach ($grouped as $rsloc => &$data) {
+            if ($connection && !empty($data['jobs'])) {
+                foreach ($data['jobs'] as $jobData) {
+                    try {
+                        $jobDetail = \DB::connection($connection)
+                            ->table('job as j')
+                            ->join('item as i', 'i.item', '=', 'j.item')
+                            ->select('i.Uf_Item_PalletSize')
+                            ->where('j.job', $jobData['job'])
+                            ->where('j.suffix', 0)
+                            ->where('j.item', $jobData['item'])
+                            ->first();
+
+                        if ($jobDetail) {
+                            $data['original_qty'] += floatval($jobDetail->Uf_Item_PalletSize ?? 0);
+                        }
+                    } catch (\Exception $e) {
+                        // If connection fails, keep original_qty as accumulated value
+                    }
+                }
+            }
+        }
+
+        // Convert back to array for JSON response
+        $result = array_values($grouped);
+
+        return response()->json($result);
     }
 }

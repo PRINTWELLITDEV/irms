@@ -11,7 +11,6 @@ import "./rsloc.js";
 import "./goods-receiving.js";
 import "./goods-dispatching.js";
 
-
 // window.appUrl = "{{ url('') }}";
 // window.sessionCheckUrl = "{{ url('/irms/session') }}";
 // window.loginUrl = "{{ route('login') }}";
@@ -30,8 +29,8 @@ setInterval(function () {
 }, 3600000);
 
 $(document).ready(function () {
-    const isSa =
-        $("select#rssite").length > 0 && $("input[name='rssite']").length === 0;
+    // const isSa =
+    //     $("select#rssite").length > 0 && $("input[name='rssite']").length === 0;
 
     // function setFieldsEnabled(enabled) {
     //     $(
@@ -139,141 +138,6 @@ $(document).ready(function () {
             reader.readAsDataURL(input.files[0]);
         }
     });
-
-    // --- Rack Map Filter: Show warehouse and bay options depending on rssite (map tab) ---
-    // Map tab filter logic
-    const mapSiteSelect = document.getElementById("mapRsSite");
-    const mapWhseSelect = document.getElementById("mapRsWhse");
-    const mapBaySelect = document.getElementById("mapRsBay");
-
-    function filterMapOptions(select, siteValue) {
-        if (!select) return;
-        Array.from(select.options).forEach((option) => {
-            if (!option.value) return;
-            option.style.display =
-                option.getAttribute("data-site") === siteValue ? "" : "none";
-        });
-        // Reset selection if current is hidden
-        if (
-            select.selectedIndex > 0 &&
-            select.options[select.selectedIndex].style.display === "none"
-        ) {
-            select.selectedIndex = 0;
-        }
-    }
-
-    // For 'sa', filter on change
-    if (mapSiteSelect && mapWhseSelect && mapBaySelect) {
-        mapSiteSelect.addEventListener("change", function () {
-            mapWhseSelect.selectedIndex = 0;
-            mapBaySelect.selectedIndex = 0;
-            filterMapOptions(mapWhseSelect, this.value);
-            filterMapOptions(mapBaySelect, this.value);
-        });
-
-        // Initial filter on page load if old value exists
-        if (mapSiteSelect.value) {
-            filterMapOptions(mapWhseSelect, mapSiteSelect.value);
-            filterMapOptions(mapBaySelect, mapSiteSelect.value);
-        }
-    }
-
-    $("#mapRsSite, #mapRsWhse, #mapRsBay").on("change", function () {
-        let rssite = $("#mapRsSite").val();
-        let rswhse = $("#mapRsWhse").val();
-        let rsbaynum = $("#mapRsBay").val();
-
-        if (rssite && rswhse && rsbaynum) {
-            $.post({
-                url: window.appUrl + "/irms/rack-locations/map-grid",
-                data: {
-                    rssite: rssite,
-                    rswhse: rswhse,
-                    rsbaynum: rsbaynum,
-                    _token: $('input[name="_token"]').val(),
-                },
-                success: function (data) {
-                    renderRackMapGrid(data, rsbaynum);
-                },
-            });
-        }
-    });
-
-    function renderRackMapGrid(locations, rsbaynum) {
-        // Levels
-        let levels = [
-            ...new Set(locations.map((l) => l.rsloc.match(/-(L\d+)-/)?.[1])),
-        ].filter(Boolean)
-            .sort((a, b) => parseInt(b.replace("L", "")) - parseInt(a.replace("L", "")));
-
-        // Columns (C01, C02, ...)
-        let columns = [
-            ...new Set(
-                locations.map((l) => {
-                    let m = l.rsloc.match(/-C(\d+)-S/);
-                    return m ? m[1] : null;
-                })
-            ),
-        ].filter(Boolean)
-            .map(Number);
-
-        // Slots
-        let slots = [
-            ...new Set(locations.map((l) => l.rsloc.match(/-(S\d+)$/)?.[1])),
-        ].filter(Boolean)
-            .sort();
-
-        // Sort columns: Odd baynum = descending, Even = ascending
-        let baynumDigits = rsbaynum.match(/\d+/);
-        let isOdd = baynumDigits && parseInt(baynumDigits[0]) % 2 === 1;
-        if (isOdd) {
-            columns.sort((a, b) => b - a); // Descending for odd
-            slots.sort().reverse(); 
-        } else {
-            columns.sort((a, b) => a - b); // Ascending for even
-            slots.sort(); 
-        }
-
-        // Function to get background color based on quantity
-        function getQtyColor(qty) {
-            if (qty <= 0) return "rgb(204, 255, 204)";
-            else if (qty <= 2000) return "rgb(178, 255, 153)";
-            else if (qty <= 4000) return "rgb(230, 255, 128)";
-            else if (qty <= 6000) return "rgb(255, 255, 102)";
-            else if (qty <= 8000) return "rgb(255, 230, 102)";
-            else if (qty <= 10000) return "rgb(255, 179, 51)";
-            else if (qty <= 12000) return "rgb(255, 128, 0)";
-            else if (qty <= 14000) return "rgb(255, 77, 77)";
-            else if (qty <= 16000) return "rgb(204, 0, 0)";
-            else return "rgb(128, 0, 0)";
-        }
-
-        // If any level/column/slot is missing, fill the grid with blanks
-        let html =
-            '<table class="table table-bordered text-center align-middle"><tbody>';
-        levels.forEach((level) => {
-            html += "<tr>";
-            columns.forEach((colNum) => {
-                let colStr = colNum.toString().padStart(2, "0");
-                slots.forEach((slot) => {
-                    let rsloc = `${rsbaynum}-${level}-C${colStr}-${slot}`;
-                    let found = locations.find((l) => l.rsloc === rsloc);
-                    let qty = found ? Math.floor(found.qty || 0) : 0;
-                    let bgColor = getQtyColor(qty);
-                    let textColor = qty > 10000 ? "color:white;" : ""; // White text for dark green backgrounds
-                    
-                    html += `
-                    <td style="min-width:32px;height:100px;vertical-align:middle;font-size:0.8em;background-color:${bgColor};${textColor}">
-                        ${found ? `<div>${found.rsloc}</div><div class="fw-bold">${qty.toLocaleString()}</div>` : ""}
-                    </td>
-                    `;
-                });
-            });
-            html += "</tr>";
-        });
-        html += "</tbody></table>";
-        $("#rack-map-grid").html(html);
-    }
 });
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -288,13 +152,18 @@ document.addEventListener("DOMContentLoaded", function () {
     // }
 
     // Scroll to tab-content on mobile when a tab is clicked
-    const tabLinks = document.querySelectorAll('#profileTab a[data-bs-toggle="tab"]');
-    const tabContent = document.getElementById('profileTabContent');
+    const tabLinks = document.querySelectorAll(
+        '#profileTab a[data-bs-toggle="tab"]'
+    );
+    const tabContent = document.getElementById("profileTabContent");
 
-    tabLinks.forEach(link => {
-        link.addEventListener('shown.bs.tab', function () {
+    tabLinks.forEach((link) => {
+        link.addEventListener("shown.bs.tab", function () {
             if (window.innerWidth <= 768 && tabContent) {
-                tabContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                tabContent.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start",
+                });
             }
         });
     });
@@ -358,11 +227,11 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Auto-fill Lot when typing in Job / CO
-    const jobcoInput = document.getElementById('jobcoreceive');
-    const lotInput = document.getElementById('lot');
+    const jobcoInput = document.getElementById("jobcoreceive");
+    const lotInput = document.getElementById("lot");
     if (jobcoInput && lotInput) {
-        jobcoInput.addEventListener('input', function () {
-            lotInput.value = this.value ? this.value + '-1' : '';
+        jobcoInput.addEventListener("input", function () {
+            lotInput.value = this.value ? this.value + "-1" : "";
         });
     }
 
@@ -458,59 +327,65 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // Change Password Form Submission with Fetch API
-    const form = document.getElementById('changePasswordForm');
+    const form = document.getElementById("changePasswordForm");
     if (!form) return;
-    form.addEventListener('submit', function (e) {
+    form.addEventListener("submit", function (e) {
         e.preventDefault();
-        const msg = document.getElementById('changePasswordMsg');
-        msg.innerHTML = '';
+        const msg = document.getElementById("changePasswordMsg");
+        msg.innerHTML = "";
         const formData = new FormData(form);
 
         fetch(form.action, {
-            method: 'POST',
+            method: "POST",
             headers: {
-                'X-CSRF-TOKEN': form.querySelector('input[name="_token"]').value,
-                'Accept': 'application/json'
+                "X-CSRF-TOKEN": form.querySelector('input[name="_token"]')
+                    .value,
+                Accept: "application/json",
             },
-            body: formData
+            body: formData,
         })
-        .then(async response => {
-            const data = await response.json();
-            if (response.ok) {
-                msg.innerHTML = `<div id="changePasswordAlert" class="alert alert-success">${data.message}</div>`;
-                form.reset();
-                setTimeout(() => {
-                    const alert = document.getElementById('changePasswordAlert');
-                    if (alert) {
-                        alert.style.transition = "opacity 0.7s";
-                        alert.style.opacity = "0";
-                        setTimeout(() => alert.remove(), 700);
+            .then(async (response) => {
+                const data = await response.json();
+                if (response.ok) {
+                    msg.innerHTML = `<div id="changePasswordAlert" class="alert alert-success">${data.message}</div>`;
+                    form.reset();
+                    setTimeout(() => {
+                        const alert = document.getElementById(
+                            "changePasswordAlert"
+                        );
+                        if (alert) {
+                            alert.style.transition = "opacity 0.7s";
+                            alert.style.opacity = "0";
+                            setTimeout(() => alert.remove(), 700);
+                        }
+                    }, 1500); // Show for 1.5 seconds, then fade out
+                } else {
+                    let errorMsg = data.message || "An error occurred.";
+                    if (data.errors) {
+                        errorMsg = Object.values(data.errors).join("<br>");
                     }
-                }, 1500); // Show for 1.5 seconds, then fade out
-            } else {
-                let errorMsg = data.message || 'An error occurred.';
-                if (data.errors) {
-                    errorMsg = Object.values(data.errors).join('<br>');
+                    msg.innerHTML = `<div id="changePasswordAlert" class="alert alert-danger">${errorMsg}</div>`;
+                    setTimeout(() => {
+                        const alert = document.getElementById(
+                            "changePasswordAlert"
+                        );
+                        if (alert) {
+                            alert.style.transition = "opacity 0.7s";
+                            alert.style.opacity = "0";
+                            setTimeout(() => alert.remove(), 700);
+                        }
+                    }, 2500); // Show error a bit longer
                 }
-                msg.innerHTML = `<div id="changePasswordAlert" class="alert alert-danger">${errorMsg}</div>`;
-                setTimeout(() => {
-                    const alert = document.getElementById('changePasswordAlert');
-                    if (alert) {
-                        alert.style.transition = "opacity 0.7s";
-                        alert.style.opacity = "0";
-                        setTimeout(() => alert.remove(), 700);
-                    }
-                }, 2500); // Show error a bit longer
-            }
-        })
-        .catch(() => {
-            msg.innerHTML = `<div class="alert alert-danger">Server error. Please try again.</div>`;
-        });
+            })
+            .catch(() => {
+                msg.innerHTML = `<div class="alert alert-danger">Server error. Please try again.</div>`;
+            });
     });
 });
 
-$("#viewUserModal, #editUserModal, #viewWarehouseModal, #editWarehouseModal, #viewBayModal, #viewRackModal")
-.on("hide.bs.modal", function () {
+$(
+    "#viewUserModal, #editUserModal, #viewWarehouseModal, #editWarehouseModal, #viewBayModal, #viewRackModal"
+).on("hide.bs.modal", function () {
     if (document.activeElement && this.contains(document.activeElement)) {
         document.activeElement.blur();
     }
