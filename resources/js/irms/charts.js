@@ -61,6 +61,45 @@ $(document).ready(function () {
             }
         }
 
+        // User Daily Goods Movement Today
+        const dataElement = document.getElementById("chart-data");
+
+        if (!dataElement) {
+            console.warn(
+                "Chart data element ('chart-data') not found. Skipping user chart initialization."
+            );
+            return;
+        }
+
+        const dataFromBackend = JSON.parse(dataElement.dataset.chartData);
+
+        const user_chart_label = dataFromBackend.labels;
+        const user_chart_data = dataFromBackend.data;
+        const user_chart_title = dataFromBackend.title;
+
+        createChart("user_chart_bar", function () {
+            return {
+                type: "bar",
+                data: {
+                    labels: user_chart_label,
+                    datasets: [
+                        {
+                            label: user_chart_title,
+                            data: user_chart_data, // <-- Data from Stored Procedure used here
+                            backgroundColor: ["#36A2EB", "#FF6384"], // Use different colors
+                            borderColor: ["#36A2EB", "#FF6384"],
+                            borderWidth: 1,
+                        },
+                    ],
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    responsive: true,
+                    scales: { y: { beginAtZero: true } },
+                },
+            };
+        });
+
         // labels
         const labels = [
             "January",
@@ -87,7 +126,6 @@ $(document).ready(function () {
             "Saturday",
         ];
 
-
         const rack_labels = ["Rack 1", "Rack 2", "Rack 3", "Rack 4"];
 
         // generate random data for each dataset
@@ -102,6 +140,7 @@ $(document).ready(function () {
         const rack_data = randArray(rack_labels.length, 5, 50);
 
         // Bar / Pie / Line / chart2 (unchanged)
+
         createChart("chart_bar", function () {
             return {
                 type: "bar",
@@ -281,59 +320,6 @@ $(document).ready(function () {
                             stacked: true,
                         },
                     },
-                },
-            };
-        });
-
-        createChart("chart_line", function () {
-            return {
-                type: "line",
-                data: {
-                    labels: day_name_label,
-                    datasets: [
-                        {
-                            label: "Incoming",
-                            data: dataC,
-                            borderColor: "#4bc0c0",
-                            backgroundColor: "rgba(75,192,192,0.2)",
-                            fill: true,
-                        },
-                        {
-                            label: "Outgoing",
-                            data: dataC2,
-                            borderColor: "#c0a94bff",
-                            backgroundColor: "rgba(205, 184, 60, 0.2)",
-                            fill: true,
-                        },
-                    ],
-                },
-                options: {
-                    maintainAspectRatio: false,
-                    responsive: true,
-                    scales: { y: { beginAtZero: true } },
-                },
-            };
-        });
-
-        createChart("chart2", function () {
-            return {
-                type: "bar",
-                data: {
-                    labels: labels,
-                    datasets: [
-                        {
-                            label: "Transactions",
-                            data: randArray(labels.length, 0, 120),
-                            backgroundColor: "rgba(153,102,255,0.6)",
-                            borderColor: "rgba(153,102,255,1)",
-                            borderWidth: 1,
-                        },
-                    ],
-                },
-                options: {
-                    maintainAspectRatio: false,
-                    responsive: true,
-                    scales: { y: { beginAtZero: true } },
                 },
             };
         });
@@ -606,7 +592,6 @@ document.addEventListener("DOMContentLoaded", function () {
     );
     chart.render();
 });
-
 
 //Heatmap
 

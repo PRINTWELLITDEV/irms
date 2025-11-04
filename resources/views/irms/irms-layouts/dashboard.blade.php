@@ -296,12 +296,12 @@
                                                 </div>
                                                 <div class="info-box-content">
                                                     <div class="info-box-text">Warehouse Occupancy</div>
-                                                    <div class="info-box-number">{{ $vacantRackPer }}%</div>
+                                                    <div class="info-box-number">{{ number_format($vacantRackPer, 2) }}% Occupied
+                                                    </div>
                                                     <div class="progress">
                                                         <div class="progress-bar progress-bar-striped progress-bar-animated"
                                                             style="width: {{ $vacantRackPer }}%"></div>
                                                     </div>
-                                                    <span class="progress-description">Heooooo</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -333,7 +333,7 @@
                                                     <div class="progress">
                                                         <div class="progress-bar" style="width:70%"></div>
                                                     </div>
-                                                    <span class="progress-description">Hellooooo</span>
+                                                    <span class="progress-description"></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -351,19 +351,23 @@
                                                         <div class="progress-bar bg-warning" style="width: 40%;"></div>
                                                         <div class="progress-bar bg-primary" style="width: 50%;"></div>
                                                     </div>
-                                                    <span class="progress-description">Hellooooo</span>
+                                                    <span class="progress-description"></span>
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div class="row mb-3">
+
+
                                             <div class="col-sm-12 col-md-6 mb-1">
                                                 <div class="card">
                                                     <div class="card-header bg-success bg-gradient text-white">
                                                         <h3 class="card-title">Daily Goods Movement Today</h3>
                                                     </div>
                                                     <div class="card-body">
-                                                        <canvas id="chart_bar" style="height: 200px;"></canvas>
+                                                        <canvas id="user_chart_bar" style="height: 200px;"></canvas>
+                                                    </div>
+                                                    <div id="chart-data" data-chart-data='@json($chartData)' style="display: none;">
                                                     </div>
                                                 </div>
                                             </div>

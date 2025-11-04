@@ -13,22 +13,25 @@ class DashboardController extends Controller
         $userId = auth()->id();
         $userSite = auth()->user()->rssite;
 
-        // Call your stored procedures
         $received = DB::select('EXEC sp_GetGoodsReceivedCount ?', [$userId]);
         $dispatched = DB::select('EXEC sp_GetGoodsDispatchedCount ?', [$userId]);
         $vacantRack = DB::select('EXEC sp_GetWarehouseOccupancy ?', [$userSite]);
 
-        // Extract the results (handle empty results safely)
         $goodsReceivedCount = $received[0]->GoodsReceivedCount ?? 0;
         $goodsDispatchedCount = $dispatched[0]->GoodsDispatchedCount ?? 0;
         $vacantRackPer = $vacantRack[0]->VacantRackPercentage ?? 0;
 
-
+        $chartData = [
+            'labels' => ['Received Goods', 'Dispatched Goods'],
+            'data' => [$goodsReceivedCount, $goodsDispatchedCount],
+            'title' => 'Goods Movement Today'
+        ];
 
         return view('irms.irms-layouts.dashboard', compact(
             'goodsReceivedCount',
             'goodsDispatchedCount',
-            'vacantRackPer'
+            'vacantRackPer',
+            'chartData'
         ));
     }
 }

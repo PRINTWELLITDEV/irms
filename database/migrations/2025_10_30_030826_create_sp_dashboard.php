@@ -57,29 +57,56 @@ return new class extends Migration {
         END
         ');
 
-        //4. Percentage of Received Goods by the user input
+        // 4. Percentage of Received Goods by the user input
         DB::unprepared('
         CREATE PROCEDURE sp_GetPercentageReceivedGoods(@site VARCHAR(10), @UserId VARCHAR(50))
         AS
-            BEGIN
-                SELECT
-                (
-                    CAST(
-                        (SELECT COUNT(*) FROM rstrans t
-                        INNER JOIN rslocation l ON t.rsloc = l.rsloc
-                        WHERE t.trxtype = \'R\' AND t.rssite = @site AND t.createdby = @UserId)
-                    AS FLOAT)
-                    /
-                    (SELECT COUNT(*) FROM rstrans t
-                    INNER JOIN rslocation l ON t.rsloc = l.rsloc
-                    WHERE t.rssite = @site AND t.createdby = @UserId
-                    )
-                )
-                * 100;
-            END
+        BEGIN
+            SELECT
+                ROUND(
+                    (
+                        CAST(
+                            (SELECT COUNT(*) FROM rstrans t
+                            INNER JOIN rslocation l ON t.rsloc = l.rsloc
+                            WHERE t.trxtype = \'R\' AND t.rssite = @site AND t.createdby = @UserId)
+                        AS FLOAT)
+                        /
+                        NULLIF(
+                            (SELECT COUNT(*) FROM rstrans t
+                            INNER JOIN rslocation l ON t.rsloc = l.rsloc
+                            WHERE t.rssite = @site AND t.createdby = @UserId),
+                        0)
+                    ) * 100,
+                2) AS PercentageReceivedGoods;
+        END
         ');
-    }
 
+
+        // 5. Percentage of Dispatched Goods by the user input
+        DB::unprepared('
+        CREATE PROCEDURE sp_GetPercentageDispatchedGoods(@site VARCHAR(10), @UserId VARCHAR(50))
+        AS
+        BEGIN
+            SELECT
+                ROUND(
+                    (
+                        CAST(
+                            (SELECT COUNT(*) FROM rstrans t
+                            INNER JOIN rslocation l ON t.rsloc = l.rsloc
+                            WHERE t.trxtype = \'D\' AND t.rssite = @site AND t.createdby = @UserId)
+                        AS FLOAT)
+                        /
+                        NULLIF(
+                            (SELECT COUNT(*) FROM rstrans t
+                            INNER JOIN rslocation l ON t.rsloc = l.rsloc
+                            WHERE t.rssite = @site AND t.createdby = @UserId),
+                        0)
+                    ) * 100,
+                2) AS PercentageDispatchedGoods;
+        END
+        ');
+
+    }
     /**
      * Reverse the migrations (Drop BOTH Stored Procedures).
      */
