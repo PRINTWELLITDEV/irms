@@ -121,6 +121,7 @@ $("#btnSaveRack").on("click", function (e) {
 // Rack Location Table row selection function
 $("#rackTable tbody").on("click", "tr", function () {
     const $row = $(this);
+    $("#title-rack-location").text($row.data("rsloc") || "");
     $("#view-rack-warehouse").text($row.data("rswhse") || "");
     $("#view-rack-baynum").text($row.data("rsbaynum") || "");
     $("#view-rack-location").text($row.data("rsloc") || "");
@@ -131,6 +132,39 @@ $("#rackTable tbody").on("click", "tr", function () {
         })
     );
     $("#view-rack-createDate").text($row.attr("data-create-date") || "");
+
+    // Fetch rack items via AJAX
+    $.post({
+        url: window.appUrl + "/irms/rack-locations/rack-items",
+        data: {
+            rsloc: $row.data("rsloc"),
+            _token: $('input[name="_token"]').val(),
+        },
+        success: function (items) {
+            let html = "";
+            if (items.length === 0) {
+                html = `<tr><td colspan="3" class="text-center text-muted">No items found.</td></tr>`;
+            } else {
+                items.forEach((item) => {
+                    html += `<tr>
+                        <td>${item.job}</td>
+                        <td>
+                            <div class="fw-semibold">${item.item}</div>
+                            <div class="small text-muted">${
+                                item.desc || ""
+                            }</div>
+                        </td>
+                        <td>${parseFloat(item.qty).toLocaleString()} ${
+                        item.um || ""
+                    }</td>
+                    </tr>`;
+                });
+            }
+            $("#view-rack-items-body").html(html);
+        },
+    });
+
+    // Show modal (or offcanvas if you changed to sidebar)
     $("#viewRackModal").modal("show");
 });
 
@@ -306,14 +340,26 @@ function renderRackMapGrid(locations, rsbaynum) {
                     qtyDisplay = "<br>Empty<br>(0%)";
                 }
 
+                // ...inside renderRackMapGrid...
                 html += `
-                    <td style="min-width:60px;height:120px;vertical-align:middle;font-size:0.8em;background:${bgColor};${textColor};padding:4px;">
-                        ${
-                            found
-                                ? `<div class="fw-bold">${found.rsloc}</div><div class="fw-bold small">${qtyDisplay}</div>`
-                                : ""
-                        }
-                    </td>
+                        <td 
+                            data-rsloc="${found ? found.rsloc : ""}" 
+                            data-rswhse="${found ? found.rswhse : ""}"
+                            data-rsbaynum="${found ? found.rsbaynum : ""}"
+                            data-rsdesc="${found ? found.rsdesc : ""}"
+                            data-qty="${found ? found.qty : 0}"
+                            data-create-date="${
+                                found && found.createdate
+                                    ? moment(found.createdate).format("DD MMMM YYYY")
+                                    : ""
+                            }"
+                            style="min-width:60px;height:120px;vertical-align:middle;font-size:0.8em;background:${bgColor};${textColor};padding:4px;">
+                            ${
+                                found
+                                    ? `<div class="fw-bold">${found.rsloc}</div><div class="fw-bold small">${qtyDisplay}</div>`
+                                    : ""
+                            }
+                        </td>
                     `;
             });
         });
@@ -328,31 +374,31 @@ function renderRackMapGrid(locations, rsbaynum) {
 
 // Add this after the renderRackMapGrid function
 function enableHorizontalScroll() {
-    const container = document.getElementById('rack-map-grid');
+    const container = document.getElementById("rack-map-grid");
     if (!container) return;
 
     let isDown = false;
     let startX;
     let scrollLeft;
 
-    container.addEventListener('mousedown', (e) => {
+    container.addEventListener("mousedown", (e) => {
         isDown = true;
-        container.style.cursor = 'grabbing';
+        container.style.cursor = "grabbing";
         startX = e.pageX - container.offsetLeft;
         scrollLeft = container.scrollLeft;
     });
 
-    container.addEventListener('mouseleave', () => {
+    container.addEventListener("mouseleave", () => {
         isDown = false;
-        container.style.cursor = 'grab';
+        container.style.cursor = "grab";
     });
 
-    container.addEventListener('mouseup', () => {
+    container.addEventListener("mouseup", () => {
         isDown = false;
-        container.style.cursor = 'grab';
+        container.style.cursor = "grab";
     });
 
-    container.addEventListener('mousemove', (e) => {
+    container.addEventListener("mousemove", (e) => {
         if (!isDown) return;
         e.preventDefault();
         const x = e.pageX - container.offsetLeft;
@@ -360,3 +406,47 @@ function enableHorizontalScroll() {
         container.scrollLeft = scrollLeft - walk;
     });
 }
+
+$(document).on("click", "#rack-map-grid td[data-rsloc]", function () {
+    const $td = $(this);
+    $("#title-rack-location").text($td.data("rsloc") || "");
+    $("#view-rack-warehouse").text($td.data("rswhse") || "");
+    $("#view-rack-baynum").text($td.data("rsbaynum") || "");
+    $("#view-rack-location").text($td.data("rsloc") || "");
+    $("#view-rack-description").text($td.data("rsdesc") || "");
+    $("#view-rack-quantity").text(
+        parseFloat($td.data("qty") || 0).toLocaleString(undefined, {
+            maximumFractionDigits: 2,
+        })
+    );
+    $("#view-rack-createDate").text($td.data("create-date") || "");
+
+    // Fetch rack items via AJAX
+    $.post({
+        url: window.appUrl + "/irms/rack-locations/rack-items",
+        data: {
+            rsloc: $td.data("rsloc"),
+            _token: $('input[name="_token"]').val(),
+        },
+        success: function (items) {
+            let html = "";
+            if (items.length === 0) {
+                html = `<tr><td colspan="3" class="text-center text-muted">No items found.</td></tr>`;
+            } else {
+                items.forEach(item => {
+                    html += `<tr>
+                        <td>${item.job}</td>
+                        <td>
+                            <div class="fw-semibold">${item.item}</div>
+                            <div class="small text-muted">${item.desc || ""}</div>
+                        </td>
+                        <td>${parseFloat(item.qty).toLocaleString()} ${item.um || ""}</td>
+                    </tr>`;
+                });
+            }
+            $("#view-rack-items-body").html(html);
+        }
+    });
+
+    $("#viewRackModal").modal("show");
+});

@@ -157,16 +157,15 @@
 
     <!-- View Modals -->
     <div class="modal fade" id="viewRackModal" tabindex="-1" aria-labelledby="viewRackModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <form action="">
                     <div class="modal-header bg-primary text-white">
-                        <h1 class="modal-title fs-5" id="viewRackModalLabel">View Rack Location</h1>
+                        <h1 class="modal-title fs-5" id="viewRackModalLabel">View Rack Location: <span id="title-rack-location">-</span></h1>
                         <button type="button" class="btn btn-close btn-close-white" data-bs-dismiss="modal"
                             aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-
                         <table class="table table-responsive mb-0 table-borderless" id="viewRackModals">
                             <tbody>
                                 <tr>
@@ -207,7 +206,23 @@
                                 </tr>
                             </tbody>
                         </table>
-
+                    </div>
+                    <div class="modal-body">
+                        <h5 class="modal-title">Items in this Rack Location</h5>
+                        <div class="table-responsive">
+                            <table class="table table-striped table-bordered table-hover align-middle mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Job No.</th>
+                                        <th>Product Item</th>
+                                        <th>Quantity</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="view-rack-items-body">
+                                    
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

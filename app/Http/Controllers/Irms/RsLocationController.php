@@ -99,6 +99,16 @@ class RsLocationController extends Controller
         }
     }
 
+    public function rackItems(Request $request)
+    {
+        $rsloc = $request->input('rsloc');
+        $items = \DB::select(
+            'SELECT rssite, rsloc, job, item, [desc], qty, um FROM rsitemloc WHERE rsloc = ?', 
+            [$rsloc]
+        );
+        return response()->json($items);
+    }
+
     public function rackMapGrid(Request $request)
     {
         $rssite = $request->input('rssite');
@@ -172,4 +182,6 @@ class RsLocationController extends Controller
 
         return response()->json($result);
     }
+
+    
 }

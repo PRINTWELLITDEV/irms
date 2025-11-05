@@ -98,6 +98,7 @@ Route::prefix('irms')->middleware('auth')->group(function () {
     Route::get('/rack-locations', [RsLocationController::class, 'index'])->name('racklocations.index');
     Route::get('/rack-locations/rack-list', [RsLocationController::class, 'rackList'])->name('racklocations.racklist');
     Route::post('/rack-locations/store', [RsLocationController::class, 'store'])->name('racklocations.store');
+    Route::post('/rack-locations/rack-items', [RsLocationController::class, 'rackItems'])->name('racklocations.rackitems');
 
     //Item Locations
     // Route::get('/item-locations', fn() => view('irms/irms-layouts/item-locations'))->name('irms.itemlocations');
