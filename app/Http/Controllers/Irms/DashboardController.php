@@ -16,10 +16,12 @@ class DashboardController extends Controller
         $received = DB::select('EXEC sp_GetGoodsReceivedCount ?', [$userId]);
         $dispatched = DB::select('EXEC sp_GetGoodsDispatchedCount ?', [$userId]);
         $vacantRack = DB::select('EXEC sp_GetWarehouseOccupancy ?', [$userSite]);
+        $usersTrans = \DB::select('EXEC sp_GetUserTransactions ?', [$userId]);
 
         $goodsReceivedCount = $received[0]->GoodsReceivedCount ?? 0;
         $goodsDispatchedCount = $dispatched[0]->GoodsDispatchedCount ?? 0;
         $vacantRackPer = $vacantRack[0]->VacantRackPercentage ?? 0;
+
 
         $chartData = [
             'labels' => ['Received Goods', 'Dispatched Goods'],
@@ -31,7 +33,8 @@ class DashboardController extends Controller
             'goodsReceivedCount',
             'goodsDispatchedCount',
             'vacantRackPer',
-            'chartData'
+            'chartData',
+            'usersTrans'
         ));
     }
 }

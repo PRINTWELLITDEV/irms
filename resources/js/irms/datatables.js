@@ -38,7 +38,7 @@ $(document).ready(function () {
 
     // Users table
     const usersTable = $("#users-table").DataTable({
-        pageLength: 5,
+        pageLength: 3,
         fixedHeader: true,
         columnControl: ["order"],
         ordering: {
@@ -47,7 +47,7 @@ $(document).ready(function () {
         },
         responsive: true,
         language: {
-            emptyTable: "No users found",
+            emptyTable: "No recently users transaction found",
         },
     });
     $("#userSearch").on("keyup", function () {

@@ -398,13 +398,13 @@
                                             <div class="col-sm-12 col-md-6">
                                                 <div class="card">
                                                     <div class="card-header bg-secondary bg-gradient text-white">
-                                                        <h3 class="card-title">Users Transaction Log</h3>
+                                                        <h3 class="card-title">Users Recently Transaction</h3>
                                                     </div>
-                                                    <div class="card-body p-1">
+                                                    <div class="card-body p-0">
                                                         <div class="table-responsive table-view">
                                                             <table
-                                                                class="table-striped table-bordered table-hover align-middle display"
-                                                                id="users-table" style="min-height: 120px;">
+                                                                class="table-striped table-bordered table-hover align-middle display m-0"
+                                                                id="users-table" style="min-height: 20px;">
                                                                 <thead>
                                                                     <tr>
                                                                         <th style="width: 20%">Trans. Type</th>
@@ -414,7 +414,20 @@
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
-
+                                                                    @forelse($usersTrans as $user)
+                                                                    <tr data-type="{{ $user->trxtype }}"
+                                                                        data-item="{{ $user->item }}"
+                                                                        data-loc="{{ $user->rsloc }}"
+                                                                        data-date="{{ $user->trxdate }}"
+                                                                    >
+                                                                        <td> {{ ($user->trxtype == 'R') ? 'Received' : 'Dispatched' }}
+                                                                        </td>
+                                                                        <td>{{ $user->item }}</td>
+                                                                        <td>{{ $user->rsloc }}</td>
+                                                                        <td>{{ \Carbon\Carbon::parse($user->trxdate)->format('d M Y') }}</td>
+                                                                    </tr>
+                                                                    @empty
+                                                                    @endforelse
                                                                 </tbody>
                                                             </table>
                                                         </div>
