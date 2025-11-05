@@ -106,6 +106,48 @@ return new class extends Migration {
         END
         ');
 
+        //6. Users transaction history
+        DB::unprepared('
+        CREATE PROCEDURE sp_GetUserTransactions(@userid VARCHAR(50))
+        AS
+        BEGIN
+            SELECT
+                t.rssite,
+                t.trans_num,
+                t.trxdate,
+                t.trxtype,
+                t.item,
+                t.rsloc
+            FROM
+                rstrans t
+            WHERE
+                t.createdby = @userid
+            ORDER BY
+                t.trxdate DESC;
+        END
+        ');
+
+        //7. Occupied Rack Percentage
+        DB::unprepared('
+        CREATE PROCEDURE sp_GetOccupiedRackPercentage(@rssite VARCHAR(50))
+        AS
+        BEGIN
+            SELECT
+            ROUND(
+                (
+                    CAST(SUM(CASE WHEN qty > 0 THEN 1 ELSE 0 END) AS FLOAT)
+
+                    /
+
+                    NULLIF(COUNT(*), 0)
+                ) * 100,
+                2
+            ) AS OccupiedRackPercentage
+            FROM rslocation
+            WHERE rssite = @rssite;
+        END
+        ');
+
     }
     /**
      * Reverse the migrations (Drop BOTH Stored Procedures).
@@ -139,6 +181,20 @@ return new class extends Migration {
             IF EXISTS (SELECT * FROM sys.objects WHERE type = \'P\' AND name = \'sp_GetPercentageReceivedGoods\')
             BEGIN
                 DROP PROCEDURE sp_GetPercentageReceivedGoods;
+            END
+        ');
+
+        DB::unprepared('
+            IF EXISTS (SELECT * FROM sys.objects WHERE type = \'P\' AND name = \'sp_GetUserTransactions\')
+            BEGIN
+                DROP PROCEDURE sp_GetUserTransactions;
+            END
+        ');
+
+        DB::unprepared('
+            IF EXISTS (SELECT * FROM sys.objects WHERE type = \'P\' AND name = \'sp_GetOccupiedRackPercentage\')
+            BEGIN
+                DROP PROCEDURE sp_GetOccupiedRackPercentage;
             END
         ');
     }

@@ -40,7 +40,7 @@ $(document).ready(function () {
     const usersTable = $("#users-table").DataTable({
         pageLength: 5,
         fixedHeader: true,
-        columnControl: ["order", ['searchList']],
+        columnControl: ["order"],
         ordering: {
             indicators: false,
             handler: true,

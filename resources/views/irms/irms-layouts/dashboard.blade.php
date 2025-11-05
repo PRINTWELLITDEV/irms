@@ -361,7 +361,7 @@
 
                                             <div class="col-sm-12 col-md-6 mb-1">
                                                 <div class="card">
-                                                    <div class="card-header bg-success bg-gradient text-white">
+                                                    <div class="card-header bg-secondary bg-gradient text-white">
                                                         <h3 class="card-title">Daily Goods Movement Today</h3>
                                                     </div>
                                                     <div class="card-body">
@@ -373,7 +373,7 @@
                                             </div>
                                             <div class="col-sm-12 col-md-6 mb-1">
                                                 <div class="card">
-                                                    <div class="card-header bg-danger bg-gradient text-white">
+                                                    <div class="card-header bg-secondary bg-gradient text-white">
                                                         <h3 class="card-title">Rack Utilization</h3>
                                                     </div>
                                                     <div class="card-body">
@@ -386,7 +386,7 @@
                                         <div class="row mb-3">
                                             <div class="col-sm-12 col-md-6">
                                                 <div class="card shadow-md">
-                                                    <div class="card-header bg-primary bg-gradient text-white">
+                                                    <div class="card-header bg-secondary bg-gradient text-white">
                                                         <h3 class="card-title">Total Receiving & Dispatching per Week</h3>
                                                     </div>
                                                     <div class="card-body">
@@ -397,29 +397,24 @@
 
                                             <div class="col-sm-12 col-md-6">
                                                 <div class="card">
-                                                    <div class="card-header bg-warning bg-gradient">
-                                                        <h3 class="card-title">Monthly Cap Report</h3>
+                                                    <div class="card-header bg-secondary bg-gradient text-white">
+                                                        <h3 class="card-title">Users Transaction Log</h3>
                                                     </div>
-                                                    <div class="card-body">
+                                                    <div class="card-body p-1">
                                                         <div class="table-responsive table-view">
                                                             <table
                                                                 class="table-striped table-bordered table-hover align-middle display"
-                                                                id="activityUsers">
+                                                                id="users-table" style="min-height: 120px;">
                                                                 <thead>
                                                                     <tr>
-                                                                        <th>Users</th>
-                                                                        <th>Activity</th>
-                                                                        <th>Time</th>
-                                                                        <th>Date</th>
+                                                                        <th style="width: 20%">Trans. Type</th>
+                                                                        <th style="width: 40%;">Item</th>
+                                                                        <th style="width: 20%;">Location</th>
+                                                                        <th style="width: 20%;">Date</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                    <tr>
-                                                                        <td id="view-rack-warehouse"></td>
-                                                                        <td id="view-rack-baynum"></td>
-                                                                        <td id="view-rack-location"></td>
-                                                                        <td id="view-rack-description"></td>
-                                                                    </tr>
+
                                                                 </tbody>
                                                             </table>
                                                         </div>
