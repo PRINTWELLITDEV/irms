@@ -23,7 +23,6 @@ return new class extends Migration
             SELECT
 				i.rssite,
 				i.rswhse,
-				i.rsbaynum,
 				i.job,
 				i.item,
 				i.[desc],
@@ -39,7 +38,6 @@ return new class extends Migration
 			GROUP BY
 				i.rssite,
 				i.rswhse,
-				i.rsbaynum,
 				i.job,
 				i.item,
 				i.[desc],

@@ -24,6 +24,7 @@ return new class extends Migration
                     i.rssite,
                     rspallet_num,
                     job,
+                    rsbaynum,
                     rsloc,
                     qty,
                     um,

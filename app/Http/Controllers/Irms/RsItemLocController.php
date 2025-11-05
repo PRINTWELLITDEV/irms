@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-use App\Models\IrmsSite; 
+use App\Models\IrmsSite;
 use App\Models\RsUser;
 use App\Models\RsItemLoc;
 
@@ -78,5 +78,12 @@ class RsItemLocController extends Controller
         $details = \DB::select('EXEC sp_job_details @job = ?, @rssite = ?', [$job, $rssite]);
 
         return view('irms.irms-layouts.item-job-details', compact('summary', 'details', 'job'));
+    }
+
+    public function jobExists(Request $request)
+    {
+        $job = $request->input('job');
+        $exists = \DB::table('rsitemloc')->where('job', $job)->exists();
+        return response()->json(['exists' => $exists]);
     }
 }

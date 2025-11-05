@@ -22,7 +22,8 @@
             <div class="container-fluid">
                 <div class="card mb-4">
                     <div class="card-header">
-                        <a href="{{ route('irms.itemlocations') }}" class="btn border border-secondary">&larr; Back</a>
+                        <!-- <a href="{{ route('irms.itemlocations') }}" class="btn border border-secondary">&larr; Back</a> -->
+                        <button type="button" class="btn border border-secondary" onclick="window.history.back();">&larr; Back</button>
                     </div>
                     <div class="card-body">
                         <div class="row">
@@ -31,30 +32,32 @@
                                     <div class="col-12"><strong>Site:</strong> {{ $summary->rssite_desc ?? '' }}</div>
                                 </div>
                                 <div class="row mb-2">
-                                    <div class="col-6"><strong>Job:</strong> {{ $summary->job ?? '' }}</div>
+                                    <div class="col-12"><strong>Warehouse:</strong> {{ $summary->rswhse ?? '' }}</div>
                                 </div>
                                 <div class="row mb-2">
-                                    <div class="col-6"><strong>Warehouse:</strong> {{ $summary->rswhse ?? '' }}</div>
-                                    <div class="col-6"><strong>Bay:</strong> {{ $summary->rsbaynum ?? '' }}</div>
+                                    <div class="col-12"><strong>Job: {{ $summary->job ?? '' }} </strong></div>
                                 </div>
                                 <div class="row mb-2">
-                                    <div class="col-6"><strong>Item:</strong> {{ $summary->item ?? '' }}</div>
-                                    <div class="col-6"><strong>Total Qty:</strong> {{ number_format($summary->totalqty ?? 0, 0) }} {{ $summary->um ?? '' }}</div>
+                                    <div class="col-12"><strong>Item:</strong> {{ $summary->item ?? '' }}</div>
                                 </div>
                                 <div class="row mb-2">
                                     <div class="col-12"><strong>Description:</strong> {{ $summary->desc ?? '' }}</div>
                                 </div>
+                                <div class="row mb-2">
+                                    <div class="col-12"><strong>Total Qty:</strong> {{ number_format($summary->totalqty ?? 0, 0) }} {{ $summary->um ?? '' }}</div>
+                                </div>
                             @endif
                         </div>
 
-                        <div class="table-responsive">
+                        <div class="table-responsive" style="min-height:30vh">
                             <table class="table table-striped table-bordered align-middle" id="job-details-table">
                                 <thead>
                                     <tr>
+                                        <th width="5%">Bay No.</th>
                                         <th>Rack Location</th>
                                         <th>Pallet No.</th>
                                         <th>Quantity</th>
-                                        <th >U/M</th>
+                                        <th>U/M</th>
                                         <th width="10%">Received By</th>
                                         <th width="10%">Date Received</th>
                                     </tr>
@@ -62,6 +65,7 @@
                                 <tbody>
                                     @forelse($details as $row)
                                         <tr>
+                                            <td>{{ $row->rsbaynum }}</td>
                                             <td>{{ $row->rsloc }}</td>
                                             <td>{{ $row->rspallet_num }}</td>
                                             <td class="text-end">{{ number_format($row->qty ?? 0, 0) }}</td>

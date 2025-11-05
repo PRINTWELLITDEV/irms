@@ -348,12 +348,9 @@ function renderRackMapGrid(locations, rsbaynum) {
                             data-rsbaynum="${found ? found.rsbaynum : ""}"
                             data-rsdesc="${found ? found.rsdesc : ""}"
                             data-qty="${found ? found.qty : 0}"
-                            data-create-date="${
-                                found && found.createdate
-                                    ? moment(found.createdate).format("DD MMMM YYYY")
-                                    : ""
-                            }"
-                            style="min-width:60px;height:120px;vertical-align:middle;font-size:0.8em;background:${bgColor};${textColor};padding:4px;">
+                            data-create-date="${found && found.createdate ? moment(found.createdate).format("DD MMMM YYYY") : ""}"
+                            data-has-items="${found && found.jobs && found.jobs.length > 0 ? '1' : '0'}"
+                            style="min-width:60px;height:120px;vertical-align:middle;font-size:0.8em;background:${bgColor};${textColor};padding:4px;${found && (!found.jobs || found.jobs.length === 0) ? 'cursor:not-allowed;' : ''}">
                             ${
                                 found
                                     ? `<div class="fw-bold">${found.rsloc}</div><div class="fw-bold small">${qtyDisplay}</div>`
@@ -449,4 +446,52 @@ $(document).on("click", "#rack-map-grid td[data-rsloc]", function () {
     });
 
     $("#viewRackModal").modal("show");
+});
+
+$(document).on("click", "#view-rack-items-body tr", function () {
+    const job = $(this).find("td:first").text().trim();
+
+    if (!job) {
+        Swal.fire({
+            toast: true,
+            position: "top-end",
+            icon: "error",
+            title: "Job not found for this rack location.",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+        });
+        return;
+    }
+
+    // Check job existence before redirect
+    $.post({
+        url: window.appUrl + "/irms/item-locations/job-exists",
+        data: {
+            job: job,
+            _token: $('input[name="_token"]').val(),
+        },
+        success: function (response) {
+            if (response.exists) {
+                window.location.href = window.appUrl + "/irms/item-locations/" + encodeURIComponent(job);
+            } else {
+                Swal.fire({
+                    toast: true,
+                    position: "top-end",
+                    icon: "error",
+                    title: "Job does not exist.",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                });
+            }
+        }
+    });
+});
+
+$(document).ready(function () {
+    $("#mapRsSite").val('Select Site');
+    $("#mapRsWhse").val('');
+    $("#mapRsBay").val('');
+    $("#rack-map-grid").html('');
 });

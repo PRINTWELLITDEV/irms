@@ -101,10 +101,9 @@ Route::prefix('irms')->middleware('auth')->group(function () {
     Route::post('/rack-locations/rack-items', [RsLocationController::class, 'rackItems'])->name('racklocations.rackitems');
 
     //Item Locations
-    // Route::get('/item-locations', fn() => view('irms/irms-layouts/item-locations'))->name('irms.itemlocations');
     Route::get('/item-locations', [RsItemLocController::class, 'index'])->name('irms.itemlocations');
-    // Route::post('/item-locations/job-details', [RsItemLocController::class, 'jobDetails'])->name('itemloc.jobDetails');
     Route::get('/item-locations/{job}', [RsItemLocController::class, 'showJobDetails'])->name('itemloc.showJobDetails');
+    Route::post('/item-locations/job-exists', [RsItemLocController::class, 'jobExists'])->name('itemloc.jobExists');
 
     // Goods Receiving
     Route::get('/receiving', [RsGoodsReceivingController::class, 'index'])->name('goodsreceiving.index');
