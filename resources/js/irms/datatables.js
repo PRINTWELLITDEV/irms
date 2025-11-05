@@ -38,7 +38,7 @@ $(document).ready(function () {
 
     // Users table
     const usersTable = $("#users-table").DataTable({
-        pageLength: 3,
+        pageLength: 9,
         fixedHeader: true,
         columnControl: ["order"],
         ordering: {
@@ -49,10 +49,25 @@ $(document).ready(function () {
         language: {
             emptyTable: "No recently users transaction found",
         },
+        "rowCallback" : function(row, data, index){
+            var status = $(row).attr('data-type');
+
+            if(status == 'R'){
+                $(row).addClass('bg-primary');
+                $(row).addClass('bg-gradient');
+            }else if(status == 'D'){
+                $(row).addClass('bg-danger');
+                $(row).addClass('bg-gradient');
+            }
+        }
+
     });
     $("#userSearch").on("keyup", function () {
         usersTable.search(this.value).draw();
     });
+
+
+
 
     // Warehouse table
     const warehouseTable = $("#warehouse-table").DataTable({
