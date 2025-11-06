@@ -45,7 +45,9 @@ function loadBayLocTable() {
 }
 
 // Call on page load
-loadBayLocTable();
+if (window.location.pathname.includes('/bay-locations')) {
+    loadBayLocTable();
+}
 
 // setInterval(function() {
 //     if (window.location.pathname.includes('/bay-locations')) {

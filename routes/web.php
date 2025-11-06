@@ -80,6 +80,8 @@ Route::prefix('irms')->middleware('auth')->group(function () {
 
     // User management
     Route::get('/manage-users', [RsUserController::class, 'index'])->name('rsusers.index');
+    // Route::get('/manage-users/user-list', [RsUserController::class, 'userList'])->name('rsusers.userlist');
+    Route::get('/manage-users/user-table-rows', [RsUserController::class, 'userTableRows']);
     Route::post('/manage-users/store', [RsUserController::class, 'store'])->name('rsusers.store');
     Route::put('/manage-users/update', [RsUserController::class, 'update'])->name('rsusers.update');
     

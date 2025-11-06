@@ -50,7 +50,10 @@ function loadWarehouseTable() {
 }
 
 // Call on page load
-loadWarehouseTable();
+
+if (window.location.pathname.includes('/warehouse')) {
+    loadWarehouseTable();
+}
 
 // setInterval(function() {
 //     if (window.location.pathname.includes('/warehouse')) {

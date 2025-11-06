@@ -1,7 +1,8 @@
 @extends('irms.irms-partials.app')
 @section('title', 'IRMS Manage Users')
 @section('content')
-<main class="app-main">
+
+<main class="app-main" data-user-level="{{ auth()->user()->level }}">
     <div class="app-content-wrapper">
         <div class="app-content-header">
             <div class="container-fluid">
@@ -55,39 +56,8 @@
                                                 <!-- <th width="5%">Action</th> -->
                                             </tr>
                                         </thead>
-                                        <tbody>
-                                            @forelse($users as $user)
-                                                @php
-                                                    $profile_pic_url = $user->profile_pic_url ?? 'uploads/user-profile/noprofile.png';
-                                                    if (!file_exists(public_path($profile_pic_url)) || !$profile_pic_url) {
-                                                        $profile_pic_url = 'uploads/user-profile/noprofile.png';
-                                                    }
-                                                @endphp
-
-                                                <tr data-userid="{{ $user->userid }}" data-name="{{ $user->name }}"
-                                                    data-email="{{ $user->email }}" data-site="{{ $user->rssite }}"
-                                                    data-department="{{ $user->department }}" data-section="{{ $user->section }}"
-                                                    data-position="{{ $user->position }}"
-                                                    data-site_desc="{{ $user->rssite_desc }}" data-level="{{ $user->level }}"
-                                                    data-gender="{{ $user->gender }}"
-                                                    data-profile="{{ asset($profile_pic_url) }}"
-                                                    data-create_date="{{ date('d F Y', strtotime($user->create_date)) }}">
-                                                    <td class="align-middle">
-                                                        <img src="{{ asset($profile_pic_url) }}"
-                                                            alt="profile" class="rounded-circle border border-3">
-                                                        {{ $user->name }}
-                                                    </td>
-                                                    <td class="align-middle">{{ $user->userid }}</td>
-                                                    <td class="align-middle">
-                                                        <!-- @if(!empty($user->logo_pic_url))
-                                                            <img src="{{ asset($user->logo_pic_url) }}" alt="logo" class="me-1">
-                                                        @endif -->
-                                                        {{ $user->rssite_desc ?? 'N/A' }}
-                                                    </td>
-                                                    <td class="align-middle text-center">{{ $user->level }}</td>
-                                                </tr>
-                                            @empty
-                                            @endforelse
+                                        <tbody id="userTableBody">
+                                            
                                         </tbody>
                                     </table>
                                 </div>
@@ -233,7 +203,8 @@
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-success">Save</button>
+                        <!-- <button type="submit" class="btn btn-success">Save</button> -->
+                        <button type="button" class="btn btn-success">Save</button>
                     </div>
                 </form>
             </div>

@@ -37,22 +37,22 @@ $(document).ready(function () {
     });
 
     // Users table
-    const usersTable = $("#users-table").DataTable({
-        pageLength: 5,
-        fixedHeader: true,
-        columnControl: ["order", ['searchList']],
-        ordering: {
-            indicators: false,
-            handler: true,
-        },
-        responsive: true,
-        language: {
-            emptyTable: "No users found",
-        },
-    });
-    $("#userSearch").on("keyup", function () {
-        usersTable.search(this.value).draw();
-    });
+    // const usersTable = $("#users-table").DataTable({
+    //     pageLength: 5,
+    //     fixedHeader: true,
+    //     columnControl: ["order", ['searchList']],
+    //     ordering: {
+    //         indicators: false,
+    //         handler: true,
+    //     },
+    //     responsive: true,
+    //     language: {
+    //         emptyTable: "No users found",
+    //     },
+    // });
+    // $("#userSearch").on("keyup", function () {
+    //     usersTable.search(this.value).draw();
+    // });
 
     // Warehouse table
     // const warehouseTable = $("#warehouse-table").DataTable({

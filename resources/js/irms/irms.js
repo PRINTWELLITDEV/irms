@@ -1,9 +1,10 @@
 import "bootstrap";
 import "admin-lte";
-// import Swal from "sweetalert2";
+
 import "./charts.js";
 import "./datatables.js";
 
+import "./rsusers.js";
 import "./rswhse.js";
 import "./rsbayloc.js";
 import "./rsloc.js";
@@ -237,9 +238,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     $("#jobcoreceive").on("input", function () {
         const job = $(this).val();
+        const rssite = $("#rssite").val() || $("input[name='rssite']").val();
         const lotInput = document.getElementById("lot");
-        let rssite = $("#rssite").val() || $("input[name='rssite']").val();
-        if (!rssite) return;
+        
+        if (!job || !rssite) return;
 
         $.ajax({
             url: window.appUrl + "/irms/receiving/job-item-details",

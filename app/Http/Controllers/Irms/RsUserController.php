@@ -19,7 +19,7 @@ class RsUserController extends Controller
             abort(401, 'Unauthorized');
         }
         // Call the stored procedure to get users
-        $users = \DB::select('EXEC sp_view_users');
+        // $users = \DB::select('EXEC sp_view_users');
         $sites = \DB::table('irms_site')->get();
         $levels = RsLevel::orderBy('level')->get();
 
@@ -28,13 +28,21 @@ class RsUserController extends Controller
         $site_desc = $site ? $site->rssite_desc : auth()->user()->rssite;
 
         // If you want to support AJAX, you may need to convert $users to an array
-        if (request()->ajax()) {
-            return response()->json([
-                'users' => $users
-            ]);
-        }
+        // if (request()->ajax()) {
+        //     return response()->json([
+        //         'users' => $users
+        //     ]);
+        // }
 
-        return view('irms.irms-layouts.manage-users', compact('users', 'sites', 'site_desc', 'levels'));
+        // return view('irms.irms-layouts.manage-users', compact('users', 'sites', 'site_desc', 'levels'));
+        return view('irms.irms-layouts.manage-users', compact('sites', 'site_desc', 'levels'));
+
+    }
+
+    public function userTableRows()
+    {
+        $users = \DB::select('EXEC sp_view_users');
+        return view('irms.irms-tables.user-table', compact('users'))->render();
     }
 
     public function show($userid)
@@ -74,10 +82,14 @@ class RsUserController extends Controller
         ]);
 
         if (RsUser::where('userid', $validated['userid'])->exists()) {
-            return redirect()->back()->withInput()->withErrors(['error' => 'User ID already exists.']);
+            $msg = 'User ID already exists.';
+            if ($request->ajax()) {
+                return response()->json(['message' => $msg], 422);
+            }
+            return redirect()->back()->withInput()->withErrors(['error' => $msg]);
         }
 
-        if($request->hasFile('profile_pic_url')){
+        if ($request->hasFile('profile_pic_url')) {
             $file = $request->file('profile_pic_url');
             $filename = uniqid() . '_' . $validated['userid'] . '.png';
             $file->move(public_path('uploads/user-profile'), $filename);
@@ -107,7 +119,11 @@ class RsUserController extends Controller
             $validated['level'] ?? null,
         ]);
 
-        return redirect('/irms/manage-users')->with('success', "$userid user successfully!");
+        $msg = "$userid user successfully!";
+        if ($request->ajax()) {
+            return response()->json(['message' => $msg]);
+        }
+        return redirect('/irms/manage-users')->with('success', $msg);
     }
 
     public function view($userid)

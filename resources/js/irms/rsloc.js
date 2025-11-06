@@ -64,7 +64,10 @@ function loadRackLocTable() {
 }
 
 // Call on page load
-loadRackLocTable();
+
+if (window.location.pathname.includes('/rack-locations')) {
+    loadRackLocTable();
+}
 
 // setInterval(function() {
 //     if (window.location.pathname.includes('/rack-locations')) {
@@ -143,7 +146,7 @@ $("#rackTable tbody").on("click", "tr", function () {
         success: function (items) {
             let html = "";
             if (items.length === 0) {
-                html = `<tr><td colspan="3" class="text-center text-muted">No items found.</td></tr>`;
+                html = `<tr><td colspan="3" class="text-center text-muted">No Job items found.</td></tr>`;
             } else {
                 items.forEach((item) => {
                     html += `<tr>
@@ -478,7 +481,7 @@ $(document).on("click", "#view-rack-items-body tr", function () {
                 Swal.fire({
                     toast: true,
                     position: "top-end",
-                    icon: "error",
+                    icon: "info",
                     title: "Job does not exist.",
                     showConfirmButton: false,
                     timer: 3000,
@@ -490,7 +493,19 @@ $(document).on("click", "#view-rack-items-body tr", function () {
 });
 
 $(document).ready(function () {
-    $("#mapRsSite").val('Select Site');
+    // Get user level from main tag
+    const userLevel = $("main").data("user-level");
+
+    if (userLevel == 1) {
+        // Super admin: reset rssite
+        $("#mapRsSite").val('Select Site');
+    } else {
+        // Regular user: use rssite value for mapRsSite
+        const rssite = $("#rssite").val();
+        $("#mapRsSite").val(rssite);
+    }
+
+    // Always reset warehouse, bay, and grid
     $("#mapRsWhse").val('');
     $("#mapRsBay").val('');
     $("#rack-map-grid").html('');

@@ -49,9 +49,6 @@
                                                 @if(auth()->user()->level == 1)
                                                 <th width="10%">Site</th>
                                                 @endif
-                                                <!-- <th width="10%">Created Date</th> -->
-                                                <!-- <th width="10%">Created By</th> -->
-                                                <!-- <th width="8%">Action</th>  -->
                                             </tr>
                                         </thead>
                                         <tbody id="baylocTableBody">
