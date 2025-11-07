@@ -110,23 +110,23 @@ $(document).ready(function () {
     // });
 
     // Item Locations table
-    const itemLocTable = $("#itemloc-table").DataTable({
-        fixedHeader: true,
-        columnControl: ["order", ['searchList']],
-        ordering: {
-            indicators: false,
-            handler: true,
-        },
-        responsive: true,
-        language: {
-            emptyTable: "No Item Locations found",
-        },
-    });
+    // const itemLocTable = $("#itemloc-table").DataTable({
+    //     fixedHeader: true,
+    //     columnControl: ["order", ['searchList']],
+    //     ordering: {
+    //         indicators: false,
+    //         handler: true,
+    //     },
+    //     responsive: true,
+    //     language: {
+    //         emptyTable: "No Item Locations found",
+    //     },
+    // });
 
-    // Search function for item locations
-    $("#itemSearch").on("keyup", function () {
-        itemLocTable.search(this.value).draw();
-    });
+    // // Search function for item locations
+    // $("#itemSearch").on("keyup", function () {
+    //     itemLocTable.search(this.value).draw();
+    // });
 
     // Item Locations job-rack-list table
     const jobRackListTable = $("#job-details-table").DataTable({
@@ -148,22 +148,22 @@ $(document).ready(function () {
     });
 
     // Transaction table
-    const transTable = $("#transaction-table").DataTable({
-        fixedHeader: true,
-        columnControl: ["order", ['searchList']],
-        ordering: {
-            indicators: false,
-            handler: true,
-        },
-        responsive: true,
-        language: {
-            emptyTable: "No Item Locations found",
-        },
-    });
+    // const transTable = $("#transaction-table").DataTable({
+    //     fixedHeader: true,
+    //     columnControl: ["order", ['searchList']],
+    //     ordering: {
+    //         indicators: false,
+    //         handler: true,
+    //     },
+    //     responsive: true,
+    //     language: {
+    //         emptyTable: "No Item Locations found",
+    //     },
+    // });
 
-    // Search function for item locations
-    $("#transSearch").on("keyup", function () {
-        transTable.search(this.value).draw();
-    });
+    // // Search function for item locations
+    // $("#transSearch").on("keyup", function () {
+    //     transTable.search(this.value).draw();
+    // });
 
 });

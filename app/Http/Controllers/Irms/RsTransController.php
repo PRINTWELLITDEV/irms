@@ -12,16 +12,30 @@ class RsTransController extends Controller
         if (auth()->user()->level > 3) {
             abort(401, 'Unauthorized');
         }
+        // $user = auth()->user();
+        // $userSite = $user->rssite;
+        // $userid = $user->userid;
+
+        // if ($userid === 'sa') {
+        //     $transactions = \DB::select('EXEC sp_view_rstrans', [null]);
+        // } else {
+        //     $transactions = \DB::select('EXEC sp_view_rstrans ?', [$userSite]);
+        // }
+
+        return view('irms.irms-layouts.transactions');
+    }
+    public function transactionList()
+    {
         $user = auth()->user();
         $userSite = $user->rssite;
         $userid = $user->userid;
 
-        if ($userid === 'sa') {
+        if (auth()->user()->level == 1) {
             $transactions = \DB::select('EXEC sp_view_rstrans', [null]);
         } else {
             $transactions = \DB::select('EXEC sp_view_rstrans ?', [$userSite]);
         }
 
-        return view('irms.irms-layouts.transactions', compact('transactions'));
+        return view('irms.irms-tables.transaction-list', compact('transactions'))->render();
     }
 }

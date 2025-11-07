@@ -3,9 +3,8 @@ import moment from "moment";
 
 function loadUserTable() {
     $.get(
-        window.appUrl + "/irms/manage-users/user-table-rows",
+        window.appUrl + "/irms/manage-users/user-list",
         function (html) {
-            // (Re)initialize DataTable if needed
             if ($.fn.DataTable.isDataTable("#users-table")) {
                 $("#users-table").DataTable().clear().destroy();
             }

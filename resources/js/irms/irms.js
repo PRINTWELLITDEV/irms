@@ -8,6 +8,8 @@ import "./rsusers.js";
 import "./rswhse.js";
 import "./rsbayloc.js";
 import "./rsloc.js";
+import "./rsitemloc.js";
+import "./rstrans.js";
 
 import "./goods-receiving.js";
 import "./goods-dispatching.js";
@@ -226,7 +228,6 @@ document.addEventListener("DOMContentLoaded", function () {
             filterOptions(baySelect, siteSelect.value);
         }
     }
-
     // Auto-fill Lot when typing in Job / CO
     const jobcoInput = document.getElementById("jobcoreceive");
     const lotInput = document.getElementById("lot");
@@ -240,7 +241,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const job = $(this).val();
         const rssite = $("#rssite").val() || $("input[name='rssite']").val();
         const lotInput = document.getElementById("lot");
-        
+
         if (!job || !rssite) return;
 
         $.ajax({

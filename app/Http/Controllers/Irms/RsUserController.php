@@ -39,10 +39,10 @@ class RsUserController extends Controller
 
     }
 
-    public function userTableRows()
+    public function userlist()
     {
         $users = \DB::select('EXEC sp_view_users');
-        return view('irms.irms-tables.user-table', compact('users'))->render();
+        return view('irms.irms-tables.user-list', compact('users'))->render();
     }
 
     public function show($userid)

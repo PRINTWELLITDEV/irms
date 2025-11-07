@@ -80,20 +80,19 @@ Route::prefix('irms')->middleware('auth')->group(function () {
 
     // User management
     Route::get('/manage-users', [RsUserController::class, 'index'])->name('rsusers.index');
-    // Route::get('/manage-users/user-list', [RsUserController::class, 'userList'])->name('rsusers.userlist');
-    Route::get('/manage-users/user-table-rows', [RsUserController::class, 'userTableRows']);
+    Route::get('/manage-users/user-list', [RsUserController::class, 'userlist']);
     Route::post('/manage-users/store', [RsUserController::class, 'store'])->name('rsusers.store');
     Route::put('/manage-users/update', [RsUserController::class, 'update'])->name('rsusers.update');
-    
+
     // Warehouse
     Route::get('/warehouse', [RsWhseController::class, 'index'])->name('warehouse.index');
-    Route::get('/warehouse/warehouse-list', [RsWhseController::class, 'whseList'])->name('warehouse.whselist');
+    Route::get('/warehouse/whse-list', [RsWhseController::class, 'whselist']);
     Route::post('/warehouse/store', [RsWhseController::class, 'store'])->name('warehouse.store');
     Route::put('/warehouse/update', [RsWhseController::class, 'update'])->name('warehouse.update');
 
     // Bay location
     Route::get('/bay-locations', [RsBayLocController::class, 'index'])->name('baylocs.index');
-    Route::get('/bay-locations/bay-list', [RsBayLocController::class, 'bayList'])->name('baylocs.baylist');
+    Route::get('/bay-locations/bay-list', [RsBayLocController::class, 'bayList'])->name('baylist');
     Route::post('/bay-locations/store', [RsBayLocController::class, 'store'])->name('baylocs.store');
 
     //Rack Locations
@@ -104,6 +103,7 @@ Route::prefix('irms')->middleware('auth')->group(function () {
 
     //Item Locations
     Route::get('/item-locations', [RsItemLocController::class, 'index'])->name('irms.itemlocations');
+    Route::get('/item-locations/item-list', [RsItemLocController::class, 'itemList']);
     Route::get('/item-locations/{job}', [RsItemLocController::class, 'showJobDetails'])->name('itemloc.showJobDetails');
     Route::post('/item-locations/job-exists', [RsItemLocController::class, 'jobExists'])->name('itemloc.jobExists');
 
@@ -121,10 +121,11 @@ Route::prefix('irms')->middleware('auth')->group(function () {
     Route::post('/dispatching/job-item-details', [RsGoodsDispatchingController::class, 'getJobItemDetails'])->name('goodsdispatching.jobitemdetails');
     Route::post('/dispatching/item-in-rsloc-list', [RsGoodsDispatchingController::class, 'getItemInRsLocList'])->name('goodsdispatching.iteminrsloclist');
     Route::post('/dispatching/process-goods-dispatch', [RsGoodsDispatchingController::class, 'processGoodsDispatch'])->name('goodsdispatching.processdispatch');
-   
+
     //Transactions
     // Route::get('/transactions', fn() => view('irms/irms-layouts/transactions'))->name('irms.transactions');
     Route::get('/transactions', [RsTransController::class, 'index'])->name('irms.transactions');
+    Route::get('/transactions/transaction-list', [RsTransController::class, 'transactionList']);
 
     // User Profile (move this to the bottom and add a constraint)
     Route::get('/{userid}', [RsUserProfileController::class, 'show'])->where('userid', '[A-Za-z0-9]+')->name('irms.userprofile');

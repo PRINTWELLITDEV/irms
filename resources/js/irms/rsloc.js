@@ -1,58 +1,54 @@
 import Swal from "sweetalert2";
 import moment from "moment";
 
-function renderRackLocTable(data, userLevel) {
-    let html = "";
-    data.forEach(function (rack) {
-        html += `<tr data-rssite="${rack.rssite}"
-                    data-rssite_desc="${rack.rssite_desc || ""}"
-                    data-rswhse="${rack.rswhse}"
-                    data-rsbaynum="${rack.rsbaynum}"
-                    data-rsloc="${rack.rsloc}"
-                    data-rsdesc="${rack.rsdesc || ""}"
-                    data-qty="${rack.qty || 0}"
-                    data-create-date="${
-                        rack.createdate
-                            ? moment(rack.createdate).format("DD MMMM YYYY")
-                            : ""
-                    }">
-                    <td>${rack.rsloc}</td>
-                    <td>${rack.rswhse}</td>
-                    <td>${rack.rsbaynum}</td>
-                    <td class="text-end"> ${Number(
-                        rack.qty || 0
-                    ).toLocaleString(undefined, {
-                        maximumFractionDigits: 0,
-                    })} </td>
-                    ${
-                        userLevel == 1
-                            ? `<td>${rack.rssite_desc || "N/A"}</td>`
-                            : ""
-                    }
-                </tr>`;
-    });
-    $("#rackTableBody").html(html);
-}
+// function renderRackLocTable(data, userLevel) {
+//     let html = "";
+//     data.forEach(function (rack) {
+//         html += `<tr data-rssite="${rack.rssite}"
+//                     data-rssite_desc="${rack.rssite_desc || ""}"
+//                     data-rswhse="${rack.rswhse}"
+//                     data-rsbaynum="${rack.rsbaynum}"
+//                     data-rsloc="${rack.rsloc}"
+//                     data-rsdesc="${rack.rsdesc || ""}"
+//                     data-qty="${rack.qty || 0}"
+//                     data-create-date="${
+//                         rack.createdate
+//                             ? moment(rack.createdate).format("DD MMMM YYYY")
+//                             : ""
+//                     }">
+//                     <td>${rack.rsloc}</td>
+//                     <td>${rack.rswhse}</td>
+//                     <td>${rack.rsbaynum}</td>
+//                     <td class="text-end"> ${Number(
+//                         rack.qty || 0
+//                     ).toLocaleString(undefined, {
+//                         maximumFractionDigits: 0,
+//                     })} </td>
+//                     ${
+//                         userLevel == 1
+//                             ? `<td>${rack.rssite_desc || "N/A"}</td>`
+//                             : ""
+//                     }
+//                 </tr>`;
+//     });
+//     $("#rackTableBody").html(html);
+// }
 
 function loadRackLocTable() {
-    $.get(window.appUrl + "/irms/rack-locations/rack-list", function (data) {
-        // Destroy DataTable if already initialized
+    $.get(window.appUrl + "/irms/rack-locations/rack-list", function (html) {
         if ($.fn.DataTable.isDataTable("#rackTable")) {
             $("#rackTable").DataTable().clear().destroy();
         }
-
-        const userLevel = $("main").data("user-level");
-        renderRackLocTable(data, userLevel);
-
+        $("#rackTableBody").html(html);
         // Initialize DataTable AFTER rows are rendered
         const rackTable = $("#rackTable").DataTable({
             fixedHeader: true,
+            responsive: true,
             columnControl: ["order", ["searchList"]],
             ordering: {
                 indicators: false,
                 handler: true,
             },
-            responsive: true,
             language: {
                 emptyTable: "No Rack found",
             },
@@ -62,6 +58,60 @@ function loadRackLocTable() {
         });
     });
 }
+
+//For Future use with different columnDefs based on user level -Trick
+// function loadRackLocTable() {
+//     $.get(window.appUrl + "/irms/rack-locations/rack-list", function (html) {
+//         if ($.fn.DataTable.isDataTable("#rackTable")) {
+//             $("#rackTable").DataTable().clear().destroy();
+//         }
+//         $("#rackTableBody").html(html);
+
+//         const userLevel = $("main").data("user-level");
+//         let columnDefs = [];
+
+//         if (userLevel == 1) {
+//             // Show Site column (target 4) with searchList, others with order
+//             columnDefs = [
+//                 {
+//                     targets: 4, // Site column
+//                     columnControl: ["order", ["searchList"]],
+//                 },
+//                 {
+//                     targets: [0, 1, 2, 3], // Other columns
+//                     columnControl: ["order"],
+//                 }
+//             ];
+//         } else {
+//             // No Site column, all columns with order only
+//             columnDefs = [
+//                 {
+//                     targets: "_all",
+//                     columnControl: ["order"],
+//                 }
+//             ];
+//         }
+
+//         const rackTable = $("#rackTable").DataTable({
+//             fixedHeader: true,
+//             responsive: true,
+//             columnDefs: columnDefs,
+//             ordering: {
+//                 indicators: false,
+//                 handler: true,
+//             },
+//             language: {
+//                 emptyTable: "No Rack found",
+//             },
+//         });
+
+//         // Search only in Site column if user-level == 1
+//         $("#rackSearch").on("keyup", function () {
+//             rackTable.search(this.value).draw();
+//         });
+//     });
+// }
+
 
 // Call on page load
 

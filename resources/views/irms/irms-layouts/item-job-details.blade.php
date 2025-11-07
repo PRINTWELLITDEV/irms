@@ -71,7 +71,7 @@
                                             <td class="text-end">{{ number_format($row->qty ?? 0, 0) }}</td>
                                             <td>{{ $row->um }}</td>
                                             <td><a href="{{ route('irms.userprofile', ['userid' => $row->rcvd_by_id]) }}">{{ $row->rcvd_by_name }}</a></td>
-                                            <td>{{ $row->datercvd ? \Carbon\Carbon::parse($row->datercvd)->format('Y-m-d') : '' }}</td>
+                                            <td>{{ $row->datercvd ? \Carbon\Carbon::parse($row->datercvd)->format('d M Y') : '' }}</td>
                                         </tr>
                                     @empty
                                         <tr>

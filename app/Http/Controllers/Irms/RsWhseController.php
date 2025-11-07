@@ -46,7 +46,8 @@ class RsWhseController extends Controller
             $warehouses = \DB::select('EXEC sp_view_whse ?', [$userSite]);
         }
 
-        return response()->json($warehouses);
+        // return response()->json($warehouses);
+        return view('irms.irms-tables.whse-list', compact('warehouses'))->render();
     }
 
     public function store(Request $request)

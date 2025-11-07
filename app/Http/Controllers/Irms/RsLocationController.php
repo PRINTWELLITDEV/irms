@@ -49,7 +49,8 @@ class RsLocationController extends Controller
             $racklocs = \DB::select('EXEC sp_view_rslocs ?', [$userSite]);
         }
 
-        return response()->json($racklocs);
+        // return response()->json($racklocs);
+        return view('irms.irms-tables.rack-list', compact('racklocs'))->render();
     }
 
     public function store(Request $request)

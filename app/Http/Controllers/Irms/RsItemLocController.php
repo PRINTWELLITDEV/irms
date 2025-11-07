@@ -17,25 +17,36 @@ class RsItemLocController extends Controller
         if (auth()->user()->level > 3) {
             abort(401, 'Unauthorized');
         }
+        // $user = auth()->user();
+        // $userSite = $user->rssite;
+        // $userid = $user->userid;
+
+        // if (auth()->user()->level == 1) {
+        //     // Admins see all sites
+        //     $itemlocs = \DB::select('EXEC sp_view_rsitemlocs @rssite = ?', [null]);
+        // } else {
+        //     // Other users see only their site
+        //     $itemlocs = \DB::select('EXEC sp_view_rsitemlocs @rssite = ?', [$userSite]);
+        // }
+
+        $sites = IrmsSite::all();
+        // return view('irms.irms-layouts.item-locations', compact('itemlocs', 'sites'));
+        return view('irms.irms-layouts.item-locations', compact('sites'));
+
+    }
+
+    public function itemList(Request $request)
+    {
         $user = auth()->user();
         $userSite = $user->rssite;
-        $userid = $user->userid;
 
-        // if ($userid === 'sa') {
-        //     $itemlocs = \DB::select('EXEC sp_view_rsitemlocs', [null]);
-        // } else {
-        //     $itemlocs = \DB::select('EXEC sp_view_rsitemlocs ?', [$userSite]);
-        // }
         if (auth()->user()->level == 1) {
-            // Admins see all sites
             $itemlocs = \DB::select('EXEC sp_view_rsitemlocs @rssite = ?', [null]);
         } else {
-            // Other users see only their site
             $itemlocs = \DB::select('EXEC sp_view_rsitemlocs @rssite = ?', [$userSite]);
         }
 
-        $sites = IrmsSite::all();
-        return view('irms.irms-layouts.item-locations', compact('itemlocs', 'sites'));
+        return view('irms.irms-tables.item-list', compact('itemlocs'))->render();
     }
 
     // public function jobDetails(Request $request)

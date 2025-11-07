@@ -1,31 +1,27 @@
 import Swal from "sweetalert2";
 import moment from 'moment';
 
-function renderBayLocTable(data, userLevel) {
-    let html = "";
-    data.forEach(function(bay) {
-        html += `<tr data-rssite="${bay.rssite}"
-                    data-rssite_desc="${bay.rssite_desc || ''}"
-                    data-rsbaynum="${bay.rsbaynum}"
-                    data-create-date="${bay.createdate ? moment(bay.createdate).format('D MMMM YYYY') : ''}"
-                    data-createdby="${bay.name || ''}">
-                    <td>${bay.rsbaynum}</td>
-                    ${userLevel == 1 ? `<td>${bay.rssite_desc || 'N/A'}</td>` : ""}
-                </tr>`;
-    });
-    $("#baylocTableBody").html(html);
-}
+// function renderBayLocTable(data, userLevel) {
+//     let html = "";
+//     data.forEach(function(bay) {
+//         html += `<tr data-rssite="${bay.rssite}"
+//                     data-rssite_desc="${bay.rssite_desc || ''}"
+//                     data-rsbaynum="${bay.rsbaynum}"
+//                     data-create-date="${bay.createdate ? moment(bay.createdate).format('D MMMM YYYY') : ''}"
+//                     data-createdby="${bay.name || ''}">
+//                     <td>${bay.rsbaynum}</td>
+//                     ${userLevel == 1 ? `<td>${bay.rssite_desc || 'N/A'}</td>` : ""}
+//                 </tr>`;
+//     });
+//     $("#baylocTableBody").html(html);
+// }
 
 function loadBayLocTable() {
-    $.get(window.appUrl + "/irms/bay-locations/bay-list", function (data) {
-        // Destroy DataTable if already initialized
+    $.get(window.appUrl + "/irms/bay-locations/bay-list", function (html) {
         if ($.fn.DataTable.isDataTable("#bayloc-table")) {
             $("#bayloc-table").DataTable().clear().destroy();
         }
-
-        const userLevel = $("main").data("user-level");
-        renderBayLocTable(data, userLevel);
-
+        $("#baylocTableBody").html(html);
         const bayLocationTable = $("#bayloc-table").DataTable({
             fixedHeader: true,
             columnControl: ["order", ['searchList']],

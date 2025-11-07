@@ -47,7 +47,8 @@ class RsBayLocController extends Controller
             $baylocs = \DB::select('EXEC sp_view_baylocs ?', [$userSite]);
         }
 
-        return response()->json($baylocs);
+        // return response()->json($baylocs);
+        return view('irms.irms-tables.bay-list', compact('baylocs'))->render();
     }
 
     /**

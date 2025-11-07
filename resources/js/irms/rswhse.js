@@ -1,57 +1,58 @@
 import Swal from "sweetalert2";
-import moment from 'moment';
+import moment from "moment";
 
-function renderWarehouseTable(data, userLevel) {
-    let html = "";
-    data.forEach(function (whse) {
-        html += `<tr data-rssite="${whse.rssite}"
-                        data-rssite_desc="${whse.rssite_desc || ""}"
-                        data-rswhse="${whse.rswhse}"
-                        data-name="${whse.name}"
-                        data-addr="${whse.addr}">
-                        <td>${whse.rswhse}</td>
-                        <td>${whse.name}</td>
-                        ${
-                            userLevel == 1
-                                ? `<td>${whse.rssite_desc || "N/A"}</td>`
-                                : ""
-                        }
-                    </tr>`;
-    });
-    $("#warehouseTableBody").html(html);
-}
+// function renderWarehouseTable(data, userLevel) {
+//     let html = "";
+//     data.forEach(function (whse) {
+//         html += `<tr data-rssite="${whse.rssite}"
+//                         data-rssite_desc="${whse.rssite_desc || ""}"
+//                         data-rswhse="${whse.rswhse}"
+//                         data-name="${whse.name}"
+//                         data-addr="${whse.addr}">
+//                         <td>${whse.rswhse}</td>
+//                         <td>${whse.name}</td>
+//                         ${
+//                             userLevel == 1
+//                                 ? `<td>${whse.rssite_desc || "N/A"}</td>`
+//                                 : ""
+//                         }
+//                     </tr>`;
+//     });
+//     $("#warehouseTableBody").html(html);
+// }
 
 function loadWarehouseTable() {
-    $.get(window.appUrl + "/irms/warehouse/warehouse-list", function (data) {
-        // Destroy DataTable if already initialized
-        if ($.fn.DataTable.isDataTable("#warehouse-table")) {
-            $("#warehouse-table").DataTable().clear().destroy();
+    $.get(
+        window.appUrl + "/irms/warehouse/whse-list",
+        function (html) {
+            if ($.fn.DataTable.isDataTable("#warehouse-table")) {
+                $("#warehouse-table").DataTable().clear().destroy();
+            }
+
+            $("#warehouseTableBody").html(html);
+
+            const warehouseTable = $("#warehouse-table").DataTable({
+                fixedHeader: true,
+                columnControl: ["order", ["searchList"]],
+                ordering: {
+                    indicators: false,
+                    handler: true,
+                },
+                responsive: true,
+                language: {
+                    emptyTable: "No warehouses found",
+                },
+            });
+            $("#whseSearch").on("keyup", function () {
+                warehouseTable.search(this.value).draw();
+            });
         }
-
-        const userLevel = $("main").data("user-level");
-        renderWarehouseTable(data, userLevel);
-
-        const warehouseTable = $("#warehouse-table").DataTable({
-            fixedHeader: true,
-            columnControl: ["order", ["searchList"]],
-            ordering: {
-                indicators: false,
-                handler: true,
-            },
-            responsive: true,
-            language: {
-                emptyTable: "No warehouses found",
-            },
-        });
-        $("#whseSearch").on("keyup", function () {
-            warehouseTable.search(this.value).draw();
-        });
-    });
+    );
 }
 
 // Call on page load
 
-if (window.location.pathname.includes('/warehouse')) {
+if (window.location.pathname.includes("/warehouse")) {
     loadWarehouseTable();
 }
 
@@ -188,4 +189,3 @@ $("#editWarehouseBtn").on("click", function () {
     $("#viewWarehouseModal").modal("hide");
     $("#editWarehouseModal").modal("show");
 });
-
