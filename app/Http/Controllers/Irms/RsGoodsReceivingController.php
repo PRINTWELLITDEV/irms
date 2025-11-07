@@ -35,20 +35,62 @@ class RsGoodsReceivingController extends Controller
     {
         $validated = $request->validate([
             'rssite' => 'required|string|max:8',
-            'whse' => 'required|string|max:20',
+            'rswhse' => 'required|string|max:20',
             'date' => 'required|date',
             'jobco' => 'required|string|max:20',
-            'lot' => 'nullable|string|max:30',
-            'item' => 'nullable|string|max:100',
-            'um' => 'nullable|string|max:10',
-            'pallet_size' => 'required|numeric|min:1',
-            'baynum' => 'required|string|max:10',
+            // 'lot' => 'nullable|string|max:30',
+            // 'item' => 'nullable|string|max:100',
+            // 'um' => 'nullable|string|max:10',
+            // 'pallet_size' => 'required|numeric|min:1',
+            'rsbaynum' => 'required|string|max:10',
             'docno' => 'nullable|string|max:30',
+        ],[
+            'rssite.required' => 'The Site field is required.',
+            'rswhse.required' => 'The Warehouse field is required.',
+            'date.required' => 'The Date field is required.',
+            'jobco.required' => 'The Job field is required.',
+            'rsbaynum.required' => 'The Bay Number field is required.',
         ]);
 
-        
+        // Use the helper to check job item details
+        $jobItemDetails = $this->fetchJobItemDetails($request->input('rssite'), $request->input('jobco'));
+        if (empty($jobItemDetails)) {
+            return response()->json(['errors' => ['jobco' => 'Job: ' . strtoupper($request->input('jobco')) . ' does not exist.']], 422);
+        }
 
-        return redirect()->back()->with('success', 'Goods receiving processed successfully!');
+        return response()->json(['success' => true, 'message' => 'Job: ' . strtoupper($request->input('jobco')) . ' processed successfully!']);
+    }
+
+    private function fetchJobItemDetails($rssite, $job)
+    {
+        $suffix = 0;
+        $connections = [
+            'PI-SP' => 'pisp_con',
+            'FP-SP' => 'fpsp_con',
+            'PIGRP-SP' => 'pigrpsp_con',
+        ];
+        $connection = $connections[$rssite] ?? null;
+
+        if (!$connection || empty($job)) {
+            return [];
+        }
+
+        return \DB::connection($connection)
+            ->table('job as j')
+            ->join('item as i', 'i.item', '=', 'j.item')
+            ->select(
+                'j.job',
+                'j.suffix',
+                'j.item',
+                'i.description',
+                'i.Uf_itemdesc_ext',
+                'i.u_m',
+                'i.Uf_Item_PalletSize'
+            )
+            ->where('j.job', $job)
+            ->where('j.suffix', $suffix)
+            ->get()
+            ->toArray();
     }
 
     /**
@@ -56,6 +98,7 @@ class RsGoodsReceivingController extends Controller
      */
     public function processGoodsReceived(Request $request)
     {
+        
         $rows = $request->input('rows'); // Array of checked rows with all needed fields
 
         foreach ($rows as $row) {

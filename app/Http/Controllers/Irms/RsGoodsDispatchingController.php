@@ -35,22 +35,29 @@ class RsGoodsDispatchingController extends Controller
     {
         $validated = $request->validate([
             'rssite' => 'required|string|max:8',
-            'whse' => 'required|string|max:20',
+            // 'rswhse' => 'required|string|max:20',
             'date' => 'required|date',
             'jobco' => 'required|string|max:20',
-            'lot' => 'nullable|string|max:30',
-            'item' => 'nullable|string|max:100',
-            'um' => 'nullable|string|max:10',
-            'pallet_size' => 'required|numeric|min:1',
-            'baynum' => 'required|string|max:10',
+            // 'lot' => 'nullable|string|max:30',
+            // 'item' => 'nullable|string|max:100',
+            // 'um' => 'nullable|string|max:10',
+            // 'pallet_size' => 'required|numeric|min:1',
+            // 'rsbaynum' => 'required|string|max:10',
             'docno' => 'nullable|string|max:30',
+        ],[
+            'rssite.required' => 'The Site field is required.',
+            // 'rswhse.required' => 'The Warehouse field is required.',
+            'date.required' => 'The Date field is required.',
+            'jobco.required' => 'The Job field is required.',
+            // 'rsbaynum.required' => 'The Bay Number field is required.',
         ]);
 
-        // Save to database or call a stored procedure here as needed
-        // Example:
-        // \DB::table('goods_dispatching')->insert($validated);
-
-        return redirect()->back()->with('success', 'Goods dispatching processed successfully!');
+        $jobItemDetails = $this->fetchJobItemDetails($validated['rssite'], $validated['jobco']);
+        if (empty($jobItemDetails)) {
+            return response()->json(['errors' => ['jobco' => 'Job: ' . strtoupper($request->input('jobco')) . ' does not exist.']], 422);
+        }
+        return response()->json(['success' => true, 'message' => 'Job: ' . strtoupper($validated['jobco']) . ' processed successfully!']);
+        // return redirect()->back()->with('success', 'Job: ' . strtoupper($validated['jobco']) . ' processed successfully!');
     }
 
     /**
@@ -66,6 +73,12 @@ class RsGoodsDispatchingController extends Controller
         ]);
 
         return response()->json($result ? $result[0] : []);
+    }
+
+    private function fetchJobItemDetails($rssite, $job){
+        return \DB::select('EXEC sp_dispatching_job_item_details @rssite = ?, @job = ?', [
+            $rssite, $job
+        ]);
     }
 
     /**

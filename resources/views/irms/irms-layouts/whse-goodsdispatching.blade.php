@@ -36,7 +36,7 @@
                                 @php
                                     $isSa = auth()->user()->level == 1;
                                 @endphp
-                                <form id="goodsDispatchingForm" method="POST" action="">
+                                <form id="goodsDispatchingForm" method="POST" action="{{ route('goodsdispatching.process') }}">
                                     @csrf
                                     @if($isSa)
                                     <div class="row g-3 align-items-center">
@@ -133,7 +133,8 @@
                                     </div>
                                     <div class="row mt-4">
                                         <div class="col text-center">
-                                            <button type="submit" class="btn btn-danger px-5">Process</button>
+                                            <!-- <button type="submit" class="btn btn-danger px-5">Process</button> -->
+                                            <button type="button" class="btn btn-danger px-5">Process</button>
                                         </div>
                                     </div>
                                 </form>

@@ -16,9 +16,6 @@
                                 {{ session('success') }}
                             </div>
                         @endif
-                        @if($errors->any())
-                            <div id="alerts" class="alert alert-danger py-1 px-3 mb-0" style="transition: opacity 0.7s;">{{ $errors->first() }}</div>
-                        @endif
                     </div>
                 </div>
             </div>
@@ -170,7 +167,8 @@
                                     </div>
                                     <div class="row mt-4">
                                         <div class="col text-center">
-                                            <button type="submit" class="btn btn-primary px-5">Process</button>
+                                            <!-- <button type="submit" class="btn btn-primary px-5">Process</button> -->
+                                            <button type="button" class="btn btn-primary px-5">Process</button>
                                         </div>
                                     </div>
                                 </form>
