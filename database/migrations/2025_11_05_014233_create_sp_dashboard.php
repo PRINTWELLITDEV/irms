@@ -148,54 +148,120 @@ return new class extends Migration {
         END
         ');
 
-    }
-    /**
-     * Reverse the migrations (Drop BOTH Stored Procedures).
-     */
-    public function down(): void
-    {
-        // Drop Dispatched SP
+        //8. Total Receiving & Dispatching per Week
         DB::unprepared('
-            IF EXISTS (SELECT * FROM sys.objects WHERE type = \'P\' AND name = \'sp_GetGoodsDispatchedCount\')
-            BEGIN
-                DROP PROCEDURE sp_GetGoodsDispatchedCount;
-            END
-        ');
-
-        // Drop Received SP
-        DB::unprepared('
-            IF EXISTS (SELECT * FROM sys.objects WHERE type = \'P\' AND name = \'sp_GetGoodsReceivedCount\')
-            BEGIN
-                DROP PROCEDURE sp_GetGoodsReceivedCount;
-            END
-        ');
-
-        DB::unprepared('
-        IF EXISTS (SELECT * FROM sys.objects WHERE type = \'P\' AND name = \'sp_GetWarehouseOccupancy\')
+        CREATE PROCEDURE sp_get_weekly_transaction_count(@userid VARCHAR(50), @rssite VARCHAR(50))
+        AS
         BEGIN
-            DROP PROCEDURE sp_GetWarehouseOccupancy;
+            SET NOCOUNT ON;
+            SELECT
+                CAST(t.trxdate AS DATE) AS transaction_day,
+                COUNT(*) AS total_transaction_count
+            FROM rstrans t
+            WHERE t.trxdate >= DATEADD(day, -7, GETDATE()) 
+            AND t.createdby = @userid
+            AND t.rssite = @rssite
+            GROUP BY CAST(t.trxdate AS DATE)
+            ORDER BY transaction_day
         END
         ');
 
+
+        //Admin - Supervisor/Manager
+
         DB::unprepared('
-            IF EXISTS (SELECT * FROM sys.objects WHERE type = \'P\' AND name = \'sp_GetPercentageReceivedGoods\')
+            CREATE PROCEDURE sp_GetGoodsMovementToday(@rssite VARCHAR(50))
+            AS 
             BEGIN
-                DROP PROCEDURE sp_GetPercentageReceivedGoods;
+                SELECT 
+                COUNT(*)
+                FROM rstrans t
+                WHERE t.rssite = @rssite AND CAST(t.trxdate AS DATE) = CAST(GETDATE() AS DATE);
+            END
+        ');
+
+
+        //Superadmin
+
+        // 9. Total Warehouse of all sites
+        DB::unprepared('
+            CREATE PROCEDURE sp_GetTotalWarehouse
+            AS
+            BEGIN 
+                SELECT COUNT(*) as totalWarehouse
+                FROM rswhse
+            END
+        ');
+
+
+        DB::unprepared('
+            CREATE PROCEDURE sp_GetPIWarehouse
+            AS
+            BEGIN 
+                SELECT COUNT(*) as totalPIWarehouse
+                FROM rswhse r
+                WHERE r.rssite = \'PI-SP\'
             END
         ');
 
         DB::unprepared('
-            IF EXISTS (SELECT * FROM sys.objects WHERE type = \'P\' AND name = \'sp_GetUserTransactions\')
-            BEGIN
-                DROP PROCEDURE sp_GetUserTransactions;
+            CREATE PROCEDURE sp_GetFPCWarehouse
+            AS
+            BEGIN 
+                SELECT COUNT(*) as totalFPCWarehouse
+                FROM rswhse r
+                WHERE r.rssite = \'FP-SP\'
             END
         ');
 
         DB::unprepared('
-            IF EXISTS (SELECT * FROM sys.objects WHERE type = \'P\' AND name = \'sp_GetOccupiedRackPercentage\')
-            BEGIN
-                DROP PROCEDURE sp_GetOccupiedRackPercentage;
+            CREATE PROCEDURE sp_GetPWPCWarehouse
+            AS
+            BEGIN 
+                SELECT COUNT(*) as totalPWPCWarehouse
+                FROM rswhse r
+                WHERE r.rssite = \'PIGRP-SP\'
             END
         ');
+
+    }
+
+
+    //SUPER ADMIN
+
+
+    /**
+     * Reverse the migrations (Drop BOTH Stored Procedures).    
+     */
+   /**
+     * Reverse the migrations (Drop ALL Stored Procedures).      
+     */
+    public function down(): void
+    {
+        // Define all stored procedures to be dropped
+        $proceduresToDrop = [
+            'sp_GetGoodsDispatchedCount',
+            'sp_GetGoodsReceivedCount',
+            'sp_GetWarehouseOccupancy',
+            'sp_GetPercentageReceivedGoods',
+            'sp_GetPercentageDispatchedGoods', // Was missing
+            'sp_GetUserTransactions',
+            'sp_GetOccupiedRackPercentage',
+            'sp_get_weekly_transaction_count', // Was missing
+            'sp_GetGoodsMovementToday',        // Was missing
+            'sp_GetTotalWarehouse',            // Was missing
+            'sp_GetPIWarehouse',               // Was missing
+            'sp_GetFPCWarehouse',              // Was missing
+            'sp_GetPWPCWarehouse',             // Was missing
+        ];
+
+        foreach ($proceduresToDrop as $procedure) {
+            DB::unprepared("
+                IF EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND name = '{$procedure}')
+                BEGIN
+                    DROP PROCEDURE {$procedure};
+                END
+            ");
+        }
     }
 };

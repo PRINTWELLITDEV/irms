@@ -40,26 +40,25 @@ $(document).ready(function () {
     const usersTable = $("#users-table").DataTable({
         pageLength: 9,
         fixedHeader: true,
-        columnControl: ["order"],
         ordering: {
             indicators: false,
-            handler: true,
+            handler: false,
         },
         responsive: true,
         language: {
             emptyTable: "No recently users transaction found",
         },
-        "rowCallback" : function(row, data, index){
-            var status = $(row).attr('data-type');
+        // "rowCallback" : function(row, data, index){
+        //     var status = $(row).attr('data-type');
 
-            if(status == 'R'){
-                $(row).addClass('bg-primary');
-                $(row).addClass('bg-gradient');
-            }else if(status == 'D'){
-                $(row).addClass('bg-danger');
-                $(row).addClass('bg-gradient');
-            }
-        }
+        //     if(status == 'R'){
+        //         $(row).addClass('bg-primary');
+        //         $(row).addClass('bg-gradient');
+        //     }else if(status == 'D'){
+        //         $(row).addClass('bg-danger');
+        //         $(row).addClass('bg-gradient');
+        //     }
+        // }
 
     });
     $("#userSearch").on("keyup", function () {

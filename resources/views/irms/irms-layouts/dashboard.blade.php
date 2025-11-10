@@ -18,15 +18,16 @@
                         @if (auth()->user()->level == 1)
                             <div class="card card-primary">
                                 <div class="card-body">
-                                    <div class="row mb-3 wrap">
 
-                                        <div class="col-sm-12 col-md-3 text-center text-white align-items-center">
-                                            <div class="info-box text-bg-success bg-gradient">
+                                    <div class="row mb-4">
+
+                                        <div class="col-sm-12 col-md-3 d-flex align-items-stretch">
+                                            <div class="info-box text-bg-success bg-gradient w-100">
                                                 <div class="info-box-icon">
                                                     <i class="bi bi-bookmark-fill"></i>
                                                 </div>
-                                                <div class="info-box-content">
-                                                    <div class="info-box-text">sa</div>
+                                                <div class="info-box-content text-center">
+                                                    <div class="info-box-text">Total Warehouse</div>
                                                     <div class="info-box-number">10,000</div>
                                                     <div class="progress">
                                                         <div class="progress-bar progress-bar-striped progress-bar-animated"
@@ -37,13 +38,13 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-sm-12 col-md-3 text-center align-items-center">
-                                            <div class="info-box text-bg-warning bg-gradient">
+                                        <div class="col-sm-12 col-md-3 d-flex align-items-stretch">
+                                            <div class="info-box text-bg-warning bg-gradient w-100">
                                                 <div class="info-box-icon">
                                                     <i class="bi bi-bookmark-fill"></i>
                                                 </div>
-                                                <div class="info-box-content">
-                                                    <div class="info-box-text">Bookmarks</div>
+                                                <div class="info-box-content text-center">
+                                                    <div class="info-box-text">Bookmark</div>
                                                     <div class="info-box-number">10,000</div>
                                                     <div class="progress">
                                                         <div class="progress-bar" style="width:70%"></div>
@@ -53,13 +54,13 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-sm-12 col-md-3 text-center text-white align-items-center">
-                                            <div class="info-box text-bg-primary bg-gradient">
+                                        <div class="col-sm-12 col-md-3 d-flex align-items-stretch">
+                                            <div class="info-box text-bg-primary bg-gradient w-100">
                                                 <div class="info-box-icon">
-                                                    <i class="bi bi-bookmark-fill"></i>
+                                                    <i class="bi bi-box-seam"></i>
                                                 </div>
-                                                <div class="info-box-content">
-                                                    <div class="info-box-text">Bookmarks</div>
+                                                <div class="info-box-content text-center">
+                                                    <div class="info-box-text">Total Transaction (Today)</div>
                                                     <div class="info-box-number">10,000</div>
                                                     <div class="progress">
                                                         <div class="progress-bar" style="width:70%"></div>
@@ -69,13 +70,13 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-sm-12 col-md-3 text-center">
-                                            <div class="info-box text-bg-danger bg-gradient">
+                                        <div class="col-sm-12 col-md-3 d-flex align-items-stretch">
+                                            <div class="info-box text-bg-danger bg-gradient w-100">
                                                 <div class="info-box-icon">
                                                     <i class="bi bi-person-fill"></i>
                                                 </div>
-                                                <div class="info-box-content">
-                                                    <div class="info-box-text">Users</div>
+                                                <div class="info-box-content text-center">
+                                                    <div class="info-box-text">Total Users</div>
                                                     <div class="info-box-number">10,000</div>
                                                     <div class="progress">
                                                         <div class="progress-bar bg-success" style="width: 10%;"></div>
@@ -86,57 +87,81 @@
                                                 </div>
                                             </div>
                                         </div>
-
-                                        <div class="row mb-3">
-                                            <div class="row m-0">
-                                                <div class="col-sm-12 col-md-7 mb-1">
-                                                    <div class="card">
-                                                        <div class="card-header bg-success bg-gradient text-white">
-                                                            <h3 class="card-title">Available Occupancy per Sites</h3>
-                                                        </div>
-                                                        <div class="card-body">
-                                                            <canvas id="chart_bar" style="height: 190px;"></canvas>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-12 col-md-5 mb-4">
-                                                    <div class="card">
-                                                        <div class="card-header bg-danger bg-gradient text-white">
-                                                            <h3 class="card-title">Active User per Site</h3>
-                                                        </div>
-                                                        <div class="card-body">
-                                                            <canvas id="chart_pie" style="height: 190px;"></canvas>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row mb-3">
-                                            <div class="col-12 col-md-5">
-                                                <div class="card shadow-md">
-                                                    <div class="card-header bg-primary bg-gradient text-white">
-                                                        <h3 class="card-title">Total Receiving & Dispatching per Week</h3>
-                                                    </div>
-                                                    <div class="card-body">
-                                                        <canvas id="chart_line" style="height: 190px;"></canvas>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-12 col-md-7">
-                                                <div class="card">
-                                                    <div class="card">
-                                                        <div class="card-header bg-dark bg-gradient text-white">Monthly Cap Report
-                                                        </div>
-                                                        <div class="card-body">
-                                                            <table class="table"></table>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
                                     </div>
+
+                                    <div class="row mb-3">
+
+                                        <div class="col-sm-12 col-md-7 mb-3">
+                                            <div class="card h-100">
+                                                <div class="card-header bg-success bg-gradient text-white">
+                                                    <h3 class="card-title">Sites Summary</h3>
+                                                </div>
+                                                <div class="card-body d-flex justify-content-center align-items-center">
+                                                    <div style="height: 190px;">[Bar Chart Placeholder]</div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12 col-md-5 mb-3">
+                                            <div class="card h-100">
+                                                <div class="card-header bg-danger bg-gradient text-white">
+                                                    <h3 class="card-title">Active User per Site</h3>
+                                                </div>
+                                                <div class="card-body d-flex justify-content-center align-items-center">
+                                                    <div style="height: 190px;">[Pie Chart Placeholder]</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+
+                                        <div class="col-12 col-md-5 mb-3">
+                                            <div class="card shadow-md h-100">
+                                                <div class="card-header bg-primary bg-gradient text-white">
+                                                    <h3 class="card-title">Total Receiving & Dispatching per Week</h3>
+                                                </div>
+                                                <div class="card-body d-flex justify-content-center align-items-center">
+                                                    <div style="height: 190px;">[Line Chart Placeholder]</div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 col-md-7 mb-3">
+                                            <div class="card h-100">
+                                                <div class="card-header bg-dark bg-gradient text-white">
+                                                    Monthly Cap Report
+                                                </div>
+                                                <div class="card-body">
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>#</th>
+                                                                <th>Month</th>
+                                                                <th>Target</th>
+                                                                <th>Actual</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>1</td>
+                                                                <td>Jan</td>
+                                                                <td>100</td>
+                                                                <td>95</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>2</td>
+                                                                <td>Feb</td>
+                                                                <td>110</td>
+                                                                <td>105</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
 
@@ -218,7 +243,7 @@
                                             <div class="col-sm-12 col-md-6 mb-1">
                                                 <div class="card">
                                                     <div class="card-content">
-                                                        <div class="card-header bg-success bg-gradient text-white">
+                                                        <div class="card-header bg-secondary bg-gradient text-white">
                                                             <h3 class="card-title">Goods Movement Trend</h3>
                                                         </div>
                                                         <div class="card-body">
@@ -231,7 +256,7 @@
                                             <div class="col-sm-12 col-md-6 mb-1">
                                                 <div class="card">
                                                     <div class="card-content">
-                                                        <div class="card-header bg-danger bg-gradient text-white">
+                                                        <div class="card-header bg-secondary bg-gradient text-white">
                                                             <h3 class="card-title">Rack Utilization by Warehouse</h3>
                                                         </div>
                                                         <div class="card-body">
@@ -246,17 +271,17 @@
                                         <div class="row mb-1">
                                             <div class="col-12 col-md-6 mb-2">
                                                 <div class="card shadow-md">
-                                                    <div class="card-header bg-primary bg-gradient text-white">
+                                                    <div class="card-header bg-secondary bg-gradient text-white">
                                                         <h3 class="card-title">Rack Map</h3>
                                                     </div>
                                                     <div class="card-body">
-                                                        <div id="chart-heatmap"></div>
+                                                        <div></div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-12 col-md-6 mb-2">
                                                 <div class="card">
-                                                    <div class="card-header bg-warning bg-gradient">
+                                                    <div class="card-header bg-secondary bg-gradient text-white">
                                                         <h3 class="card-title">Team Activity</h3>
                                                     </div>
                                                     <div class="card-body" style="max-height: 220px;">
@@ -277,6 +302,7 @@
                                                     </div>
                                                 </div>
                                             </div>
+
                                         </div>
 
                                     </div>
@@ -373,7 +399,7 @@
                                                 <div class="col-sm-12 col-md-6 mb-1">
                                                     <div class="card">
                                                         <div class="card-header bg-secondary bg-gradient text-white">
-                                                            <h3 class="card-title">Daily Goods Movement Today</h3>
+                                                            <h3 class="card-title">User's Daily Goods Movement Today</h3>
                                                         </div>
                                                         <div class="card-body">
                                                             <canvas id="user_chart_bar" style="height: 200px;"></canvas>
@@ -399,11 +425,14 @@
                                                 <div class="col-sm-12 col-md-12">
                                                     <div class="card shadow-md">
                                                         <div class="card-header bg-secondary bg-gradient text-white">
-                                                            <h3 class="card-title">Total Receiving & Dispatching per Week</h3>
+                                                            <h3 class="card-title">User's Total Receiving & Dispatching per Week
+                                                            </h3>
                                                         </div>
                                                         <div class="card-body">
-                                                            <canvas id="chart_line" style="height: 190px;"></canvas>
+                                                            <canvas id="weeklyTransactionDataChart" style="height: 190px;"></canvas>
                                                         </div>
+                                                        <div id="weeklyTransDataChart" data-weeklyChartData='@json($weeklyChartData ?? [])'
+                                                            style="display: none;"></div>
                                                     </div>
                                                 </div>
 
@@ -412,47 +441,37 @@
 
                                         {{-- Users Recent Transactions --}}
                                         <div class="col-sm-12 col-md-6">
-                                            <div class="card">
-                                                <div class="card-header bg-secondary bg-gradient text-white">
-                                                    <h3 class="card-title">Users Recently Transaction</h3>
-                                                </div>
-                                                <div class="card-body p-3">
-                                                    <div class="table-responsive table-view p-0 m-0">
-                                                        <table
-                                                            class="table-striped table-bordered table-hover align-middle display m-0"
-                                                            id="users-table" style="height: 120px;">
-                                                            <thead class="bg-secondary text-white">
-                                                                <tr>
-                                                                    <th style="width: 20%">Trans. Type</th>
-                                                                    <th style="width: 40%;">Item</th>
-                                                                    <th style="width: 20%;">Location</th>
-                                                                    <th style="width: 20%;">Date</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                @forelse($usersTrans as $user)
-                                                                    <tr data-type="{{ $user->trxtype }}" data-item="{{ $user->item }}"
-                                                                        data-loc="{{ $user->rsloc }}" data-date="{{ $user->trxdate }}"
-                                                                        class="text-white">
-                                                                        <td>{{ $user->trxtype === 'R' ? 'Received' : 'Dispatched' }}
-                                                                        </td>
-                                                                        <td>{{ $user->item }}</td>
-                                                                        <td>{{ $user->rsloc }}</td>
-                                                                        <td>{{ \Carbon\Carbon::parse($user->trxdate)->format('d M Y') }}
-                                                                        </td>
-                                                                    </tr>
-                                                                @empty
-                                                                    <tr>
-                                                                        <td colspan="4" class="text-center text-muted">
-                                                                            No recent transactions.
-                                                                        </td>
-                                                                    </tr>
-                                                                @endforelse
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            <table class="table-striped table-hover align-middle display m-0 border border-2"
+                                                id="users-table" style="height: 120px;">
+                                                <thead class="text-center bg-secondary bg-gradient text-white">
+                                                    <tr>
+                                                        <th>User's Recent Activity</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @forelse($usersTrans as $user)
+                                                        <tr data-type="{{ $user->trxtype }}" data-item="{{ $user->item }}"
+                                                            data-loc="{{ $user->rsloc }}" data-date="{{ $user->trxdate }}">
+                                                            <td>
+                                                                The user's
+                                                                {{ $user->trxtype === 'R' ? 'received' : 'dispatched' }}
+                                                                item number
+                                                                {{ $user->item }}
+                                                                at location
+                                                                {{ $user->rsloc }}
+                                                                on
+                                                                {{ \Carbon\Carbon::parse($user->trxdate)->format('F d Y') }}
+                                                            </td>
+                                                        </tr>
+                                                    @empty
+                                                        <tr>
+                                                            <td colspan="4" class="text-center text-muted">
+                                                                No recent transactions.
+                                                            </td>
+                                                        </tr>
+                                                    @endforelse
+                                                </tbody>
+                                            </table>
                                         </div>
 
                                     </div> {{-- /.row.d-flex --}}

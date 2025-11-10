@@ -100,6 +100,59 @@ $(document).ready(function () {
             };
         });
 
+        const weeklyTransBackendData = document.getElementById("weeklyTransDataChart");
+
+        if (!weeklyTransBackendData) {
+            console.warn(
+                "Weekly Transaction data element ('weeklyTransDataChart') not found. Skipping weekly chart initialization."
+            );
+            // DO NOT return here — allow other charts to initialize
+        } else {
+            const jsonString = weeklyTransBackendData.getAttribute('data-weeklyChartData');
+
+            if (!jsonString || jsonString.toLowerCase() === 'undefined' || jsonString.toLowerCase() === 'null') {
+                console.warn("Weekly chart data is invalid or empty. Skipping weekly chart.");
+            } else {
+                try {
+                    const chartConfig = JSON.parse(jsonString);
+
+                    // Ensure we use the canvas id that exists in the Blade:
+                    // <canvas id="weeklyTransactionDataChart" ...></canvas>
+                    createChart("weeklyTransactionDataChart", function () {
+                        return {
+                            type: "line",
+                            data: {
+                                labels: chartConfig.labels || [],
+                                datasets: [
+                                    {
+                                        label: chartConfig.title || "Weekly Transactions",
+                                        data: chartConfig.data || [],
+                                        backgroundColor: "rgba(54,162,235,0.2)",
+                                        borderColor: "rgba(54,162,235,1)",
+                                        borderWidth: 2,
+                                        fill: true,
+                                        tension: 0.3
+                                    }
+                                ]
+                            },
+                            options: {
+                                maintainAspectRatio: false,
+                                responsive: true,
+                                scales: {
+                                    y: { beginAtZero: true }
+                                },
+                                plugins: {
+                                    legend: { display: true }
+                                }
+                            }
+                        };
+                    });
+                } catch (e) {
+                    console.error('Failed to parse weekly data chart JSON: ', e);
+                }
+            }
+        }
+
         // labels
         const labels = [
             "January",

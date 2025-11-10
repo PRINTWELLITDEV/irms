@@ -592,3 +592,33 @@ $("#viewUserModal, #editUserModal, #viewWarehouseModal, #editWarehouseModal, #vi
         document.activeElement.blur();
     }
 });
+
+document.getElementById('generatePdfBtn').addEventListener('click', function() {
+    // 1. Capture the map image (if needed)
+    const mapElement = document.getElementById('rack-map-grid');
+    
+    html2canvas(mapElement).then(function(canvas) {
+        // Convert canvas to base64 image data
+        const imageData = canvas.toDataURL('image/png'); 
+        
+        // 2. Collect filter data
+        const formData = new FormData(document.getElementById('rack-map-filter'));
+        formData.append('rack_map_image', imageData);
+
+        // Convert FormData to a URL query string
+        const queryString = new URLSearchParams(formData).toString();
+
+        // 3. Redirect to the Laravel route to generate the PDF
+        // Ensure you define this route in web.php
+        window.location.href = '/report/rack-map-pdf?' + queryString;
+        
+    }).catch(error => {
+        console.error('Error capturing map:', error);
+        alert('Could not generate map image for the PDF.');
+        
+        // Fallback: Generate PDF without image if capture fails
+        const formData = new FormData(document.getElementById('rack-map-filter'));
+        const queryString = new URLSearchParams(formData).toString();
+        window.location.href = '/report/rack-map-pdf?' + queryString;
+    });
+});
