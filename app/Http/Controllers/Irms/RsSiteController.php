@@ -16,8 +16,16 @@ class RsSiteController extends Controller
             abort(401, 'Unauthorized');
             // return response()->view('irms.irms-errors.unauthorized', [], 403);
         }
+        // $sites = IrmsSite::orderBy('create_date', 'asc')->get();
+        // return view('irms.irms-layouts.manage-sites', compact('sites'));
+        return view('irms.irms-layouts.manage-sites');
+    }
+
+    public function siteList()
+    {
         $sites = IrmsSite::orderBy('create_date', 'asc')->get();
-        return view('irms.irms-layouts.manage-sites', compact('sites'));
+        
+        return view('irms.irms-tables.site-list', compact('sites'))->render();
     }
 
     public function show($rssite)
@@ -33,6 +41,14 @@ class RsSiteController extends Controller
             'address' => 'nullable|max:255',
             'logo_pic_url' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'site_link' => 'nullable|url|max:255',
+        ],[
+            'rssite.required' => 'The Site Code field is required.',
+            'rssite.unique' => 'The Site Code has already been taken.',
+            'rssite_desc.required' => 'The Site Description field is required.',
+            'logo_pic_url.image' => 'The Logo must be an image file.',
+            'logo_pic_url.mimes' => 'The Logo must be a file of type: jpeg, png, jpg, gif, svg.',
+            'logo_pic_url.max' => 'The Logo may not be greater than 2MB.',
+            'site_link.url' => 'The Site Link must be a valid URL.',
         ]);
 
         if($request->hasFile('logo_pic_url')) {
@@ -52,6 +68,10 @@ class RsSiteController extends Controller
             'site_link' => $validated['site_link'] ?? null,
             'create_date' => now(),
         ]);
+
+        if ($request->ajax()) {
+            return response()->json(['message' => 'Site created successfully!']);
+        }
 
         return redirect()->route('sites.index')->with('success', 'Site created successfully!');
     }

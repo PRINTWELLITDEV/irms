@@ -4,6 +4,7 @@ import "admin-lte";
 import "./charts.js";
 import "./datatables.js";
 
+import "./rssite.js";
 import "./rsusers.js";
 import "./rswhse.js";
 import "./rsbayloc.js";

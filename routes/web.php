@@ -76,6 +76,7 @@ Route::prefix('irms')->middleware('auth')->group(function () {
 
     // Site management
     Route::get('/manage-sites', [RsSiteController::class, 'index'])->name('sites.index');
+    Route::get('/manage-sites/site-list', [RsSiteController::class, 'siteList']);
     Route::post('/manage-sites/store', [RsSiteController::class, 'store'])->name('sites.store');
 
     // User management

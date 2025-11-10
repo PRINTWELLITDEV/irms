@@ -68,7 +68,7 @@
                                                 <span class="input-group-text fixed-label" id="date-label">
                                                     <span class="text-danger me-1">*</span>Date:
                                                 </span>
-                                                <input type="date" class="form-control" id="date" name="date" value="{{ date('Y-m-d') }}" {{ $isSa ? 'disabled' : '' }} required>
+                                                <input type="date" class="form-control" id="date" name="date" value="{{ date('Y-m-d') }}" required>
                                             </div>
                                         </div>
                                         <div class="col-md-6 col-12">

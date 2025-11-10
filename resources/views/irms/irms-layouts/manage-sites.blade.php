@@ -2,7 +2,7 @@
 @section('title', 'IRMS Manage Sites')
 @section('content')
 
-<main class="app-main">
+<main class="app-main" data-user-level="{{ auth()->user()->level }}">
     <div class="app-content-wrapper">
         <div class="app-content-header">
             <div class="container-fluid">
@@ -44,7 +44,7 @@
                                 </div>
 
                                 <div class="table-responsive table-view">
-                                    <table id="sites-table" class="table table-striped table-hover align-middle display">
+                                    <table id="site-table" class="table table-striped table-hover align-middle display">
                                         <thead>
                                             <tr>
                                                 <th>Site Code</th>
@@ -54,32 +54,8 @@
                                                 <th>Logo</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-                                            @foreach($sites as $site)
-                                                @php
-                                                    $logo_pic_url = $site->logo_pic_url ?? 'uploads/sites-img/no-logo.png';
-                                                    if (!file_exists(public_path($logo_pic_url)) || !$logo_pic_url) {
-                                                        $logo_pic_url = 'uploads/sites-img/no-logo.png';
-                                                    }
-                                                @endphp
-                                                <tr>
-                                                    <td>{{ $site->rssite }}</td>
-                                                    <td>{{ $site->rssite_desc }}</td>
-                                                    <td class="text-wrap" style="word-break: break-word; max-width: 250px;">
-                                                        {{ $site->address }}
-                                                    </td>
-                                                    <td>
-                                                        @if($site->site_link)
-                                                            <a href="{{ $site->site_link }}" target="_blank">{{ $site->site_link }}</a>
-                                                        @else
-                                                            N/A
-                                                        @endif
-                                                    </td>
-                                                    <td>
-                                                        <img src="{{ asset($logo_pic_url) }}" alt="Site Logo" class="img-thumbnail" style="max-width: 100px; max-height: 100px;">   
-                                                    </td>
-                                                </tr>
-                                            @endforeach
+                                        <tbody id="siteTableBody">
+                                            
                                         </tbody>
                                     </table>
                                 </div>
@@ -94,11 +70,11 @@
 
 <!-- Add Site Modal -->
 <div class="modal fade" id="addSiteModal" tabindex="-1" aria-labelledby="addSiteModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered modal-md">
         <div class="modal-content">
             <form id="addSiteForm" method="POST" action="{{ route('sites.store') }}" enctype="multipart/form-data">
                 @csrf
-                <div class="modal-header">
+                <div class="modal-header bg-success text-white">
                     <h5 class="modal-title" id="addSiteModalLabel">Add New Site</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
@@ -126,9 +102,52 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-success">Save Site</button>
+                    <button type="button" id="btnSaveSite" class="btn btn-success">Save Site</button>
                 </div>
             </form>
+        </div>
+    </div>
+</div>
+
+<!-- View Site Modal -->
+<div class="modal fade" id="viewSiteModal" tabindex="-1" aria-labelledby="viewSiteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-info text-white">
+                <h5 class="modal-title" id="viewSiteModalLabel">View Site</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-responsive mb-0 table-borderless">
+                    <tbody>
+                        <tr>
+                            <th>Site Code:</th>
+                            <td><span id="view-site-code">-</span></td>
+                        </tr>
+                        <tr>
+                            <th>Site Description:</th>
+                            <td><span id="view-site-desc">-</span></td>
+                        </tr>
+                        <tr>
+                            <th>Address:</th>
+                            <td>
+                                <span id="view-site-address" style="word-break: break-word; white-space: pre-line; max-width: 350px; display: inline-block;">-</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Site Link:</th>
+                            <td><span id="view-site-link">-</span></td>
+                        </tr>
+                        <tr>
+                            <th>Logo:</th>
+                            <td><img id="view-site-logo" src="" alt="Site Logo" class="img-thumbnail" style="max-width: 100px; max-height: 100px;"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-bs-dismiss="modal" class="btn btn-secondary">Close</button>
+            </div>
         </div>
     </div>
 </div>
