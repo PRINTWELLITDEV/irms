@@ -149,8 +149,8 @@
                                                     </div>
                                                 </div>
 
-                                                <button type="button" id="generatePdfBtn" class="btn btn-danger">
-                                                <i class="bi bi-file-pdf"></i> Generate PDF Report
+                                                <!-- <button type="button" id="generatePdfBtn" class="btn btn-danger">
+                                                <i class="bi bi-file-pdf"></i> Generate PDF Report -->
                                             </button>
 
                                                 {{-- Bay --}}
