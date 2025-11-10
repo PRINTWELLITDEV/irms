@@ -19,6 +19,7 @@ use App\Http\Controllers\Irms\RsGoodsDispatchingController;
 use App\Http\Controllers\Irms\RsTransController;
 use App\Http\Controllers\HomeController;
 
+
 // Home route
 // Route::get('/', function () {
 //     return view('home');
@@ -80,6 +81,9 @@ Route::prefix('irms')->middleware('check.session')->group(function () {
     Route::get('/manage-users', [RsUserController::class, 'index'])->name('rsusers.index');
     Route::post('/manage-users/store', [RsUserController::class, 'store'])->name('rsusers.store');
     Route::put('/manage-users/update', [RsUserController::class, 'update'])->name('rsusers.update');
+    Route::get('/metrics', [RsUserController::class, 'dashboardMetrics'])->name('irms.metrics');
+    Route::get('/active-users-data', [RsUserController::class, 'getActiveUsersTableData'])->name('active.users.data');
+
 
     // Warehouse
     Route::get('/warehouse', [RsWhseController::class, 'index'])->name('warehouse.index');

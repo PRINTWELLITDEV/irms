@@ -277,20 +277,82 @@ $(document).ready(function () {
             };
         });
 
-        createChart("chart_pie", function () {
-            return {
-                type: "pie",
-                data: {
-                    labels: site_labels,
-                    datasets: [
-                        {
-                            data: dataD,
-                            backgroundColor: ["#ff6384", "#36a2eb", "#ffcd56"],
+        document.addEventListener("DOMContentLoaded", function () {
+            // Ensure Chart.js and createChart() exist before continuing
+            if (
+                typeof Chart === "undefined" ||
+                typeof createChart === "undefined"
+            ) {
+                console.error(
+                    "Chart.js or createChart() not found — make sure they’re loaded in your layout."
+                );
+                return;
+            }
+
+            // Get data from Laravel (these are arrays from your controller)
+            const labels = Array.isArray(window.CHART_LABELS)
+                ? window.CHART_LABELS
+                : [];
+            const data = Array.isArray(window.CHART_DATA)
+                ? window.CHART_DATA
+                : [];
+
+            console.log("Chart Labels:", labels);
+            console.log("Chart Data:", data);
+
+            // If no data, skip chart creation
+            if (labels.length === 0 || data.length === 0) {
+                console.warn(
+                    "No chart data available for Active Users per Site"
+                );
+                return;
+            }
+
+            // Function to generate unique colors
+            function generateColors(num) {
+                const colors = [
+                    "#ff6384",
+                    "#36a2eb",
+                    "#ffcd56",
+                    "#4bc0c0",
+                    "#9966ff",
+                    "#ff9f40",
+                ];
+                return Array.from(
+                    { length: num },
+                    (_, i) => colors[i % colors.length]
+                );
+            }
+
+            // Create the pie chart
+            createChart("chart_pie", function () {
+                return {
+                    type: "pie",
+                    data: {
+                        labels: labels,
+                        datasets: [
+                            {
+                                data: data,
+                                backgroundColor: generateColors(data.length),
+                                hoverOffset: 4,
+                            },
+                        ],
+                    },
+                    options: {
+                        maintainAspectRatio: false,
+                        responsive: true,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: "Active Users per Site",
+                            },
+                            legend: {
+                                position: "bottom",
+                            },
                         },
-                    ],
-                },
-                options: { maintainAspectRatio: false, responsive: true },
-            };
+                    },
+                };
+            });
         });
 
         createChart("stacked_bar", function () {
@@ -496,301 +558,3 @@ $(document).ready(function () {
         initDashboardCharts();
     }
 })();
-
-//Heatmap
-
-document.addEventListener("DOMContentLoaded", function () {
-    function generateData(count, yrange) {
-        var i = 1;
-        var series = [];
-        while (i < count) {
-            var x = "S" + (i + 1).toString();
-            var y =
-                Math.floor(Math.random() * (yrange.max - yrange.min + 1)) +
-                yrange.min;
-
-            series.push({
-                x: x,
-                y: y,
-            });
-            i++;
-        }
-        return series;
-
-        // while(i <= 20){
-        //     var x = 2;
-
-        // }
-    }
-
-    var options = {
-        series: [
-            {
-                name: "",
-                data: generateData(20, {
-                    min: 0,
-                    max: 100,
-                }),
-            },
-            {
-                name: "A1-L2",
-                data: generateData(20, {
-                    min: 0,
-                    max: 100,
-                }),
-            },
-            {
-                name: "A1-L1",
-                data: generateData(20, {
-                    min: 0,
-                    max: 100,
-                }),
-            },
-            {
-                name: "A2-L1",
-                data: generateData(20, {
-                    min: 0,
-                    max: 100,
-                }),
-            },
-            {
-                name: "A2-L2",
-                data: generateData(20, {
-                    min: 0,
-                    max: 100,
-                }),
-            },
-            {
-                name: "B1-L2",
-                data: generateData(20, {
-                    min: 0,
-                    max: 100,
-                }),
-            },
-            {
-                name: "B1-L1",
-                data: generateData(20, {
-                    min: 0,
-                    max: 100,
-                }),
-            },
-            {
-                name: "B2-L1",
-                data: generateData(20, {
-                    min: 0,
-                    max: 100,
-                }),
-            },
-            {
-                name: "B2-L2",
-                data: generateData(20, {
-                    min: 0,
-                    max: 100,
-                }),
-            },
-        ],
-        chart: {
-            height: 350,
-            type: "heatmap",
-        },
-        plotOptions: {
-            heatmap: {
-                shadeIntensity: 0.5,
-                radius: 0,
-                useFillColorAsStroke: true,
-                colorScale: {
-                    ranges: [
-                        {
-                            from: 0,
-                            to: 30,
-                            name: "Vacant",
-                            color: "#00A100",
-                        },
-                        {
-                            from: 31,
-                            to: 60,
-                            name: "Partial",
-                            color: "#128FD9",
-                        },
-                        {
-                            from: 61,
-                            to: 90,
-                            name: "Occupied",
-                            color: "#FF0000",
-                        },
-                        {
-                            from: 91,
-                            to: 100,
-                            name: "Damage",
-                            color: "#FFB200",
-                        },
-                    ],
-                },
-            },
-        },
-        dataLabels: {
-            enabled: false,
-        },
-        stroke: {
-            width: 1,
-        },
-        title: {
-            text: "Warehouse 1",
-        },
-    };
-
-    var chart = new ApexCharts(
-        document.querySelector("#chart-heatmap"),
-        options
-    );
-    chart.render();
-});
-
-//Heatmap
-
-document.addEventListener("DOMContentLoaded", function () {
-    function generateData(count, yrange) {
-        var i = 1;
-        var series = [];
-        while (i < count) {
-            var x = "S" + (i + 1).toString();
-            var y =
-                Math.floor(Math.random() * (yrange.max - yrange.min + 1)) +
-                yrange.min;
-
-            series.push({
-                x: x,
-                y: y,
-            });
-            i++;
-        }
-        return series;
-
-        // while(i <= 20){
-        //     var x = 2;
-
-        // }
-    }
-
-    var options = {
-        series: [
-            {
-                name: "",
-                data: generateData(20, {
-                    min: 0,
-                    max: 100,
-                }),
-            },
-            {
-                name: "A1-L2",
-                data: generateData(20, {
-                    min: 0,
-                    max: 100,
-                }),
-            },
-            {
-                name: "A1-L1",
-                data: generateData(20, {
-                    min: 0,
-                    max: 100,
-                }),
-            },
-            {
-                name: "A2-L1",
-                data: generateData(20, {
-                    min: 0,
-                    max: 100,
-                }),
-            },
-            {
-                name: "A2-L2",
-                data: generateData(20, {
-                    min: 0,
-                    max: 100,
-                }),
-            },
-            {
-                name: "B1-L2",
-                data: generateData(20, {
-                    min: 0,
-                    max: 100,
-                }),
-            },
-            {
-                name: "B1-L1",
-                data: generateData(20, {
-                    min: 0,
-                    max: 100,
-                }),
-            },
-            {
-                name: "B2-L1",
-                data: generateData(20, {
-                    min: 0,
-                    max: 100,
-                }),
-            },
-            {
-                name: "B2-L2",
-                data: generateData(20, {
-                    min: 0,
-                    max: 100,
-                }),
-            },
-        ],
-        chart: {
-            height: 350,
-            type: "heatmap",
-        },
-        plotOptions: {
-            heatmap: {
-                shadeIntensity: 0.5,
-                radius: 0,
-                useFillColorAsStroke: true,
-                colorScale: {
-                    ranges: [
-                        {
-                            from: 0,
-                            to: 30,
-                            name: "Vacant",
-                            color: "#00A100",
-                        },
-                        {
-                            from: 31,
-                            to: 60,
-                            name: "Partial",
-                            color: "#128FD9",
-                        },
-                        {
-                            from: 61,
-                            to: 90,
-                            name: "Occupied",
-                            color: "#FF0000",
-                        },
-                        {
-                            from: 91,
-                            to: 100,
-                            name: "Damage",
-                            color: "#FFB200",
-                        },
-                    ],
-                },
-            },
-        },
-        dataLabels: {
-            enabled: false,
-        },
-        stroke: {
-            width: 1,
-        },
-        title: {
-            text: "Warehouse 1",
-        },
-    };
-
-    var chart = new ApexCharts(
-        document.querySelector("#chart-heatmap"),
-        options
-    );
-    chart.render();
-});

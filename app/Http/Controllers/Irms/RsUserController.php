@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
@@ -79,7 +80,7 @@ class RsUserController extends Controller
             return redirect()->back()->withInput()->withErrors(['error' => 'User ID already exists.']);
         }
 
-        if($request->hasFile('profile_pic_url')){
+        if ($request->hasFile('profile_pic_url')) {
             $file = $request->file('profile_pic_url');
             $filename = uniqid() . '_' . $validated['userid'] . '.png';
             $file->move(public_path('uploads/user-profile'), $filename);
@@ -112,6 +113,46 @@ class RsUserController extends Controller
         return redirect('/irms/manage-users')->with('success', "$userid user successfully!");
     }
 
+    // =========================================================
+    // NEW METHOD: FETCH ACTIVE USER METRICS FOR DASHBOARD/CHART
+    // =========================================================
+    public function getActiveUsersTableData()
+    {
+
+        $onlineUsers = RsUser::where('status', 'online')->get(); // This returns a Collection of RsUser models (which have a 'status' property)
+
+        return view('irms.irms-partials.active_users_table_body', compact('onlineUsers'));
+    }
+
+
+    public function dashboardMetrics()
+    {
+        // 1. Fetch data for the Chart (Active Users per Site)
+        $activeSitesData = DB::connection('sqlsrv')->select('EXEC sp_active_users_per_site');
+
+        // Format the data for Chart.js
+        $chartLabels = [];
+        $chartData = [];
+        foreach ($activeSitesData as $site) {
+            $chartLabels[] = $site->rssite_desc;
+            $chartData[] = (int) $site->total_active_users;
+        }
+
+        // 2. We no longer fetch the table data here, it will be handled by AJAX
+        // We'll pass an empty array or null for initial render/fallbacks.
+
+        $user = auth()->user()->userid ?? null;
+
+        // Pass all data to the designated view
+        return view('irms.irms-layouts.dashboard', [
+            'chartLabels' => $chartLabels, // Use the dynamically fetched data
+            'chartData' => $chartData,     // Use the dynamically fetched data
+            'onlineUsers' => [],           // Pass empty array since AJAX will load it
+            'user' => $user
+        ]);
+    }
+
+
     public function view($userid)
     {
         if (auth()->user()->userid !== 'sa') {
@@ -127,10 +168,11 @@ class RsUserController extends Controller
         ]);
     }
 
-    // public function edit(Request $request)
-    // {
-    //     return view('users.edit', compact('rsUser'));
-    // }
+
+    public function edit(Request $request)
+    {
+        return view('users.edit', compact('rsUser'));
+    }
 
     public function update(Request $request)
     {
@@ -149,6 +191,7 @@ class RsUserController extends Controller
         ]);
 
         // Handle profile picture upload
+        if ($request->hasFile('profile_pic_url')) {
         if ($request->hasFile('profile_pic_url')) {
             $file = $request->file('profile_pic_url');
             $filename = uniqid() . '_' . $userid . '.' . $file->getClientOriginalExtension();
@@ -183,6 +226,7 @@ class RsUserController extends Controller
             return redirect()->back()->withInput()->withErrors(['error' => $e->getMessage()]);
         }
     }
+}
 
     public function levelExclusivity()
     {

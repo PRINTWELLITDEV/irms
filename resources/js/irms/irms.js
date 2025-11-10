@@ -6,10 +6,31 @@ import "./datatables.js";
 import "./goods-receiving.js";
 import "./goods-dispatching.js";
 import "./charts.js";
+import "./datatables.js";
+import "./goods-receiving.js";
+import "./goods-dispatching.js";
+import "./charts.js";
 
 // window.appUrl = "{{ url('') }}";
 // window.sessionCheckUrl = "{{ url('/irms/session') }}";
 // window.loginUrl = "{{ route('login') }}";
+
+// In your Blade file or main JS file that runs after the table is loaded
+
+// Enhanced client-side listener for real-time updates
+window.Echo.channel("active-users").listen("UserStatusUpdated", (e) => {
+    const row = document.querySelector(`#user-row-${e.userId}`);
+
+    if (e.status === "offline" && row) {
+        // row.remove();
+        console.log(`User ${e.userId} logged out and row removed.`);
+    } else if (
+        e.status === "online" &&
+        typeof updateActiveUsersTable === "function"
+    ) {
+        updateActiveUsersTable();
+    }
+});
 
 setInterval(function () {
     const currentPath = window.location.pathname;

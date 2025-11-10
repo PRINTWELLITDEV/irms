@@ -1,17 +1,23 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
     public function up(): void
     {
+        // 1. ADD COLUMN TO THE UNDERLYING TABLE (rsusers)
+        Schema::table('rsusers', function (Blueprint $table) {
+            $table->timestamp('last_seen_at')->nullable()->after('level');
+        });
+
+        // 2. RECREATE sp_view_users (Add last_seen_at)
         DB::unprepared("IF OBJECT_ID('sp_view_users', 'P') IS NOT NULL DROP PROCEDURE sp_view_users");
-        // Create sp_view_users (no parentheses, no BEGIN/END needed for single statement)
         DB::unprepared('
             CREATE PROCEDURE sp_view_users
             AS
@@ -27,6 +33,7 @@ return new class extends Migration
                 u.gender,
                 u.create_date,
                 u.profile_pic_url,
+                u.last_seen_at,  -- ADDED
                 s.rssite_desc,
                 s.address,
                 s.logo_pic_url
@@ -35,7 +42,7 @@ return new class extends Migration
             WHERE u.userid <> \'sa\';
         ');
 
-        // Create sp_add_user (use @param, no IN, and use NVARCHAR for Unicode support)
+        // 3. RECREATE sp_add_user (No change needed, last_seen_at defaults to NULL)
         DB::unprepared("IF OBJECT_ID('sp_add_user', 'P') IS NOT NULL DROP PROCEDURE sp_add_user");
         DB::unprepared('
             CREATE PROCEDURE sp_add_user
@@ -62,7 +69,7 @@ return new class extends Migration
             END
         ');
 
-        // Create sp_show_user
+        // 4. RECREATE sp_select_user (Add last_seen_at)
         DB::unprepared("IF OBJECT_ID('sp_select_user', 'P') IS NOT NULL DROP PROCEDURE sp_select_user");
         DB::unprepared('
             CREATE PROCEDURE sp_select_user
@@ -80,6 +87,7 @@ return new class extends Migration
                 u.gender,
                 u.create_date,
                 u.profile_pic_url,
+                u.last_seen_at,  -- ADDED
                 s.rssite_desc,
                 s.address,
                 s.logo_pic_url
@@ -87,7 +95,8 @@ return new class extends Migration
             INNER JOIN irms_site s ON s.rssite = u.rssite
             WHERE u.userid = @userid;
         ');
-        // Create sp_update_user
+
+        // 5. RECREATE sp_update_user (No change needed as last_seen_at is updated outside of this proc by Laravel)
         DB::unprepared("IF OBJECT_ID('sp_update_user', 'P') IS NOT NULL DROP PROCEDURE sp_update_user");
         DB::unprepared("
             CREATE PROCEDURE sp_update_user
@@ -119,34 +128,59 @@ return new class extends Migration
                 WHERE userid = @userid;
             END
         ");
-
-        // Create sp_update_profile
-        DB::unprepared("IF OBJECT_ID('sp_update_profile', 'P') IS NOT NULL DROP PROCEDURE sp_update_profile");
-        DB::unprepared('
-            CREATE PROCEDURE sp_update_profile
-                @rssite NVARCHAR(8),
-                @userid NVARCHAR(8),
-                @name NVARCHAR(255) = NULL,
-                @gender NVARCHAR(10) = NULL,
-                @department NVARCHAR(50) = NULL,
-                @section NVARCHAR(50) = NULL,
-                @position NVARCHAR(50) = NULL,
-                @updated_by NVARCHAR(8) = NULL
+        // 6. Create sp_active_users_per_site
+        DB::unprepared("IF OBJECT_ID('sp_active_users_per_site', 'P') IS NOT NULL DROP PROCEDURE sp_active_users_per_site");
+        DB::unprepared("
+            CREATE PROCEDURE sp_active_users_per_site
             AS
             BEGIN
                 SET NOCOUNT ON;
-                UPDATE rsusers
-                SET
-                    name = COALESCE(@name, name),
-                    gender = COALESCE(@gender, gender),
-                    department = COALESCE(@department, department),
-                    section = COALESCE(@section, section),
-                    position = COALESCE(@position, position),
-                    updated_date = GETDATE(),
-                    updated_by = @updated_by
-                WHERE rssite = @rssite AND userid = @userid;
+
+                SELECT
+                    u.rssite,
+                    s.rssite_desc,
+                    COUNT(DISTINCT u.userid) AS total_active_users
+                FROM rsusers u
+                INNER JOIN irms_site s ON s.rssite = u.rssite
+                WHERE
+                    u.last_seen_at IS NOT NULL
+                    AND u.last_seen_at >= DATEADD(MINUTE, -2, GETDATE())
+                    AND u.userid <> 'sa'
+                GROUP BY
+                    u.rssite, s.rssite_desc
+                ORDER BY
+                    total_active_users DESC;
             END
-        ');
+        ");
+
+        // 7. Create sp_currently_online_users
+        DB::unprepared("IF OBJECT_ID('sp_currently_online_users', 'P') IS NOT NULL DROP PROCEDURE sp_currently_online_users");
+        DB::unprepared("
+            CREATE PROCEDURE sp_currently_online_users
+            AS
+            BEGIN
+                SET NOCOUNT ON;
+
+                SELECT
+                    u.userid,
+                    u.name,
+                    u.email,
+                    u.department,
+                    u.section,
+                    u.position,
+                    u.rssite,
+                    u.last_seen_at,
+                    s.rssite_desc
+                FROM rsusers u
+                INNER JOIN irms_site s ON s.rssite = u.rssite
+                WHERE
+                    u.last_seen_at IS NOT NULL
+                    AND u.last_seen_at >= DATEADD(MINUTE, -2, GETDATE())
+                    AND u.userid <> 'sa'
+                ORDER BY u.last_seen_at DESC;
+            END
+        ");
+
     }
 
     /**
@@ -154,10 +188,19 @@ return new class extends Migration
      */
     public function down(): void
     {
+        // 1. DROP COLUMN FROM THE UNDERLYING TABLE
+        Schema::table('rsusers', function (Blueprint $table) {
+            $table->dropColumn('last_seen_at');
+        });
+
+        // 2. DROP AND RECREATE STORED PROCEDURES (Revert to original logic if necessary)
+        // Since the prompt only provides the DOWN logic to drop procedures, I'll retain that for simplicity.
         DB::unprepared("IF OBJECT_ID('sp_view_users', 'P') IS NOT NULL DROP PROCEDURE sp_view_users");
         DB::unprepared("IF OBJECT_ID('sp_add_user', 'P') IS NOT NULL DROP PROCEDURE sp_add_user");
         DB::unprepared("IF OBJECT_ID('sp_select_user', 'P') IS NOT NULL DROP PROCEDURE sp_select_user");
         DB::unprepared("IF OBJECT_ID('sp_update_user', 'P') IS NOT NULL DROP PROCEDURE sp_update_user");
-        DB::unprepared("IF OBJECT_ID('sp_update_profile', 'P') IS NOT NULL DROP PROCEDURE sp_update_profile");
+        DB::unprepared("IF OBJECT_ID('sp_active_users_per_site', 'P') IS NOT NULL DROP PROCEDURE sp_active_users_per_site");
+        DB::unprepared("IF OBJECT_ID('sp_currently_online_users', 'P') IS NOT NULL DROP PROCEDURE sp_currently_online_users");
+
     }
 };

@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Cookie;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Hash;
 use App\Models\RsUser;
+use App\Events\UserStatusUpdated;
 
 class LoginController extends Controller
 {
@@ -43,8 +44,8 @@ class LoginController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->validate([
-            'userid' => 'required|string',
-            'password' => 'required|string',
+            'userid' => ['required', 'string'],
+            'password' => ['required', 'string'],
         ]);
 
         $user = RsUser::where('userid', $credentials['userid'])->first();
@@ -77,14 +78,19 @@ class LoginController extends Controller
         Auth::login($user, $request->filled('remember'));
         $request->session()->regenerate();
 
+        $user->update([
+            'status' => 'online',
+            'last_seen_at' => now(),
+        ]);
+
+        broadcast(new UserStatusUpdated($user->userid, 'online'));
+
         session([
             'user' => [
                 'rssite' => $user->rssite,
                 'name' => $user->name,
                 'userid' => $user->userid,
-                'profile_pic_url' => $user->profile_pic_url
-                    ? $user->profile_pic_url
-                    : 'uploads/user-profile/noprofile.png',
+                'profile_pic_url' => $user->profile_pic_url ? $user->profile_pic_url : 'uploads/user-profile/noprofile.png',
             ]
         ]);
 
@@ -96,6 +102,7 @@ class LoginController extends Controller
             ->where('id', $sessionId)
             ->update([
                 'rssite' => $user->rssite,
+                // 'rsuserid' => (string) $user->getAttribute('userid'),
             ]);
 
         // ✅ FIXED: redirect to IRMS instead of undefined 'dashboard'
@@ -107,12 +114,27 @@ class LoginController extends Controller
      */
     public function logout(Request $request)
     {
+
+        $user = Auth::user();
+
         Auth::logout();
+
+        $userId = $request->session()->get('userid');
+
+        if ($user) {
+            RsUser::where('rssite', $user->rssite)
+                ->where('userid', $user->userid)
+                ->update(['status' => 'offline']);
+
+            broadcast(new UserStatusUpdated($userId, 'offline'));
+        }
+
+
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('home');
+        return redirect()->intended(route('home'));
     }
 
 

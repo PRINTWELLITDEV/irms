@@ -23,6 +23,9 @@ class RsUser extends Authenticatable
     public $incrementing = false;
     protected $keyType = 'string';
 
+    protected $casts = [
+        'last_seen_at' => 'datetime'
+    ];
     // No timestamps
     public $timestamps = false;
 
@@ -31,7 +34,8 @@ class RsUser extends Authenticatable
         'rssite', 'userid', 'name', 'password', 'email',
         'department', 'section', 'position', 'level',
         'create_date', 'updated_date', 'updated_by', 'updated_by_sql',
-        'gender', 'profile_pic_url', 'remember_token'
+        'gender', 'profile_pic_url', 'remember_token', 'last_seen_at',
+        'status',
     ];
 
     // Accessor for profile image
