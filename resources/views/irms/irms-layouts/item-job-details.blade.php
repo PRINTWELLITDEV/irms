@@ -23,7 +23,19 @@
                 <div class="card mb-4">
                     <div class="card-header">
                         <!-- <a href="{{ route('irms.itemlocations') }}" class="btn border border-secondary">&larr; Back</a> -->
-                        <button type="button" class="btn border border-secondary" onclick="window.history.back();">&larr; Back</button>
+                        <button type="button" class="btn border border-secondary"
+                            onclick="
+                                const appUrl = window.appUrl || '{{ url('') }}';
+                                const irmsPath = appUrl + '/irms';
+                                const referrer = document.referrer;
+                                if (referrer && referrer.includes(irmsPath)) {
+                                    window.history.back();
+                                    window.onpageshow = function(event){ if(event.persisted){ location.reload(); } }
+                                } else {
+                                    window.location.href = '{{ route('irms.itemlocations') }}';
+                                }
+                            "
+                        >&larr; Back</button>
                     </div>
                     <div class="card-body">
                         <div class="row">
