@@ -1,0 +1,44 @@
+/* Table */
+.table-view {
+    overflow-y: hidden;
+    position: relative;
+}
+
+.table-responsive {
+    margin-bottom: 1.5rem;
+}
+
+table.table th,
+table.table td {
+    white-space: nowrap;
+    padding: 0.75rem 0.5rem;
+    cursor: pointer;
+}
+
+table.table td img {
+    width: 75px;
+    height: 75px;
+    margin-right: 0.5rem;
+    object-fit: contain;
+    vertical-align: middle;
+}
+
+.table input[type="checkbox"].big-checkbox {
+    width: 24px;
+    height: 24px;
+    accent-color: #174700ff;
+    cursor: pointer;
+}
+
+.scroll-table {
+    max-height: 350px;
+    overflow-y: auto;
+    position: relative;
+}
+
+.scroll-table thead th {
+    position: sticky;
+    top: 0;
+    background: #f8f9fa;
+    z-index: 2;
+}

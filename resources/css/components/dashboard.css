@@ -1,0 +1,355 @@
+/* Dashboard Styles */
+.dashboard-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 2rem 0;
+    border-radius: 0 0 20px 20px;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.dashboard-header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.dashboard-subtitle {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    margin-bottom: 0;
+}
+
+/* Stats Cards */
+.stats-card {
+    background: white;
+    border-radius: 15px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    border: none;
+    overflow: hidden;
+    position: relative;
+    height: 120px;
+}
+
+.stats-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.stats-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: var(--card-color);
+}
+
+.stats-card.primary::before {
+    background: linear-gradient(45deg, #007bff, #0056b3);
+}
+
+.stats-card.success::before {
+    background: linear-gradient(45deg, #28a745, #1e7e34);
+}
+
+.stats-card.warning::before {
+    background: linear-gradient(45deg, #ffc107, #d39e00);
+}
+
+.stats-card.danger::before {
+    background: linear-gradient(45deg, #dc3545, #b02a37);
+}
+
+.stats-card.info::before {
+    background: linear-gradient(45deg, #17a2b8, #117a8b);
+}
+
+.stats-card.secondary::before {
+    background: linear-gradient(45deg, #6c757d, #495057);
+}
+
+.stats-number {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0;
+    color: #2c3e50;
+}
+
+.stats-label {
+    font-size: 0.9rem;
+    color: #6c757d;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.stats-icon {
+    font-size: 2.5rem;
+    opacity: 0.7;
+    position: absolute;
+    right: 1.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* Chart Cards */
+.chart-card {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.chart-card:hover {
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.chart-card-header {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.chart-card-header h5 {
+    margin: 0;
+    color: #495057;
+    font-weight: 600;
+}
+
+.chart-card-body {
+    padding: 1.5rem;
+}
+
+/* Quick Actions */
+.quick-actions {
+    background: white;
+    border-radius: 15px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    height: 100%;
+}
+
+.quick-action-btn {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    border-radius: 10px;
+    text-decoration: none;
+    color: #495057;
+    transition: all 0.3s ease;
+    border: 1px solid #e9ecef;
+    margin-bottom: 0.5rem;
+    background: #f8f9fa;
+}
+
+.quick-action-btn:hover {
+    background: #007bff;
+    color: white;
+    transform: translateX(5px);
+    border-color: #007bff;
+    text-decoration: none;
+}
+
+.quick-action-btn i {
+    font-size: 1.5rem;
+    margin-right: 1rem;
+    width: 24px;
+}
+
+/* Recent Activity */
+.activity-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.activity-item {
+    display: flex;
+    align-items: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid #f1f3f5;
+}
+
+.activity-item:last-child {
+    border-bottom: none;
+}
+
+.activity-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1rem;
+    font-size: 1rem;
+}
+
+.activity-icon.primary {
+    background: rgba(0, 123, 255, 0.1);
+    color: #007bff;
+}
+
+.activity-icon.success {
+    background: rgba(40, 167, 69, 0.1);
+    color: #28a745;
+}
+
+.activity-icon.warning {
+    background: rgba(255, 193, 7, 0.1);
+    color: #ffc107;
+}
+
+.activity-icon.danger {
+    background: rgba(220, 53, 69, 0.1);
+    color: #dc3545;
+}
+
+.activity-content h6 {
+    margin: 0 0 0.25rem 0;
+    font-size: 0.9rem;
+    color: #495057;
+}
+
+.activity-content small {
+    color: #6c757d;
+    font-size: 0.8rem;
+}
+
+/* Access Level Indicators */
+.access-level-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.access-level-badge.sa {
+    background: linear-gradient(45deg, #dc3545, #b02a37);
+    color: white;
+}
+
+.access-level-badge.admin {
+    background: linear-gradient(45deg, #007bff, #0056b3);
+    color: white;
+}
+
+.access-level-badge.user {
+    background: linear-gradient(45deg, #28a745, #1e7e34);
+    color: white;
+}
+
+/* System Status */
+.system-status {
+    background: white;
+    border-radius: 15px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.status-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #f1f3f5;
+}
+
+.status-item:last-child {
+    border-bottom: none;
+}
+
+.status-indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.status-indicator.online {
+    background: #28a745;
+    box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.2);
+}
+
+.status-indicator.warning {
+    background: #ffc107;
+    box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.2);
+}
+
+.status-indicator.offline {
+    background: #dc3545;
+    box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.2);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .dashboard-header {
+        padding: 1.5rem 0;
+        margin-bottom: 1.5rem;
+    }
+    
+    .dashboard-header h1 {
+        font-size: 2rem;
+    }
+    
+    .stats-card {
+        margin-bottom: 1rem;
+        height: auto;
+        padding: 1rem;
+    }
+    
+    .stats-number {
+        font-size: 2rem;
+    }
+    
+    .stats-icon {
+        font-size: 2rem;
+        right: 1rem;
+    }
+    
+    .chart-card-body {
+        padding: 1rem;
+    }
+    
+    .quick-action-btn {
+        padding: 0.75rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .dashboard-header h1 {
+        font-size: 1.75rem;
+    }
+    
+    .dashboard-subtitle {
+        font-size: 1rem;
+    }
+    
+    .stats-card {
+        padding: 0.75rem;
+    }
+    
+    .stats-number {
+        font-size: 1.75rem;
+    }
+    
+    .stats-icon {
+        font-size: 1.5rem;
+    }
+    
+    .chart-card-header {
+        padding: 0.75rem 1rem;
+    }
+    
+    .chart-card-body {
+        padding: 0.75rem;
+    }
+}

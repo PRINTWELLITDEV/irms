@@ -1,0 +1,85 @@
+/* Aside */
+.brand-image {
+    width: 35px;
+    height: 35px;
+    object-fit: contain;
+    background-color: #ccc !important;
+}
+
+/* Layout Wrapper */
+.app-main {
+    min-height: 100vh !important;
+}
+
+/* Content Wrapper */
+.app-content-wrapper {
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+.app-content-wrapper.visible {
+    opacity: 1;
+}
+.app-content-header h1 {
+    margin-bottom: 1rem;
+    font-size: 2rem;
+}
+
+/* Footer */
+.app-footer {
+    padding: 0rem 1.5rem !important;
+    border-top: 1px solid #dee2e6;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #6c757d;
+    box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.1);
+    margin-top: 0px;
+    line-height: 1.5;
+}
+.app-footer a {
+    text-decoration: none;
+    font-weight: bold;
+    color: #0e2b96;
+}
+.app-footer .pi-link {
+    color: #0e2b96;
+    font-family: "Century Schoolbook", serif;
+    font-weight: bold;
+    font-style: italic;
+    text-decoration: none;
+}
+.app-footer .pi-link:hover {
+    text-decoration: underline;
+}
+
+/* Input groups */
+.input-group-text.fixed-label {
+    min-width: 120px;
+    justify-content: flex-end;
+}
+
+/* Rack and Map Location */
+#rack-map-grid {
+    cursor: grab;
+    user-select: none;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+#rack-map-grid:active {
+    cursor: grabbing;
+}
+
+#rack-map-grid table {
+    min-width: max-content;
+}
+
+/* item location */
+#job-details-table a {
+    text-decoration: none;
+    color: #0e2b96;
+}
+
+/* Modal adjustments */
+.modal-xl {
+    max-width: 55vw;
+}
