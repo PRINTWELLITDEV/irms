@@ -5,44 +5,86 @@ $("#dispatching-details").hide();
 $("#goodsDispatchingForm .btn-danger").on("click", function (e) {
     e.preventDefault();
 
+    // Show loading state
+    const $button = $(this);
+    const $status = $("#formStatus");
+    const originalText = $button.html();
+    
+    $button.prop('disabled', true).html('<i class="bi bi-hourglass-split me-2"></i>Processing...');
+    $status.show();
+
     const form = $("#goodsDispatchingForm");
     const formData = form.serialize();
+
+    // Add form validation
+    let isValid = true;
+    form.find('input[required], select[required]').each(function() {
+        const $field = $(this);
+        if (!$field.val()) {
+            $field.addClass('is-invalid');
+            isValid = false;
+        } else {
+            $field.removeClass('is-invalid');
+        }
+    });
+
+    if (!isValid) {
+        $button.prop('disabled', false).html(originalText);
+        $status.hide();
+        Swal.fire({
+            icon: "error",
+            title: "Validation Error",
+            text: "Please fill in all required fields.",
+            confirmButtonText: "OK"
+        });
+        return;
+    }
 
     $.ajax({
         url: form.attr("action"),
         method: "POST",
         data: formData,
         success: function (response) {
-            Swal.fire({
-                toast: true,
-                position: "top-end",
-                icon: "success",
-                title: response.message,
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-            });
-            $(".card:has(#goodsDispatchingForm)").hide();
-            $("#dispatching-details").fadeIn();
+            $button.removeClass('btn-danger').addClass('btn-success')
+                   .html('<i class="bi bi-check-circle me-2"></i>Success!');
+            
+            setTimeout(() => {
+                Swal.fire({
+                    toast: true,
+                    position: "top-end",
+                    icon: "success",
+                    title: response.message || "Goods dispatching processed successfully!",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true
+                });
+                
+                $(".card:has(#goodsDispatchingForm)").hide();
+                $("#dispatching-details").fadeIn();
+                
+                // Reset button state
+                $button.prop('disabled', false).removeClass('btn-success').addClass('btn-danger').html(originalText);
+                $status.hide();
+            }, 1000);
         },
         error: function (xhr) {
             let msg = "An error occurred.";
-            // Laravel validation error
             if (xhr.responseJSON && xhr.responseJSON.message) {
                 msg = xhr.responseJSON.message;
             } else if (xhr.responseJSON && xhr.responseJSON.errors) {
                 msg = Object.values(xhr.responseJSON.errors).join("<br>");
             }
+            
+            $button.prop('disabled', false).html(originalText);
+            $status.hide();
+            
             Swal.fire({
-                toast: true,
-                position: "top-end",
                 icon: "error",
-                title: msg,
-                showConfirmButton: false,
-                timer: 3500,
-                timerProgressBar: true,
+                title: "Processing Failed",
+                html: msg,
+                confirmButtonText: "OK"
             });
-        },
+        }
     });
 
     // Fetch qtyOnHand before showing details
@@ -58,7 +100,6 @@ $("#goodsDispatchingForm .btn-danger").on("click", function (e) {
             // Set hidden input for qtyOnHand
             $("#qtyOnHand").val(data.qtyOnHand || "0");
 
-            // After getting data.qtyOnHand from AJAX
             // Format qtyOnHand with commas and decimals only if needed
             let qtyOnHand = parseFloat(data.qtyOnHand || "0");
             let qtyOnHandDisplay =
@@ -75,7 +116,7 @@ $("#goodsDispatchingForm .btn-danger").on("click", function (e) {
 
             $("#details-qty-on-hand").text(qtyOnHandDisplay);
 
-            // Now update the rest of the details as before
+            // Update the rest of the details
             $("#details-site").text(
                 $("#rssite option:selected").text() || $("#rssite").val() || "-"
             );
@@ -85,10 +126,11 @@ $("#goodsDispatchingForm .btn-danger").on("click", function (e) {
             $("#details-lot").text($("#lot").val() || "");
             $("#details-item").text($("#item").val() || "");
             $("#details-desc").text($("#desc").val() || "");
+            $("#details-desc").attr('title', $("#desc").val() || "");
             $("#details-um").text($("#um").val() || "");
-            $("#details-docno").text($("#docno").val() || "");
+            $("#details-docno").text($("#docno").val() || "-");
 
-            // AJAX to get item in rsloc list (as before)
+            // AJAX to get item in rsloc list
             $.ajax({
                 url: window.appUrl + "/irms/dispatching/item-in-rsloc-list",
                 method: "POST",
@@ -102,6 +144,7 @@ $("#goodsDispatchingForm .btn-danger").on("click", function (e) {
                     const tbody = $("#dispatchingTable tbody");
                     tbody.empty();
                     if (data.length > 0) {
+                        const um = $("#um").val();
                         data.forEach(function (row, idx) {
                             let qtyNum = parseFloat(row.qty);
                             let qty =
@@ -111,31 +154,28 @@ $("#goodsDispatchingForm .btn-danger").on("click", function (e) {
                                     ? qtyNum.toString()
                                     : qtyNum.toFixed(2).replace(/\.00$/, "");
                             tbody.append(`
-                                    <tr>
-                                        <td>${idx + 1}</td>
-                                        <td class="text-center align-middle"><input type="checkbox" name="select_row[]" value="${
-                                            idx + 1
-                                        }" class="big-checkbox"></td>
-                                        <td>${row.rsloc}</td>
-                                        <td>${row.rspallet_num || ""}</td>
-                                        <td class="text-end">${qty}</td>
-                                        <td class="text-end"><input type="text" class="form-control text-end" value="" disabled></td>
-                                        <td>${row.um || ""}</td>
-                                        <td></td>
-                                    </tr>
-                                `);
+                                <tr>
+                                    <td class="text-center">${idx + 1}</td>
+                                    <td class="text-center align-middle">
+                                        <input type="checkbox" name="select_row[]" value="${idx + 1}" class="big-checkbox">
+                                    </td>
+                                    <td><strong>${row.rsloc}</strong></td>
+                                    <td>${row.rspallet_num || ""}</td>
+                                    <td class="text-end"><span class="badge bg-light text-dark">${qty}</span></td>
+                                    <td><input type="text" class="form-control text-end" value="" disabled></td>
+                                    <td class="text-center"><span class="badge bg-warning text-dark">${um}</span></td>
+                                    <td class="text-center text-muted">-</td>
+                                </tr>
+                            `);
                         });
                     } else {
                         tbody.append(
-                            '<tr><td colspan="8" class="text-center">No Rack Location found.</td></tr>'
+                            '<tr><td colspan="8" class="text-center text-muted"><i class="bi bi-inbox me-2"></i>No Rack Location found.</td></tr>'
                         );
                     }
+                    updateCounters();
                 },
             });
-
-            // Hide form, show details
-            // $(".card:has(#goodsDispatchingForm)").hide();
-            // $("#dispatching-details").fadeIn();
         },
     });
 });
@@ -153,7 +193,7 @@ $(document).on(
     function () {
         const $row = $(this).closest("tr");
         const enabled = $(this).is(":checked");
-        const qtyAvailable = $row.find("td").eq(4).text().trim();
+        const qtyAvailable = $row.find("td").eq(4).find('span').text().trim();
         const $qtyInput = $row.find('input[type="text"].text-end');
         const selectedDate = $("#date").val();
         const formattedDate = formatDateMDY(selectedDate);
@@ -163,11 +203,15 @@ $(document).on(
         if (enabled) {
             $qtyInput.val(qtyAvailable); // Show available qty
             $row.find("td").eq(7).text(formattedDate); // Show selected date in Date Dispatched column
+            $row.addClass('table-warning');
         } else {
             $qtyInput.val(""); // Clear input
             $qtyInput.removeClass("is-invalid");
-            $row.find("td").eq(7).text(""); // Clear date when unchecked
+            $row.find("td").eq(7).text("-"); // Clear date when unchecked
+            $row.removeClass('table-warning');
         }
+        
+        updateCounters();
     }
 );
 
@@ -182,14 +226,14 @@ $("#btnSelectAll").on("click", function () {
 
     if (allChecked) {
         checkboxes.prop("checked", false).trigger("change");
-        $(this).find("span").text("Select all");
+        $(this).find("span").text("Select All");
         $(this)
             .find("i")
             .removeClass("bi-x-circle-fill")
             .addClass("bi-check-circle-fill");
     } else {
         checkboxes.prop("checked", true).trigger("change");
-        $(this).find("span").text("Unselect all");
+        $(this).find("span").text("Unselect All");
         $(this)
             .find("i")
             .removeClass("bi-check-circle-fill")
@@ -224,8 +268,9 @@ $(document).on(
             $input.val(val);
         }
 
-        const availableQty =
-            parseFloat($input.attr("value")) || parseFloat($input.val());
+        const $row = $input.closest("tr");
+        const availableQtyText = $row.find("td").eq(4).find('span').text().trim();
+        const availableQty = parseFloat(availableQtyText);
         const qty = parseFloat(val);
 
         // Only allow positive numbers, no letters/symbols
@@ -239,6 +284,8 @@ $(document).on(
         } else {
             $input.removeClass("is-invalid");
         }
+        
+        updateCounters();
     }
 );
 
@@ -258,9 +305,8 @@ $("#btnDispatch").on("click", function (e) {
             const qtyInput = $row.find('input[type="text"].text-end');
             const val = qtyInput.val();
             const qty = parseFloat(val);
-            const availableQty =
-                parseFloat(qtyInput.attr("value")) ||
-                parseFloat(qtyInput.val());
+            const availableQtyText = $row.find("td").eq(4).find('span').text().trim();
+            const availableQty = parseFloat(availableQtyText);
 
             if (!/^\d*\.?\d*$/.test(val)) {
                 qtyInput.addClass("is-invalid");
@@ -295,16 +341,6 @@ $("#btnDispatch").on("click", function (e) {
 
     if (checkedCount === 0) {
         e.preventDefault();
-        /*
-            if ($("#noRowCheckedModal").length === 0) {
-                $("body").append(`...modal html...`);
-            }
-            $("#noRowCheckedModal").modal("show");
-            $("#noRowCheckedModal").on("hidden.bs.modal", function () {
-                $(this).remove();
-            });
-            return false;
-            */
         Swal.fire({
             icon: "warning",
             title: "No Item Location Selected",
@@ -321,14 +357,13 @@ $("#btnDispatch").on("click", function (e) {
             .find('input[type="checkbox"].big-checkbox')
             .is(":checked");
         if (checked) {
-            const qtyInput = $row.find('input[type="text"]');
+            const qtyInput = $row.find('input[type="text"].text-end');
             const qtyToDispatch = parseFloat(qtyInput.val());
-            const availableQty =
-                parseFloat(qtyInput.attr("value")) ||
-                parseFloat(qtyInput.val());
+            const availableQtyText = $row.find("td").eq(4).find('span').text().trim();
+            const availableQty = parseFloat(availableQtyText);
             const rsloc = $row.find("td").eq(2).text();
             const rspallet_num = $row.find("td").eq(3).text();
-            const um = $row.find("td").eq(6).text();
+            const um = $row.find("td").eq(6).find('span').text();
 
             // Validate quantity
             if (
@@ -361,14 +396,22 @@ $("#btnDispatch").on("click", function (e) {
     });
 
     if (hasError) {
-        alert(
-            "Please enter a valid quantity to dispatch (must be > 0 and ≤ available quantity) for all selected rows."
-        );
+        Swal.fire({
+            icon: "error",
+            title: "Invalid Quantity",
+            text: "Please enter a valid quantity to dispatch (must be > 0 and ≤ available quantity) for all selected rows.",
+            confirmButtonText: "OK"
+        });
         return;
     }
 
     if (rows.length === 0) {
-        alert("Please select at least one row to dispatch.");
+        Swal.fire({
+            icon: "warning",
+            title: "No Item Location Selected",
+            text: "Please select at least one item location to dispatch.",
+            confirmButtonText: "OK"
+        });
         return;
     }
 
@@ -414,31 +457,101 @@ $("#btnDispatch").on("click", function (e) {
     });
 });
 
-// After user selects Job/CO or on form submit, fetch job item details
-$.ajax({
-    url: window.appUrl + "/irms/dispatching/job-item-details",
-    method: "POST",
-    data: {
-        rssite: $("#rssite").val() || $("input[name='rssite']").val(),
-        jobco: $("#jobcodispatch").val(),
-        _token: $('input[name="_token"]').val(),
-    },
-    success: function (data) {
-        // Set hidden input for qtyOnHand (if you use it elsewhere)
-        $("#qtyOnHand").val(data.qtyOnHand || "0");
+// Add refresh locations button functionality
+$("#btnRefreshLocations").on("click", function() {
+    const $button = $(this);
+    const originalHtml = $button.html();
+    
+    $button.prop('disabled', true).html('<i class="bi bi-arrow-clockwise spin me-1"></i>Loading...');
+    
+    // Re-trigger the location loading
+    const rssite = $("#rssite").val() || $("input[name='rssite']").val();
+    const job = $("#jobcodispatch").val();
+    
+    if (!rssite || !job) {
+        $button.prop('disabled', false).html(originalHtml);
+        return;
+    }
+    
+    // AJAX to get item in rsloc list
+    $.ajax({
+        url: window.appUrl + "/irms/dispatching/item-in-rsloc-list",
+        method: "POST",
+        data: {
+            rssite: rssite,
+            job: job,
+            _token: $('input[name="_token"]').val(),
+        },
+        success: function (data) {
+            const tbody = $("#dispatchingTable tbody");
+            tbody.empty();
+            if (data.length > 0) {
+                const um = $("#um").val();
+                data.forEach(function (row, idx) {
+                    let qtyNum = parseFloat(row.qty);
+                    let qty =
+                        isNaN(qtyNum) || qtyNum === 0
+                            ? "0"
+                            : qtyNum % 1 === 0
+                            ? qtyNum.toString()
+                            : qtyNum.toFixed(2).replace(/\.00$/, "");
+                    tbody.append(`
+                        <tr>
+                            <td class="text-center">${idx + 1}</td>
+                            <td class="text-center align-middle">
+                                <input type="checkbox" name="select_row[]" value="${idx + 1}" class="big-checkbox">
+                            </td>
+                            <td><strong>${row.rsloc}</strong></td>
+                            <td>${row.rspallet_num || ""}</td>
+                            <td class="text-end"><span class="badge bg-light text-dark">${qty}</span></td>
+                            <td><input type="text" class="form-control text-end" value="" disabled></td>
+                            <td class="text-center"><span class="badge bg-warning text-dark">${um}</span></td>
+                            <td class="text-center text-muted">-</td>
+                        </tr>
+                    `);
+                });
+            } else {
+                tbody.append(
+                    '<tr><td colspan="8" class="text-center text-muted"><i class="bi bi-inbox me-2"></i>No Rack Location found.</td></tr>'
+                );
+            }
+            updateCounters();
+        },
+        complete: function() {
+            $button.prop('disabled', false).html(originalHtml);
+        }
+    });
+});
 
-        // After getting data.qtyOnHand from AJAX
-        let qtyOnHand = parseFloat(data.qtyOnHand || "0");
-        let qtyOnHandDisplay =
-            isNaN(qtyOnHand) || qtyOnHand === 0
-                ? "0"
-                : qtyOnHand % 1 === 0
-                ? qtyOnHand.toString()
-                : qtyOnHand.toFixed(2).replace(/\.00$/, "");
+// Function to update counters
+function updateCounters() {
+    const checkedBoxes = $("#dispatchingTable input[type='checkbox'].big-checkbox:checked");
+    const selectedCount = checkedBoxes.length;
+    
+    let totalQty = 0;
+    checkedBoxes.each(function() {
+        const qtyInput = $(this).closest('tr').find('input[type="text"].text-end');
+        const qty = parseFloat(qtyInput.val()) || 0;
+        totalQty += qty;
+    });
+    
+    $("#selectedCount").text(selectedCount);
+    $("#totalQty").text(totalQty.toFixed(2).replace(/\.00$/, ''));
+}
 
-        // Update the details section
-        $("#details-qty-on-hand").text(qtyOnHandDisplay);
-    },
+// Update counter when quantity changes
+$(document).on('input', '#dispatchingTable input[type="text"].text-end', function() {
+    updateCounters();
+});
+
+// Real-time validation for dispatching form
+$("#goodsDispatchingForm input[required], #goodsDispatchingForm select[required]").on('input change', function() {
+    const $field = $(this);
+    if ($field.val()) {
+        $field.removeClass('is-invalid').addClass('is-valid');
+    } else {
+        $field.removeClass('is-valid');
+    }
 });
 
 function formatDateMDY(dateStr) {
@@ -461,3 +574,16 @@ function formatDateMDY(dateStr) {
     ];
     return `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`;
 }
+
+// Add CSS for spinning animation
+const style = document.createElement('style');
+style.textContent = `
+    .spin {
+        animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+`;
+document.head.appendChild(style);

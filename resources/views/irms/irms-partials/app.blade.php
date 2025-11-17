@@ -16,8 +16,11 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/2.3.4/css/dataTables.dataTables.min.css">
     <link href="https://cdn.datatables.net/columncontrol/1.1.0/css/columnControl.dataTables.min.css" rel="stylesheet">
+    
+    {{-- Page-specific CSS --}}
+    @stack('styles')
 </head>
-<body class="layout-fixed fixed-header fixed-footer sidebar-hide sidebar-expand-lg bg-body-tertiary">
+<body class="layout-fixed fixed-header sidebar-collapse sidebar-expand-lg bg-body-tertiary">
     <div class="app-wrapper">
         {{-- Navbar --}}
         @include('irms.irms-partials.nav')
@@ -46,5 +49,8 @@
         window.sessionSuccess = @json(session('success'));
         window.sessionError = @json($errors->first());
     </script>
+    
+    {{-- Page-specific JS --}}
+    @stack('scripts')
 </body>
 </html>

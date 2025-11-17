@@ -23,153 +23,197 @@
 
         <div class="app-content">
             <div class="container-fluid">
-                <div class="row justify-content">
-                    <div class="col-12 col-md-8 col-lg-9">
+                <div class="row justify-content-md-center">
+                    <div class="col-12 col-lg-10">
                         <div class="card mb-3 shadow-sm">
-                            <div class="card-header bg-primary text-white">
+                            <div class="card-header bg-primary text-white d-flex align-items-center">
+                                <i class="bi bi-box-arrow-in-down me-2"></i>
                                 <h5 class="mb-0">Goods Receiving Form</h5>
                             </div>
-                            <div class="card-body">
-                                @php
-                                    $isSa = auth()->user()->level == 1;
-                                @endphp
-
+                            <div class="card-body p-4">
                                 <form id="goodsReceivingForm" method="POST" action="{{ route('goodsreceiving.process') }}">
                                     @csrf
-                                    @if($isSa)
-                                    <div class="row g-3 align-items-center">
-                                        <div class="col-md-6 col-12 mb-3">
-                                            <div class="input-group">
-                                                <span class="input-group-text fixed-label" id="rssite-label">
-                                                    <span class="text-danger me-1">*</span>Site:
-                                                </span>
+                                    
+                                    <!-- Site Selection (SA Only) -->
+                                    @if(auth()->user()->level == 1)
+                                    <div class="row mb-4">
+                                        <div class="col-12">
+                                            <div class="form-floating">
                                                 <select name="rssite" id="rssite" class="form-select" required>
-                                                    <option value="" disabled selected>Select Site</option>
+                                                    <option value="" disabled selected>Choose a site...</option>
+                                                    @if(auth()->user()->level !== 1)
+                                                        <option value="{{ auth()->user()->rssite }}" selected>
+                                                            {{ $site_desc }}
+                                                        </option>
+                                                    @endif
                                                     @foreach($sites as $site)
                                                         <option value="{{ $site->rssite }}" {{ old('rssite') == $site->rssite ? 'selected' : '' }}>
                                                             {{ $site->rssite_desc }}
                                                         </option>
                                                     @endforeach
                                                 </select>
+                                                <label for="rssite">
+                                                    <i class="bi bi-building text-primary me-1"></i>
+                                                    Site <span class="text-danger">*</span>
+                                                </label>
                                             </div>
                                         </div>
                                     </div>
                                     @else
-                                        <input type="hidden" name="rssite" id="rssite" value="{{ auth()->user()->rssite }}" readonly>
+                                        <input type="hidden" name="rssite" id="rssite" value="{{ auth()->user()->rssite }}">
                                     @endif
-                                    
 
-                                    <!-- Date -->
-                                    <div class="row g-3 align-items-center">
-                                        <div class="col-md-6 col-12">
-                                            <div class="input-group">
-                                                <span class="input-group-text fixed-label" id="date-label">
-                                                    <span class="text-danger me-1">*</span>Date:
-                                                </span>
+                                    <!-- Primary Information -->
+                                    <div class="row g-3 mb-4">
+                                        <div class="col-md-6">
+                                            <div class="form-floating">
                                                 <input type="date" class="form-control" id="date" name="date" value="{{ date('Y-m-d') }}" required>
+                                                <label for="date">
+                                                    <i class="bi bi-calendar-event text-primary me-1"></i>
+                                                    Date <span class="text-danger">*</span>
+                                                </label>
                                             </div>
                                         </div>
-                                        <div class="col-md-6 col-12">
-                                            <div class="input-group">
-                                                <span class="input-group-text fixed-label" id="rswhse-label">
-                                                    <span class="text-danger me-1">*</span>Warehouse:
-                                                </span>
+                                        <div class="col-md-6">
+                                            <div class="form-floating">
                                                 <select name="rswhse" id="rswhse" class="form-select" required>
-                                                    <option value=""disabled selected>Select Warehouse</option>
-                                                    @foreach($warehouses as $rswhse)
-                                                        @if($isSa || $rswhse->rssite === auth()->user()->rssite)
-                                                            <option value="{{ $rswhse->rswhse }}" data-site="{{ $rswhse->rssite }}">
-                                                                {{ $rswhse->rswhse }} - {{ $rswhse->name }}
+                                                    <option value="" disabled selected>Choose warehouse...</option>
+                                                    @foreach($warehouses as $warehouse)
+                                                        @if(auth()->user()->level == 1 || $warehouse->rssite === auth()->user()->rssite)
+                                                            <option value="{{ $warehouse->rswhse }}" data-site="{{ $warehouse->rssite }}">
+                                                                {{ $warehouse->rswhse }} - {{ $warehouse->name }}
                                                             </option>
                                                         @endif
                                                     @endforeach
                                                 </select>
+                                                <label for="rswhse">
+                                                    <i class="bi bi-house text-primary me-1"></i>
+                                                    Warehouse <span class="text-danger">*</span>
+                                                </label>
                                             </div>
-                                            
                                         </div>
                                     </div>
 
-                                    <!-- Job / CO and Lot -->
-                                    <div class="row g-3 align-items-center mt-2">
-                                        <div class="col-md-6 col-12">
-                                            <div class="input-group">
-                                                <span class="input-group-text fixed-label" id="jobco-label">
-                                                    <span class="text-danger me-1">*</span>Job / CO:
-                                                </span>
-                                                <input type="text" class="form-control" id="jobcoreceive" name="jobco" required>
+                                    <!-- Job Information -->
+                                    <div class="row g-3 mb-4">
+                                        <div class="col-md-6">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control" id="jobcoreceive" name="jobco" placeholder="Enter job/CO number" required>
+                                                <label for="jobcoreceive">
+                                                    <i class="bi bi-briefcase text-primary me-1"></i>
+                                                    Job / CO <span class="text-danger">*</span>
+                                                </label>
                                             </div>
                                         </div>
-                                        <div class="col-md-6 col-12">
-                                            <div class="input-group">
-                                                <span class="input-group-text fixed-label" id="lot-label">Lot:</span>
-                                                <input type="text" class="form-control bg-light" id="lot" name="lot" readonly>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row g-3 align-items-center mt-2">
-                                        <div class="col-md-6 col-12">
-                                            <div class="input-group">
-                                                <span class="input-group-text fixed-label" id="item-label">Item:</span>
-                                                <input type="text" class="form-control bg-secondary bg-opacity-10" id="item" name="item" readonly>
-                                                
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12 col-12">
-                                            <div class="input-group">
-                                                <span class="input-group-text fixed-label" id="desc-label">Description:</span>
-                                                <input type="text" class="form-control bg-secondary bg-opacity-10" id="desc" name="desc" readonly>
+                                        <div class="col-md-6">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control bg-light" id="lot" name="lot" placeholder="Auto-generated" readonly>
+                                                <label for="lot">
+                                                    <i class="bi bi-tag text-muted me-1"></i>
+                                                    Lot
+                                                </label>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row g-3 align-items-center mt-2">
-                                        <div class="col-md-6 col-12">
-                                            <div class="input-group">
-                                                <span class="input-group-text fixed-label" id="pallet-size-label">Pallet Size:</span>
-                                                <input type="number" class="form-control bg-secondary bg-opacity-10" id="pallet_size" name="pallet_size">
+
+                                    <!-- Item Details Section -->
+                                    <div class="card border-0 bg-light mb-4">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <h6 class="card-title text-muted mb-3">
+                                                    Item Information
+                                                </h6>
                                             </div>
-                                        </div>
-                                        <div class="col-md-6 col-12">
-                                            <div class="input-group">
-                                                <span class="input-group-text fixed-label" id="um-label">U/M:</span>
-                                                <input type="text" class="form-control bg-secondary bg-opacity-10" id="um" name="um" readonly>
+                                            <div class="row g-3">
+                                                <div class="col-md-6">
+                                                    <div class="form-floating">
+                                                        <input type="text" class="form-control bg-white" id="item" name="item" placeholder="Auto-filled" readonly>
+                                                        <label for="item">
+                                                            <i class="bi bi-box text-muted me-1"></i>
+                                                            Item Code
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-floating">
+                                                        <input type="text" class="form-control bg-white" id="um" name="um" placeholder="Unit of measure" readonly>
+                                                        <label for="um">
+                                                            <i class="bi bi-rulers text-muted me-1"></i>
+                                                            Unit of Measure
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <div class="form-floating">
+                                                        <input type="text" class="form-control bg-white" id="desc" name="desc" placeholder="Item description" readonly>
+                                                        <label for="desc">
+                                                            <i class="bi bi-file-text text-muted me-1"></i>
+                                                            Description
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-floating">
+                                                        <input type="number" class="form-control bg-white" id="pallet_size" name="pallet_size" placeholder="0" step="0.01">
+                                                        <label for="pallet_size">
+                                                            <i class="bi bi-stack text-muted me-1"></i>
+                                                            Pallet Size
+                                                        </label>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- Bay No and Doc No -->
-                                    <div class="row g-3 align-items-center mt-2">
-                                        <div class="col-md-6 col-12">
-                                            <div class="input-group">
-                                                <span class="input-group-text fixed-label" id="rsbaynum-label">
-                                                    <span class="text-danger me-1">*</span>Bay No.:
-                                                </span>
+
+                                    <!-- Location & Document -->
+                                    <div class="row g-3 mb-4">
+                                        <div class="col-md-6">
+                                            <div class="form-floating">
                                                 <select name="rsbaynum" id="rsbaynum" class="form-select" required>
-                                                    <option value=""disabled selected>Select Bay</option>
+                                                    <option value="" disabled selected>Choose bay location...</option>
                                                     @foreach($baylocs as $bay)
-                                                        @if($isSa || $bay->rssite === auth()->user()->rssite)
+                                                        @if(auth()->user()->level == 1 || $bay->rssite === auth()->user()->rssite)
                                                             <option value="{{ $bay->rsbaynum }}" data-site="{{ $bay->rssite }}">
                                                                 {{ $bay->rsbaynum }}
                                                             </option>
                                                         @endif
                                                     @endforeach
                                                 </select>
+                                                <label for="rsbaynum">
+                                                    <i class="bi bi-geo-alt text-primary me-1"></i>
+                                                    Bay Number <span class="text-danger">*</span>
+                                                </label>
                                             </div>
-                                            
                                         </div>
-                                        <div class="col-md-6 col-12">
-                                            <div class="input-group">
-                                                <span class="input-group-text fixed-label" id="docno-label">
-                                                    Doc No: <small><span class="text-secondary ms-1 small">(Opt.)</span></small>
-                                                </span>
-                                                <input type="text" class="form-control" id="docno" name="docno">
+                                        <div class="col-md-6">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control" id="docno" name="docno" placeholder="Enter document number">
+                                                <label for="docno">
+                                                    <i class="bi bi-file-earmark-text text-muted me-1"></i>
+                                                    Document No. <small class="text-muted">(Optional)</small>
+                                                </label>
                                             </div>
-                                            
                                         </div>
                                     </div>
-                                    <div class="row mt-4">
-                                        <div class="col text-center">
-                                            <!-- <button type="submit" class="btn btn-primary px-5">Process</button> -->
-                                            <button type="button" class="btn btn-primary px-5">Process</button>
+
+                                    <!-- Action Buttons -->
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                                                <button type="button" class="btn btn-primary btn-lg px-5">
+                                                    <i class="bi bi-check-circle me-2"></i>
+                                                    Process Receiving
+                                                </button>
+                                            </div>
                                         </div>
+                                    </div>
+
+                                    <!-- Form Status Indicator -->
+                                    <div id="formStatus" class="mt-3 text-center" style="display: none;">
+                                        <div class="spinner-border spinner-border-sm text-primary me-2" role="status">
+                                            <span class="visually-hidden">Loading...</span>
+                                        </div>
+                                        <small class="text-muted">Processing your request...</small>
                                     </div>
                                 </form>
                             </div>
@@ -178,104 +222,136 @@
                 </div>
 
                 <div id="receiving-details" class="card mb-3 shadow-sm">
-                    <div class="card-header bg-secondary text-white">
-                        <h5 class="mb-0">Receiving Details</h5>
+                    <div class="card-header bg-success text-white d-flex align-items-center justify-content-between">
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-box-check me-2"></i>
+                            <h5>Receiving Details</h5>
+                        </div>
                     </div>
-                    <div class="card-body">
-                        <button type="button" id="btnBackReceiving" class="btn border-2 border-secondary d-flex align-items-center mb-2">
-                            <i class="bi bi-arrow-left d-sm-inline me-2"></i>
-                            <span class="d-md-inline fw-bold">Back</span>
+                    <div class="card-body p-4">
+                        <button type="button" id="btnBackReceiving" class="btn btn-outline-secondary d-flex align-items-center mb-3">
+                            <i class="bi bi-arrow-left me-2"></i>
+                            <span class="fw-semibold">Back to Form</span>
                         </button>
-                        <div class="bg-secondary bg-opacity-50 p-2 mb-3 rounded">
-                            <form id="receiving-details-form">
-                                <div class="bg-light p-3 rounded shadow-sm">
-                                    <div class="row mb-2">
+                        
+                        <!-- Summary Cards -->
+                        <div class="row g-3 mb-4">
+                            <!-- Basic Information Card -->
+                            <div class="col-lg-6">
+                                <div class="summary-card">
+                                    <div class="summary-card-header">
+                                        <i class="bi bi-info-circle me-2"></i>
+                                        <h6 class="mb-0">Basic Information</h6>
+                                    </div>
+                                    <div class="summary-card-body">
                                         @if(auth()->user()->level == 1)
-                                        <div class="col-12">
-                                            <span class="fw-bold">Site:</span>
-                                            <span id="details-site" class="ms-2"></span>
+                                        <div class="summary-item">
+                                            <span class="summary-label">Site</span>
+                                            <span id="details-site" class="summary-value"></span>
                                         </div>
                                         @endif
-                                    </div>
-                                    <div class="row mb-2">
-                                        <div class="col-6">
-                                            <span class="fw-bold">Date:</span>
-                                            <span id="details-date" class="ms-2"></span>
+                                        <div class="summary-item">
+                                            <span class="summary-label">Date</span>
+                                            <span id="details-date" class="summary-value"></span>
                                         </div>
-                                        <div class="col-6">
-                                            <span class="fw-bold">Warehouse:</span>
-                                            <span id="details-warehouse" class="ms-2"></span>
+                                        <div class="summary-item">
+                                            <span class="summary-label">Warehouse</span>
+                                            <span id="details-warehouse" class="summary-value"></span>
                                         </div>
-                                    </div>
-                                    <div class="row mb-2">
-                                        <div class="col-6">
-                                            <span class="fw-bold">Job / CO:</span>
-                                            <span id="details-jobco" class="ms-2"></span>
+                                        <div class="summary-item">
+                                            <span class="summary-label">Bay Number</span>
+                                            <span id="details-bay" class="summary-value"></span>
                                         </div>
-                                        <div class="col-6">
-                                            <span class="fw-bold">Lot:</span>
-                                            <span id="details-lot" class="ms-2"></span>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-2">
-                                        <div class="col-12">
-                                            <span class="fw-bold">Item:</span>
-                                            <span id="details-item" class="ms-2"></span>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-2">
-                                        <div class="col-12">
-                                            <span class="fw-bold">Description:</span>
-                                            <span id="details-description" class="ms-2"></span>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-2">
-                                        <div class="col-6">
-                                            <span class="fw-bold">Pallet Size:</span>
-                                            <span id="details-pallet_size" class="ms-2"></span>
-                                        </div>
-                                        <div class="col-6">
-                                            <span class="fw-bold">U/M:</span>
-                                            <span id="details-um" class="ms-2"></span>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-2">
-                                        <div class="col-6">
-                                            <span class="fw-bold">Bay No.:</span>
-                                            <span id="details-bay" class="ms-2"></span>
-                                        </div>
-                                        <div class="col-6">
-                                            <span class="fw-bold">Doc No:</span>
-                                            <span id="details-docno" class="ms-2"></span>
+                                        <div class="summary-item">
+                                            <span class="summary-label">Document No.</span>
+                                            <span id="details-docno" class="summary-value text-muted"></span>
                                         </div>
                                     </div>
                                 </div>
-                            </form>
+                            </div>
+                            
+                            <!-- Job & Item Information Card -->
+                            <div class="col-lg-6">
+                                <div class="summary-card">
+                                    <div class="summary-card-header">
+                                        <i class="bi bi-box me-2"></i>
+                                        <h6 class="mb-0">Job & Item Details</h6>
+                                    </div>
+                                    <div class="summary-card-body">
+                                        <div class="summary-item">
+                                            <span class="summary-label">Job / CO</span>
+                                            <span id="details-jobco" class="summary-value fw-bold text-primary"></span>
+                                        </div>
+                                        <div class="summary-item">
+                                            <span class="summary-label">Lot</span>
+                                            <span id="details-lot" class="summary-value"></span>
+                                        </div>
+                                        <div class="summary-item">
+                                            <span class="summary-label">Item Code</span>
+                                            <span id="details-item" class="summary-value"></span>
+                                        </div>
+                                        <div class="summary-item">
+                                            <span class="summary-label">Description</span>
+                                            <span id="details-description" class="summary-value text-truncate" title=""></span>
+                                        </div>
+                                        <div class="summary-item">
+                                            <span class="summary-label">Pallet Size</span>
+                                            <span id="details-pallet_size" class="summary-value fw-bold"></span>
+                                            <span id="details-um" class="summary-value-unit"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <button type="button" id="btnSelectAll" class="btn btn-outline-dark d-flex align-items-center me-2">
-                                <i class="bi bi-check-circle-fill d-sm-inline me-2"></i>
-                                <span class="d-md-inline">Select all</span>
-                            </button>
-                            <button type="button" id="btnReceive" class="btn btn-success d-flex align-items-center">
-                                <i class="bi bi-box-arrow-in-right d-sm-inline me-2"></i>
-                                <span class="d-md-inline">Receive</span>
-                            </button>
-                        </div>
-                        <div class="table-responsive">
-                            <div class="table-view">
 
-                                <table id="receivingTable" class="table table-striped table-bordered align-middle w-100">
-                                    <thead>
+                        <!-- Action Buttons -->
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <button type="button" id="btnSelectAll" class="btn btn-outline-primary d-flex align-items-center">
+                                <i class="bi bi-check-circle me-2"></i>
+                                <span>Select All</span>
+                            </button>
+                            <div class="d-flex gap-2">
+                                <button type="button" id="btnReceive" class="btn btn-success">
+                                    <i class="bi bi-box-arrow-in-right me-2"></i>
+                                    Process Receiving
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Location Selection Table -->
+                        <div class="table-card">
+                            <div class="table-card-header">
+                                <h6 class="mb-0">
+                                    <i class="bi bi-geo-alt me-2"></i>Available Rack Locations
+                                </h6>
+                                <small class="text-muted">Select locations to receive items</small>
+                                <div class="row align-items-center">
+                                    <div class="col-sm-6">
+                                        <small class="text-muted">
+                                            <span id="selectedCount">0</span> location(s) selected
+                                        </small>
+                                    </div>
+                                    <div class="col-sm-6 text-sm-end">
+                                        <small class="text-muted">
+                                            Total Qty: <span id="totalQty" class="fw-bold">0</span>
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="table-responsive">
+                                <table id="receivingTable" class="table table-hover align-middle mb-0">
+                                    <thead class="table-light">
                                         <tr>
-                                            <th width="2%"></th>
-                                            <th width="5%">Select</th>
-                                            <th width="25%">Rack Location</th>
-                                            <th width="25%">Pallet Tag No.</th>
-                                            <th width="10%">Qty to Receive</th>
-                                            <th width="10%">Qty on Hand</th>
-                                            <th width="5%">U/M</th>
-                                            <th width="10%">Date Received</th>
+                                            <th width="5%">#</th>
+                                            <th width="8%" class="text-center">
+                                                <i class="bi bi-check-square"></i>
+                                            </th>
+                                            <th width="20%">Rack Location</th>
+                                            <th width="20%">Pallet Tag No.</th>
+                                            <th width="15%">Qty to Receive</th>
+                                            <th width="12%">Qty on Hand</th>
+                                            <th width="8%">U/M</th>
+                                            <th width="12%">Date Received</th>
                                         </tr>
                                     </thead>
                                     <tbody>
