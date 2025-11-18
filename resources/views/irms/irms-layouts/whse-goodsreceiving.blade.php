@@ -296,7 +296,7 @@
                                         </div>
                                         <div class="summary-item">
                                             <span class="summary-label">Pallet Size</span>
-                                            <span id="details-pallet_size" class="summary-value fw-bold"></span>
+                                            <span id="details-pallet_size" class="summary-value text-primary fw-bold"></span>
                                             <span id="details-um" class="summary-value-unit"></span>
                                         </div>
                                     </div>
@@ -311,6 +311,10 @@
                                 <span>Select All</span>
                             </button>
                             <div class="d-flex gap-2">
+                                <button type="button" class="btn btn-outline-info btn-sm" id="btnRefreshLocations">
+                                    <i class="bi bi-arrow-clockwise me-1"></i>
+                                    Refresh
+                                </button>
                                 <button type="button" id="btnReceive" class="btn btn-success">
                                     <i class="bi bi-box-arrow-in-right me-2"></i>
                                     Process Receiving

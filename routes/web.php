@@ -68,12 +68,13 @@ Route::get('/irms/session', function () {
 // Dashboard (protected)
 Route::get('/irms', function () {
     return view('irms.irms-layouts.dashboard');
-})->name('dashboard')->middleware('auth');
+})->name('/')->middleware('auth');
 
 Route::prefix('irms')->middleware('auth')->group(function () {
     // Dashboard
     Route::get('/', [IrmsController::class, 'index'])->name('dashboard');
-
+    Route::get('/dashboard/refresh', [IrmsController::class, 'refreshDashboardData'])->name('dashboard.refresh');
+    
     // Site management
     Route::get('/manage-sites', [RsSiteController::class, 'index'])->name('sites.index');
     Route::get('/manage-sites/site-list', [RsSiteController::class, 'siteList']);
@@ -132,6 +133,7 @@ Route::prefix('irms')->middleware('auth')->group(function () {
     Route::get('/{userid}', [RsUserProfileController::class, 'show'])->where('userid', '[A-Za-z0-9]+')->name('irms.userprofile');
     Route::post('/user-profile/{userid}/update', [RsUserProfileController::class, 'update'])->name('user-profile.update');
     Route::post('/user-profile/{userid}/change-password', [RsUserProfileController::class, 'changePassword'])->name('user-profile.change-password');
+
 });
 
 

@@ -36,7 +36,7 @@
                             </div>
                             <div class="col">
                                 <h2 class="profile-name mb-1">{{ $user->name ?? $user->userid }}</h2>
-                                <p class="profile-title mb-2">{{ $user->position ?? 'Employee' }}</p>
+                                <p class="profile-title mb-2">{{ $user->department ?? 'Department' }} - {{ $user->position ?? 'Employee' }}</p>
                                 <div class="profile-meta">
                                     <span class="badge bg-primary me-2">
                                         <i class="bi bi-building me-1"></i>{{ $siteDesc ?? $user->rssite }}
@@ -97,9 +97,13 @@
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
-                                        <div class="info-item">
+                                        <!-- <div class="info-item">
                                             <label class="info-label">Section</label>
                                             <p class="info-value">{{ $user->section ?? '-' }}</p>
+                                        </div> -->
+                                        <div class="info-item">
+                                            <label class="info-label">Position</label>
+                                            <p class="info-value">{{ $user->position ?? '-' }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -119,12 +123,6 @@
                                         <div class="info-item">
                                             <label class="info-label">Company</label>
                                             <p class="info-value">{{ $siteDesc ?? $user->rssite }}</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="info-item">
-                                            <label class="info-label">Position</label>
-                                            <p class="info-value">{{ $user->position ?? '-' }}</p>
                                         </div>
                                     </div>
                                     <div class="col-12">
@@ -175,7 +173,7 @@
                                 <div class="stat-item mb-3">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <span class="stat-label">Access Level</span>
-                                        <span class="badge bg-success">Level {{ $user->level }}</span>
+                                        <span class="badge {{ $user->level>=1 ? 'bg-success' : 'bg-danger' }}">Level {{ $user->level }}</span>
                                     </div>
                                 </div>
                                 <div class="stat-item mb-3">
@@ -187,7 +185,7 @@
                                 <div class="stat-item">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <span class="stat-label">Status</span>
-                                        <span class="badge bg-success">Active</span>
+                                        <span class="badge {{ $user->level>=1 ? 'bg-success' : 'bg-danger' }}">{{ $user->level>=1 ? 'Active' : 'No Access' }}</span>
                                     </div>
                                 </div>
                             </div>

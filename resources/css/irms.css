@@ -4,10 +4,11 @@
 /* Import AdminLTE */
 @import "admin-lte/dist/css/adminlte.css";
 
+@import "./components/dashboard.css";
 @import "./components/layout.css";
 @import "./components/tables.css";
 @import "./components/responsive.css";
 @import "./components/profile.css";
 @import "./components/goods-receiving.css";
 @import "./components/goods-dispatching.css";
-@import "./components/dashboard.css";
+

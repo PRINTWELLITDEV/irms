@@ -5,6 +5,9 @@ import "admin-lte";
 import "./charts.js";
 import "./datatables.js";
 
+// Import dashboard charts
+import "./dashboard-charts.js";
+
 // Import module-specific scripts
 import "./rssite.js";
 import "./rsusers.js";
@@ -39,22 +42,23 @@ setInterval(function () {
     }
 }, 3600000); // 1 hour = 3600000ms
 
+
 /* =====================================================
    DOCUMENT READY EVENT HANDLERS
 ===================================================== */
 $(document).ready(function () {
     // Initialize UI animations
     initializeUIAnimations();
-    
+
     // Initialize table row click handlers
     initializeTableClickHandlers();
-    
+
     // Initialize user management modal handlers
     initializeUserModals();
-    
+
     // Initialize form field dependencies
     initializeFormDependencies();
-    
+
     // Initialize auto-fill functionality
     initializeAutoFillHandlers();
 });
@@ -65,10 +69,10 @@ $(document).ready(function () {
 document.addEventListener("DOMContentLoaded", function () {
     // Initialize UI components
     initializeUIComponents();
-    
+
     // Initialize form handlers
     initializeFormHandlers();
-    
+
     // Initialize modal cleanup handlers
     initializeModalCleanup();
 });
@@ -244,7 +248,7 @@ function handleSiteChange(siteValue, whseSelect, baySelect) {
     // Reset dependent selects
     whseSelect.selectedIndex = 0;
     baySelect.selectedIndex = 0;
-    
+
     // Filter options based on selected site
     filterOptionsBySite(whseSelect, siteValue);
     filterOptionsBySite(baySelect, siteValue);
@@ -252,14 +256,14 @@ function handleSiteChange(siteValue, whseSelect, baySelect) {
 
 function filterOptionsBySite(select, siteValue) {
     if (!select) return;
-    
+
     Array.from(select.options).forEach((option) => {
         if (!option.value) return;
-        
+
         const shouldShow = option.getAttribute("data-site") === siteValue;
         option.style.display = shouldShow ? "" : "none";
     });
-    
+
     // Reset selection if current option is now hidden
     const currentOption = select.options[select.selectedIndex];
     if (currentOption && currentOption.style.display === "none") {
@@ -345,7 +349,7 @@ function handleDispatchingJobInput(job) {
 function populateReceivingFields(data, job) {
     $("#item").val(data.item || "");
     $("#um").val(data.u_m || "");
-    
+
     // Build item description
     let itemdesc = "";
     if (data.description && data.Uf_itemdesc_ext) {
@@ -360,7 +364,7 @@ function populateReceivingFields(data, job) {
     // Format pallet size
     let palletSize = formatNumericValue(data.Uf_Item_PalletSize);
     $("#pallet_size").val(palletSize);
-    
+
     // Set lot value
     document.getElementById("lot").value = job + "-1";
 }
@@ -370,7 +374,7 @@ function populateDispatchingFields(data, job) {
     $("#item").val(data.item || "");
     $("#um").val(data.um || "");
     $("#desc").val(data.desc || "");
-    
+
     // Set lot value
     document.getElementById("lot").value = job + "-1";
 }
@@ -411,11 +415,11 @@ function initializeFormHandlers() {
 
 function handleChangePasswordSubmit(e) {
     e.preventDefault();
-    
+
     const form = e.target;
     const msg = document.getElementById("changePasswordMsg");
     msg.innerHTML = "";
-    
+
     const formData = new FormData(form);
 
     fetch(form.action, {
@@ -428,7 +432,7 @@ function handleChangePasswordSubmit(e) {
     })
     .then(async (response) => {
         const data = await response.json();
-        
+
         if (response.ok) {
             showPasswordChangeSuccess(msg, data.message);
             form.reset();

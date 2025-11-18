@@ -224,10 +224,7 @@
                                             <span class="summary-label">Warehouse</span>
                                             <span id="details-warehouse" class="summary-value"></span>
                                         </div>
-                                        <div class="summary-item">
-                                            <span class="summary-label">Job / CO</span>
-                                            <span id="details-jobco" class="summary-value fw-bold text-danger"></span>
-                                        </div>
+                                        
                                         <div class="summary-item">
                                             <span class="summary-label">Document No.</span>
                                             <span id="details-docno" class="summary-value text-muted"></span>
@@ -245,6 +242,10 @@
                                     </div>
                                     <div class="summary-card-body">
                                         <div class="summary-item">
+                                            <span class="summary-label">Job / CO</span>
+                                            <span id="details-jobco" class="summary-value fw-bold text-danger"></span>
+                                        </div>
+                                        <div class="summary-item">
                                             <span class="summary-label">Lot</span>
                                             <span id="details-lot" class="summary-value"></span>
                                         </div>
@@ -257,12 +258,9 @@
                                             <span id="details-desc" class="summary-value text-truncate" title=""></span>
                                         </div>
                                         <div class="summary-item">
-                                            <span class="summary-label">Unit of Measure</span>
-                                            <span id="details-um" class="summary-value"></span>
-                                        </div>
-                                        <div class="summary-item">
                                             <span class="summary-label">Qty on Hand</span>
-                                            <span id="details-qty-on-hand" class="summary-value fw-bold text-success"></span>
+                                            <span id="details-qty-on-hand" class="summary-value fw-bold text-danger"></span>
+                                            <span id="details-um" class="summary-value text-secondary"></span>
                                         </div>
                                     </div>
                                 </div>
