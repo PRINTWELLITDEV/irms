@@ -41,7 +41,7 @@
                                             <div class="form-floating">
                                                 <select name="rssite" id="rssite" class="form-select" required>
                                                     <option value="" disabled selected>Choose a site...</option>
-                                                    @if(auth()->user()->level !== 1)
+                                                    @if(auth()->user()->level != 1)
                                                         <option value="{{ auth()->user()->rssite }}" selected>
                                                             {{ $site_desc }}
                                                         </option>
