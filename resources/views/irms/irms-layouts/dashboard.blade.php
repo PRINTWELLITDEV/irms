@@ -328,6 +328,7 @@
             @endif
         </div>
     </main>
+    @if(config('app.env') != 'production')
     <script>
         document.addEventListener('DOMContentLoaded', function () {
 
@@ -396,5 +397,6 @@
             }, 5000);
         });
     </script>
+    @endif
     
 @endsection
