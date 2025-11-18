@@ -328,43 +328,25 @@
             @endif
         </div>
     </main>
-
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            console.log('Dashboard loaded for user level: {{ $userLevel }}');
 
             // Initialize charts based on user level
             @if($userLevel >= 2)
-                console.log('Initializing monthly chart...');
                 const monthlyData = @json($dashboardData['charts']['monthly_transactions']);
-                console.log('Monthly data:', monthlyData);
                 if (typeof initMonthlyChart === 'function') {
                     initMonthlyChart(monthlyData);
-                } else {
-                    console.error('initMonthlyChart function not found');
                 }
 
-                console.log('Initializing weekly chart...');
                 const weeklyData = @json($dashboardData['charts']['weekly_operations']);
-                console.log('Weekly data:', weeklyData);
                 if (typeof initWeeklyChart === 'function') {
                     initWeeklyChart(weeklyData);
-                } else {
-                    console.error('initWeeklyChart function not found');
                 }
 
-                console.log('Initializing daily chart...');
                 const todayData = @json($dashboardData['charts']['today_operations']);
-                console.log('Daily data:', todayData);
                 if (typeof initTodayChart === 'function') {
                     initTodayChart(todayData);
-                } else {
-                    console.error('initTodayChart function not found');
                 }
-            @else
-                console.log('No chart data available or conditions not met');
-                console.log('User Level:', {{ $userLevel }});
-                console.log('Dashboard Data:', @json($dashboardData));
             @endif
 
             setInterval(function () {
@@ -412,10 +394,7 @@
                         }
                     });
             }, 5000);
-
-            setInterval(function() {
-                window.location.reload();
-            }, 300000); // Reloads every 300000 milliseconds (5 minutes)
         });
     </script>
+    
 @endsection

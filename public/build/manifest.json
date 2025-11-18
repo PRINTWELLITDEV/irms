@@ -1,4 +1,8 @@
 {
+  "_sweetalert2.esm.all-C_QMSN9m.js": {
+    "file": "assets/sweetalert2.esm.all-C_QMSN9m.js",
+    "name": "sweetalert2.esm.all"
+  },
   "resources/css/app.css": {
     "file": "assets/app-DK2yVVSD.css",
     "src": "resources/css/app.css",
@@ -8,7 +12,7 @@
     ]
   },
   "resources/css/irms.css": {
-    "file": "assets/irms-Dvhe3Suo.css",
+    "file": "assets/irms-D2CYx_9v.css",
     "src": "resources/css/irms.css",
     "isEntry": true,
     "names": [
@@ -16,18 +20,21 @@
     ]
   },
   "resources/js/app.js": {
-    "file": "assets/app-D28Z3fvg.js",
+    "file": "assets/app-BK1vMSUi.js",
     "name": "app",
     "src": "resources/js/app.js",
-    "isEntry": true
+    "isEntry": true,
+    "imports": [
+      "_sweetalert2.esm.all-C_QMSN9m.js"
+    ]
   },
   "resources/js/irms/irms.js": {
-    "file": "assets/irms-Ch2HCjCl.js",
+    "file": "assets/irms-D2g1acyD.js",
     "name": "irms",
     "src": "resources/js/irms/irms.js",
     "isEntry": true,
     "imports": [
-      "resources/js/app.js"
+      "_sweetalert2.esm.all-C_QMSN9m.js"
     ]
   }
 }

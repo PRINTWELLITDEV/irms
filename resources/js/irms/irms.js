@@ -2,7 +2,6 @@ import "bootstrap";
 import "admin-lte";
 
 // Import chart functionality
-import "./charts.js";
 import "./datatables.js";
 
 // Import dashboard charts

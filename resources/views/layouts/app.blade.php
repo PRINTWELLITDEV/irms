@@ -40,6 +40,7 @@
 
     <script src="aos-master/dist/aos.js"></script>
     <script>
+        window.appUrl = "{{ url('') }}";
         AOS.init({
             duration: 1200, // Duration of the animation
             once: true,     // Whether animation should happen only once - true is usually better for landing pages

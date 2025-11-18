@@ -49,16 +49,43 @@ class LoginController extends Controller
         // Find user by userid
         $user = RsUser::where('userid', $credentials['userid'])->first();
 
+        // If user ID does not exist
+        if (!$user) {
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Invalid Credentials'
+                ], 401);
+            }
+            throw ValidationException::withMessages([
+                'userid' => [trans('auth.failed')],
+            ]);
+        }
+
         try {
-            if ($user && Hash::check($credentials['password'], $user->password)) {
+            if (Hash::check($credentials['password'], $user->password)) {
+                if ($request->expectsJson()) {
+                    Auth::login($user, $request->filled('remember'));
+                    $request->session()->regenerate();
+                    return response()->json([
+                        'success' => true,
+                        'redirect' => route('dashboard')
+                    ]);
+                }
                 return $this->doLogin($request, $user);
             }
         } catch (\RuntimeException $e) {
-            // Optionally log the error: \Log::error($e);
-            // Fall through to show the same error as invalid credentials
+            // Optionally log the error
         }
 
-        // ❌ Login failed
+        // Wrong password
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'invalid credentials.'
+            ], 401);
+        }
+
         throw ValidationException::withMessages([
             'userid' => [trans('auth.failed')],
         ]);

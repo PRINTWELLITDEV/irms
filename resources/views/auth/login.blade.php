@@ -16,34 +16,24 @@
             <div class="login-form-panel">
                 <h1>Log in to IRMS!</h1>
                 <div class="mb-3 form-text">Inventory Rack Management System – Secure access for your inventory and rack operations.</div>
-                <form method="POST" action="{{ route('login.submit') }}">
+                <form method="POST" action="{{ route('login.submit') }}" id="LoginForm">
                     @csrf
                     <div class="mb-3">
                         <label for="userid" class="form-label">User ID</label>
                         <input id="userid" type="text"
-                            class="form-control @error('userid') is-invalid @enderror"
+                            class="form-control"
                             name="userid"
                             value="{{ old('userid', $rememberedUserId ?? '') }}"
                             required autofocus
                             placeholder="Enter your User ID">
-                        @error('userid')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
                     </div>
                     <div class="mb-3">
                         <label for="password" class="form-label">Password</label>
                         <input id="password" type="password"
-                            class="form-control @error('password') is-invalid @enderror"
+                            class="form-control"
                             name="password"
                             required
                             placeholder="Enter your Password">
-                        @error('password')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
                     </div>
                     <div class="mb-3 d-flex align-items-center justify-content-between">
                         <div class="form-check">
@@ -60,7 +50,7 @@
                         @endif
                     </div>
                     <div class="mb-3">
-                        <button type="submit" class="btn btn-primary w-100">
+                        <button type="button" id="nextButton" class="btn btn-primary w-100">
                             NEXT &rarr;
                         </button>
                     </div>
