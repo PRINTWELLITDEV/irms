@@ -50,16 +50,14 @@
                     </a>
                 </li>
                 
-                    @if(auth()->user()->level <= 2)
+                    @if(auth()->user()->level == 1)
                     <li class="nav-header">Administration</li>
-                        @if(auth()->user()->level == 1)
                         <li class="nav-item">
                             <a href="{{ url('/irms/manage-sites') }}" class="nav-link{{ request()->is('irms/manage-sites') ? ' active' : '' }}">
                                 <i class="nav-icon bi bi-geo-alt"></i>
                                 <p>Sites</p>
                             </a>
                         </li>
-                        @endif    
                         <li class="nav-item">
                             <a href="{{ url('/irms/manage-users') }}" class="nav-link{{ request()->is('irms/manage-users') ? ' active' : '' }}">
                                 <i class="nav-icon fas fa-users"></i>

@@ -15,7 +15,7 @@ class RsUserController extends Controller
 {
     public function index()
     {
-        if (auth()->user()->level != 1 && auth()->user()->level != 2) {
+        if (auth()->user()->level != 1) {
             abort(401, 'Unauthorized');
         }
         // Call the stored procedure to get users
