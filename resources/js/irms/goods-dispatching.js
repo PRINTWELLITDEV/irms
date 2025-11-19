@@ -162,7 +162,9 @@ $("#goodsDispatchingForm .btn-danger").on("click", function (e) {
                                     <td><strong>${row.rsloc}</strong></td>
                                     <td>${row.rspallet_num || ""}</td>
                                     <td class="text-end"><span class="badge bg-light text-dark">${qty}</span></td>
-                                    <td><input type="text" class="form-control text-end" value="" disabled></td>
+                                    <td class="position-relative">
+                                        <input type="text" class="form-control text-end" value="" disabled>
+                                    </td>
                                     <td class="text-center"><span class="badge bg-warning text-dark">${um}</span></td>
                                     <td class="text-center text-muted">-</td>
                                 </tr>
@@ -260,6 +262,7 @@ $(document).on(
     '#dispatchingTable input[type="text"].text-end',
     function () {
         const $input = $(this);
+        const $icon = $input.siblings('.invalid-feedback-icon');
         let val = $input.val();
 
         // Remove leading zeros unless the value is "0" or "0." (for decimals)
@@ -281,8 +284,10 @@ $(document).on(
             qty > availableQty
         ) {
             $input.addClass("is-invalid");
+            $icon.show();
         } else {
             $input.removeClass("is-invalid");
+            $icon.hide();
         }
         
         updateCounters();
@@ -504,7 +509,9 @@ $("#btnRefreshLocations").on("click", function() {
                             <td><strong>${row.rsloc}</strong></td>
                             <td>${row.rspallet_num || ""}</td>
                             <td class="text-end"><span class="badge bg-light text-dark">${qty}</span></td>
-                            <td><input type="text" class="form-control text-end" value="" disabled></td>
+                            <td class="position-relative">
+                                <input type="text" class="form-control text-end" value="" disabled>
+                            </td>
                             <td class="text-center"><span class="badge bg-warning text-dark">${um}</span></td>
                             <td class="text-center text-muted">-</td>
                         </tr>

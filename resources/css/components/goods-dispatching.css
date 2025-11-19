@@ -60,6 +60,24 @@
     box-shadow: 0 0 0 0.2rem rgba(25, 135, 84, 0.25);
 }
 
+/* Invalid feedback icon styling for dispatching */
+.invalid-feedback-icon {
+    pointer-events: none;
+    z-index: 5;
+}
+
+#dispatchingTable .position-relative {
+    position: relative;
+}
+
+#dispatchingTable input[type="text"].is-invalid {
+    padding-right: 2.5rem;
+}
+
+#dispatchingTable .invalid-feedback-icon i {
+    font-size: 1rem;
+}
+
 /* Dispatching Details specific styles */
 #dispatching-details .summary-card {
     background: #fff;
@@ -123,6 +141,14 @@
     text-align: right;
     max-width: 60%;
 }
+
+#dispatching-details .summary-value-unit {
+    font-weight: 500;
+    color: #6c757d;
+    margin-left: 0.25rem;
+    font-size: 0.9rem;
+}
+
 
 #dispatching-details .table-card {
     background: #fff;
