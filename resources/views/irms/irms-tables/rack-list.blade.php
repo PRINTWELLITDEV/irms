@@ -6,7 +6,7 @@
         data-rsloc="{{ $rack->rsloc }}"
         data-rsdesc="{{ $rack->rsdesc ?? '' }}"
         data-qty="{{ $rack->qty ?? 0 }}"
-        data-create-date="{{ $rack->createdate ? \Carbon\Carbon::parse($rack->createdate)->format('DD MMMM YYYY') : '' }}">
+        data-create-date="{{ $rack->createdate ? \Carbon\Carbon::parse($rack->createdate)->format('d F Y') : '' }}">
         <td>{{ $rack->rsloc }}</td>
         <td>{{ $rack->rswhse }}</td>
         <td>{{ $rack->rsbaynum }}</td>

@@ -197,6 +197,23 @@
     border-color: #dc3545;
     box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
 }
+/* Invalid feedback icon styling */
+.invalid-feedback-icon {
+    pointer-events: none;
+    z-index: 5;
+}
+
+#receivingTable .position-relative {
+    position: relative;
+}
+
+#receivingTable input[type="text"].is-invalid {
+    padding-right: 2.5rem;
+}
+
+#receivingTable .invalid-feedback-icon i {
+    font-size: 1rem;
+}
 
 /* Enhanced button styles for receiving details */
 #btnBackReceiving {

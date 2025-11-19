@@ -296,8 +296,10 @@
                                         </div>
                                         <div class="summary-item">
                                             <span class="summary-label">Pallet Size</span>
-                                            <span id="details-pallet_size" class="summary-value text-primary fw-bold"></span>
-                                            <span id="details-um" class="summary-value-unit"></span>
+                                            <div>
+                                                <span id="details-pallet_size" class="summary-value text-primary fw-bold"></span>
+                                                <span id="details-um" class="summary-value-unit"></span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

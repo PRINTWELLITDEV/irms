@@ -259,8 +259,10 @@
                                         </div>
                                         <div class="summary-item">
                                             <span class="summary-label">Qty on Hand</span>
-                                            <span id="details-qty-on-hand" class="summary-value fw-bold text-danger"></span>
-                                            <span id="details-um" class="summary-value text-secondary"></span>
+                                            <div>
+                                                <span id="details-qty-on-hand" class="summary-value fw-bold text-danger"></span>
+                                                <span id="details-um" class="summary-value-unit"></span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

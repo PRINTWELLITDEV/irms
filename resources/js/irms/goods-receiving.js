@@ -9,8 +9,10 @@ $("#goodsReceivingForm .btn-primary").on("click", function (e) {
     const $button = $(this);
     const $status = $("#formStatus");
     const originalText = $button.html();
-    
-    $button.prop('disabled', true).html('<i class="bi bi-hourglass-split me-2"></i>Processing...');
+
+    $button
+        .prop("disabled", true)
+        .html('<i class="bi bi-hourglass-split me-2"></i>Processing...');
     $status.show();
 
     const form = $("#goodsReceivingForm");
@@ -18,24 +20,24 @@ $("#goodsReceivingForm .btn-primary").on("click", function (e) {
 
     // Add form validation
     let isValid = true;
-    form.find('input[required], select[required]').each(function() {
+    form.find("input[required], select[required]").each(function () {
         const $field = $(this);
         if (!$field.val()) {
-            $field.addClass('is-invalid');
+            $field.addClass("is-invalid");
             isValid = false;
         } else {
-            $field.removeClass('is-invalid');
+            $field.removeClass("is-invalid");
         }
     });
 
     if (!isValid) {
-        $button.prop('disabled', false).html(originalText);
+        $button.prop("disabled", false).html(originalText);
         $status.hide();
         Swal.fire({
             icon: "error",
             title: "Validation Error",
             text: "Please fill in all required fields.",
-            confirmButtonText: "OK"
+            confirmButtonText: "OK",
         });
         return;
     }
@@ -45,33 +47,43 @@ $("#goodsReceivingForm .btn-primary").on("click", function (e) {
         method: "POST",
         data: formData,
         success: function (response) {
-            $button.removeClass('btn-primary').addClass('btn-success')
-                   .html('<i class="bi bi-check-circle me-2"></i>Success!');
-            
+            $button
+                .removeClass("btn-primary")
+                .addClass("btn-success")
+                .html('<i class="bi bi-check-circle me-2"></i>Success!');
+
             setTimeout(() => {
                 Swal.fire({
                     toast: true,
                     position: "top-end",
                     icon: "success",
-                    title: response.message || "Goods receiving processed successfully!",
+                    title:
+                        response.message ||
+                        "Goods receiving processed successfully!",
                     showConfirmButton: false,
                     timer: 3000,
-                    timerProgressBar: true
+                    timerProgressBar: true,
                 });
-                
+
                 $(".card:has(#goodsReceivingForm)").hide();
                 $("#receiving-details").fadeIn();
-                
+
                 // Reset button state
-                $button.prop('disabled', false).removeClass('btn-success').addClass('btn-primary').html(originalText);
+                $button
+                    .prop("disabled", false)
+                    .removeClass("btn-success")
+                    .addClass("btn-primary")
+                    .html(originalText);
                 $status.hide();
-                
+
                 // Update description tooltip
-                $("#details-description").attr('title', $("#details-description").text());
-                
+                $("#details-description").attr(
+                    "title",
+                    $("#details-description").text()
+                );
+
                 // Update unit display
                 $("#details-um").text($("#um").val() || "-");
-                
             }, 1000);
         },
         error: function (xhr) {
@@ -81,17 +93,17 @@ $("#goodsReceivingForm .btn-primary").on("click", function (e) {
             } else if (xhr.responseJSON && xhr.responseJSON.errors) {
                 msg = Object.values(xhr.responseJSON.errors).join("<br>");
             }
-            
-            $button.prop('disabled', false).html(originalText);
+
+            $button.prop("disabled", false).html(originalText);
             $status.hide();
-            
+
             Swal.fire({
                 icon: "error",
                 title: "Processing Failed",
                 html: msg,
-                confirmButtonText: "OK"
+                confirmButtonText: "OK",
             });
-        }
+        },
     });
 
     // Pass all form data to the summary in receiving-details-form
@@ -156,17 +168,23 @@ $("#goodsReceivingForm .btn-primary").on("click", function (e) {
                     } else if (qtyOnHandNum % 1 === 0) {
                         qtyOnHand = qtyOnHandNum.toString();
                     } else {
-                        qtyOnHand = qtyOnHandNum.toFixed(2).replace(/\.00$/, "");
+                        qtyOnHand = qtyOnHandNum
+                            .toFixed(2)
+                            .replace(/\.00$/, "");
                     }
                     tbody.append(`
                         <tr>
                             <td class="text-center">${idx + 1}</td>
                             <td class="text-center align-middle">
-                                <input type="checkbox" name="select_row[]" value="${idx + 1}" class="big-checkbox">
+                                <input type="checkbox" name="select_row[]" value="${
+                                    idx + 1
+                                }" class="big-checkbox">
                             </td>
                             <td><strong>${row.rsloc}</strong></td>
                             <td><input type="text" class="form-control" value="" disabled></td>
-                            <td><input type="text" class="form-control text-end" value="" disabled></td>
+                            <td class="position-relative">
+                                <input type="text" class="form-control text-end" value="" disabled>
+                            </td>
                             <td class="text-end"><span class="badge bg-light text-dark">${qtyOnHand}</span></td>
                             <td class="text-center"><span class="badge bg-primary">${um}</span></td>
                             <td class="text-center text-muted">-</td>
@@ -199,20 +217,21 @@ $(document).on(
         $row.find('input[type="text"]').prop("disabled", !enabled);
 
         // Get Pallet Size and Date Received from summary/details
-        let palletSize = $("#details-pallet_size").text() || $("#pallet_size").val();
+        let palletSize =
+            $("#details-pallet_size").text() || $("#pallet_size").val();
         let dateReceived = $("#details-date").text() || $("#date").val();
 
         // If checked, set Qty to Receive and Date Received
         if (enabled) {
             $row.find('input[type="text"]').eq(1).val(palletSize); // Qty to Receive
             $row.find("td").eq(7).text(formatDateMDY(dateReceived)); // Date Received cell
-            $row.addClass('table-success');
+            $row.addClass("table-success");
         } else {
             $row.find('input[type="text"]').eq(1).val("");
             $row.find("td").eq(7).text("-"); // Clear Date Received
-            $row.removeClass('table-success');
+            $row.removeClass("table-success");
         }
-        
+
         // Update counters
         updateCounters();
     }
@@ -221,16 +240,24 @@ $(document).on(
 // Select All / Unselect All logic
 $("#btnSelectAll").on("click", function () {
     const checkboxes = $("#receivingTable input[type='checkbox'].big-checkbox");
-    const allChecked = checkboxes.length > 0 && checkboxes.filter(":checked").length === checkboxes.length;
+    const allChecked =
+        checkboxes.length > 0 &&
+        checkboxes.filter(":checked").length === checkboxes.length;
 
     if (allChecked) {
         checkboxes.prop("checked", false).trigger("change");
         $(this).find("span").text("Select All");
-        $(this).find("i").removeClass("bi-x-circle-fill").addClass("bi-check-circle");
+        $(this)
+            .find("i")
+            .removeClass("bi-x-circle-fill")
+            .addClass("bi-check-circle");
     } else {
         checkboxes.prop("checked", true).trigger("change");
         $(this).find("span").text("Unselect All");
-        $(this).find("i").removeClass("bi-check-circle").addClass("bi-x-circle-fill");
+        $(this)
+            .find("i")
+            .removeClass("bi-check-circle")
+            .addClass("bi-x-circle-fill");
     }
 });
 
@@ -253,6 +280,7 @@ $(document).on(
     '#receivingTable input[type="text"].text-end',
     function () {
         const $input = $(this);
+        const $icon = $input.siblings(".invalid-feedback-icon");
         let val = $input.val();
 
         // Remove leading zeros unless the value is "0" or "0." (for decimals)
@@ -261,7 +289,9 @@ $(document).on(
             $input.val(val);
         }
 
-        const palletSize = parseFloat($("#details-pallet_size").text() || $("#pallet_size").val());
+        const palletSize = parseFloat(
+            $("#details-pallet_size").text() || $("#pallet_size").val()
+        );
         const qty = parseFloat(val);
 
         // Only allow positive numbers, no letters/symbols
@@ -272,10 +302,12 @@ $(document).on(
             qty > palletSize
         ) {
             $input.addClass("is-invalid");
+            $icon.show();
         } else {
             $input.removeClass("is-invalid");
+            $icon.hide();
         }
-        
+
         updateCounters();
     }
 );
@@ -288,13 +320,17 @@ $("#btnReceive").on("click", function (e) {
 
     $("#receivingTable tbody tr").each(function () {
         const $row = $(this);
-        const checked = $row.find('input[type="checkbox"].big-checkbox').is(":checked");
+        const checked = $row
+            .find('input[type="checkbox"].big-checkbox')
+            .is(":checked");
         if (checked) {
             checkedCount++;
             const qtyInput = $row.find('input[type="text"].text-end');
             const val = qtyInput.val();
             const qty = parseFloat(val);
-            const palletSize = parseFloat($("#details-pallet_size").text() || $("#pallet_size").val());
+            const palletSize = parseFloat(
+                $("#details-pallet_size").text() || $("#pallet_size").val()
+            );
 
             if (!/^\d*\.?\d*$/.test(val)) {
                 qtyInput.addClass("is-invalid");
@@ -303,11 +339,13 @@ $("#btnReceive").on("click", function (e) {
             } else if (isNaN(qty) || qty <= 0) {
                 qtyInput.addClass("is-invalid");
                 hasError = true;
-                errorMsg = "You must enter a positive number and not greater than the pallet size.";
+                errorMsg =
+                    "You must enter a positive number and not greater than the pallet size.";
             } else if (qty > palletSize) {
                 qtyInput.addClass("is-invalid");
                 hasError = true;
-                errorMsg = "Receiving quantity exceeds the available pallet size.";
+                errorMsg =
+                    "Receiving quantity exceeds the available pallet size.";
             } else {
                 qtyInput.removeClass("is-invalid");
             }
@@ -339,20 +377,25 @@ $("#btnReceive").on("click", function (e) {
     const rows = [];
     $("#receivingTable tbody tr").each(function () {
         const $row = $(this);
-        const checked = $row.find('input[type="checkbox"].big-checkbox').is(":checked");
+        const checked = $row
+            .find('input[type="checkbox"].big-checkbox')
+            .is(":checked");
         if (checked) {
             const qtyInput = $row.find('input[type="text"].text-end');
             const qtyToReceive = parseFloat(qtyInput.val());
-            const palletSize = parseFloat($("#details-pallet_size").text() || $("#pallet_size").val());
-            
+            const palletSize = parseFloat(
+                $("#details-pallet_size").text() || $("#pallet_size").val()
+            );
+
             // Fixed: Get rsloc from the correct column (3rd column, index 2)
             const rsloc = $row.find("td").eq(2).text().trim();
-            
+
             // Fixed: Get pallet number from the correct input (4th column, index 3)
-            const rspallet_num = $row.find("td").eq(3).find('input[type="text"]').val() || "";
-            
+            const rspallet_num =
+                $row.find("td").eq(3).find('input[type="text"]').val() || "";
+
             // Fixed: Get unit of measure from the correct column (7th column, index 6)
-            const um = $row.find("td").eq(6).find('span').text().trim();
+            const um = $row.find("td").eq(6).find("span").text().trim();
 
             // Validate quantity
             if (
@@ -397,7 +440,7 @@ $("#btnReceive").on("click", function (e) {
             icon: "error",
             title: "Invalid Data",
             text: "Please check all selected rows have valid data.",
-            confirmButtonText: "OK"
+            confirmButtonText: "OK",
         });
         return;
     }
@@ -432,7 +475,8 @@ $("#btnReceive").on("click", function (e) {
                 allowOutsideClick: false,
                 allowEscapeKey: false,
             }).then(() => {
-                window.location.href = window.appUrl + "/irms/item-locations/" + job;
+                window.location.href =
+                    window.appUrl + "/irms/item-locations/" + job;
             });
         },
         error: function (xhr) {
@@ -441,7 +485,9 @@ $("#btnReceive").on("click", function (e) {
             if (
                 xhr.responseJSON &&
                 xhr.responseJSON.message &&
-                xhr.responseJSON.message.includes("Receive quantity exceeds available job quantity")
+                xhr.responseJSON.message.includes(
+                    "Receive quantity exceeds available job quantity"
+                )
             ) {
                 msg = "Receiving quantity exceeds the available job quantity.";
             } else if (xhr.responseJSON && xhr.responseJSON.message) {
@@ -458,24 +504,26 @@ $("#btnReceive").on("click", function (e) {
 });
 
 // Add refresh locations button functionality
-$("#btnRefreshLocations").on("click", function() {
+$("#btnRefreshLocations").on("click", function () {
     const $button = $(this);
     const originalHtml = $button.html();
-    
-    $button.prop('disabled', true).html('<i class="bi bi-arrow-clockwise spin me-1"></i>Loading...');
-    
+
+    $button
+        .prop("disabled", true)
+        .html('<i class="bi bi-arrow-clockwise spin me-1"></i>Loading...');
+
     // Re-trigger the location loading
     const rssite = $("#rssite").val() || $("input[name='rssite']").val();
     const rswhse = $("#rswhse").val();
     const rsbaynum = $("#rsbaynum").val();
     const item = $("#item").val();
     const pallet_size = $("#pallet_size").val();
-    
+
     if (!rssite || !rswhse || !rsbaynum || !item) {
-        $button.prop('disabled', false).html(originalHtml);
+        $button.prop("disabled", false).html(originalHtml);
         return;
     }
-    
+
     // AJAX to get rsloc list (same as in the main form submission)
     $.ajax({
         url: window.appUrl + "/irms/receiving/rsloc-list",
@@ -502,17 +550,23 @@ $("#btnRefreshLocations").on("click", function() {
                     } else if (qtyOnHandNum % 1 === 0) {
                         qtyOnHand = qtyOnHandNum.toString();
                     } else {
-                        qtyOnHand = qtyOnHandNum.toFixed(2).replace(/\.00$/, "");
+                        qtyOnHand = qtyOnHandNum
+                            .toFixed(2)
+                            .replace(/\.00$/, "");
                     }
                     tbody.append(`
                         <tr>
                             <td class="text-center">${idx + 1}</td>
                             <td class="text-center align-middle">
-                                <input type="checkbox" name="select_row[]" value="${idx + 1}" class="big-checkbox">
+                                <input type="checkbox" name="select_row[]" value="${
+                                    idx + 1
+                                }" class="big-checkbox">
                             </td>
                             <td><strong>${row.rsloc}</strong></td>
                             <td><input type="text" class="form-control" value="" disabled></td>
-                            <td><input type="text" class="form-control text-end" value="" disabled></td>
+                            <td class="position-relative">
+                                <input type="text" class="form-control text-end" value="" disabled>
+                            </td>
                             <td class="text-end"><span class="badge bg-light text-dark">${qtyOnHand}</span></td>
                             <td class="text-center"><span class="badge bg-primary">${um}</span></td>
                             <td class="text-center text-muted">-</td>
@@ -526,70 +580,80 @@ $("#btnRefreshLocations").on("click", function() {
             }
             updateCounters();
         },
-        complete: function() {
-            $button.prop('disabled', false).html(originalHtml);
-        }
+        complete: function () {
+            $button.prop("disabled", false).html(originalHtml);
+        },
     });
 });
 
 // Function to update counters
 function updateCounters() {
-    const checkedBoxes = $("#receivingTable input[type='checkbox'].big-checkbox:checked");
+    const checkedBoxes = $(
+        "#receivingTable input[type='checkbox'].big-checkbox:checked"
+    );
     const selectedCount = checkedBoxes.length;
-    
+
     let totalQty = 0;
-    checkedBoxes.each(function() {
-        const qtyInput = $(this).closest('tr').find('input[type="text"].text-end');
+    checkedBoxes.each(function () {
+        const qtyInput = $(this)
+            .closest("tr")
+            .find('input[type="text"].text-end');
         const qty = parseFloat(qtyInput.val()) || 0;
         totalQty += qty;
     });
-    
+
     $("#selectedCount").text(selectedCount);
-    $("#totalQty").text(totalQty.toFixed(2).replace(/\.00$/, ''));
+    $("#totalQty").text(totalQty.toFixed(2).replace(/\.00$/, ""));
 }
 
 // Update counter when quantity changes
-$(document).on('input', '#receivingTable input[type="text"].text-end', function() {
-    updateCounters();
-});
+$(document).on(
+    "input",
+    '#receivingTable input[type="text"].text-end',
+    function () {
+        updateCounters();
+    }
+);
 
 // Real-time validation for receiving form
-$("#goodsReceivingForm input[required], #goodsReceivingForm select[required]").on('input change', function() {
+$(
+    "#goodsReceivingForm input[required], #goodsReceivingForm select[required]"
+).on("input change", function () {
     const $field = $(this);
     if ($field.val()) {
-        $field.removeClass('is-invalid').addClass('is-valid');
+        $field.removeClass("is-invalid").addClass("is-valid");
     } else {
-        $field.removeClass('is-valid');
+        $field.removeClass("is-valid");
     }
 });
 
 // Enhanced form reset with confirmation
-window.resetGoodsReceivingForm = function() {
+window.resetGoodsReceivingForm = function () {
     Swal.fire({
-        title: 'Reset Form?',
+        title: "Reset Form?",
         text: "All entered data will be lost. Are you sure?",
-        icon: 'warning',
+        icon: "warning",
         showCancelButton: true,
-        confirmButtonColor: '#d33',
-        cancelButtonColor: '#6c757d',
-        confirmButtonText: 'Yes, reset it!',
-        cancelButtonText: 'Cancel'
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#6c757d",
+        confirmButtonText: "Yes, reset it!",
+        cancelButtonText: "Cancel",
     }).then((result) => {
         if (result.isConfirmed) {
-            document.getElementById('goodsReceivingForm').reset();
+            document.getElementById("goodsReceivingForm").reset();
             // Clear auto-filled fields
             $("#item, #desc, #um, #pallet_size, #lot").val("");
             // Remove validation classes
-            $("#goodsReceivingForm .is-invalid").removeClass('is-invalid');
-            $("#goodsReceivingForm .is-valid").removeClass('is-valid');
-            
+            $("#goodsReceivingForm .is-invalid").removeClass("is-invalid");
+            $("#goodsReceivingForm .is-valid").removeClass("is-valid");
+
             Swal.fire({
                 toast: true,
                 position: "top-end",
                 icon: "success",
                 title: "Form has been reset",
                 showConfirmButton: false,
-                timer: 2000
+                timer: 2000,
             });
         }
     });
@@ -600,14 +664,24 @@ function formatDateMDY(dateStr) {
     const date = new Date(dateStr);
     if (isNaN(date)) return dateStr;
     const months = [
-        "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
     ];
     return `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`;
 }
 
 // Add CSS for spinning animation
-const style = document.createElement('style');
+const style = document.createElement("style");
 style.textContent = `
     .spin {
         animation: spin 1s linear infinite;
