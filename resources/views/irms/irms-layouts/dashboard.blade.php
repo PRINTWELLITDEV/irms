@@ -278,26 +278,28 @@
                                         <h5><i class="fas fa-history me-2"></i>{{ $userLevel <= 2 ? 'My Recent Transactions' : 'Recent Transactions' }}</h5>
                                     </div>
                                     <div class="chart-card-body">
-                                        @if(count($dashboardData['recent_transactions']) > 0)
-                                            <ul class="activity-list">
-                                                @foreach($dashboardData['recent_transactions'] as $activity)
-                                                    <li class="activity-item">
-                                                        <div class="activity-icon {{ $activity['type'] }}">
-                                                            <i class="{{ $activity['icon'] }}"></i>
-                                                        </div>
-                                                        <div class="activity-content">
-                                                            <h6>{{ $activity['title'] }}</h6>
-                                                            <small>{{ $activity['description'] }} • {{ $activity['time'] }}</small>
-                                                        </div>
-                                                    </li>
-                                                @endforeach
-                                            </ul>
-                                        @else
-                                            <div class="text-center py-4">
-                                                <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
-                                                <p class="text-muted">No recent transactions found.</p>
-                                            </div>
-                                        @endif
+                                        <div id="recent_transactions">
+                                            @if(count($dashboardData['recent_transactions']) > 0)
+                                                <ul class="activity-list">
+                                                    @foreach($dashboardData['recent_transactions'] as $activity)
+                                                        <li class="activity-item">
+                                                            <div class="activity-icon {{ $activity['type'] }}">
+                                                                <i class="{{ $activity['icon'] }}"></i>
+                                                            </div>
+                                                            <div class="activity-content">
+                                                                <h6>{{ $activity['title'] }}</h6>
+                                                                <small>{{ $activity['description'] }} • {{ $activity['time'] }}</small>
+                                                            </div>
+                                                        </li>
+                                                    @endforeach
+                                                </ul>
+                                            @else
+                                                <div class="text-center py-4">
+                                                    <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+                                                    <p class="text-muted">No recent transactions found.</p>
+                                                </div>
+                                            @endif
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -378,6 +380,7 @@
                                 document.getElementById('total-today-receiving').textContent = Number(data.stats.today_receiving).toLocaleString();
                                 document.getElementById('total-today-dispatching').textContent = Number(data.stats.today_dispatching).toLocaleString();
                             @endif
+                                document.getElementById('recent_transactions').innerHTML = data.recent_transactions_html;
 
                             // Update charts
                             if (typeof initMonthlyChart === 'function') {

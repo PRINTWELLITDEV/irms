@@ -12,6 +12,7 @@ class RsBayLoc extends Model
 
     protected $fillable = [
         'rssite',
+        'rswhse',
         'rsbaynum',
         'createdate',
         'createdby',

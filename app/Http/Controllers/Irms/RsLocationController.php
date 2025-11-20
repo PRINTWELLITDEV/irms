@@ -18,23 +18,16 @@ class RsLocationController extends Controller
         if (auth()->user()->level > 3 && auth()->user()->level <= 0) {
             abort(401, 'Unauthorized');
         }
-        // $user = auth()->user();
-        // $userSite = $user->rssite;
-        // $userid = $user->userid;
-
-        // if ($userid === 'sa') {
-        //     // Show all warehouses for super admin
-        //     $racklocs = \DB::select('EXEC sp_view_rslocs', [null]);
-        // } else {
-        //     $racklocs = \DB::select('EXEC sp_view_rslocs ?', [$userSite]);
-        // }
 
         $sites = IrmsSite::all();
         $warehouses = DB::table('rswhse')->get();
-        $baynums = DB::table('rsbayloc')->get();
-        // return view('irms.irms-layouts.rack-locations', compact('racklocs', 'sites', 'warehouses', 'baynums'));
+        
+        // Update the bay query to include rswhse
+        $baynums = DB::table('rsbayloc')
+            ->select('rsbaynum', 'rssite', 'rswhse')
+            ->get();
+            
         return view('irms.irms-layouts.rack-locations', compact('sites', 'warehouses', 'baynums'));
-
     }
 
     public function rackList(Request $request)

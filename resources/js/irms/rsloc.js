@@ -243,6 +243,27 @@ function filterMapOptions(select, siteValue) {
     }
 }
 
+function filterMapBaysByWarehouse(select, siteValue, whseValue) {
+    if (!select || !siteValue || !whseValue) return;
+    
+    Array.from(select.options).forEach((option) => {
+        if (!option.value) return;
+        
+        const optionSite = option.getAttribute("data-site");
+        const optionWhse = option.getAttribute("data-whse");
+        const shouldShow = optionSite === siteValue && optionWhse === whseValue;
+        option.style.display = shouldShow ? "" : "none";
+    });
+    
+    // Reset selection if current is hidden
+    if (
+        select.selectedIndex > 0 &&
+        select.options[select.selectedIndex].style.display === "none"
+    ) {
+        select.selectedIndex = 0;
+    }
+}
+
 // For 'sa', filter on change
 if (mapSiteSelect && mapWhseSelect && mapBaySelect) {
     mapSiteSelect.addEventListener("change", function () {
@@ -250,6 +271,11 @@ if (mapSiteSelect && mapWhseSelect && mapBaySelect) {
         mapBaySelect.selectedIndex = 0;
         filterMapOptions(mapWhseSelect, this.value);
         filterMapOptions(mapBaySelect, this.value);
+    });
+
+    mapWhseSelect.addEventListener("change", function () {
+        mapBaySelect.selectedIndex = 0;
+        filterMapBaysByWarehouse(mapBaySelect, mapSiteSelect.value, this.value);
     });
 
     // Initial filter on page load if old value exists

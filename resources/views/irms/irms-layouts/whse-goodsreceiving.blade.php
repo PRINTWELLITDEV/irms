@@ -154,7 +154,7 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-floating">
-                                                        <input type="number" class="form-control bg-white" id="pallet_size" name="pallet_size" placeholder="0" step="0.01">
+                                                        <input type="number" class="form-control bg-white" id="pallet_size" name="pallet_size" placeholder="0" step="0.01" readonly>
                                                         <label for="pallet_size">
                                                             <i class="bi bi-stack text-muted me-1"></i>
                                                             Pallet Size
@@ -170,10 +170,14 @@
                                         <div class="col-md-6">
                                             <div class="form-floating">
                                                 <select name="rsbaynum" id="rsbaynum" class="form-select" required>
-                                                    <option value="" disabled selected>Choose bay location...</option>
+                                                    <option value="" disabled selected>Select Warehouse First</option>
                                                     @foreach($baylocs as $bay)
                                                         @if(auth()->user()->level == 1 || $bay->rssite === auth()->user()->rssite)
-                                                            <option value="{{ $bay->rsbaynum }}" data-site="{{ $bay->rssite }}">
+                                                            <option value="{{ $bay->rsbaynum }}" 
+                                                                    data-site="{{ $bay->rssite }}" 
+                                                                    data-whse="{{ $bay->rswhse }}"
+
+                                                                    style="display: none;">
                                                                 {{ $bay->rsbaynum }}
                                                             </option>
                                                         @endif
@@ -310,7 +314,7 @@
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <button type="button" id="btnSelectAll" class="btn btn-outline-primary d-flex align-items-center">
                                 <i class="bi bi-check-circle me-2"></i>
-                                <span>Select All</span>
+                                <span id="selectAllText">Select All</span>
                             </button>
                             <div class="d-flex gap-2">
                                 <button type="button" class="btn btn-outline-info btn-sm" id="btnRefreshLocations">

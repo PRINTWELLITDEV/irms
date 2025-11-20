@@ -46,6 +46,7 @@
                                         <thead>
                                             <tr>
                                                 <th>Bay Number</th>
+                                                <th>Warehouse</th>
                                                 @if(auth()->user()->level == 1)
                                                 <th width="10%">Site</th>
                                                 @endif
@@ -84,6 +85,10 @@
                                     <td><span id="view-bay-site-desc">-</span></td>
                                 </tr>
                                 @endif
+                                <tr>
+                                    <th>Warehouse:</th>
+                                    <td><span id="view-bay-warehouse">-</span></td>
+                                </tr>
                                 <tr>
                                     <th>Bay Number:</th>
                                     <td><span id="view-bay-number">-</span></td>
@@ -138,6 +143,21 @@
                                 <input type="hidden" id="rssite" name="rssite" value="{{ auth()->user()->rssite }}" readonly>
                             @endif
                             @error('rssite') <div class="text-danger small">{{ $message }}</div> @enderror
+                        </div>
+                        <div class="mb-3">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-archive"></i></span>
+                                <select name="rswhse" id="rswhse" class="form-select" required>
+                                    <option disabled selected>Select Warehouse</option>
+                                    @foreach($warehouses as $whse)
+                                        @if(auth()->user()->level == 1 || $whse->rssite === auth()->user()->rssite)
+                                            <option value="{{ $whse->rswhse }}" data-site="{{ $whse->rssite }}">
+                                                {{ $whse->name }}
+                                            </option>
+                                        @endif
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
                         <div class="mb-3">
                             <div class="input-group">

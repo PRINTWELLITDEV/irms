@@ -52,9 +52,16 @@ class IrmsController extends Controller
 
         $dashboardData = $this->getDashboardData($userLevel, $userSite);
 
+        // Render recent transactions HTML
+        $recentHtml = view('irms.irms-partials.recent-transactions', [
+            'recent_transactions' => $dashboardData['recent_transactions']
+        ])->render();
+
         return response()->json([
             'success' => true,
-            'data' => $dashboardData, // <-- change here
+            'data' => array_merge($dashboardData, [
+                'recent_transactions_html' => $recentHtml
+            ]),
         ]);
     }
 
@@ -422,7 +429,7 @@ class IrmsController extends Controller
 
             $query = DB::table('rstrans')
                 ->join('rsusers', 'rstrans.createdby', '=', 'rsusers.userid')
-                ->select('trxtype', 'item', 'qty', 'createdate', 'createdby', 'rsusers.name')
+                ->select('trxtype', 'job', 'item', 'qty', 'createdate', 'createdby', 'rsusers.name')
                 ->orderBy('createdate', 'desc')
                 ->limit(5);
             if ($userLevel != 1) { // Not Super Admin
@@ -436,7 +443,7 @@ class IrmsController extends Controller
                 return [
                     'icon' => $activity->trxtype == 'R' ? 'fas fa-download' : 'fas fa-upload',
                     'type' => $activity->trxtype == 'R' ? 'primary' : 'warning',
-                    'title' => ucfirst(strtolower($activity->trxtype == 'R' ? 'Received' : 'Dispatched')) . ' - ' . $activity->item,
+                    'title' => ucfirst(strtolower($activity->trxtype == 'R' ? 'Received' : 'Dispatched')) . ' - ' . $activity->job . ': ' . $activity->item,
                     'description' => 'Qty: ' . number_format($activity->qty) . ' by ' . $activity->name,
                     'time' => Carbon::parse($activity->createdate)->diffForHumans()
                 ];

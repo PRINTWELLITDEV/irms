@@ -16,7 +16,7 @@ return new class extends Migration
             // Drop the existing primary key
             $table->dropPrimary('PK_rsbayloc');
             
-            // Add rswhse column before rsbaynum as nullable first
+            // Add rswhse column after rssite as nullable first
             $table->string('rswhse', 10)->nullable()->after('rssite');
         });
 
@@ -35,7 +35,7 @@ return new class extends Migration
             // Make rswhse NOT NULL after updating values
             $table->string('rswhse', 10)->nullable(false)->change();
             
-            // Create new composite primary key with correct order
+            // Create new composite primary key
             $table->primary(['rssite', 'rswhse', 'rsbaynum'], 'PK_rsbayloc');
         });
     }
