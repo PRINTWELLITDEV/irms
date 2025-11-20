@@ -100,6 +100,7 @@ $("#addBayModal .btn-success").on("click", function (e) {
 //Bay Location Table row selection function
 $("#bayloc-table tbody").on("click", "tr", function () {
     const $row = $(this);
+    $("#view-bay-warehouse").text($row.data("rswhse") || "");
     $("#view-bay-number").text($row.data("rsbaynum") || "");
     $("#view-created-date").text($row.data("createDate") || "");
     $("#view-created-by").text($row.data("createdby") || "");

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\IrmsSite;
 use App\Models\RsUser;
 use App\Models\RsBayLoc;
+use App\Models\RsWhse;
 
 
 class RsBayLocController extends Controller
@@ -30,8 +31,9 @@ class RsBayLocController extends Controller
         // }
         
         $sites = IrmsSite::all();
+        $warehouses = RsWhse::all();
         // return view('irms.irms-layouts.bay-locations', compact('baylocs', 'sites'));
-        return view('irms.irms-layouts.bay-locations', compact('sites'));
+        return view('irms.irms-layouts.bay-locations', compact('sites', 'warehouses'));
 
     }
 
@@ -58,28 +60,33 @@ class RsBayLocController extends Controller
     {
         $validated = $request->validate([
             'rssite' => 'required|max:8',
+            'rswhse' => 'required|max:10',
             'rsbaynum' => 'required|max:5',
         ], [
             'rssite.required' => 'The Site field is required.',
             'rssite.max' => 'The Site field must not exceed 8 characters.',
+            'rswhse.required' => 'The Warehouse field is required.',
+            'rswhse.max' => 'The Warehouse field must not exceed 10 characters.',
             'rsbaynum.required' => 'The Bay Number field is required.',
             'rsbaynum.max' => 'The Bay Number field must not exceed 5 characters.',
         ]);
 
         if (RsBayLoc::where('rsbaynum', $validated['rsbaynum'])
                      ->where('rssite', $validated['rssite'])
+                     ->where('rswhse', $validated['rswhse'])
                      ->exists()) {
-            return response()->json(['message' => 'Bay location number already exists for this site.'], 422);
+            return response()->json(['message' => "Bay '{$validated['rsbaynum']}' already exists for this warehouse."], 422);
         }
 
-        $bay = $validated['rsbaynum'];
+        $bay = strtoupper($validated['rsbaynum']);
         $createdby = auth()->user()->userid ?? 'system';
         $createdate = now();
 
         try {
-            DB::statement('EXEC sp_add_baylocs ?, ?, ?, ?', [
+            DB::statement('EXEC sp_add_baylocs ?, ?, ?, ?, ?', [
                 $validated['rssite'],
-                $validated['rsbaynum'],
+                $validated['rswhse'],
+                $bay,
                 $createdate,
                 $createdby,
             ]);

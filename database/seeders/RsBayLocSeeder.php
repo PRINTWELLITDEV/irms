@@ -13,17 +13,30 @@ class RsBayLocSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('rsbayloc')->insert([
-            ['rssite' => 'PI-SP', 'rsbaynum' => 'A1', 'createdate' => Carbon::now(),'createdby' => 'sa',],
-            ['rssite' => 'PI-SP', 'rsbaynum' => 'A2', 'createdate' => Carbon::now(),'createdby' => 'sa',],
-            ['rssite' => 'PI-SP', 'rsbaynum' => 'A3', 'createdate' => Carbon::now(),'createdby' => 'sa',],
-            ['rssite' => 'PIGRP-SP', 'rsbaynum' => 'A1', 'createdate' => Carbon::now(),'createdby' => 'sa',],
-            ['rssite' => 'PIGRP-SP', 'rsbaynum' => 'A2', 'createdate' => Carbon::now(),'createdby' => 'sa',],
-            ['rssite' => 'PIGRP-SP', 'rsbaynum' => 'A3', 'createdate' => Carbon::now(),'createdby' => 'sa',],
-        ]);
+        $createdate = Carbon::now();
 
-        // Load Official Fortune Bays
-        $fpSpBays = [
+        // PI-SP sample bay locations
+        $piSpBays = [
+            ['rssite' => 'PI-SP', 'rswhse' => 'PBIC-BLDG1', 'rsbaynum' => 'A1'],
+            ['rssite' => 'PI-SP', 'rswhse' => 'PBIC-BLDG1', 'rsbaynum' => 'A2'],
+            ['rssite' => 'PI-SP', 'rswhse' => 'PBIC-BLDG1', 'rsbaynum' => 'A3'],
+            ['rssite' => 'PI-SP', 'rswhse' => 'PBIC-BLDG2', 'rsbaynum' => 'B1'],
+            ['rssite' => 'PI-SP', 'rswhse' => 'PBIC-BLDG2', 'rsbaynum' => 'B2'],
+            ['rssite' => 'PI-SP', 'rswhse' => 'PBIC-BLDG2', 'rsbaynum' => 'B3'],
+        ];
+
+        // PIGRP-SP sample bay locations
+        $pigrpSpBays = [
+            ['rssite' => 'PIGRP-SP', 'rswhse' => 'PGBIC-BL1', 'rsbaynum' => 'A1'],
+            ['rssite' => 'PIGRP-SP', 'rswhse' => 'PGBIC-BL1', 'rsbaynum' => 'A2'],
+            ['rssite' => 'PIGRP-SP', 'rswhse' => 'PGBIC-BL1', 'rsbaynum' => 'A3'],
+            ['rssite' => 'PIGRP-SP', 'rswhse' => 'PGBIC-BL2', 'rsbaynum' => 'B1'],
+            ['rssite' => 'PIGRP-SP', 'rswhse' => 'PGBIC-BL2', 'rsbaynum' => 'B2'],
+            ['rssite' => 'PIGRP-SP', 'rswhse' => 'PGBIC-BL2', 'rsbaynum' => 'B3'],
+        ];
+
+        // FP-SP Official Fortune Bays
+        $fpSpBayNums = [
             'A1','A2',
             'B1','B2','B3','B4',
             'C1','C2','C3','C4',
@@ -36,17 +49,37 @@ class RsBayLocSeeder extends Seeder
             'J1','J2','J3','J4'
         ];
 
-        $fpSpBayData = [];
-        $createdate = "2025-09-26";
-
-        foreach ($fpSpBays as $bay) {
-            $fpSpBayData[] = [
+        $fpSpBays = [];
+        foreach ($fpSpBayNums as $bayNum) {
+            $fpSpBays[] = [
                 'rssite' => 'FP-SP',
-                'rsbaynum' => $bay,
-                'createdate' => $createdate,
-                'createdby' => 'sa',
+                'rswhse' => 'FBIC-BLDG8',
+                'rsbaynum' => $bayNum
             ];
         }
-        DB::table('rsbayloc')->insert($fpSpBayData);
+
+        // Combine all bay data
+        $allBays = array_merge($piSpBays, $pigrpSpBays, $fpSpBays);
+
+        // Add common fields to all records
+        $bayData = [];
+        foreach ($allBays as $bay) {
+            $bayData[] = array_merge($bay, [
+                'createdate' => $createdate,
+                'createdby' => 'sa'
+            ]);
+        }
+
+        // Insert using updateOrInsert to prevent duplicates
+        foreach ($bayData as $row) {
+            DB::table('rsbayloc')->updateOrInsert(
+                [
+                    'rssite' => $row['rssite'], 
+                    'rswhse' => $row['rswhse'], 
+                    'rsbaynum' => $row['rsbaynum']
+                ], // unique keys
+                $row // values to insert or update
+            );
+        }
     }
 }
