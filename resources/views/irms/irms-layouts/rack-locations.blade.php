@@ -129,7 +129,10 @@
                                                             <option value="">Select Bay</option>
                                                             @foreach($baynums as $bay)
                                                                 <option value="{{ $bay->rsbaynum }}"
-                                                                    data-site="{{ $bay->rssite }}">{{ $bay->rsbaynum }}</option>
+                                                                    data-site="{{ $bay->rssite }}"
+                                                                    data-whse="{{ $bay->rswhse }}">
+                                                                    {{ $bay->rsbaynum }}
+                                                                </option>
                                                             @endforeach
                                                         </select>
                                                     </div>
@@ -285,7 +288,9 @@
                                     <option disabled selected>Select Bay Number</option>
                                     @foreach($baynums as $bay)
                                         @if(auth()->user()->level == 1 || $bay->rssite === auth()->user()->rssite)
-                                            <option value="{{ $bay->rsbaynum }}" data-site="{{ $bay->rssite }}">
+                                            <option value="{{ $bay->rsbaynum }}" 
+                                                    data-site="{{ $bay->rssite }}" 
+                                                    data-whse="{{ $bay->rswhse }}">
                                                 {{ $bay->rsbaynum }}
                                             </option>
                                         @endif

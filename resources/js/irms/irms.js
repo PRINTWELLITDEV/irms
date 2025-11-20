@@ -227,10 +227,18 @@ function initializeFormDependencies() {
             handleSiteChange(this.value, whseSelect, baySelect);
         });
 
+        // Add warehouse change handler for bay filtering
+        whseSelect.addEventListener("change", function () {
+            handleWarehouseChange(this.value, baySelect, siteSelect.value);
+        });
+
         // Apply initial filter if site is pre-selected
         if (siteSelect.value) {
             handleSiteChange(siteSelect.value, whseSelect, baySelect);
         }
+
+        // Initially hide all bay options until warehouse is selected
+        hideAllBayOptions(baySelect);
     }
 
     // Initialize lot auto-fill for receiving
@@ -248,9 +256,35 @@ function handleSiteChange(siteValue, whseSelect, baySelect) {
     whseSelect.selectedIndex = 0;
     baySelect.selectedIndex = 0;
 
-    // Filter options based on selected site
+    // Filter warehouse options based on selected site
     filterOptionsBySite(whseSelect, siteValue);
-    filterOptionsBySite(baySelect, siteValue);
+    
+    // Hide all bay options until warehouse is selected
+    hideAllBayOptions(baySelect);
+}
+
+function handleWarehouseChange(whseValue, baySelect, siteValue) {
+    // Reset bay select
+    baySelect.selectedIndex = 0;
+
+    if (!whseValue || !siteValue) {
+        // Hide all bay options if no warehouse is selected
+        hideAllBayOptions(baySelect);
+        return;
+    }
+
+    // Filter bays based on both site and warehouse
+    filterBaysByWarehouse(baySelect, siteValue, whseValue);
+}
+
+function hideAllBayOptions(select) {
+    if (!select) return;
+
+    Array.from(select.options).forEach((option) => {
+        if (option.value) { // Don't hide the placeholder option
+            option.style.display = "none";
+        }
+    });
 }
 
 function filterOptionsBySite(select, siteValue) {
@@ -260,6 +294,28 @@ function filterOptionsBySite(select, siteValue) {
         if (!option.value) return;
 
         const shouldShow = option.getAttribute("data-site") === siteValue;
+        option.style.display = shouldShow ? "" : "none";
+    });
+
+    // Reset selection if current option is now hidden
+    const currentOption = select.options[select.selectedIndex];
+    if (currentOption && currentOption.style.display === "none") {
+        select.selectedIndex = 0;
+    }
+}
+
+function filterBaysByWarehouse(select, siteValue, whseValue) {
+    if (!select || !siteValue || !whseValue) {
+        hideAllBayOptions(select);
+        return;
+    }
+
+    Array.from(select.options).forEach((option) => {
+        if (!option.value) return; // Skip placeholder option
+
+        const optionSite = option.getAttribute("data-site");
+        const optionWhse = option.getAttribute("data-whse");
+        const shouldShow = optionSite === siteValue && optionWhse === whseValue;
         option.style.display = shouldShow ? "" : "none";
     });
 

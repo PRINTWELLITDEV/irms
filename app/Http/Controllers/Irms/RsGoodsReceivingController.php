@@ -24,8 +24,19 @@ class RsGoodsReceivingController extends Controller
         }
         $sites = IrmsSite::all();
         $warehouses = Rswhse::all();
-        $baylocs = RsBayLoc::all();
-        return view('irms.irms-layouts.whse-goodsreceiving', compact('sites', 'warehouses', 'baylocs'));
+        
+        // Update to include rswhse in bay locations query
+        $baylocs = DB::table('rsbayloc')
+            ->select('rsbaynum', 'rssite', 'rswhse')
+            ->get();
+            
+        $site_desc = '';
+        if (auth()->user()->level != 1) {
+            $user_site = IrmsSite::where('rssite', auth()->user()->rssite)->first();
+            $site_desc = $user_site ? $user_site->rssite_desc : '';
+        }
+
+        return view('irms.irms-layouts.whse-goodsreceiving', compact('sites', 'warehouses', 'baylocs', 'site_desc'));
     }
 
     /**
