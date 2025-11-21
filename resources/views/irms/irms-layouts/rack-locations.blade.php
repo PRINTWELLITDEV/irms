@@ -66,7 +66,7 @@
 
                                         <div class="table-responsive table-view">
                                             <table id="rackTable"
-                                                class="table table-striped table-bordered table-hover align-middle display">
+                                                class="table table-striped table-hover align-middle display">
                                                 <thead>
                                                     <tr>
                                                         <th width="20%">Rack Location</th>
@@ -217,7 +217,7 @@
                                     </tr>
                                 </thead>
                                 <tbody id="view-rack-items-body">
-                                    
+
                                 </tbody>
                             </table>
                         </div>

@@ -10,7 +10,7 @@
         <td>{{ $rack->rsloc }}</td>
         <td>{{ $rack->rswhse }}</td>
         <td>{{ $rack->rsbaynum }}</td>
-        <td class="text-end">{{ number_format($rack->qty ?? 0, 0) }}</td>
+        <td>{{ number_format($rack->qty ?? 0, 0) }}</td>
         @if(auth()->user()->level == 1)
             <td>{{ $rack->rssite_desc ?? 'N/A' }}</td>
         @endif
