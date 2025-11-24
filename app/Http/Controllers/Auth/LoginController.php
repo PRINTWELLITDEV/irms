@@ -82,7 +82,7 @@ class LoginController extends Controller
         if ($request->expectsJson()) {
             return response()->json([
                 'success' => false,
-                'message' => 'invalid credentials.'
+                'message' => 'Invalid Credentials'
             ], 401);
         }
 

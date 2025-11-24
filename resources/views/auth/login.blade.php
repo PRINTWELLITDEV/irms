@@ -50,7 +50,7 @@
                         @endif
                     </div>
                     <div class="mb-3">
-                        <button type="button" id="nextButton" class="btn btn-primary w-100">
+                        <button type="submit" id="nextButton" class="btn btn-primary w-100">
                             NEXT &rarr;
                         </button>
                     </div>
