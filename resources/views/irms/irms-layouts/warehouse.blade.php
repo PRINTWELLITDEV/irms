@@ -70,7 +70,7 @@
 
     <!-- Add Warehouse Modal -->
     <div class="modal fade" id="addWarehouseModal" tabindex="-1" aria-labelledby="addWarehouseLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-l">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <form action="{{ route('warehouse.store') }}" method="POST" enctype="multipart/form-data"   >
                     @csrf
