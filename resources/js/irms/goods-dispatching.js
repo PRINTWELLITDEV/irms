@@ -241,7 +241,7 @@ document.addEventListener("DOMContentLoaded", function () {
     );
 
     // Select All / Unselect All logic for dispatchingTable
-    $("#btnSelectAll").on("click", function () {
+    $("#btnD_SelectAll").on("click", function () {
         const checkboxes = $(
             "#dispatchingTable input[type='checkbox'].big-checkbox"
         );
@@ -505,6 +505,9 @@ document.addEventListener("DOMContentLoaded", function () {
     $("#btnRefreshLocations").on("click", function () {
         const $button = $(this);
         const originalHtml = $button.html();
+
+        $("#btnD_SelectAll").find("i").removeClass("bi-x-circle-fill bi-check-circle-fill").addClass("bi-check-circle");
+        $("#btnD_SelectAll").find("span").text("Select All");
 
         $button
             .prop("disabled", true)

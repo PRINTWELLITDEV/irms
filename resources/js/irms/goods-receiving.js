@@ -239,18 +239,21 @@ document.addEventListener("DOMContentLoaded", function () {
     );
 
     // Select All / Unselect All logic
-    $("#btnSelectAll").on("click", function () {
+    $("#btnR_SelectAll").on("click", function () {
         const checkboxes = $("#receivingTable input[type='checkbox'].big-checkbox");
         const allChecked = checkboxes.length > 0 && checkboxes.filter(":checked").length === checkboxes.length;
 
         if (allChecked) {
             checkboxes.prop("checked", false).trigger("change");
-            $("#selectAllText").text("Select All");
+            // Force update after all are unchecked
             $(this).find("i").removeClass("bi-x-circle-fill bi-check-circle-fill").addClass("bi-check-circle");
+            $("#btnR_SelectAll").find("span").text("Select All");
         } else {
             checkboxes.prop("checked", true).trigger("change");
-            $("#selectAllText").text("Unselect All");
+            // Force update after all are checked
             $(this).find("i").removeClass("bi-check-circle bi-check-circle-fill").addClass("bi-x-circle-fill");
+            $("#btnR_SelectAll").find("span").text("Unselect All");
+
         }
     });
 
@@ -260,11 +263,11 @@ document.addEventListener("DOMContentLoaded", function () {
         const allChecked = checkboxes.length > 0 && checkboxes.filter(":checked").length === checkboxes.length;
 
         if (allChecked) {
-            $("#selectAllText").text("Unselect All");
-            $("#btnSelectAll").find("i").removeClass("bi-check-circle bi-check-circle-fill").addClass("bi-x-circle-fill");
+            $("#btnR_SelectAll").find("i").removeClass("bi-check-circle bi-check-circle-fill").addClass("bi-x-circle-fill");
+            $("#btnR_SelectAll").find("span").text("Unselect All");
         } else {
-            $("#selectAllText").text("Select All");
-            $("#btnSelectAll").find("i").removeClass("bi-x-circle-fill bi-check-circle-fill").addClass("bi-check-circle");
+            $("#btnR_SelectAll").find("i").removeClass("bi-x-circle-fill bi-check-circle-fill").addClass("bi-check-circle");
+            $("#btnR_SelectAll").find("span").text("Select All");
         }
     });
 
@@ -517,6 +520,9 @@ document.addEventListener("DOMContentLoaded", function () {
     $("#btnRefreshLocations").on("click", function () {
         const $button = $(this);
         const originalHtml = $button.html();
+        
+        $("#btnR_SelectAll").find("i").removeClass("bi-x-circle-fill bi-check-circle-fill").addClass("bi-check-circle");
+        $("#btnR_SelectAll").find("span").text("Select All");
 
         $button
             .prop("disabled", true)

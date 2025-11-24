@@ -312,18 +312,19 @@
 
                         <!-- Action Buttons -->
                         <div class="d-flex justify-content-between align-items-center mb-3">
-                            <button type="button" id="btnSelectAll" class="btn btn-outline-primary d-flex align-items-center">
-                                <i class="bi bi-check-circle me-2"></i>
-                                <span id="selectAllText">Select All</span>
+                            <button type="button" id="btnR_SelectAll" class="btn btn-outline-primary d-flex align-items-center">
+                                <i class="bi bi-check-circle d-none d-inline d-sm-inline me-2"></i>
+                                <span class="d-none d-md-inline">Select All</span>
+                                <i class="bi bi-check-circle d-inline d-sm-none"></i>
                             </button>
                             <div class="d-flex gap-2">
-                                <button type="button" class="btn btn-outline-info btn-sm" id="btnRefreshLocations">
+                                <button type="button" class="btn btn-outline-dark btn-sm ms-2" id="btnRefreshLocations">
                                     <i class="bi bi-arrow-clockwise me-1"></i>
                                     Refresh
                                 </button>
                                 <button type="button" id="btnReceive" class="btn btn-success">
                                     <i class="bi bi-box-arrow-in-right me-2"></i>
-                                    Process Receiving
+                                    Receive
                                 </button>
                             </div>
                         </div>

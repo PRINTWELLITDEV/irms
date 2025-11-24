@@ -271,18 +271,19 @@
 
                         <!-- Action Buttons -->
                         <div class="d-flex justify-content-between align-items-center mb-3">
-                            <button type="button" id="btnSelectAll" class="btn btn-outline-warning d-flex align-items-center">
-                                <i class="bi bi-check-circle-fill me-2"></i>
-                                <span>Select All</span>
+                            <button type="button" id="btnD_SelectAll" class="btn btn-outline-warning d-flex align-items-center">
+                                <i class="bi bi-check-circle d-none d-inline d-sm-inline me-2"></i>
+                                <span class="d-none d-md-inline">Select All</span>
+                                <i class="bi bi-check-circle d-inline d-sm-none"></i>
                             </button>
                             <div class="d-flex gap-2">
-                                <button type="button" class="btn btn-outline-info btn-sm" id="btnRefreshLocations">
+                                <button type="button" class="btn btn-outline-dark btn-sm ms-2" id="btnRefreshLocations">
                                     <i class="bi bi-arrow-clockwise me-1"></i>
                                     Refresh
                                 </button>
                                 <button type="button" id="btnDispatch" class="btn btn-warning">
                                     <i class="bi bi-box-arrow-right me-2"></i>
-                                    Process Dispatching
+                                    Dispatch
                                 </button>
                             </div>
                         </div>

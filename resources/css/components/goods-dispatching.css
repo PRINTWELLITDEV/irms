@@ -232,16 +232,17 @@
     transform: translateX(-2px);
 }
 
-#btnSelectAll {
+#btnD_SelectAll {
     border-width: 2px;
     font-weight: 600;
+    padding: 0.6rem 1.5rem;
     border-radius: 8px;
     transition: all 0.3s ease;
     color: #dc3545;
     border-color: #dc3545;
 }
 
-#btnSelectAll:hover {
+#btnD_SelectAll:hover {
     background-color: #dc3545;
     color: white;
     border-color: #dc3545;
@@ -268,11 +269,6 @@
 #btnRefreshLocations {
     border-radius: 6px;
     transition: all 0.2s ease;
-}
-
-#btnRefreshLocations:hover {
-    background-color: #0dcaf0;
-    color: white;
 }
 
 /* Warning color theme adjustments */

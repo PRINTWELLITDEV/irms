@@ -12,7 +12,7 @@
     ]
   },
   "resources/css/irms.css": {
-    "file": "assets/irms-Qg6zlugM.css",
+    "file": "assets/irms-Bt1RgOs6.css",
     "src": "resources/css/irms.css",
     "isEntry": true,
     "names": [
@@ -29,7 +29,7 @@
     ]
   },
   "resources/js/irms/irms.js": {
-    "file": "assets/irms-Dm2rycDZ.js",
+    "file": "assets/irms-D_YOiQER.js",
     "name": "irms",
     "src": "resources/js/irms/irms.js",
     "isEntry": true,
