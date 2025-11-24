@@ -306,6 +306,69 @@ $("#mapRsSite, #mapRsWhse, #mapRsBay").on("change", function () {
     }
 });
 
+let rackMapSortDirection = "ltr"; // "ltr" = Left to Right, "rtl" = Right to Left
+
+// Show/hide sort button based on selection
+function updateRackMapSortButton() {
+    const whse = $("#mapRsWhse").val();
+    const bay = $("#mapRsBay").val();
+    if (whse && bay) {
+        $("#btnRackMapSort").removeClass("d-none");
+    } else {
+        $("#btnRackMapSort").addClass("d-none");
+    }
+}
+
+// Toggle sort direction and re-render grid
+$(document).on("click", "#btnRackMapSort", function () {
+    rackMapSortDirection = rackMapSortDirection === "ltr" ? "rtl" : "ltr";
+    $("#rackMapSortText").text(
+        rackMapSortDirection === "ltr" ? "Sort: Left to Right" : "Sort: Right to Left"
+    );
+    // Re-render grid if data is available
+    let rssite = $("#mapRsSite").val();
+    let rswhse = $("#mapRsWhse").val();
+    let rsbaynum = $("#mapRsBay").val();
+    if (rssite && rswhse && rsbaynum) {
+        $.post({
+            url: window.appUrl + "/irms/rack-locations/map-grid",
+            data: {
+                rssite: rssite,
+                rswhse: rswhse,
+                rsbaynum: rsbaynum,
+                _token: $('input[name="_token"]').val(),
+            },
+            success: function (data) {
+                renderRackMapGrid(data, rsbaynum);
+            },
+        });
+    }
+});
+
+// Update sort button visibility on filter change
+$("#mapRsSite, #mapRsWhse, #mapRsBay").on("change", function () {
+    updateRackMapSortButton();
+    let rssite = $("#mapRsSite").val();
+    let rswhse = $("#mapRsWhse").val();
+    let rsbaynum = $("#mapRsBay").val();
+
+    if (rssite && rswhse && rsbaynum) {
+        $.post({
+            url: window.appUrl + "/irms/rack-locations/map-grid",
+            data: {
+                rssite: rssite,
+                rswhse: rswhse,
+                rsbaynum: rsbaynum,
+                _token: $('input[name="_token"]').val(),
+            },
+            success: function (data) {
+                renderRackMapGrid(data, rsbaynum);
+            },
+        });
+    }
+});
+
+// Update renderRackMapGrid to use sort direction
 function renderRackMapGrid(locations, rsbaynum) {
     // Levels
     let levels = [
@@ -333,18 +396,15 @@ function renderRackMapGrid(locations, rsbaynum) {
     let slots = [
         ...new Set(locations.map((l) => l.rsloc.match(/-(S\d+)$/)?.[1])),
     ]
-        .filter(Boolean)
-        .sort();
+        .filter(Boolean);
 
-    // Sort columns: Odd baynum = descending, Even = ascending
-    let baynumDigits = rsbaynum.match(/\d+/);
-    let isOdd = baynumDigits && parseInt(baynumDigits[0]) % 2 === 1;
-    if (isOdd) {
-        columns.sort((a, b) => b - a);
-        slots.sort().reverse();
-    } else {
+    // Sort columns and slots based on direction
+    if (rackMapSortDirection === "ltr") {
         columns.sort((a, b) => a - b);
         slots.sort();
+    } else {
+        columns.sort((a, b) => b - a);
+        slots.sort().reverse();
     }
 
     // Function to get background color based on quantity comparison
@@ -429,7 +489,7 @@ function renderRackMapGrid(locations, rsbaynum) {
                             data-qty="${found ? found.qty : 0}"
                             data-create-date="${found && found.createdate ? moment(found.createdate).format("DD MMMM YYYY") : ""}"
                             data-has-items="${found && found.jobs && found.jobs.length > 0 ? '1' : '0'}"
-                            style="min-width:60px;height:120px;vertical-align:middle;font-size:0.8em;background:${bgColor};${textColor};padding:4px;${found && (!found.jobs || found.jobs.length === 0) ? 'cursor:not-allowed;' : ''}">
+                            style="min-width:60px;height:120px;vertical-align:middle;font-size:0.8em;background:${bgColor};${textColor};padding:4px;">
                             ${
                                 found
                                     ? `<div class="fw-bold">${found.rsloc}</div><div class="fw-bold small">${qtyDisplay}</div>`

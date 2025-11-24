@@ -140,11 +140,16 @@
                                             </div>
                                         </form>
 
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <div></div>
+                                            <button type="button" id="btnRackMapSort" class="btn btn-outline-dark btn-sm d-none">
+                                                <i class="bi bi-arrow-left-right me-1"></i>
+                                                <span id="rackMapSortText">Sort: Left to Right</span>
+                                            </button>
+                                        </div>
                                         <div class="d-flex justify-content-center align-items-center"
                                             style="min-height: 300px;">
-                                            <div id="rack-map-grid" class="table-responsive">
-
-                                            </div>
+                                            <div id="rack-map-grid" class="table-responsive"></div>
                                         </div>
                                     </div>
                                 </div>
