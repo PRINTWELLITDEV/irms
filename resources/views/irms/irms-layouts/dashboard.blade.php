@@ -244,7 +244,7 @@
                                             <h5><i class="fas fa-chart-line me-2"></i>Monthly Operations Overview</h5>
                                         </div>
                                         <div class="chart-card-body">
-                                            <canvas id="monthlyChart" height="{{ $userLevel != 3 ? 400 : 200 }}"></canvas>
+                                            <canvas id="monthlyChart" height="{{ $userLevel != 3 ? 400 : 350 }}"></canvas>
                                         </div>
                                     </div>
                                 </div>
@@ -275,7 +275,7 @@
                             <div class="col-lg-{{ $userLevel >= 2 ? 12 : 8 }} mb-4">
                                 <div class="chart-card">
                                     <div class="chart-card-header">
-                                        <h5><i class="fas fa-history me-2"></i>{{ $userLevel <= 2 ? 'My Recent Transactions' : 'Recent Transactions' }}</h5>
+                                        <h5><i class="fas fa-history me-2"></i>{{ $userLevel <= 2 ? 'Recent Transactions' : 'My Recent Transactions' }}</h5>
                                     </div>
                                     <div class="chart-card-body">
                                         <div id="recent_transactions">
