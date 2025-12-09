@@ -480,23 +480,32 @@ function renderRackMapGrid(locations, rsbaynum) {
                 }
 
                 // ...inside renderRackMapGrid...
+                // ...inside renderRackMapGrid...
                 html += `
-                        <td 
-                            data-rsloc="${found ? found.rsloc : ""}" 
-                            data-rswhse="${found ? found.rswhse : ""}"
-                            data-rsbaynum="${found ? found.rsbaynum : ""}"
-                            data-rsdesc="${found ? found.rsdesc : ""}"
-                            data-qty="${found ? found.qty : 0}"
-                            data-create-date="${found && found.createdate ? moment(found.createdate).format("DD MMMM YYYY") : ""}"
-                            data-has-items="${found && found.jobs && found.jobs.length > 0 ? '1' : '0'}"
-                            style="min-width:60px;height:120px;vertical-align:middle;font-size:0.8em;background:${bgColor};${textColor};padding:4px;">
-                            ${
-                                found
-                                    ? `<div class="fw-bold">${found.rsloc}</div><div class="fw-bold small">${qtyDisplay}</div>`
-                                    : ""
-                            }
-                        </td>
-                    `;
+                    <td 
+                        data-rsloc="${found ? found.rsloc : ""}" 
+                        data-rswhse="${found ? found.rswhse : ""}"
+                        data-rsbaynum="${found ? found.rsbaynum : ""}"
+                        data-rsdesc="${found ? found.rsdesc : ""}"
+                        data-job="${found ? found.jobs[0]?.job || "" : ""}"
+                        data-item="${found ? found.jobs[0]?.item || "" : ""}"
+                        data-qty="${found ? found.qty : 0}"
+                        data-create-date="${found && found.createdate ? moment(found.createdate).format("DD MMMM YYYY") : ""}"
+                        data-has-items="${found && found.jobs && found.jobs.length > 0 ? '1' : '0'}"
+                        style="min-width:160px;max-width:120px;height:160px;vertical-align:middle;font-size:0.8em;background:${bgColor};${textColor};padding:4px;">
+                        ${
+                            found
+                                ? `<div class="h6 fw-bold">${found.rsloc}</div>
+                                <div class="fw-semibold">${
+                                    found.jobs.length > 1
+                                        ? '<span class="text-info fw-bold">Multiple Items</span>'
+                                        : `${found.jobs[0]?.job || ""}<br>${found.jobs[0]?.item || ""}`
+                                }</div>
+                                <div class="fw-bold small">${qtyDisplay}</div>`
+                                : ""
+                        }
+                    </td>
+                `;
             });
         });
         html += "</tr>";

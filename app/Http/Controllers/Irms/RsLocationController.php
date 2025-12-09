@@ -95,10 +95,11 @@ class RsLocationController extends Controller
 
     public function rackItems(Request $request)
     {
+        $rssite = $request->input('rssite') ? $request->input('rssite') : auth()->user()->rssite;
         $rsloc = $request->input('rsloc');
         $items = \DB::select(
-            'SELECT rssite, rsloc, job, item, [desc], qty, um FROM rsitemloc WHERE rsloc = ?', 
-            [$rsloc]
+            'SELECT rssite, rsloc, job, item, [desc], qty, um FROM rsitemloc WHERE rssite=? AND rsloc = ?', 
+            [$rssite, $rsloc]
         );
         return response()->json($items);
     }
@@ -111,14 +112,6 @@ class RsLocationController extends Controller
 
         // Get rack locations with job info
         $locations = \DB::select('EXEC sp_rack_map ?, ?, ?', [$rssite, $rswhse, $rsbaynum]);
-
-        // Map rssite to connection name
-        $connections = [
-            'PI-SP' => 'pisp_con',
-            'FP-SP' => 'fpsp_con',
-            'PIGRP-SP' => 'pigrpsp_con',
-        ];
-        $connection = $connections[$rssite] ?? null;
 
         // Group locations by rsloc to handle multiple jobs per location
         $grouped = [];
@@ -146,6 +139,14 @@ class RsLocationController extends Controller
                 ];
             }
         }
+
+        // Map rssite to connection name
+        $connections = [
+            'PI-SP' => 'pisp_con',
+            'FP-SP' => 'fpsp_con',
+            'PIGRP-SP' => 'pigrpsp_con',
+        ];
+        $connection = $connections[$rssite] ?? null;
 
         // Fetch original pallet sizes for all jobs
         foreach ($grouped as $rsloc => &$data) {
