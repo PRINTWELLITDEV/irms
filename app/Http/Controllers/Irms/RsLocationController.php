@@ -135,7 +135,9 @@ class RsLocationController extends Controller
             if ($location->job && $location->item) {
                 $grouped[$rsloc]['jobs'][] = [
                     'job' => $location->job,
-                    'item' => $location->item
+                    'item' => $location->item,
+                    'desc' => $location->desc,
+                    'rspallet_num' => $location->rspallet_num
                 ];
             }
         }

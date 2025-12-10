@@ -488,7 +488,8 @@ function renderRackMapGrid(locations, rsbaynum) {
                         data-rsbaynum="${found ? found.rsbaynum : ""}"
                         data-rsdesc="${found ? found.rsdesc : ""}"
                         data-job="${found ? found.jobs[0]?.job || "" : ""}"
-                        data-item="${found ? found.jobs[0]?.item || "" : ""}"
+                        data-desc="${found ? found.jobs[0]?.desc || "" : ""}"
+                        data-pallet-num="${found ? found.jobs[0]?.rspallet_num || "" : ""}"
                         data-qty="${found ? found.qty : 0}"
                         data-create-date="${found && found.createdate ? moment(found.createdate).format("DD MMMM YYYY") : ""}"
                         data-has-items="${found && found.jobs && found.jobs.length > 0 ? '1' : '0'}"
@@ -496,10 +497,14 @@ function renderRackMapGrid(locations, rsbaynum) {
                         ${
                             found
                                 ? `<div class="h6 fw-bold">${found.rsloc}</div>
-                                <div class="fw-semibold">${
+                                <div>${
                                     found.jobs.length > 1
                                         ? '<span class="text-info fw-bold">Multiple Items</span>'
-                                        : `${found.jobs[0]?.job || ""}<br>${found.jobs[0]?.item || ""}`
+                                        : `<span class="fw-bold" style="font-size:1.2em;">${found.jobs[0]?.job || ""}<br></span>
+                                           <span class="text-wrap fw-semibold">${found.jobs[0]?.desc || ""}<br></span>
+                                           <span class="small fw-semibold">${found.jobs[0]?.rspallet_num?.trim() ? `(${found.jobs[0].rspallet_num.trim()})` : ""}</span>
+                                        `
+                                        
                                 }</div>
                                 <div class="fw-bold small">${qtyDisplay}</div>`
                                 : ""
