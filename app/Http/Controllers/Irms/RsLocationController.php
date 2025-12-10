@@ -98,7 +98,7 @@ class RsLocationController extends Controller
         $rssite = $request->input('rssite') ? $request->input('rssite') : auth()->user()->rssite;
         $rsloc = $request->input('rsloc');
         $items = \DB::select(
-            'SELECT rssite, rsloc, job, item, [desc], qty, um FROM rsitemloc WHERE rssite=? AND rsloc = ?', 
+            'SELECT rssite, rsloc, job, item, [desc], rspallet_num, qty, um FROM rsitemloc WHERE rssite=? AND rsloc = ?', 
             [$rssite, $rsloc]
         );
         return response()->json($items);

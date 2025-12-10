@@ -196,7 +196,7 @@ $("#rackTable tbody").on("click", "tr", function () {
         success: function (items) {
             let html = "";
             if (items.length === 0) {
-                html = `<tr><td colspan="3" class="text-center text-muted">No Job items found.</td></tr>`;
+                html = `<tr><td colspan="4" class="text-center text-muted">No Job items found.</td></tr>`;
             } else {
                 items.forEach((item) => {
                     html += `<tr>
@@ -207,9 +207,8 @@ $("#rackTable tbody").on("click", "tr", function () {
                                 item.desc || ""
                             }</div>
                         </td>
-                        <td>${parseFloat(item.qty).toLocaleString()} ${
-                        item.um || ""
-                    }</td>
+                        <td>${parseFloat(item.qty).toLocaleString()} ${item.um || ""}</td>
+                        <td>${item.rspallet_num || ""}</td>
                     </tr>`;
                 });
             }
@@ -581,7 +580,7 @@ $(document).on("click", "#rack-map-grid td[data-rsloc]", function () {
         success: function (items) {
             let html = "";
             if (items.length === 0) {
-                html = `<tr><td colspan="3" class="text-center text-muted">No items found.</td></tr>`;
+                html = `<tr><td colspan="4" class="text-center text-muted">No items found.</td></tr>`;
             } else {
                 items.forEach(item => {
                     html += `<tr>
@@ -591,6 +590,7 @@ $(document).on("click", "#rack-map-grid td[data-rsloc]", function () {
                             <div class="small text-muted">${item.desc || ""}</div>
                         </td>
                         <td>${parseFloat(item.qty).toLocaleString()} ${item.um || ""}</td>
+                        <td>${item.rspallet_num || ""}</td>
                     </tr>`;
                 });
             }

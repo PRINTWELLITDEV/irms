@@ -222,6 +222,7 @@
                                         <th>Job No.</th>
                                         <th>Product Item</th>
                                         <th>Quantity</th>
+                                        <th>Pallet No.</th>
                                     </tr>
                                 </thead>
                                 <tbody id="view-rack-items-body">
