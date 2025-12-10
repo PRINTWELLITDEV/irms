@@ -88,7 +88,7 @@
                 </li>
                 <li class="nav-item">
                     <a href="{{ url('/irms/item-locations') }}" class="nav-link{{ request()->is('irms/item-locations') ? ' active' : '' }}">
-                        <i class="nav-icon bi bi-list"></i>
+                        <i class="nav-icon fas fa-boxes"></i>
                         <p>Item Locations</p>
                     </a>
                 </li>

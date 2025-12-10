@@ -301,12 +301,12 @@ class IrmsController extends Controller
             'stats' => $stats,
             'charts' => $charts,
             'quick_actions' => [
-                ['icon' => 'fas fa-users', 'label' => 'Site Users', 'url' => route('rsusers.index')],
                 ['icon' => 'fas fa-warehouse', 'label' => 'Warehouses', 'url' => route('warehouse.index')],
                 ['icon' => 'fas fa-download', 'label' => 'Goods Receiving', 'url' => route('goodsreceiving.index')],
                 ['icon' => 'fas fa-upload', 'label' => 'Goods Dispatching', 'url' => route('goodsdispatching.index')],
+                ['icon' => 'bi bi-grid-3x3', 'label' => 'Rack Locations', 'url' => route('racklocations.index')],
                 ['icon' => 'fas fa-boxes', 'label' => 'Item Locations', 'url' => route('irms.itemlocations')],
-                ['icon' => 'fas fa-history', 'label' => 'Transactions', 'url' => route('irms.transactions')],
+                ['icon' => 'fas fa-exchange-alt', 'label' => 'Transactions', 'url' => route('irms.transactions')],
             ]
         ];
     }
@@ -401,8 +401,9 @@ class IrmsController extends Controller
             'quick_actions' => [
                 ['icon' => 'fas fa-download', 'label' => 'Goods Receiving', 'url' => route('goodsreceiving.index')],
                 ['icon' => 'fas fa-upload', 'label' => 'Goods Dispatching', 'url' => route('goodsdispatching.index')],
+                ['icon' => 'bi bi-grid-3x3', 'label' => 'Rack Locations', 'url' => route('racklocations.index')],
                 ['icon' => 'fas fa-boxes', 'label' => 'Item Locations', 'url' => route('irms.itemlocations')],
-                ['icon' => 'fas fa-history', 'label' => 'My Transactions', 'url' => route('irms.transactions')],
+                ['icon' => 'fas fa-exchange-alt', 'label' => 'Transactions', 'url' => route('irms.transactions')],
             ]
         ];
     }
@@ -440,13 +441,23 @@ class IrmsController extends Controller
             }
 
             return $query->get()->map(function ($activity) {
-                return [
-                    'icon' => $activity->trxtype == 'R' ? 'fas fa-download' : 'fas fa-upload',
-                    'type' => $activity->trxtype == 'R' ? 'primary' : 'warning',
-                    'title' => ucfirst(strtolower($activity->trxtype == 'R' ? 'Received' : 'Dispatched')) . ' - ' . $activity->job . ': ' . $activity->item,
-                    'description' => 'Qty: ' . number_format($activity->qty) . ' by ' . $activity->name,
-                    'time' => Carbon::parse($activity->createdate)->diffForHumans()
-                ];
+                if (auth()->user()->level == 3 ){
+                    return [
+                        'icon' => $activity->trxtype == 'R' ? 'fas fa-download' : 'fas fa-upload',
+                        'type' => $activity->trxtype == 'R' ? 'primary' : 'warning',
+                        'title' => ucfirst(strtolower($activity->trxtype == 'R' ? 'Received' : 'Dispatched')) . ' - ' . $activity->job . ': ' . $activity->item,
+                        'description' => 'Qty: ' . number_format($activity->qty),
+                        'time' => Carbon::parse($activity->createdate)->diffForHumans()
+                    ];
+                } else {
+                    return [
+                        'icon' => $activity->trxtype == 'R' ? 'fas fa-download' : 'fas fa-upload',
+                        'type' => $activity->trxtype == 'R' ? 'primary' : 'warning',
+                        'title' => ucfirst(strtolower($activity->trxtype == 'R' ? 'Received' : 'Dispatched')) . ' - ' . $activity->job . ': ' . $activity->item,
+                        'description' => 'Qty: ' . number_format($activity->qty) . ' by ' . $activity->name,
+                        'time' => Carbon::parse($activity->createdate)->diffForHumans()
+                    ];
+                }
             })->toArray();
         } catch (\Exception $e) {
             \Log::warning('Could not get recent activities: ' . $e->getMessage());

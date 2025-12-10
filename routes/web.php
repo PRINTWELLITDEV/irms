@@ -101,6 +101,7 @@ Route::prefix('irms')->middleware('auth')->group(function () {
     Route::get('/rack-locations', [RsLocationController::class, 'index'])->name('racklocations.index');
     Route::get('/rack-locations/rack-list', [RsLocationController::class, 'rackList'])->name('racklocations.racklist');
     Route::post('/rack-locations/store', [RsLocationController::class, 'store'])->name('racklocations.store');
+    Route::post('/rack-locations/map-grid', [RsLocationController::class, 'rackMapGrid'])->name('racklocations.mapgrid');
     Route::post('/rack-locations/rack-items', [RsLocationController::class, 'rackItems'])->name('racklocations.rackitems');
 
     //Item Locations
@@ -115,7 +116,6 @@ Route::prefix('irms')->middleware('auth')->group(function () {
     Route::post('/receiving/job-item-details', [RsGoodsReceivingController::class, 'getJobItemDetails'])->name('goodsreceiving.jobitemdetails');
     Route::post('/receiving/rsloc-list', [RsGoodsReceivingController::class, 'getRsLocList'])->name('goodsreceiving.rsloclist');
     Route::post('/receiving/process-goods-received', [RsGoodsReceivingController::class, 'processGoodsReceived'])->name('goodsreceiving.processreceived');
-    Route::post('/rack-locations/map-grid', [RsLocationController::class, 'rackMapGrid'])->name('racklocations.mapgrid');
 
     // Goods Dispatching
     Route::get('/dispatching', [RsGoodsDispatchingController::class, 'index'])->name('goodsdispatching.index');
