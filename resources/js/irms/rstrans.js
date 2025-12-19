@@ -13,7 +13,7 @@ function loadTransactionTable() {
             },
             responsive: true,
             language: {
-                emptyTable: "No Item Locations found",
+                emptyTable: "No transactions found",
             },
         });
 
