@@ -84,6 +84,7 @@ $("#btnEditUser").on("click", function () {
     const name = $(this).data("name");
     const email = $(this).data("email");
     const site = $(this).data("site");
+    const site_desc = $(this).data("site_desc");
     const level = $(this).data("level");
     const gender = $(this).data("gender");
     const department = $(this).data("department");
@@ -95,6 +96,7 @@ $("#btnEditUser").on("click", function () {
     $("#edit-user-label-name").text(name || userid);
     $("#edit-user-profile-preview").attr("src", profile);
     $("#edit-rssite").val(site);
+    $("#edit-rssite-desc").val(site_desc);
     $("#edit-userid").val(userid);
     $("#edit-userid-hidden").val(userid);
     $("#edit-name").val(name);

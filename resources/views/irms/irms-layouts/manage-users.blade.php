@@ -344,12 +344,12 @@
                                         <span class="input-group-text">
                                             <i class="bi bi-building"></i>
                                         </span>
-                                        <input type="hidden" class="form-control" name="rssite" value="{{ auth()->user()->rssite }}" readonly>
-                                        <input type="text" class="form-control" value="{{ $site_desc }}" readonly>
+                                        <input type="hidden" class="form-control" name="rssite" id="edit-rssite" readonly>
+                                        <input type="text" class="form-control" id="edit-rssite-desc" readonly>
                                     </div>
                                 </div>
                                 @else
-                                <input type="hidden" id="rssite" name="rssite" value="{{ auth()->user()->rssite }}" readonly>
+                                <input type="hidden" id="edit-rssite" name="rssite" readonly>
                                 @endif
 
                                 <div class="mb-3">
