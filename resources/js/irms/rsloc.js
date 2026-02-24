@@ -190,6 +190,7 @@ $("#rackTable tbody").on("click", "tr", function () {
     $.post({
         url: window.appUrl + "/irms/rack-locations/rack-items",
         data: {
+            rssite: $row.data("rssite") || $("#mapRsSite").val() || $("#rssite").val() || "",
             rsloc: $row.data("rsloc"),
             _token: $('input[name="_token"]').val(),
         },
@@ -203,9 +204,7 @@ $("#rackTable tbody").on("click", "tr", function () {
                         <td>${item.job}</td>
                         <td>
                             <div class="fw-semibold">${item.item}</div>
-                            <div class="small text-muted">${
-                                item.desc || ""
-                            }</div>
+                            <div class="small text-muted">${item.desc || ""}</div>
                         </td>
                         <td>${parseFloat(item.qty).toLocaleString()} ${item.um || ""}</td>
                         <td>${item.rspallet_num || ""}</td>
@@ -503,8 +502,8 @@ function renderRackMapGrid(locations, rsbaynum) {
                                            <span class="text-wrap fw-semibold">${found.jobs[0]?.desc || ""}<br></span>
                                            <span class="small fw-semibold">${found.jobs[0]?.rspallet_num?.trim() ? `(${found.jobs[0].rspallet_num.trim()})` : ""}</span>
                                         `
-                                        
-                                }</div>
+                                         }
+                                </div>
                                 <div class="fw-bold small">${qtyDisplay}</div>`
                                 : ""
                         }
@@ -574,6 +573,7 @@ $(document).on("click", "#rack-map-grid td[data-rsloc]", function () {
     $.post({
         url: window.appUrl + "/irms/rack-locations/rack-items",
         data: {
+            rssite: $td.data("rssite") || $("#mapRsSite").val() || "",
             rsloc: $td.data("rsloc"),
             _token: $('input[name="_token"]').val(),
         },

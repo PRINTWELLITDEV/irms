@@ -95,12 +95,33 @@ class RsLocationController extends Controller
 
     public function rackItems(Request $request)
     {
-        $rssite = $request->input('rssite') ? $request->input('rssite') : auth()->user()->rssite;
+        $user = auth()->user();
+        $rssite = $request->input('rssite');
         $rsloc = $request->input('rsloc');
-        $items = \DB::select(
-            'SELECT rssite, rsloc, job, item, [desc], rspallet_num, qty, um FROM rsitemloc WHERE rssite=? AND rsloc = ?', 
-            [$rssite, $rsloc]
-        );
+
+        // Fallback for non-admin users
+        if (empty($rssite) && (int)$user->level !== 1) {
+            $rssite = $user->rssite;
+        }
+
+        // If rssite is provided, filter by site + location.
+        // If missing (admin fallback), filter by location only.
+        if (!empty($rssite)) {
+            $items = \DB::select(
+                'SELECT rssite, rsloc, job, item, [desc], rspallet_num, qty, um
+                 FROM rsitemloc
+                 WHERE rssite = ? AND rsloc = ?',
+                [$rssite, $rsloc]
+            );
+        } else {
+            $items = \DB::select(
+                'SELECT rssite, rsloc, job, item, [desc], rspallet_num, qty, um
+                 FROM rsitemloc
+                 WHERE rsloc = ?',
+                [$rsloc]
+            );
+        }
+
         return response()->json($items);
     }
 
