@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Irms;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Throwable; // add this
 
 use App\Models\IrmsSite;
 use App\Models\RsUser;
@@ -98,29 +99,115 @@ class RsGoodsDispatchingController extends Controller
 
     public function processGoodsDispatch(Request $request)
     {
-        $rows = $request->input('rows'); // Array of checked rows with all needed fields
+        $rows = $request->input('rows', []);
 
-        foreach ($rows as $row) {
-            \DB::statement('EXEC sp_goodsdispatch_process 
-                @rssite = ?, @rswhse = ?, @rsloc = ?, @rslot = ?, @rspallet_num = ?, @job = ?, @item = ?, @desc = ?, @um = ?, @qty = ?, @datedispatch = ?, @docnum = ?, @createdby = ?',
-                [
-                    $row['rssite'],
-                    $row['rswhse'],
-                    $row['rsloc'],
-                    $row['rslot'],
-                    $row['rspallet_num'],
-                    $row['job'],
-                    $row['item'],
-                    $row['desc'],
-                    $row['um'],
-                    $row['qty'],
-                    $row['datedispatch'],
-                    $row['docno'],
-                    auth()->user()->userid
-                ]
-            );
+        if (!is_array($rows) || count($rows) === 0) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No rows were submitted for processing.'
+            ], 422);
         }
 
-        return response()->json(['success' => true, 'message' => 'Goods dispatched successfully!']);
+        $lockName = 'sp_goodsdispatch_process:global';
+
+        $lock = DB::selectOne(
+            "DECLARE @res INT;
+             EXEC @res = sp_getapplock @Resource = ?, @LockMode = 'Exclusive', @LockOwner = 'Session', @LockTimeout = 0;
+             SELECT result = @res;",
+            [$lockName]
+        );
+
+        if (!$lock || (int)($lock->result ?? -999) < 0) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Another dispatching process is already running. Please wait and try again.'
+            ], 409);
+        }
+
+        try {
+            $seenRows = [];
+
+            foreach ($rows as $index => $row) {
+                if (
+                    empty($row['rssite']) || empty($row['rsloc']) || empty($row['job']) ||
+                    empty($row['item']) || !isset($row['qty']) || empty($row['datedispatch'])
+                ) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Missing required data at row ' . ($index + 1)
+                    ], 400);
+                }
+
+                $qty = (float)$row['qty'];
+                if ($qty <= 0) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Invalid quantity at row ' . ($index + 1)
+                    ], 422);
+                }
+
+                $rowFingerprint = strtoupper(implode('|', [
+                    trim((string)($row['rssite'] ?? '')),
+                    trim((string)($row['rswhse'] ?? '')),
+                    trim((string)($row['rsloc'] ?? '')),
+                    trim((string)($row['rslot'] ?? '')),
+                    trim((string)($row['rspallet_num'] ?? '')),
+                    trim((string)($row['job'] ?? '')),
+                    trim((string)($row['item'] ?? '')),
+                    trim((string)($row['qty'] ?? '')),
+                    trim((string)($row['datedispatch'] ?? '')),
+                ]));
+
+                if (isset($seenRows[$rowFingerprint])) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Duplicate row detected in request at row ' . ($index + 1)
+                    ], 422);
+                }
+                $seenRows[$rowFingerprint] = true;
+
+                DB::beginTransaction();
+
+                try {
+                    DB::statement(
+                        'EXEC sp_goodsdispatch_process
+                        @rssite = ?, @rswhse = ?, @rsloc = ?, @rslot = ?, @rspallet_num = ?, @job = ?, @item = ?, @desc = ?, @um = ?, @qty = ?, @datedispatch = ?, @docnum = ?, @createdby = ?',
+                        [
+                            strtoupper(trim((string)($row['rssite'] ?? ''))),
+                            strtoupper(trim((string)($row['rswhse'] ?? ''))),
+                            strtoupper(trim((string)($row['rsloc'] ?? ''))),
+                            strtoupper(trim((string)($row['rslot'] ?? ''))),
+                            strtoupper(trim((string)($row['rspallet_num'] ?? ''))),
+                            strtoupper(trim((string)($row['job'] ?? ''))),
+                            strtoupper(trim((string)($row['item'] ?? ''))),
+                            strtoupper(trim((string)($row['desc'] ?? ''))),
+                            strtoupper(trim((string)($row['um'] ?? ''))),
+                            $qty,
+                            $row['datedispatch'],
+                            strtoupper(trim((string)($row['docno'] ?? ''))),
+                            auth()->user()->userid
+                        ]
+                    );
+
+                    DB::commit();
+                } catch (Throwable $e) {
+                    DB::rollBack();
+
+                    \Log::error('Error processing goods dispatch row', [
+                        'row' => $index + 1,
+                        'error' => $e->getMessage(),
+                    ]);
+
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Error processing row ' . ($index + 1) . ': ' . $e->getMessage()
+                    ], 500);
+                }
+            }
+
+            return response()->json(['success' => true, 'message' => 'Goods dispatched successfully!']);
+        } finally {
+            DB::statement("EXEC sp_releaseapplock @Resource = ?, @LockOwner = 'Session'", [$lockName]);
+        }
     }
 }

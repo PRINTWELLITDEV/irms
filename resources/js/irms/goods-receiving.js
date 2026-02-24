@@ -1,6 +1,12 @@
 import Swal from "sweetalert2";
 
 document.addEventListener("DOMContentLoaded", function () {
+    let isSubmittingReceive = false;
+
+    const upper = function (str) {
+        return str ? str.toString().toUpperCase() : "";
+    };
+
     // Receiving Form/Details toggle logic
     $("#receiving-details").hide();
     $("#goodsReceivingForm .btn-primary").on("click", function (e) {
@@ -324,6 +330,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // btnReceive click: validate and process receiving
     $("#btnReceive").on("click", function (e) {
+        if (isSubmittingReceive) {
+            return;
+        }
+
+        const $receiveBtn = $(this);
         let hasError = false;
         let checkedCount = 0;
         let errorMsg = "";
@@ -429,14 +440,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
 
                 rows.push({
-                    rssite:
-                        $("#rssite").val() || $("input[name='rssite']").val(),
-                    rswhse: $("#rswhse").val(),
-                    rsbaynum: $("#rsbaynum").val(),
+                    rssite: upper($("#rssite").val() || $("input[name='rssite']").val()),
+                    rswhse: upper($("#rswhse").val() || $("input[name='rswhse']").val()),
+                    rsbaynum: upper($("#rsbaynum").val() || $("input[name='rsbaynum']").val()),
                     rsloc: rsloc,
-                    rslot: $("#lot").val(),
+                    rslot: upper($("#lot").val() || $("input[name='lot']").val()),
                     rspallet_num: rspallet_num,
-                    job: $("#jobcoreceive").val(),
+                    job: upper($("#jobcoreceive").val()),
                     item: $("#item").val(),
                     desc: $("#desc").val(),
                     um: um,
@@ -469,6 +479,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Debug: Log the data being sent
         console.log("Sending rows data:", rows);
+
+        isSubmittingReceive = true;
+        const originalReceiveHtml = $receiveBtn.html();
+        $receiveBtn
+            .prop("disabled", true)
+            .html('<i class="bi bi-hourglass-split me-2"></i>Processing...');
 
         $.ajax({
             url: window.appUrl + "/irms/receiving/process-goods-received",
@@ -512,6 +528,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     text: msg,
                     confirmButtonText: "OK",
                 });
+
+                isSubmittingReceive = false;
+                $receiveBtn.prop("disabled", false).html(originalReceiveHtml);
             },
         });
     });

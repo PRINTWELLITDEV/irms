@@ -98,7 +98,7 @@
                                     <div class="row g-3 mb-4">
                                         <div class="col-md-6">
                                             <div class="form-floating">
-                                                <input type="text" class="form-control" id="jobcoreceive" name="jobco" placeholder="Enter job/CO number" required>
+                                                <input type="text" class="form-control text-uppercase" id="jobcoreceive" name="jobco" placeholder="Enter job/CO number" required>
                                                 <label for="jobcoreceive">
                                                     <i class="bi bi-briefcase text-primary me-1"></i>
                                                     Job / CO <span class="text-danger">*</span>
@@ -107,7 +107,7 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-floating">
-                                                <input type="text" class="form-control bg-light" id="lot" name="lot" placeholder="Auto-generated" readonly>
+                                                <input type="text" class="form-control bg-light text-uppercase" id="lot" name="lot" placeholder="Auto-generated" readonly>
                                                 <label for="lot">
                                                     <i class="bi bi-tag text-muted me-1"></i>
                                                     Lot

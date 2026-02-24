@@ -1,6 +1,8 @@
 import Swal from "sweetalert2";
 
 document.addEventListener("DOMContentLoaded", function () {
+    let isSubmittingDispatch = false; // add this
+
     // Dispatching Form/Details toggle logic
     $("#dispatching-details").hide();
     $("#goodsDispatchingForm .btn-danger").on("click", function (e) {
@@ -324,6 +326,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // btnDispatch click: show modal if any qty > available qty
     $("#btnDispatch").on("click", function (e) {
+        if (isSubmittingDispatch) return false;
+
         let hasError = false;
         let checkedCount = 0;
         let errorMsg = "";
@@ -459,6 +463,11 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
+        isSubmittingDispatch = true;
+        const $btn = $(this);
+        const originalHtml = $btn.html();
+        $btn.prop("disabled", true).html('<i class="bi bi-hourglass-split me-2"></i>Dispatching...');
+
         $.ajax({
             url: window.appUrl + "/irms/dispatching/process-goods-dispatch",
             method: "POST",
@@ -491,12 +500,16 @@ document.addEventListener("DOMContentLoaded", function () {
                 } else if (xhr.responseJSON && xhr.responseJSON.message) {
                     msg = xhr.responseJSON.message;
                 }
+
                 Swal.fire({
                     icon: "error",
                     title: "Dispatch Failed",
                     text: msg,
                     confirmButtonText: "OK",
                 });
+
+                isSubmittingDispatch = false;
+                $btn.prop("disabled", false).html(originalHtml);
             },
         });
     });

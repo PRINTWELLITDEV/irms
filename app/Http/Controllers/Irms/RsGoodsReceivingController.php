@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Irms;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Throwable;
 
 use App\Models\IrmsSite;
 use App\Models\RsUser;
@@ -109,65 +110,121 @@ class RsGoodsReceivingController extends Controller
      */
     public function processGoodsReceived(Request $request)
     {
-        $rows = $request->input('rows'); // Array of checked rows with all needed fields
+        $rows = $request->input('rows', []); // Array of checked rows with all needed fields
 
-        // Validate each row before processing
-        foreach ($rows as $index => $row) {
-            // Check for required fields
-            if (empty($row['rsloc'])) {
-                return response()->json([
-                    'success' => false, 
-                    'message' => "Missing rack location for row " . ($index + 1)
-                ], 400);
-            }
-            
-            if (empty($row['rssite']) || empty($row['rswhse']) || empty($row['rsbaynum'])) {
-                return response()->json([
-                    'success' => false, 
-                    'message' => "Missing required site/warehouse/bay information"
-                ], 400);
-            }
-            
-            if (empty($row['job']) || empty($row['item'])) {
-                return response()->json([
-                    'success' => false, 
-                    'message' => "Missing job or item information"
-                ], 400);
-            }
-
-            try {
-                \DB::statement('EXEC sp_goodsreceive_process 
-                    @rssite = ?, @rswhse = ?, @rsbaynum = ?, @rsloc = ?, @rslot = ?, @rspallet_num = ?, @job = ?, @item = ?, @desc = ?, @um = ?, @qty = ?, @datercvd = ?, @docnum = ?, @createdby = ?',
-                    [
-                        $row['rssite'],
-                        $row['rswhse'],
-                        $row['rsbaynum'],
-                        $row['rsloc'],
-                        $row['rslot'] ?? '',
-                        $row['rspallet_num'] ?? '',
-                        $row['job'],
-                        $row['item'],
-                        $row['desc'] ?? '',
-                        $row['um'] ?? '',
-                        $row['qty'],
-                        $row['datercvd'],
-                        $row['docnum'] ?? '',
-                        auth()->user()->userid
-                    ]
-                );
-            } catch (\Exception $e) {
-                \Log::error('Error processing goods received', [
-                    'row' => $row,
-                    'error' => $e->getMessage()
-                ]);
-                return response()->json([
-                    'success' => false, 
-                    'message' => 'Error processing row ' . ($index + 1) . ': ' . $e->getMessage()
-                ], 500);
-            }
+        if (!is_array($rows) || count($rows) === 0) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No rows were submitted for processing.'
+            ], 422);
         }
 
-        return response()->json(['success' => true, 'message' => 'Goods received successfully!']);
+        $lockName = 'sp_goodsreceive_process:global';
+
+        $lock = DB::selectOne(
+            "DECLARE @res INT;
+             EXEC @res = sp_getapplock @Resource = ?, @LockMode = 'Exclusive', @LockOwner = 'Session', @LockTimeout = 0;
+             SELECT result = @res;",
+            [$lockName]
+        );
+
+        if (!$lock || (int) ($lock->result ?? -999) < 0) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Another receiving process is already running. Please wait and try again.'
+            ], 409);
+        }
+
+        try {
+            $seenRows = [];
+
+            // Validate and process each row one-by-one
+            foreach ($rows as $index => $row) {
+                if (empty($row['rsloc'])) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Missing rack location for row ' . ($index + 1)
+                    ], 400);
+                }
+
+                if (empty($row['rssite']) || empty($row['rswhse']) || empty($row['rsbaynum'])) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Missing required site/warehouse/bay information'
+                    ], 400);
+                }
+
+                if (empty($row['job']) || empty($row['item'])) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Missing job or item information'
+                    ], 400);
+                }
+
+                $rowFingerprint = strtoupper(implode('|', [
+                    trim((string) ($row['rssite'] ?? '')),
+                    trim((string) ($row['rswhse'] ?? '')),
+                    trim((string) ($row['rsbaynum'] ?? '')),
+                    trim((string) ($row['rsloc'] ?? '')),
+                    trim((string) ($row['rslot'] ?? '')),
+                    trim((string) ($row['rspallet_num'] ?? '')),
+                    trim((string) ($row['job'] ?? '')),
+                    trim((string) ($row['item'] ?? '')),
+                    trim((string) ($row['qty'] ?? '')),
+                    trim((string) ($row['datercvd'] ?? '')),
+                ]));
+
+                if (isset($seenRows[$rowFingerprint])) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Duplicate row detected in request at row ' . ($index + 1)
+                    ], 422);
+                }
+                $seenRows[$rowFingerprint] = true;
+
+                DB::beginTransaction();
+
+                try {
+                    DB::statement('EXEC sp_goodsreceive_process
+                        @rssite = ?, @rswhse = ?, @rsbaynum = ?, @rsloc = ?, @rslot = ?, @rspallet_num = ?, @job = ?, @item = ?, @desc = ?, @um = ?, @qty = ?, @datercvd = ?, @docnum = ?, @createdby = ?',
+                        [
+                            $row['rssite'],
+                            $row['rswhse'],
+                            $row['rsbaynum'],
+                            $row['rsloc'],
+                            $row['rslot'] ?? '',
+                            $row['rspallet_num'] ?? '',
+                            $row['job'],
+                            $row['item'],
+                            $row['desc'] ?? '',
+                            $row['um'] ?? '',
+                            $row['qty'],
+                            $row['datercvd'],
+                            $row['docnum'] ?? '',
+                            auth()->user()->userid
+                        ]
+                    );
+
+                    DB::commit();
+                } catch (Throwable $e) {
+                    DB::rollBack();
+
+                    \Log::error('Error processing goods received', [
+                        'row' => $row,
+                        'error' => $e->getMessage()
+                    ]);
+
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Error processing row ' . ($index + 1) . ': ' . $e->getMessage()
+                    ], 500);
+                }
+            }
+
+            return response()->json(['success' => true, 'message' => 'Goods received successfully!']);
+        } finally {
+            DB::statement("EXEC sp_releaseapplock @Resource = ?, @LockOwner = 'Session'", [$lockName]);
+        }
     }
 
     /**
