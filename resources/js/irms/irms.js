@@ -24,6 +24,7 @@ import "./goods-dispatching.js";
    SESSION MANAGEMENT
 ===================================================== */
 // Check session validity every hour for IRMS pages
+
 setInterval(function () {
     const currentPath = window.location.pathname;
     if (currentPath.indexOf("/irms") !== -1) {

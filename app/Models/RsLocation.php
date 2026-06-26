@@ -20,6 +20,7 @@ class RsLocation extends Model
         'rsdec',
         'qty',
         'createdate',
-        'createdby'
+        'createdby',
+        'isQuarantine'
     ];
 }

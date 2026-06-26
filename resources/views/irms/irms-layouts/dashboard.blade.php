@@ -159,6 +159,15 @@
                                     <i class="fas fa-boxes stats-icon text-secondary"></i>
                                 </div>
                             </div>
+                            <div class="col-lg-2 col-md-4 col-sm-6 mb-3">
+                                <div class="stats-card secondary">
+                                    <div class="stats-label">Reports</div>
+                                    <div class="stats-number" id="total-occupied-locations">
+                                        {{ number_format($dashboardData['stats']['occupied_locations']) }}
+                                    </div>
+                                    <i class="fas fa-boxes stats-icon text-secondary"></i>
+                                </div>
+                            </div>
                         </div>
                     @else
                         <!-- User Stats -->
@@ -205,18 +214,102 @@
                     <!-- Main Content Row -->
                     <div class="row">
                         <!-- Quick Actions Column -->
-                        <div class="col-lg-4 mb-4">
-                            <div class="quick-actions">
-                                <h5 class="mb-3"><i class="fas fa-bolt me-2"></i>Quick Actions</h5>
-                                @foreach($dashboardData['quick_actions'] as $action)
+                    <div class="col-lg-4 mb-4">
+                        <div class="quick-actions">
+                            <h5 class="mb-3">
+                                <i class="fas fa-bolt me-2"></i> Quick Actions
+                            </h5>
+
+                            @foreach($dashboardData['quick_actions'] as $action)
+
+                                {{-- ✅ DROPDOWN ACTION --}}
+                                @if(isset($action['children']))
+                                    <div class="dropdown mb-2">
+                                        <button class="quick-action-btn dropdown-toggle w-100 text-start" type="button"
+                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="{{ $action['icon'] }} me-2"></i>
+                                            {{ $action['label'] }}
+                                        </button>
+
+                                        <ul class="dropdown-menu w-100">
+                                            @foreach($action['children'] as $child)
+                                                <li>
+                                                    <!--<a class="dropdown-item" href="{{ $child['url'] }}">
+                                                        {{ $child['label'] }}
+                                                    </a>-->
+                                                    <a class="dropdown-item"
+                                                    href="{{ $child['url'] }}"
+                                                    @if(isset($child['target'])) target="{{ $child['target'] }}" rel="noopener" @endif
+                                                    @if(isset($child['autoDownload'])) data-auto-download="true" @endif>
+                                                        {{ $child['label'] }}
+                                                    </a>
+
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+
+                                {{-- ✅ NORMAL ACTION --}}
+                                @else
                                     <a href="{{ $action['url'] }}" class="quick-action-btn">
                                         <i class="{{ $action['icon'] }}"></i>
                                         {{ $action['label'] }}
                                     </a>
-                                @endforeach
+                                @endif
+
+                            @endforeach
+                        </div>
+                    </div>
+
+                        <!-- Recent Activities -->
+                        <div class="col-lg-{{ $userLevel >= 2 ? 12 : 8 }} mb-4">
+                            <div class="chart-card">
+                                <div class="chart-card-header">
+                                    <h5><i class="fas fa-history me-2"></i>{{ $userLevel <= 2 ? 'Recent Transactions' : 'My Recent Transactions' }}</h5>
+                                </div>
+                                <div class="chart-card-body">
+                                    <div id="recent_transactions">
+                                        @if(count($dashboardData['recent_transactions']) > 0)
+                                            <ul class="activity-list">
+                                                @foreach($dashboardData['recent_transactions'] as $activity)
+                                                    <li class="activity-item">
+                                                        <div class="activity-icon {{ $activity['type'] }}">
+                                                            <i class="{{ $activity['icon'] }}"></i>
+                                                        </div>
+                                                        <div class="activity-content">
+                                                            <h6>{{ $activity['title'] }}</h6>
+                                                            <small>{{ $activity['description'] }} • {{ $activity['time'] }}</small>
+                                                        </div>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        @else
+                                            <div class="text-center py-4">
+                                                <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+                                                <p class="text-muted">No recent transactions found.</p>
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                    </div>
 
+                    <!-- Bottom Row -->
+                        <!-- System Status -->
+                        @if ($userLevel == 1)
+                            <div class="col-lg-4 mb-4">
+                                <div class="system-status">
+                                    <h5 class="mb-3"><i class="fas fa-server me-2"></i>System Status</h5>
+                                    @foreach($dashboardData['system_status'] as $status)
+                                        <div class="status-item">
+                                            <span>{{ $status['label'] }}</span>
+                                            <span class="status-indicator {{ $status['status'] }}"></span>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        @endif
                         <!-- Charts Column -->
                         @if($userLevel >= 2)
                             <div class="col-lg-8 mb-4">
@@ -253,61 +346,7 @@
                                     </div>
                                 </div>
                             </div>
-                        @endif
-                        <div class="col-lg-{{ $userLevel >= 2 ? 12 : 8 }} mb-4">
-                            <div class="chart-card">
-                                <div class="chart-card-header">
-                                    <h5><i class="fas fa-history me-2"></i>{{ $userLevel <= 2 ? 'Recent Transactions' : 'My Recent Transactions' }}</h5>
-                                </div>
-                                <div class="chart-card-body">
-                                    <div id="recent_transactions">
-                                        @if(count($dashboardData['recent_transactions']) > 0)
-                                            <ul class="activity-list">
-                                                @foreach($dashboardData['recent_transactions'] as $activity)
-                                                    <li class="activity-item">
-                                                        <div class="activity-icon {{ $activity['type'] }}">
-                                                            <i class="{{ $activity['icon'] }}"></i>
-                                                        </div>
-                                                        <div class="activity-content">
-                                                            <h6>{{ $activity['title'] }}</h6>
-                                                            <small>{{ $activity['description'] }} • {{ $activity['time'] }}</small>
-                                                        </div>
-                                                    </li>
-                                                @endforeach
-                                            </ul>
-                                        @else
-                                            <div class="text-center py-4">
-                                                <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
-                                                <p class="text-muted">No recent transactions found.</p>
-                                            </div>
-                                        @endif
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Bottom Row -->
-                    <div class="row">
-                        <!-- Recent Activities -->
-                        
-                        <!-- System Status -->
-                        @if ($userLevel == 1)
-                            <div class="col-lg-4 mb-4">
-                                <div class="system-status">
-                                    <h5 class="mb-3"><i class="fas fa-server me-2"></i>System Status</h5>
-                                    @foreach($dashboardData['system_status'] as $status)
-                                        <div class="status-item">
-                                            <span>{{ $status['label'] }}</span>
-                                            <span class="status-indicator {{ $status['status'] }}"></span>
-                                        </div>
-                                    @endforeach
-                                </div>
-                            </div>
-                        @endif
-
-                    </div>
-                </div>
+                        @endif                        
             </div>
         </div>
     </main>

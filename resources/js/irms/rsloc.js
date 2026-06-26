@@ -33,7 +33,6 @@ import moment from "moment";
 //     });
 //     $("#rackTableBody").html(html);
 // }
-
 function loadRackLocTable() {
     $.get(window.appUrl + "/irms/rack-locations/rack-list", function (html) {
         if ($.fn.DataTable.isDataTable("#rackTable")) {
@@ -44,6 +43,7 @@ function loadRackLocTable() {
         const rackTable = $("#rackTable").DataTable({
             fixedHeader: true,
             responsive: true,
+            stateSave: true,
             columnControl: ["order", ["searchList"]],
             ordering: {
                 indicators: false,
@@ -212,9 +212,11 @@ $("#rackTable tbody").on("click", "tr", function () {
                 });
             }
             $("#view-rack-items-body").html(html);
+
         },
     });
 
+    $('#modal_is_quarantine').prop('checked', $row.data("isquarantine") == 1);
     // Show modal (or offcanvas if you changed to sidebar)
     $("#viewRackModal").modal("show");
 });
@@ -555,6 +557,50 @@ function enableHorizontalScroll() {
     });
 }
 
+
+
+$(document).on('click', '#saveBtn', function (e) {
+    e.preventDefault(); // Stop any accidental form submission wrappers
+    
+    let fd = new FormData();
+    
+    fd.append('_token', $('meta[name="csrf-token"]').attr('content'));
+    fd.append('_method', 'PATCH'); 
+    fd.append('rswhse', $('#view-rack-warehouse').text().trim());
+    fd.append('rsloc', $('#view-rack-location').text().trim());
+    fd.append('isQuarantine', $('#modal_is_quarantine').is(':checked') ? 1 : 0);
+
+    let url = $('meta[name="update-url"]').attr('content');
+
+    $.ajax({
+        url: url,
+        type: 'POST', 
+        data: fd,
+        processData: false,
+        contentType: false,
+        success: function (response) {
+            if(response.success) {
+                Swal.fire('Saved!', response.message, 'success')
+                .then(() => {
+                    $('#viewRackModal').modal('hide');
+                    loadRackLocTable();
+                });
+
+            }
+        },
+        error: function (xhr) {
+            console.error("Payload breakdown error:", xhr.responseText);
+            Swal.fire('Error', 'Could not save modifications.', 'error');
+        }
+    }); 
+});
+
+
+$(document).on('click', '#modal_is_quarantine', function (e) {
+    e.stopPropagation(); // stop bubbling to global handlers
+});
+
+
 $(document).on("click", "#rack-map-grid td[data-rsloc]", function () {
     const $td = $(this);
     $("#title-rack-location").text($td.data("rsloc") || "");
@@ -595,9 +641,10 @@ $(document).on("click", "#rack-map-grid td[data-rsloc]", function () {
                 });
             }
             $("#view-rack-items-body").html(html);
-        }
+        }   
     });
 
+    $('#modal_is_quarantine').prop('checked', $td.data("isquarantine") == 1);
     $("#viewRackModal").modal("show");
 });
 
@@ -660,3 +707,4 @@ $(document).ready(function () {
     $("#mapRsBay").val('');
     $("#rack-map-grid").html('');
 });
+

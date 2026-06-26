@@ -74,6 +74,7 @@
                                                         <th width="10%">Bay No.</th>
                                                         <!-- <th>Description</th> -->
                                                         <th width="10%">Quantity</th>
+                                                        <th width="10%">Quarantine</th>
                                                         @if(auth()->user()->level == 1)
                                                             <th width="10%">Site</th>
                                                         @endif
@@ -165,7 +166,8 @@
     <div class="modal fade" id="viewRackModal" tabindex="-1" aria-labelledby="viewRackModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
-                <form action="">
+                <form action="" id="viewRack">
+                    @csrf
                     <div class="modal-header bg-primary text-white">
                         <h1 class="modal-title fs-5" id="viewRackModalLabel">View Rack Location: <span id="title-rack-location">-</span></h1>
                         <button type="button" class="btn btn-close btn-close-white" data-bs-dismiss="modal"
@@ -210,6 +212,13 @@
                                         <span id="view-rack-createDate">-</span>
                                     </td>
                                 </tr>
+
+                                <tr>
+                                    <th>Quarantine: </th>
+                                        <td>
+                                            <input type="checkbox" id="modal_is_quarantine" class="modal-checkbox">
+                                        </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -232,13 +241,13 @@
                         </div>
                     </div>
                     <div class="modal-footer">
+                        <button type="button" id="saveBtn" class="btn btn-primary">Save</button>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-
 
     <!-- Add Rack Location Modal -->
     <div class="modal fade" id="addRackModal" tabindex="-1" aria-labelledby="addRackModalLabel" aria-hidden="true">
@@ -321,7 +330,11 @@
                             </div>
                             @error('rsdesc') <div class="text-danger small">{{ $message }}</div> @enderror
                         </div>
-
+                        <div class="mb-3">
+                            <!--<label class="form-label d-block">Quarantine</label>-->
+                                    
+   
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>

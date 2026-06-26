@@ -189,8 +189,14 @@ class IrmsController extends Controller
                 ['icon' => 'fas fa-map-marker-alt', 'label' => 'Rack Locations', 'url' => route('racklocations.index')],
                 ['icon' => 'fas fa-chart-bar', 'label' => 'Transactions', 'url' => route('irms.transactions')],
                 ['icon' => 'fas fa-cogs', 'label' => 'System Settings', 'url' => route('dashboard')],
-            ]
-        ];
+                ['icon' => 'fas fa-file-alt', 'label' => 'Reports', 'children' => [
+                ['label' => 'Stickering Report', 'url' => route('irms.stickering-report.preview'),'target' => '_blank', 'autoDownload' => false],
+                ['label' => 'Quarantine Report','url' => route('irms.quarantine-report.preview'),'target' => '_blank', 'autoDownload' => false],
+
+                ]
+            ],
+        ],
+    ];
     }
     private function getAdminData($userSite)
     {
@@ -610,5 +616,4 @@ class IrmsController extends Controller
             return (object) ['received' => 0, 'dispatched' => 0];
         }
     }
-
 }

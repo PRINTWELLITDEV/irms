@@ -16,6 +16,7 @@ use App\Http\Controllers\Irms\RsItemLocController;
 use App\Http\Controllers\Irms\RsGoodsReceivingController;
 use App\Http\Controllers\Irms\RsGoodsDispatchingController;
 use App\Http\Controllers\Irms\RsTransController;
+use App\Http\Controllers\Irms\ReportController;
 use App\Http\Controllers\HomeController;
 
 // Home route
@@ -103,6 +104,7 @@ Route::prefix('irms')->middleware('auth')->group(function () {
     Route::post('/rack-locations/store', [RsLocationController::class, 'store'])->name('racklocations.store');
     Route::post('/rack-locations/map-grid', [RsLocationController::class, 'rackMapGrid'])->name('racklocations.mapgrid');
     Route::post('/rack-locations/rack-items', [RsLocationController::class, 'rackItems'])->name('racklocations.rackitems');
+    Route::patch('/rack-locations/update-quarantine', [RsLocationController::class, 'updateQuarantine'])->name('racklocations.quarantine');
 
     //Item Locations
     Route::get('/item-locations', [RsItemLocController::class, 'index'])->name('irms.itemlocations');
@@ -134,6 +136,11 @@ Route::prefix('irms')->middleware('auth')->group(function () {
     Route::post('/user-profile/{userid}/update', [RsUserProfileController::class, 'update'])->name('user-profile.update');
     Route::post('/user-profile/{userid}/change-password', [RsUserProfileController::class, 'changePassword'])->name('user-profile.change-password');
 
+    //Reports
+    Route::get('/stickering-report/preview', [ReportController::class, 'stickeringPreview']) ->name('irms.stickering-report.preview');
+    Route::get('/stickering-report/pdf', [ReportController::class, 'stickeringPdf'])->name('irms.stickering-report.pdf');
+    Route::get('/quarantine-report/preview', [ReportController::class, 'quarantinePreview']) ->name('irms.quarantine-report.preview');
+    Route::get('/quarantine-report/pdf', [ReportController::class, 'quarantinePdf'])->name('irms.quarantine-report.pdf');
 });
 
 

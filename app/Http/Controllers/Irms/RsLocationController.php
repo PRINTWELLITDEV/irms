@@ -21,12 +21,12 @@ class RsLocationController extends Controller
 
         $sites = IrmsSite::all();
         $warehouses = DB::table('rswhse')->get();
-        
+
         // Update the bay query to include rswhse
         $baynums = DB::table('rsbayloc')
             ->select('rsbaynum', 'rssite', 'rswhse')
             ->get();
-            
+
         return view('irms.irms-layouts.rack-locations', compact('sites', 'warehouses', 'baynums'));
     }
 
@@ -66,9 +66,11 @@ class RsLocationController extends Controller
             'rsdesc.max' => 'The Description field must not exceed 13 characters.',
         ]);
 
-        if (RsLocation::where('rsloc', $validated['rsloc'])
-                      ->where('rssite', $validated['rssite'])
-                      ->exists()) {
+        if (
+            RsLocation::where('rsloc', $validated['rsloc'])
+                ->where('rssite', $validated['rssite'])
+                ->exists()
+        ) {
             return response()->json(['message' => 'Rack location already exists for this site.'], 422);
         }
 
@@ -100,7 +102,7 @@ class RsLocationController extends Controller
         $rsloc = $request->input('rsloc');
 
         // Fallback for non-admin users
-        if (empty($rssite) && (int)$user->level !== 1) {
+        if (empty($rssite) && (int) $user->level !== 1) {
             $rssite = $user->rssite;
         }
 
@@ -151,7 +153,7 @@ class RsLocationController extends Controller
                     'original_qty' => 0
                 ];
             }
-            
+
             // Add job to the list if exists
             if ($location->job && $location->item) {
                 $grouped[$rsloc]['jobs'][] = [
@@ -201,5 +203,28 @@ class RsLocationController extends Controller
         return response()->json($result);
     }
 
-    
+    public function updateQuarantine(Request $request)
+{
+    $user = auth()->user();
+    $userSite = trim($user->rssite); // Trim payload to prevent DB string matches from failing
+
+    // Execute stored procedure matching 4 strict parameters
+    DB::connection('sqlsrv')->statement(
+        'EXEC dbo.sp_update_rsloc ?, ?, ?, ?',
+        [
+            $userSite,
+            trim($request->rswhse),
+            trim($request->rsloc),
+            $request->isQuarantine == 1 ? 1 : 0
+        ]
+    );
+
+    // Explicitly return JSON instead of redirecting the background process
+    return response()->json([
+        'success' => true,
+        'message' => 'Quarantine status updated successfully.'
+    ]);
+}
+
+
 }

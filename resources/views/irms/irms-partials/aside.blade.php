@@ -117,6 +117,17 @@
                     </a>
                 </li>
                 @endif
+                <!--@if(auth()->user()->level >= 1 && auth()->user()->level <= 3)
+                <li class="nav-header">Reports</li>
+                    <a href="{{ url('/irms/stickering-report/preview') }}" class="nav-link{{ request()->is('irms/stickering-report') ? ' active' : '' }}">
+                        <i class="nav-icon fas fa-file-alt"></i>
+                        <p>Stickering Report</p>
+                    </a>
+                    <a href="{{ url('/irms/quarantine-report/preview') }}" class="nav-link{{ request()->is('irms/quarantine-report') ? ' active' : '' }}">
+                        <i class="nav-icon fas fa-file-alt"></i>
+                        <p>Quarantine Report</p>
+                    </a>
+                @endif-->
 
                 <!-- <li class="nav-header"></li>
                 <li class="nav-item nav-logout">
