@@ -81,18 +81,10 @@ class ReportController extends Controller
             $request->filled('rswhse') ? $request->rswhse : null,
             $request->filled('rsbaynum') ? $request->rsbaynum : null,
             $request->filled('rsloc') ? $request->rsloc : null,
-            $request->filled('rspalletnum') ? $request->rspalletnum : null,
-            $request->filled('job') ? $request->job : null,
-            $request->filled('item') ? $request->item : null,
-            $request->filled('desc') ? $request->desc : null,
-            $request->filled('um') ? $request->um : null,
-            $request->filled('qty') ? $request->qty : null,
-            $request->filled('datercvd') ? $request->datercvd : null,
-
         ];
 
         $records = DB::connection('sqlsrv')->select(
-            'EXEC dbo.sp_Quarantine_Report ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?',
+            'EXEC dbo.sp_Quarantine_Report ?, ?, ?, ?',
             $params
         );
 
@@ -102,13 +94,6 @@ class ReportController extends Controller
             'rswhse'        => $params[1],
             'rsbaynum'      => $params[2],
             'rsloc'         => $params[3],
-            'rspallet_num'  => $params[4],
-            'job'           => $params[5],
-            'item'          => $params[6],
-            'desc'          => $params[7],
-            'um'            => $params[8],
-            'qty'           => $params[9],
-            'datercvd'      => $params[10],
         ];
     }
 
