@@ -20,6 +20,7 @@ class ReportController extends Controller
             $request->filled('rswhse') ? $request->rswhse : null,
             $request->filled('rsbaynum') ? $request->rsbaynum : null,
             $request->filled('rsloc') ? $request->rsloc : null,
+            
         ];
 
         $records = DB::connection('sqlsrv')->select(
@@ -55,33 +56,6 @@ class ReportController extends Controller
                 ->setPaper('a4', 'landscape');
 
         return $pdf->download('stickering-report.pdf');
-    }
-
-    
-    private function getQuarantineData(Request $request)
-    {
-        $user = auth()->user();
-        $userSite = trim($user->rssite);
-
-        $params = [
-            $userSite,
-            $request->filled('rswhse') ? $request->rswhse : null,
-            $request->filled('rsbaynum') ? $request->rsbaynum : null,
-            $request->filled('rsloc') ? $request->rsloc : null,
-        ];
-
-        $records = DB::connection('sqlsrv')->select(
-            'EXEC dbo.sp_Quarantine_Report ?, ?, ?, ?',
-            $params
-        );
-
-        return [
-            'records'       => $records,
-            'rssite'        => $userSite,
-            'rswhse'        => $params[1],
-            'rsbaynum'      => $params[2],
-            'rsloc'         => $params[3],
-        ];
     }
 
     
