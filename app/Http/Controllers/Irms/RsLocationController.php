@@ -203,7 +203,7 @@ class RsLocationController extends Controller
         return response()->json($result);
     }
 
-    public function updateQuarantine(Request $request)
+    /*public function updateQuarantine(Request $request)
 {
     $user = auth()->user();
     $userSite = trim($user->rssite); // Trim payload to prevent DB string matches from failing
@@ -224,7 +224,7 @@ class RsLocationController extends Controller
         'success' => true,
         'message' => 'Quarantine status updated successfully.'
     ]);
-}
+}*/
 
 
 }

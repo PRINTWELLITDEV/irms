@@ -219,10 +219,11 @@
                             <h5 class="mb-3">
                                 <i class="fas fa-bolt me-2"></i> Quick Actions
                             </h5>
+                            
 
                             @foreach($dashboardData['quick_actions'] as $action)
 
-                                {{-- ✅ DROPDOWN ACTION --}}
+                                {{-- DROPDOWN ACTION --}}
                                 @if(isset($action['children']))
                                     <div class="dropdown mb-2">
                                         <button class="quick-action-btn dropdown-toggle w-100 text-start" type="button"
@@ -249,7 +250,7 @@
                                         </ul>
                                     </div>
 
-                                {{-- ✅ NORMAL ACTION --}}
+                                {{--NORMAL ACTION --}}
                                 @else
                                     <a href="{{ $action['url'] }}" class="quick-action-btn">
                                         <i class="{{ $action['icon'] }}"></i>
@@ -262,7 +263,7 @@
                     </div>
 
                         <!-- Recent Activities -->
-                        <div class="col-lg-{{ $userLevel >= 2 ? 12 : 8 }} mb-4">
+                        <div class="col-lg-8 mb-4">
                             <div class="chart-card">
                                 <div class="chart-card-header">
                                     <h5><i class="fas fa-history me-2"></i>{{ $userLevel <= 2 ? 'Recent Transactions' : 'My Recent Transactions' }}</h5>
@@ -312,6 +313,18 @@
                         @endif
                         <!-- Charts Column -->
                         @if($userLevel >= 2)
+                        <div class="row">
+                            <!-- User Chart -->
+                            <div class="col-lg-4 mb-4">
+                                <div class="chart-card">
+                                    <div class="chart-card-header">
+                                        <h5><i class="fas fa-chart-pie me-2"></i>Today's Operations</h5>
+                                    </div>
+                                    <div class="chart-card-body">
+                                        <canvas id="todayChart" height="200"></canvas>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="col-lg-8 mb-4">
                                 <!-- Super Admin Chart -->
                                 <div class="chart-card">
@@ -323,7 +336,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-8 mb-4">
+                        </div>
+                            <div class="col-lg-12 mb-4">
                                 <!-- Admin Chart -->
                                 <div class="chart-card">
                                     <div class="chart-card-header">
@@ -331,18 +345,6 @@
                                     </div>
                                     <div class="chart-card-body">
                                         <canvas id="weeklyChart" height="200"></canvas>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- User Chart -->
-                            <div class="col-lg-4 mb-4">
-                                <div class="chart-card">
-                                    <div class="chart-card-header">
-                                        <h5><i class="fas fa-chart-pie me-2"></i>Today's Operations</h5>
-                                    </div>
-                                    <div class="chart-card-body">
-                                        <canvas id="todayChart" height="200"></canvas>
                                     </div>
                                 </div>
                             </div>

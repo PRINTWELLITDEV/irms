@@ -313,8 +313,14 @@ class IrmsController extends Controller
                 ['icon' => 'bi bi-grid-3x3', 'label' => 'Rack Locations', 'url' => route('racklocations.index')],
                 ['icon' => 'fas fa-boxes', 'label' => 'Item Locations', 'url' => route('irms.itemlocations')],
                 ['icon' => 'fas fa-exchange-alt', 'label' => 'Transactions', 'url' => route('irms.transactions')],
-            ]
-        ];
+                ['icon' => 'fas fa-file-alt', 'label' => 'Reports', 'children' => [
+                ['label' => 'Stickering Report', 'url' => route('irms.stickering-report.preview'),'target' => '_blank', 'autoDownload' => false],
+                ['label' => 'Quarantine Report','url' => route('irms.quarantine-report.preview'),'target' => '_blank', 'autoDownload' => false],
+
+                ]
+            ],
+        ],
+     ];
     }
 
     private function getUserData($userSite)
@@ -410,8 +416,13 @@ class IrmsController extends Controller
                 ['icon' => 'bi bi-grid-3x3', 'label' => 'Rack Locations', 'url' => route('racklocations.index')],
                 ['icon' => 'fas fa-boxes', 'label' => 'Item Locations', 'url' => route('irms.itemlocations')],
                 ['icon' => 'fas fa-exchange-alt', 'label' => 'Transactions', 'url' => route('irms.transactions')],
-            ]
-        ];
+                ['icon' => 'fas fa-file-alt', 'label' => 'Reports', 'children' => [
+                ['label' => 'Stickering Report', 'url' => route('irms.stickering-report.preview'),'target' => '_blank', 'autoDownload' => false],
+                ['label' => 'Quarantine Report','url' => route('irms.quarantine-report.preview'),'target' => '_blank', 'autoDownload' => false],
+                ]
+            ],
+        ],
+    ];
     }
 
     private function getDefaultData()
