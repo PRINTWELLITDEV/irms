@@ -136,7 +136,14 @@
         <a class="custom-button" href="{{ route('irms.quarantine-report.pdf', request()->all()) }}">
             Download Quarantine Report</a>
     @endif
-<div class="table-container">
+
+    
+@php
+    $chunks = array_chunk($records ?? [], 25);
+@endphp
+
+@foreach($chunks as $chunk)
+<div>
     <table>
         <thead>
             <tr>
@@ -175,8 +182,10 @@
                 </tr>
             @endforelse
         </tbody>
-    </table>
+        </table>
     </div>
+    <div style="page-break-after: always;"></div>
+    @endforeach
 </body>
 </html>
     
