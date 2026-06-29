@@ -142,7 +142,7 @@
     $chunks = array_chunk($records ?? [], 25);
 @endphp
 
-@foreach($chunks as $chunk)
+@foreach($chunk as $record)
 <div>
     <table>
         <thead>
@@ -160,7 +160,7 @@
             </tr>
         </thead>
         <tbody>
-            @forelse($records as $record)
+            @forelse($chunk as $record)
                     <tr class="tr-data">
                         <td class="td-data">{{ $record->rswhse }}</td>
                         <td class="td-data">{{ $record->rsbaynum }}</td>

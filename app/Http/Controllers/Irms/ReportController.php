@@ -139,6 +139,8 @@ class ReportController extends Controller
                 @rsloc = ?",
             $params
         );
+        
+        $records = json_decode(json_encode($records), true);
 
         return [
             'records'       => $records,
