@@ -161,10 +161,13 @@
                         <td class="td-data">{{ $record->rspallet_num }}</td>
                         <td class="td-data">{{ $record->job }}</td>
                         <td class="td-data">{{ $record->item }}</td>
-                        <td class="td-data">{{ $record->desc }}</td>
+                        <td class="td-data">{{ $record->desc ?? '' }}</td>
                         <td class="td-data">{{ $record->um }}</td>
-                        <td class="td-data">{{ number_format($record->qty, 0) }}</td>
-                        <td class="td-data">{{ \Carbon\Carbon::parse($record->datercvd)->format('d F Y') }}</td>
+                        <td class="td-data">{{ number_format($record->qty ?? 0, 0) }}</td>
+                        <td class="td-data">
+                            {{ $record->datercvd ? \Carbon\Carbon::parse($record->datercvd)->format('d F Y') : '' }}
+                        </td>
+
                     </tr>
             @empty
                 <tr>
