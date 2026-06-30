@@ -166,6 +166,21 @@ document.addEventListener("DOMContentLoaded", function () {
                 const tbody = $("#receivingTable tbody");
                 tbody.empty();
                 if (data.length > 0) {
+                    
+                    data.sort((a, b) => {
+                        const qtyA = Number(a.qty_onHand) || 0;
+                        const qtyB = Number(b.qty_onHand) || 0;
+
+                        const groupA = qtyA > 0 ? 1 : 0; // occupied
+                        const groupB = qtyB > 0 ? 1 : 0; // available
+
+                        return (
+                            groupA - groupB ||
+                            qtyA - qtyB ||
+                            (a.rsloc || "").localeCompare(b.rsloc || "")
+                        );
+                    });
+
                     data.forEach(function (row, idx) {
                         // Format qty_onHand: show "0" if integer 0, else show decimal only if needed
                         let qtyOnHandNum = parseFloat(row.qty_onHand);
@@ -179,7 +194,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                 .toFixed(2)
                                 .replace(/\.00$/, "");
                         }
-                        tbody.append(`
+                        /*tbody.append(`
                         <tr>
                             <td class="text-center">${idx + 1}</td>
                             <td class="text-center align-middle">
@@ -197,7 +212,29 @@ document.addEventListener("DOMContentLoaded", function () {
                             <td class="text-center text-muted">-</td>
                         </tr>
                     `);
-                    });
+                    });*/
+
+                    
+                const isOccupied = qtyOnHandNum > 0;
+
+                tbody.append(`
+                <tr class="${isOccupied ? 'table-secondary' : ''}">
+                    <td class="text-center">${idx + 1}</td>
+                    <td class="text-center align-middle">
+                        <input type="checkbox" name="select_row[]" value="${
+                            idx + 1
+                        }" class="big-checkbox"
+                        ${isOccupied ? 'disabled' : ''}>
+                    </td>
+                    <td><strong>${row.rsloc}</strong></td>
+                    <td><input type="text" class="form-control" value="" disabled></td>
+                    <td class="position-relative"><input type="text" class="form-control text-end" value="" disabled></td>
+                    <td class="text-end"><span class="badge bg-light text-dark">${qtyOnHand}</span></td>
+                    <td class="text-center"><span class="badge bg-primary">${um}</span></td>
+                    <td class="text-center text-muted">-</td>
+                </tr>
+                `);
+                });
                 } else {
                     tbody.append(
                         '<tr><td colspan="8" class="text-center text-muted"><i class="bi bi-inbox me-2"></i>No Rack Locations found.</td></tr>'
@@ -250,12 +287,14 @@ document.addEventListener("DOMContentLoaded", function () {
         const allChecked = checkboxes.length > 0 && checkboxes.filter(":checked").length === checkboxes.length;
 
         if (allChecked) {
-            checkboxes.prop("checked", false).trigger("change");
+            //checkboxes.prop("checked", false).trigger("change");
+            checkboxes.not(":disabled").prop("checked", false).trigger("change");
             // Force update after all are unchecked
             $(this).find("i").removeClass("bi-x-circle-fill bi-check-circle-fill").addClass("bi-check-circle");
             $("#btnR_SelectAll").find("span").text("Select All");
         } else {
-            checkboxes.prop("checked", true).trigger("change");
+            //checkboxes.prop("checked", true).trigger("change");
+            checkboxes.not(":disabled").prop("checked", true).trigger("change");
             // Force update after all are checked
             $(this).find("i").removeClass("bi-check-circle bi-check-circle-fill").addClass("bi-x-circle-fill");
             $("#btnR_SelectAll").find("span").text("Unselect All");
@@ -576,20 +615,59 @@ document.addEventListener("DOMContentLoaded", function () {
                 tbody.empty();
                 if (data.length > 0) {
                     const um = $("#um").val();
+                    
+                    data.sort((a, b) => {
+                        const qtyA = Number(a.qty_onHand) || 0;
+                        const qtyB = Number(b.qty_onHand) || 0;
+
+                        const groupA = qtyA > 0 ? 1 : 0; // occupied
+                        const groupB = qtyB > 0 ? 1 : 0; // available
+
+                        return (
+                            groupA - groupB ||
+                            qtyA - qtyB ||
+                            (a.rsloc || "").localeCompare(b.rsloc || "")
+                        );
+                    });
+
                     data.forEach(function (row, idx) {
                         // Format qty_onHand
                         let qtyOnHandNum = parseFloat(row.qty_onHand);
                         let qtyOnHand;
-                        if (isNaN(qtyOnHandNum) || qtyOnHandNum === 0) {
-                            qtyOnHand = "0";
-                        } else if (qtyOnHandNum % 1 === 0) {
-                            qtyOnHand = qtyOnHandNum.toString();
-                        } else {
-                            qtyOnHand = qtyOnHandNum
-                                .toFixed(2)
-                                .replace(/\.00$/, "");
-                        }
-                        tbody.append(`
+
+                            if (isNaN(qtyOnHandNum) || qtyOnHandNum === 0) {
+                                qtyOnHand = "0";
+                            } else if (qtyOnHandNum % 1 === 0) {
+                                qtyOnHand = qtyOnHandNum.toString();
+                            } else {
+                                qtyOnHand = qtyOnHandNum
+                                    .toFixed(2)
+                                    .replace(/\.00$/, "");
+                            }
+
+                            const isOccupied = qtyOnHandNum > 0;
+
+                            tbody.append(`
+                            <tr class="${isOccupied ? 'table-secondary' : ''}">
+                                <td class="text-center">${idx + 1}</td>
+                                <td class="text-center align-middle">
+                                    <input type="checkbox" name="select_row[]" value="${
+                                        idx + 1
+                                    }" class="big-checkbox"
+                                    ${isOccupied ? 'disabled' : ''}>
+                                </td>
+                                <td><strong>${row.rsloc}</strong></td>
+                                <td><input type="text" class="form-control" value="" disabled></td>
+                                <td class="position-relative"><input type="text" class="form-control text-end" value="" disabled></td>
+                                <td class="text-end"><span class="badge bg-light text-dark">${qtyOnHand}</span></td>
+                                <td class="text-center"><span class="badge bg-primary">${um}</span></td>
+                                <td class="text-center text-muted">-</td>
+                            </tr>
+                            `);
+
+                        });
+
+                       /* tbody.append(`
                         <tr>
                             <td class="text-center">${idx + 1}</td>
                             <td class="text-center align-middle">
@@ -607,7 +685,8 @@ document.addEventListener("DOMContentLoaded", function () {
                             <td class="text-center text-muted">-</td>
                         </tr>
                     `);
-                    });
+                    });*/
+
                 } else {
                     tbody.append(
                         '<tr><td colspan="8" class="text-center text-muted"><i class="bi bi-inbox me-2"></i>No Rack Locations found.</td></tr>'

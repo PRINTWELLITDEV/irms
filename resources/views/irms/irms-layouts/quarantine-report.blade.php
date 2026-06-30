@@ -136,14 +136,7 @@
         <a class="custom-button" href="{{ route('irms.quarantine-report.pdf', request()->all()) }}">
             Download Quarantine Report</a>
     @endif
-
-    
-@php
-    $chunks = array_chunk($records ?? [], 25);
-@endphp
-
-@foreach($chunk as $record)
-<div>
+<div class="table-container">
     <table>
         <thead>
             <tr>
@@ -160,7 +153,7 @@
             </tr>
         </thead>
         <tbody>
-            @forelse($chunk as $record)
+            @forelse($records as $record)
                     <tr class="tr-data">
                         <td class="td-data">{{ $record->rswhse }}</td>
                         <td class="td-data">{{ $record->rsbaynum }}</td>
@@ -172,7 +165,7 @@
                         <td class="td-data">{{ $record->um }}</td>
                         <td class="td-data">{{ number_format($record->qty ?? 0, 0) }}</td>
                         <td class="td-data">
-                            {{ $record->datercvd ? \Carbon\Carbon::parse($record->datercvd)->format('d F Y') : '' }}
+                        {{ $record->datercvd ? \Carbon\Carbon::parse($record->datercvd)->format('d F Y') : 'N/A' }}
                         </td>
 
                     </tr>
@@ -182,10 +175,9 @@
                 </tr>
             @endforelse
         </tbody>
-        </table>
+
+</table>
     </div>
-    <div style="page-break-after: always;"></div>
-    @endforeach
 </body>
 </html>
     

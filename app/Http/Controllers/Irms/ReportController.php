@@ -126,28 +126,20 @@ class ReportController extends Controller
         $userSite,
         $request->rswhse ?? null,
         $request->rsbaynum ?? null,
-        $request->rsloc ?? null,
     ];
 
     try {
 
         $records = DB::connection('sqlsrv')->select(
-            "EXEC dbo.sp_Quarantine_Report 
-                @rssite = ?, 
-                @rswhse = ?, 
-                @rsbaynum = ?, 
-                @rsloc = ?",
+            'EXEC dbo.sp_Quarantine_Report ?, ?, ?',
             $params
         );
-        
-        $records = json_decode(json_encode($records), true);
 
         return [
             'records'       => $records,
             'rssite'        => $userSite,
             'rswhse'        => $params[1],
             'rsbaynum'      => $params[2],
-            'rsloc'         => $params[3],
         ];
 
 
