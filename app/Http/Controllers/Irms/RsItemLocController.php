@@ -87,7 +87,8 @@ class RsItemLocController extends Controller
         $summary = \DB::selectOne('EXEC sp_view_rsitemlocs @job = ?, @rssite = ?', [$job, $rssite]);
         // Get rack list for the job
         $details = \DB::select('EXEC sp_job_details @job = ?, @rssite = ?', [$job, $rssite]);
-
+        //Sort the pallet number from lowest to highest
+        $details = collect($details) ->sortBy('rspallet_num') ->values();
         return view('irms.irms-layouts.item-job-details', compact('summary', 'details', 'job'));
     }
 
