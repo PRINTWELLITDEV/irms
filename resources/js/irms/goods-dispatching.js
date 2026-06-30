@@ -159,8 +159,22 @@ document.addEventListener("DOMContentLoaded", function () {
                     success: function (data) {
                         const tbody = $("#dispatchingTable tbody");
                         tbody.empty();
+                        data.sort((a, b) => {
+                            const qtyA = parseFloat(a.qty) || 0;
+                            const qtyB = parseFloat(b.qty) || 0;
+
+                            return qtyA - qtyB;
+                        });
+
                         if (data.length > 0) {
                             const um = $("#um").val();
+                            data.sort((a, b) =>
+                                (a.rspallet_num || "").localeCompare(
+                                    b.rspallet_num || "",
+                                    undefined,
+                                    { numeric: true, sensitivity: "base" }
+                                )
+                            );
                             data.forEach(function (row, idx) {
                                 let qtyNum = parseFloat(row.qty);
                                 let qty =
