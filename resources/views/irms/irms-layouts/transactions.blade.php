@@ -42,6 +42,7 @@
                                         <tr>
                                             <th width="5%">Trans No.</th>
                                             <th width="5%">Trans Date</th>
+                                            <th width="5%">Rack Location</th>
                                             <th width="5%">Type</th>
                                             <th width="">Job</th>
                                             <th width="">Item</th>

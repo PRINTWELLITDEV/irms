@@ -2,6 +2,7 @@
     <tr
         data-transnum="{{ $trx->trans_num }}"
         data-trxdate="{{ $trx->trxdate }}"
+        data-rsloc="{{ $trx->rsloc }}"
         data-job="{{ $trx->job }}"
         data-item="{{ $trx->item }}"
         data-lot="{{ $trx->rslot }}"
@@ -14,6 +15,7 @@
     >
         <td>{{ $trx->trans_num }}</td>
         <td>{{ \Carbon\Carbon::parse($trx->trxdate)->format('d M Y') }}</td>
+        <td>{{ $trx->rsloc }}</td>
         <td>{{ $trx->trxtype }}</td>
         <td>{{ $trx->job }}</td>
         <td>{{ $trx->item }}</td>
