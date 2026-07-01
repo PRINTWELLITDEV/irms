@@ -314,8 +314,10 @@ function updateRackMapSortButton() {
     const bay = $("#mapRsBay").val();
     if (whse && bay) {
         $("#btnRackMapSort").removeClass("d-none");
+        $("#rackMapLegend").removeClass("d-none");
     } else {
         $("#btnRackMapSort").addClass("d-none");
+        $("#rackMapLegend").addClass("d-none");
     }
 }
 
@@ -408,33 +410,40 @@ function renderRackMapGrid(locations, rsbaynum) {
     }
 
     // Function to get background color based on quantity comparison
-    function getQtyColor(currentQty, originalQty) {
-        if (currentQty <= 0)
-            return "linear-gradient(180deg, rgba(231, 255, 231, 1) 0%, rgba(198, 253, 198, 1) 100%)";
+    function getQtyColor(currentQty, originalQty, found) {
+        
 
         let percentage = (currentQty / originalQty) * 100;
-        if (percentage >= 100)
-            return "linear-gradient(180deg, rgba(139, 0, 0, 1) 0%, rgba(80, 0, 0, 1) 100%)";
+        if (found?.isQuarantine == 1) {
+            return "linear-gradient(180deg, rgb(231, 141, 141) 0%, rgb(184, 12, 12) 100%, rgb(124, 13, 13) 100%)" ;} // Quarantine
+        else if (found?.status === "WIP") {
+            return "linear-gradient(180deg, rgb(255,245,200) 0%, rgb(255,193,7) 100%)";} // WIP
+        else if (found?.isStickering) {
+            return "linear-gradient(180deg, rgb(255, 216, 172) 0%, rgb(255, 161, 39) 100%, rgb(255, 136, 0) 100%)" ;} // Stickering
+        else if (currentQty <= 0)
+            return "linear-gradient(180deg, rgb(244, 255, 244) 0%, rgb(181, 238, 181) 100%)";
+        else if (percentage >= 100)
+            return "linear-gradient(180deg, rgb(146, 233, 134) 0%, rgb(13, 116, 13) 100%, rgb(2, 110, 13) 100%)";
         else if (percentage >= 90)
-            return "linear-gradient(180deg, rgba(255, 140, 0, 1) 0%, rgba(255, 140, 0, 1) 0%, rgba(139, 0, 0, 1) 100%)";
+            return "linear-gradient(180deg, rgb(146, 233, 138) 0%, rgb(23, 134, 23) 100%, rgb(4, 121, 0) 100%)";
         else if (percentage >= 80)
-            return "linear-gradient(180deg, rgba(255, 140, 0, 1) 0%, rgba(255, 140, 0, 1) 50%, rgba(139, 0, 0, 1) 100%)";
+            return "linear-gradient(180deg, rgb(169, 238, 152) 0%, rgb(33, 148, 33) 100%, rgb(9, 139, 5) 100%)";
         else if (percentage >= 70)
-            return "linear-gradient(180deg, rgba(255, 140, 0, 1) 0%, rgba(255, 140, 0, 1) 100%, rgba(139, 0, 0, 1) 100%)";
+            return "linear-gradient(180deg, rgb(162, 238, 152) 0%, rgb(46, 170, 46) 100%, rgb(22, 163, 3) 100%)";
         else if (percentage >= 60)
-            return "linear-gradient(180deg, rgba(255, 215, 0, 1) 0%, rgba(255, 140, 0, 1) 0%, rgba(255, 69, 0, 1) 100%)";
+            return "linear-gradient(180deg, rgb(171, 241, 162) 0%, rgb(64, 182, 64) 100%, rgb(15, 158, 2) 100%)";
         else if (percentage >= 50)
-            return "linear-gradient(180deg, rgba(255, 215, 0, 1) 0%, rgba(255, 140, 0, 1) 50%, rgba(255, 69, 0, 1) 100%)";
+            return "linear-gradient(180deg, rgb(174, 255, 171) 0%, rgb(83, 199, 83) 100%, rgb(15, 168, 2) 100%)";
         else if (percentage >= 40)
-            return "linear-gradient(180deg, rgba(255, 215, 0, 1) 0%, rgba(255, 140, 0, 1) 100%, rgba(255, 69, 0, 1) 100%)";
+            return "linear-gradient(180deg, rgb(181, 253, 181) 0%, rgb(103, 214, 103) 100%, rgb(15, 173, 1) 100%)";
         else if (percentage >= 30)
-            return "linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(50, 205, 50, 1) 0%, rgba(255, 217, 47, 1) 100%)";
+            return "linear-gradient(180deg, rgb(203, 243, 200) 0%, rgb(124, 219, 124) 100%, rgb(2, 180, 2) 100%)";
         else if (percentage >= 20)
-            return "linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(50, 205, 50, 1) 50%, rgba(255, 217, 47, 1) 100%)";
+            return "linear-gradient(180deg, rgb(232, 255, 230) 0%, rgb(143, 224, 143) 100%, rgb(7, 196, 1) 100%)";
         else if (percentage >= 10)
-            return "linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(50, 205, 50, 1) 100%, rgba(255, 217, 47, 1) 100%)";
+            return "linear-gradient(180deg, rgb(236, 255, 234) 0%, rgb(181, 240, 181) 100%, rgb(0, 211, 0) 100%)";
         else
-            return "linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(50, 205, 50, 1) 100%, rgba(255, 217, 47, 1) 100%)";
+            return "linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgb(204, 252, 204) 100%, rgb(21, 241, 1) 100%)";
     }
 
     let html =
@@ -446,22 +455,23 @@ function renderRackMapGrid(locations, rsbaynum) {
             slots.forEach((slot) => {
                 let rsloc = `${rsbaynum}-${level}-C${colStr}-${slot}`;
                 let found = locations.find((l) => l.rsloc === rsloc);
+
                 let currentQty = found ? Math.floor(found.qty || 0) : 0;
                 let originalQty = found
                     ? Math.floor(found.original_qty || 0)
                     : 0;
-                let bgColor = getQtyColor(currentQty, originalQty);
+                let bgColor = getQtyColor(currentQty, originalQty, found);
 
                 // Determine text color for readability
                 let textColor = "";
                 if (originalQty > 0) {
                     let percentage = (currentQty / originalQty) * 100;
                     textColor =
-                        percentage >= 85 ? "color:white;" : "color:black;";
-                } else {
+                        percentage >= 85 ? "color:black;" : "color:black;";
+                } /*else {
                     textColor =
                         currentQty > 10000 ? "color:white;" : "color:black;";
-                }
+                }*/
 
                 // Display format: current / original (if original exists)
                 let qtyDisplay = "";
@@ -493,6 +503,8 @@ function renderRackMapGrid(locations, rsbaynum) {
                         data-qty="${found ? found.qty : 0}"
                         data-create-date="${found && found.createdate ? moment(found.createdate).format("DD MMMM YYYY") : ""}"
                         data-has-items="${found && found.jobs && found.jobs.length > 0 ? '1' : '0'}"
+                        data-isquarantine="${found ? found.isQuarantine : 0}"
+                        data-isstickering="${found ? (found.isStickering ? 1 : 0) : 0}"
                         style="min-width:160px;max-width:120px;height:160px;vertical-align:middle;font-size:0.8em;background:${bgColor};${textColor};padding:4px;">
                         ${
                             found
@@ -578,14 +590,36 @@ $(document).on('click', '#saveBtn', function (e) {
         data: fd,
         processData: false,
         contentType: false,
-        success: function (response) {
-            if(response.success) {
-                Swal.fire('Saved!', response.message, 'success')
-                .then(() => {
-                    $('#viewRackModal').modal('hide');
+        
+success: function (response) {
+    if(response.success) {
+        Swal.fire('Saved!', response.message, 'success')
+        .then(() => {
+            $('#viewRackModal').modal('hide');
+
+            // Reload map grid
+            let rssite = $("#mapRsSite").val();
+            let rswhse = $("#mapRsWhse").val();
+            let rsbaynum = $("#mapRsBay").val();
+
+            if (rssite && rswhse && rsbaynum) {
+                $.post({
+                    url: window.appUrl + "/irms/rack-locations/map-grid",
+                    data: {
+                        rssite,
+                        rswhse,
+                        rsbaynum,
+                        _token: $('input[name="_token"]').val(),
+                    },
+                    success: function(data) {
+                        renderRackMapGrid(data, rsbaynum);
+                    }
+                });
+                    }
+
+                    // Reload table
                     loadRackLocTable();
                 });
-
             }
         },
         error: function (xhr) {
@@ -690,6 +724,10 @@ $(document).on("click", "#view-rack-items-body tr", function () {
 });
 
 $(document).ready(function () {
+if (window.location.search.includes('tab=map')) {
+        $('#map-tab').click();
+
+}
     // Get user level from main tag
     const userLevel = $("main").data("user-level");
 

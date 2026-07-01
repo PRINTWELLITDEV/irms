@@ -136,6 +136,18 @@ class RsLocationController extends Controller
         // Get rack locations with job info
         $locations = \DB::select('EXEC sp_rack_map ?, ?, ?', [$rssite, $rswhse, $rsbaynum]);
 
+        
+        $stickeringRecords = DB::connection('sqlsrv')->select(
+            'EXEC dbo.sp_Stickering_Report ?, ?, ?, ?',
+            [$rssite, $rswhse, $rsbaynum, null]
+        );
+
+        $stickeringLocations = collect($stickeringRecords)
+            ->pluck('rsloc')
+            ->unique()
+            ->toArray();
+
+
         // Group locations by rsloc to handle multiple jobs per location
         $grouped = [];
         foreach ($locations as $location) {
@@ -150,7 +162,9 @@ class RsLocationController extends Controller
                     'qty' => $location->qty,
                     'createdate' => $location->createdate,
                     'jobs' => [],
-                    'original_qty' => 0
+                    'original_qty' => 0,
+                    'isQuarantine' => $location->isQuarantine ?? 0,
+                    'isStickering' => in_array($location->rsloc, $stickeringLocations),
                 ];
             }
 

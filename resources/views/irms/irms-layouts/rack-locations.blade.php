@@ -27,17 +27,17 @@
                                 <!-- Tabs Navigation -->
                                 <ul class="nav nav-tabs px-4 pt-3" id="rackTabs" role="tablist">
                                     <li class="nav-item" role="presentation">
-                                        <button class="nav-link active" id="table-tab" data-bs-toggle="tab"
-                                            data-bs-target="#tableTabPane" type="button" role="tab"
-                                            aria-controls="tableTabPane" aria-selected="true">
-                                            Table
-                                        </button>
-                                    </li>
-                                    <li class="nav-item" role="presentation">
                                         <button class="nav-link" id="map-tab" data-bs-toggle="tab"
                                             data-bs-target="#mapTabPane" type="button" role="tab" aria-controls="mapTabPane"
                                             aria-selected="false">
                                             Map
+                                        </button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link active" id="table-tab" data-bs-toggle="tab"
+                                            data-bs-target="#tableTabPane" type="button" role="tab"
+                                            aria-controls="tableTabPane" aria-selected="true">
+                                            Table
                                         </button>
                                     </li>
                                 </ul>
@@ -142,7 +142,46 @@
                                         </form>
 
                                         <div class="d-flex justify-content-between align-items-center mb-2">
-                                            <div></div>
+                                            <div id="rackMapLegend" class="d-flex align-items-center gap-3 d-none">
+                                                <small class="d-flex align-items-center">
+                                                    <span class="badge me-1" style="background:linear-gradient(180deg, rgb(231, 141, 141) 0%, rgb(184, 12, 12) 100%, rgb(124, 13, 13) 100%);">&nbsp;</span>
+                                                    <b>Quarantined</b>
+                                                </small>
+                                                <small class="d-flex align-items-center">
+                                                    <span class="badge me-1" style="background:linear-gradient(180deg, rgb(244, 255, 244) 0%, rgb(200, 247, 200) 100%);">&nbsp;</span>
+                                                    <b>Empty Rack</b>
+                                                </small>
+                                                <!--<small class="d-flex align-items-center" >
+                                                    <span class="badge me-1" style="background:linear-gradient(180deg, rgb(232, 255, 230) 0%, rgb(143, 224, 143) 100%, rgb(7, 196, 1) 100%);">&nbsp;</span>
+                                                    Lightly Occupied
+                                                </small>
+                                                <small class="d-flex align-items-center" >
+                                                    <span class="badge me-1" style="background:linear-gradient(180deg, rgb(181, 253, 181) 0%, rgb(103, 214, 103) 100%, rgb(15, 173, 1) 100%);">&nbsp;</span>
+                                                    Partially Occupied
+                                                </small>
+                                                <small class="d-flex align-items-center" >
+                                                    <span class="badge me-1" style="background:linear-gradient(180deg, rgb(171, 241, 162) 0%, rgb(64, 182, 64) 100%, rgb(15, 158, 2) 100%);">&nbsp;</span>
+                                                    Heavily Occupied
+                                                </small>
+                                                <small class="d-flex align-items-center" >
+                                                    <span class="badge me-1" style="background:linear-gradient(180deg, rgb(169, 238, 152) 0%, rgb(33, 148, 33) 100%, rgb(9, 139, 5) 100%);">&nbsp;</span>
+                                                    Very Heavily Occupied
+                                                </small>-->
+                                                <small class="d-flex align-items-center">
+                                                    <span class="badge me-1" style="background:linear-gradient(180deg, rgb(146, 233, 134) 0%, rgb(13, 116, 13) 100%, rgb(2, 110, 13) 100%)">&nbsp;</span>
+                                                    <b>Full Rack</b>
+                                                </small>
+                                                <small class="d-flex align-items-center">
+                                                    <span class="badge me-1" style="background:linear-gradient(180deg,  rgb(255,245,200) 0%, rgb(255, 208, 65) 100%, rgb(255, 230, 7) 100%)">&nbsp;</span>
+                                                    <b>WIP</b>
+                                                </small>
+                                                <small class="d-flex align-items-center">
+                                                    <span class="badge me-1" style="background:linear-gradient(180deg, rgb(255, 216, 172) 0%, rgb(255, 161, 39) 100%, rgb(255, 136, 0) 100%)">&nbsp;</span>
+                                                    <b>For Stickering</b>
+                                                </small>
+                                                
+                                            </div>
+
                                             <button type="button" id="btnRackMapSort" class="btn btn-outline-dark btn-sm d-none">
                                                 <i class="bi bi-arrow-left-right me-1"></i>
                                                 <span id="rackMapSortText">Sort: Left to Right</span>
