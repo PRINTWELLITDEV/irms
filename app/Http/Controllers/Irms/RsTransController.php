@@ -32,15 +32,17 @@ class RsTransController extends Controller
 
         if (auth()->user()->level == 1) {
             $transactions = \DB::select('EXEC sp_view_rstrans', [null]);
+        } else {
+            $transactions = \DB::select('EXEC sp_view_rstrans', [$userSite, null]);
         }
 
-        if (auth()->user()->level == 2) {
-            $transactions = \DB::select('EXEC sp_view_rstrans ?, ?', [$userSite, null]);
-        }
+        // if (auth()->user()->level == 2) {
+        //     $transactions = \DB::select('EXEC sp_view_rstrans ?, ?', [$userSite, null]);
+        // }
 
-        if (auth()->user()->level == 3) {
-            $transactions = \DB::select('EXEC sp_view_rstrans ?, ?', [$userSite, $userid]);
-        }
+        // if (auth()->user()->level == 3) {
+        //     $transactions = \DB::select('EXEC sp_view_rstrans ?, ?', [$userSite, $userid]);
+        // }
 
         return view('irms.irms-tables.transaction-list', compact('transactions'))->render();
     }
