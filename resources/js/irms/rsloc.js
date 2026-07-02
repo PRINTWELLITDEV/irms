@@ -433,17 +433,17 @@ function renderRackMapGrid(locations, rsbaynum) {
         else if (percentage >= 60)
             return "linear-gradient(180deg, rgb(171, 241, 162) 0%, rgb(64, 182, 64) 100%, rgb(17, 168, 3) 100%)";
         else if (percentage >= 50)
-            return "linear-gradient(180deg, rgb(174, 255, 171) 0%, rgb(83, 199, 83) 100%, rgb(16, 184, 1) 100%)";
+            return "linear-gradient(180deg, rgb(174, 255, 171) 0%, rgb(84, 201, 84) 100%, rgb(16, 184, 1) 100%)";
         else if (percentage >= 40)
             return "linear-gradient(180deg, rgb(181, 253, 181) 0%, rgb(103, 214, 103) 100%, rgb(17, 201, 1) 100%)";
         else if (percentage >= 30)
-            return "linear-gradient(180deg, rgb(203, 243, 200) 0%, rgb(124, 219, 124) 100%, rgb(3, 207, 3) 100%)";
+            return "linear-gradient(180deg, rgb(203, 243, 200) 0%, rgb(128, 226, 128) 100%, rgb(3, 207, 3) 100%)";
         else if (percentage >= 20)
-            return "linear-gradient(180deg, rgb(232, 255, 230) 0%, rgb(143, 224, 143) 100%, rgb(7, 219, 0) 100%)";
+            return "linear-gradient(180deg, rgb(232, 255, 230) 0%, rgb(151, 240, 151) 100%, rgb(7, 219, 0) 100%)";
         else if (percentage >= 10)
-            return "linear-gradient(180deg, rgb(236, 255, 234) 0%, rgb(166, 238, 166) 100%, rgb(0, 230, 0) 100%)";
+            return "linear-gradient(180deg, rgb(236, 255, 234) 0%, rgb(170, 250, 170) 100%, rgb(0, 230, 0) 100%)";
         else
-            return "linear-gradient(180deg, rgb(242, 255, 242) 0%, rgb(178, 240, 178) 100%, rgb(21, 241, 1) 100%)";
+            return "linear-gradient(180deg, rgb(242, 255, 242) 0%, rgb(190, 255, 190) 100%, rgb(21, 241, 1) 100%)";
     }
 
     let html =
