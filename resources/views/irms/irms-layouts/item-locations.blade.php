@@ -40,11 +40,14 @@
                                     <table id="itemloc-table" class="table table-striped table-hover align-middle display">
                                         <thead>
                                         <tr>
+                                            <th width="10%">Warehouse</th>
+                                            <th width="10%">Location</th>
                                             <th width="10%">Job No.</th>
                                             <th width="30%">Product Item</th>
+                                            <th width="10%">Pallet No.</th>
                                             <th width="10%">Quantity</th>
                                             <!-- <th width="5%">U/M</th> -->
-                                            <th width="10%">Warehouse</th>
+                                            
                                             @if(auth()->user()->level == 1)
                                                 <th width="10%">Site</th>
                                             @endif
