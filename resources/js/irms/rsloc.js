@@ -421,7 +421,7 @@ function renderRackMapGrid(locations, rsbaynum) {
         else if (found?.isStickering) {
             return "linear-gradient(180deg, rgb(255, 216, 172) 0%, rgb(255, 161, 39) 100%, rgb(255, 136, 0) 100%)" ;} // Stickering
         else if (currentQty <= 0)
-            return "linear-gradient(180deg, rgb(244, 255, 244) 0%, rgb(181, 238, 181) 100%)";
+            return "linear-gradient(180deg, rgb(244, 255, 244) 0%, rgb(208, 255, 208) 100%)";
         else if (percentage >= 100)
             return "linear-gradient(180deg, rgb(146, 233, 134) 0%, rgb(13, 116, 13) 100%, rgb(2, 110, 13) 100%)";
         else if (percentage >= 90)
@@ -443,7 +443,7 @@ function renderRackMapGrid(locations, rsbaynum) {
         else if (percentage >= 10)
             return "linear-gradient(180deg, rgb(236, 255, 234) 0%, rgb(181, 240, 181) 100%, rgb(0, 211, 0) 100%)";
         else
-            return "linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgb(204, 252, 204) 100%, rgb(21, 241, 1) 100%)";
+            return "linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgb(192, 248, 192) 100%, rgb(21, 241, 1) 100%)";
     }
 
     let html =
