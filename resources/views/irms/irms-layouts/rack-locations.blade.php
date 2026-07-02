@@ -148,7 +148,7 @@
                                                     <b>Quarantined</b>
                                                 </small>
                                                 <small class="d-flex align-items-center">
-                                                    <span class="badge me-1" style="background:linear-gradient(180deg, rgb(244, 255, 244) 0%, rgb(200, 247, 200) 100%);">&nbsp;</span>
+                                                    <span class="badge me-1" style="background:linear-gradient(180deg, rgb(247, 255, 247) 0%, rgb(203, 255, 203) 100%);">&nbsp;</span>
                                                     <b>Empty Rack</b>
                                                 </small>
                                                 <!--<small class="d-flex align-items-center" >

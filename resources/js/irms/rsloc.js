@@ -443,7 +443,7 @@ function renderRackMapGrid(locations, rsbaynum) {
         else if (percentage >= 10)
             return "linear-gradient(180deg, rgb(236, 255, 234) 0%, rgb(166, 238, 166) 100%, rgb(0, 211, 0) 100%)";
         else
-            return "linear-gradient(180deg, rgb(242, 255, 242) 0%, rgb(176, 235, 176) 100%, rgb(21, 241, 1) 100%)";
+            return "linear-gradient(180deg, rgb(242, 255, 242) 0%, rgb(178, 240, 178) 100%, rgb(21, 241, 1) 100%)";
     }
 
     let html =
