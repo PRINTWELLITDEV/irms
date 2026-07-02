@@ -441,9 +441,9 @@ function renderRackMapGrid(locations, rsbaynum) {
         else if (percentage >= 20)
             return "linear-gradient(180deg, rgb(232, 255, 230) 0%, rgb(143, 224, 143) 100%, rgb(7, 196, 1) 100%)";
         else if (percentage >= 10)
-            return "linear-gradient(180deg, rgb(236, 255, 234) 0%, rgb(181, 240, 181) 100%, rgb(0, 211, 0) 100%)";
+            return "linear-gradient(180deg, rgb(236, 255, 234) 0%, rgb(166, 238, 166) 100%, rgb(0, 211, 0) 100%)";
         else
-            return "linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgb(192, 248, 192) 100%, rgb(21, 241, 1) 100%)";
+            return "linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgb(176, 235, 176) 100%, rgb(21, 241, 1) 100%)";
     }
 
     let html =
