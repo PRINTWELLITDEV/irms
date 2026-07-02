@@ -421,7 +421,7 @@ function renderRackMapGrid(locations, rsbaynum) {
         else if (found?.isStickering) {
             return "linear-gradient(180deg, rgb(255, 216, 172) 0%, rgb(255, 161, 39) 100%, rgb(255, 136, 0) 100%)" ;} // Stickering
         else if (currentQty <= 0)
-            return "linear-gradient(180deg, rgb(247, 255, 247) 0%, rgb(208, 255, 208) 100%)";
+            return "linear-gradient(180deg, rgb(247, 255, 247) 0%, rgb(203, 255, 203) 100%)";
         else if (percentage >= 100)
             return "linear-gradient(180deg, rgb(146, 233, 134) 0%, rgb(13, 116, 13) 100%, rgb(2, 110, 13) 100%)";
         else if (percentage >= 90)
