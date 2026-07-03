@@ -13,6 +13,7 @@ use App\Http\Controllers\Irms\RsWhseController;
 use App\Http\Controllers\Irms\RsBayLocController;
 use App\Http\Controllers\Irms\RsLocationController;
 use App\Http\Controllers\Irms\RsItemLocController;
+use App\Http\Controllers\Irms\RsJobLocController;
 use App\Http\Controllers\Irms\RsGoodsReceivingController;
 use App\Http\Controllers\Irms\RsGoodsDispatchingController;
 use App\Http\Controllers\Irms\RsTransController;
@@ -112,6 +113,11 @@ Route::prefix('irms')->middleware('auth')->group(function () {
     Route::get('/item-locations/item-list', [RsItemLocController::class, 'itemList']);
     Route::get('/item-locations/{job}', [RsItemLocController::class, 'showJobDetails'])->name('itemloc.showJobDetails');
     Route::post('/item-locations/job-exists', [RsItemLocController::class, 'jobExists'])->name('itemloc.jobExists');
+
+    //Job Locations
+    Route::get('/job-locations', [RsJobLocController::class, 'index'])->name('irms.joblocations');
+    Route::get('/job-locations/job-list', [RsJobLocController::class, 'jobList']);
+    Route::get('/job-locations/{job}', [RsJobLocController::class, 'showJobDetails'])->name('jobloc.showJobDetails');
 
     // Goods Receiving
     Route::get('/receiving', [RsGoodsReceivingController::class, 'index'])->name('goodsreceiving.index');

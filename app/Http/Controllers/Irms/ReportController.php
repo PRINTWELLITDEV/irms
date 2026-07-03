@@ -144,8 +144,6 @@ class ReportController extends Controller
 
 
     } catch (\Throwable $e) {
-
-        // ✅ This will show the REAL error
         dd([
             'ERROR MESSAGE' => $e->getMessage(),
             'LINE' => $e->getLine(),

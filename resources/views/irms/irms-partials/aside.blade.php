@@ -93,6 +93,12 @@
                         <p>Item Locations</p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{ url('/irms/job-locations') }}" class="nav-link{{ request()->is('irms/job-locations') ? ' active' : '' }}">
+                        <i class="nav-icon fas fa-boxes"></i>
+                        <p>Job Locations</p>
+                    </a>
+                </li>
                 @endif
                 @if(auth()->user()->level >= 1 && auth()->user()->level <= 3)
                 <li class="nav-header">Receiving and Dispatching</li>
