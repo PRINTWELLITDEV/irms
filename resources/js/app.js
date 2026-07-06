@@ -89,4 +89,9 @@ function handleLoginSubmit(e, form) {
             timerProgressBar: true
         });
     });
+
+
+    if (window.location.pathname.includes("/job-locations")) {
+        import('./irms/rsjobloc.js');
+    }
 }
