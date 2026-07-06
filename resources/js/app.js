@@ -92,6 +92,6 @@ function handleLoginSubmit(e, form) {
 
 
     if (window.location.pathname.includes("/job-locations")) {
-        import('./rsjobloc.js');
+        import('./irms/rsjobloc.js');
     }
 }
