@@ -95,7 +95,7 @@
                 </li>
                 <li class="nav-item">
                     <a href="{{ url('/irms/job-locations') }}" class="nav-link{{ request()->is('irms/job-locations') ? ' active' : '' }}">
-                        <i class="nav-icon fas fa-boxes"></i>
+                        <i class="nav-icon fa-solid fa-box"></i>
                         <p>Job Locations</p>
                     </a>
                 </li>
