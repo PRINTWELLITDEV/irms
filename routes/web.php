@@ -148,6 +148,9 @@ Route::prefix('irms')->middleware('auth')->group(function () {
     Route::get('/stickering-report/pdf', [ReportController::class, 'stickeringPdf'])->name('irms.stickering-report.pdf');
     Route::get('/quarantine-report/preview', [ReportController::class, 'quarantinePreview']) ->name('irms.quarantine-report.preview');
     Route::get('/quarantine-report/pdf', [ReportController::class, 'quarantinePdf'])->name('irms.quarantine-report.pdf');
+    Route::get('/quarantine-report/preview', [ReportController::class, 'quarantinePreview']) ->name('irms.quarantine-report.preview');
+    Route::get('/wip-report/preview', [ReportController::class, 'wipPreview']) ->name('irms.wip-report.preview');
+    Route::get('/wip-report/pdf', [ReportController::class, 'wipPdf'])->name('irms.wip-report.pdf');
 });
 
 
