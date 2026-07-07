@@ -176,7 +176,7 @@
                                                     <b>WIP</b>
                                                 </small>
                                                 <small class="d-flex align-items-center">
-                                                    <span class="badge me-1" style="background:linear-gradient(180deg, rgb(255, 216, 172) 0%, rgb(255, 161, 39) 100%, rgb(255, 136, 0) 100%)">&nbsp;</span>
+                                                    <span class="badge me-1" style="background:linear-gradient(180deg, rgb(255, 198, 151) 0%, rgb(248, 147, 64) 100%, rgb(187, 84, 0) 100%)"">&nbsp;</span>
                                                     <b>For Stickering</b>
                                                 </small>
                                                 

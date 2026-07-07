@@ -147,6 +147,20 @@ class RsLocationController extends Controller
             ->unique()
             ->toArray();
 
+        $WIPRecords = DB::connection('sqlsrv')->select(
+            'EXEC dbo.sp_WIP_Report ?, ?, ?, ?',
+            [$rssite, $rswhse, $rsbaynum, null]
+        );
+
+        $stickeringLocations = collect($stickeringRecords)
+            ->pluck('rsloc')
+            ->unique()
+            ->toArray();
+
+        $WIPLocations = collect($WIPRecords)
+            ->pluck('rsloc')
+            ->unique()
+            ->toArray();
 
         // Group locations by rsloc to handle multiple jobs per location
         $grouped = [];
@@ -165,6 +179,7 @@ class RsLocationController extends Controller
                     'original_qty' => 0,
                     'isQuarantine' => $location->isQuarantine ?? 0,
                     'isStickering' => in_array($location->rsloc, $stickeringLocations),
+                    'isWIP' => in_array($location->rsloc, $WIPLocations),
                 ];
             }
 
