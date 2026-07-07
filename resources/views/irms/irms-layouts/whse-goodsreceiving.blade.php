@@ -369,6 +369,10 @@
                                         <!-- JS will populate rows here -->
                                     </tbody>
                                 </table>
+                                    <datalist id="palletTagList">
+                                        <option value="For Stickering">
+                                        <option value="WIP">
+                                    </datalist>
                             </div>
                         </div>
                     </div>
