@@ -32,8 +32,8 @@ class RsTransController extends Controller
 
         if (auth()->user()->level == 1) {
             $transactions = \DB::select('EXEC sp_view_rstrans', [null]);
-        }else{
-            $transactions = \DB::select('EXEC sp_view_rstrans ?, ?', [$userSite, null]);
+        } else {
+            $transactions = \DB::select('EXEC sp_view_rstrans', [$userSite, null]);
         }
 
         // if (auth()->user()->level == 2) {

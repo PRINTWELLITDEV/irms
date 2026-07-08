@@ -46,8 +46,8 @@
                                             <th width="30%">Product Item</th>
                                             <th width="10%">Pallet No.</th>
                                             <th width="10%">Quantity</th>
+                                            <th width="10%">Pallet No.</th>
                                             <!-- <th width="5%">U/M</th> -->
-                                            
                                             @if(auth()->user()->level == 1)
                                                 <th width="10%">Site</th>
                                             @endif
