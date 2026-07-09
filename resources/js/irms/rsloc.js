@@ -505,7 +505,7 @@ function renderRackMapGrid(locations, rsbaynum) {
                         data-has-items="${found && found.jobs && found.jobs.length > 0 ? '1' : '0'}"
                         data-isquarantine="${found ? found.isQuarantine : 0}"
                         data-isstickering="${found ? (found.isStickering ? 1 : 0) : 0}"
-                        style="min-width:160px;max-width:120px;height:160px;vertical-align:middle;font-size:0.8em;background:${bgColor};${textColor};padding:4px;">
+                        style="min-width:160px;max-width:120px;height:160px;vertical-align:middle;font-size:0.8em;background:${bgColor};${textColor};padding:4px;border-radius:10px;">
                         ${
                             found
                                 ? `<div class="h6 fw-bold">${found.rsloc}</div>
@@ -568,8 +568,6 @@ function enableHorizontalScroll() {
         container.scrollLeft = scrollLeft - walk;
     });
 }
-
-
 
 $(document).on('click', '#saveBtn', function (e) {
     e.preventDefault(); // Stop any accidental form submission wrappers

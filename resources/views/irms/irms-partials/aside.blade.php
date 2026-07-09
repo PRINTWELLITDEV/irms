@@ -81,7 +81,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ url('/irms/rack-locations?tab=map') }}" class="nav-link{{ request()->is('irms/rack-locations') ? ' active' : '' }}">
+                    <a href="{{ url('/irms/rack-locations') }}" class="nav-link{{ request()->is('irms/rack-locations') ? ' active' : '' }}">
 
                         <i class="nav-icon bi bi-grid-3x3"></i>
                         <p>Rack Locations</p>

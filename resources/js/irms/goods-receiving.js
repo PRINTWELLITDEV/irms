@@ -623,8 +623,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     const um = $("#um").val();
                     
                     data.sort((a, b) => {
-                        const qtyA = Number(a.qty_onHand) || 0;
-                        const qtyB = Number(b.qty_onHand) || 0;
+                        // const qtyA = Number(a.qty_onHand) || 0;
+                        // const qtyB = Number(b.qty_onHand) || 0;
 
                         const groupA = qtyA > 0 ? 1 : 0; // occupied
                         const groupB = qtyB > 0 ? 1 : 0; // available
@@ -632,7 +632,12 @@ document.addEventListener("DOMContentLoaded", function () {
                         return (
                             groupA - groupB ||
                             qtyA - qtyB ||
-                            (a.rsloc || "").localeCompare(b.rsloc || "")
+                            (a.rsloc || "").localeCompare(b.rsloc || "", undefined,
+                                {
+                                    numeric:true,
+                                    sensitivity:"base"
+                                }
+                            )
                         );
                     });
 
