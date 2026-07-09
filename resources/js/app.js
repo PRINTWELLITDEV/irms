@@ -94,4 +94,8 @@ function handleLoginSubmit(e, form) {
     if (window.location.pathname.includes("/job-locations")) {
         import('./irms/rsjobloc.js');
     }
+
+    if (window.location.pathname.includes("/jquantityMove")) {
+        import('./irms/quantity-move.js');
+    }
 }

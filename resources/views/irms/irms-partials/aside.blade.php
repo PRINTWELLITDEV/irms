@@ -95,7 +95,7 @@
                 </li>
                 <li class="nav-item">
                     <a href="{{ url('/irms/job-locations') }}" class="nav-link{{ request()->is('irms/job-locations') ? ' active' : '' }}">
-                        <i class="nav-icon fas fa-boxes"></i>
+                        <i class="fa-regular fa-note-sticky fs-5"></i>
                         <p>Job Locations</p>
                     </a>
                 </li>
@@ -112,6 +112,12 @@
                     <a href="{{ url('/irms/dispatching') }}" class="nav-link{{ request()->is('irms/dispatching') ? ' active' : '' }}">
                         <i class="nav-icon fas fa-truck-loading"></i>
                         <p>Goods Dispatching</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url('irms/quantityMove') }}" class="nav-link{{ request()->is('irms/quantityMove') ? ' active' : '' }}">
+                        <i class="fa-solid fa-arrow-down-up-across-line"></i>
+                        <p>Quantity Move</p>
                     </a>
                 </li>
                 @endif

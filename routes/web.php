@@ -16,6 +16,7 @@ use App\Http\Controllers\Irms\RsItemLocController;
 use App\Http\Controllers\Irms\RsJobLocController;
 use App\Http\Controllers\Irms\RsGoodsReceivingController;
 use App\Http\Controllers\Irms\RsGoodsDispatchingController;
+use App\Http\Controllers\Irms\RsQuantityMoveController;
 use App\Http\Controllers\Irms\RsTransController;
 use App\Http\Controllers\Irms\ReportController;
 use App\Http\Controllers\HomeController;
@@ -132,6 +133,14 @@ Route::prefix('irms')->middleware('auth')->group(function () {
     Route::post('/dispatching/job-item-details', [RsGoodsDispatchingController::class, 'getJobItemDetails'])->name('goodsdispatching.jobitemdetails');
     Route::post('/dispatching/item-in-rsloc-list', [RsGoodsDispatchingController::class, 'getItemInRsLocList'])->name('goodsdispatching.iteminrsloclist');
     Route::post('/dispatching/process-goods-dispatch', [RsGoodsDispatchingController::class, 'processGoodsDispatch'])->name('goodsdispatching.processdispatch');
+
+    // Quantity Move
+    Route::prefix('quantityMove')
+    ->name('quantityMove.')
+    ->controller(RsQuantityMoveController::class)
+    ->group(function(){
+        Route::get('/', 'index')->name('index');
+    });
 
     //Transactions
     // Route::get('/transactions', fn() => view('irms/irms-layouts/transactions'))->name('irms.transactions');

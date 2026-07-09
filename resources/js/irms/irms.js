@@ -19,7 +19,7 @@ import "./rstrans.js";
 // Import goods management scripts
 import "./goods-receiving.js";
 import "./goods-dispatching.js";
-
+import "./quantity-move.js"
 /* =====================================================
    SESSION MANAGEMENT
 ===================================================== */
