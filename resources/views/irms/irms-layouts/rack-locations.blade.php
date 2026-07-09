@@ -27,67 +27,25 @@
                                 <!-- Tabs Navigation -->
                                 <ul class="nav nav-tabs px-4 pt-3" id="rackTabs" role="tablist">
                                     <li class="nav-item" role="presentation">
-                                        <button class="nav-link" id="map-tab" data-bs-toggle="tab"
-                                            data-bs-target="#mapTabPane" type="button" role="tab" aria-controls="mapTabPane"
-                                            aria-selected="false">
+                                        <button class="nav-link active" id="map-tab" data-bs-toggle="tab"
+                                            data-bs-target="#mapTabPane" type="button" role="tab"
+                                            aria-controls="mapTabPane" aria-selected="true">
                                             Map
                                         </button>
                                     </li>
                                     <li class="nav-item" role="presentation">
-                                        <button class="nav-link active" id="table-tab" data-bs-toggle="tab"
-                                            data-bs-target="#tableTabPane" type="button" role="tab"
-                                            aria-controls="tableTabPane" aria-selected="true">
+                                        <button class="nav-link" id="table-tab" data-bs-toggle="tab"
+                                            data-bs-target="#tableTabPane" type="button" role="tab" aria-controls="tableTabPane"
+                                            aria-selected="false">
                                             Table
                                         </button>
                                     </li>
                                 </ul>
+                                
                                 <!-- Tabs Content -->
                                 <div class="tab-content p-4" id="rackTabsContent">
-                                    <div class="tab-pane fade show active" id="tableTabPane" role="tabpanel"
-                                        aria-labelledby="table-tab">
-                                        {{-- Existing Table Content --}}
-                                        <div class="d-flex justify-content-between align-items-center mb-3">
-                                            <button type="button" id="btnAddRack"
-                                                class="btn btn-success d-flex align-items-center me-2"
-                                                data-bs-toggle="modal" data-bs-target="#addRackModal">
-                                                <i class="bi bi-plus-circle-fill d-none d-sm-inline me-2"></i>
-                                                <span class="d-none d-sm-inline">Add Rack</span>
-                                                <i class="bi bi-plus-circle-fill d-inline d-sm-none"></i>
-                                            </button>
-
-                                            <div class="input-group" style="max-width: 300px;">
-                                                <input type="text" id="rackSearch" class="form-control"
-                                                    placeholder="Search rack location...">
-                                                <span class="input-group-text">
-                                                    <i class="bi bi-search"></i>
-                                                </span>
-                                            </div>
-                                        </div>
-
-                                        <div class="table-responsive table-view">
-                                            <table id="rackTable"
-                                                class="table table-striped table-bordered table-hover align-middle display">
-                                                <thead>
-                                                    <tr>
-                                                        <th width="20%">Rack Location</th>
-                                                        <th width="10%">Warehouse</th>
-                                                        <th width="10%">Bay No.</th>
-                                                        <!-- <th>Description</th> -->
-                                                        <th width="10%">Quantity</th>
-                                                        <th width="10%">Quarantine</th>
-                                                        @if(auth()->user()->level == 1)
-                                                            <th width="10%">Site</th>
-                                                        @endif
-                                                        <!-- <th width="10%">Create Date</th> -->
-                                                    </tr>
-                                                </thead>
-                                                <tbody id="rackTableBody">
-
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                    <div class="tab-pane fade" id="mapTabPane" role="tabpanel" aria-labelledby="map-tab">
+                                    <!--Rack Map-->
+                                    <div class="tab-pane fade show active" id="mapTabPane" role="tabpanel" aria-labelledby="map-tab">
                                         <form id="rack-map-filter" class="d-flex flex-column">
                                             <div class="row">
                                                 @if(auth()->user()->level == 1)
@@ -141,15 +99,28 @@
                                             </div>
                                         </form>
 
+                                        <!--Rack Map Legend and Sort Button-->
                                         <div class="d-flex justify-content-between align-items-center mb-2">
-                                            <div id="rackMapLegend" class="d-flex align-items-center gap-3 d-none">
+                                            <div id="rackMapLegend" class="d-flex align-items-center gap-3 d-none">                         
+                                                <small class="d-flex align-items-center">
+                                                    <span class="badge me-1" style="background:linear-gradient(180deg, rgb(247, 255, 247) 0%, rgb(203, 255, 203) 100%);">&nbsp;</span>
+                                                    <b>Empty Rack</b>
+                                                </small>
+                                                <small class="d-flex align-items-center">
+                                                    <span class="badge me-1" style="background:linear-gradient(180deg, rgb(146, 233, 134) 0%, rgb(13, 116, 13) 100%, rgb(2, 110, 13) 100%)">&nbsp;</span>
+                                                    <b>Full Rack</b>
+                                                </small>
                                                 <small class="d-flex align-items-center">
                                                     <span class="badge me-1" style="background:linear-gradient(180deg, rgb(231, 141, 141) 0%, rgb(184, 12, 12) 100%, rgb(124, 13, 13) 100%);">&nbsp;</span>
                                                     <b>Quarantined</b>
                                                 </small>
                                                 <small class="d-flex align-items-center">
-                                                    <span class="badge me-1" style="background:linear-gradient(180deg, rgb(247, 255, 247) 0%, rgb(203, 255, 203) 100%);">&nbsp;</span>
-                                                    <b>Empty Rack</b>
+                                                    <span class="badge me-1" style="background:linear-gradient(180deg,  rgb(255,245,200) 0%, rgb(255, 208, 65) 100%, rgb(255, 230, 7) 100%)">&nbsp;</span>
+                                                    <b>WIP</b>
+                                                </small>
+                                                <small class="d-flex align-items-center">
+                                                    <span class="badge me-1" style="background:linear-gradient(180deg, rgb(255, 198, 151) 0%, rgb(248, 147, 64) 100%, rgb(187, 84, 0) 100%)"">&nbsp;</span>
+                                                    <b>For Stickering</b>
                                                 </small>
                                                 <!--<small class="d-flex align-items-center" >
                                                     <span class="badge me-1" style="background:linear-gradient(180deg, rgb(232, 255, 230) 0%, rgb(143, 224, 143) 100%, rgb(7, 196, 1) 100%);">&nbsp;</span>
@@ -167,19 +138,6 @@
                                                     <span class="badge me-1" style="background:linear-gradient(180deg, rgb(169, 238, 152) 0%, rgb(33, 148, 33) 100%, rgb(9, 139, 5) 100%);">&nbsp;</span>
                                                     Very Heavily Occupied
                                                 </small>-->
-                                                <small class="d-flex align-items-center">
-                                                    <span class="badge me-1" style="background:linear-gradient(180deg, rgb(146, 233, 134) 0%, rgb(13, 116, 13) 100%, rgb(2, 110, 13) 100%)">&nbsp;</span>
-                                                    <b>Full Rack</b>
-                                                </small>
-                                                <small class="d-flex align-items-center">
-                                                    <span class="badge me-1" style="background:linear-gradient(180deg,  rgb(255,245,200) 0%, rgb(255, 208, 65) 100%, rgb(255, 230, 7) 100%)">&nbsp;</span>
-                                                    <b>WIP</b>
-                                                </small>
-                                                <small class="d-flex align-items-center">
-                                                    <span class="badge me-1" style="background:linear-gradient(180deg, rgb(255, 216, 172) 0%, rgb(255, 161, 39) 100%, rgb(255, 136, 0) 100%)">&nbsp;</span>
-                                                    <b>For Stickering</b>
-                                                </small>
-                                                
                                             </div>
 
                                             <button type="button" id="btnRackMapSort" class="btn btn-outline-dark btn-sm d-none">
@@ -190,6 +148,52 @@
                                         <div class="d-flex justify-content-center align-items-center"
                                             style="min-height: 300px;">
                                             <div id="rack-map-grid" class="table-responsive"></div>
+                                        </div>
+                                    </div>
+
+                                    <!--Table-->
+                                    <div class="tab-pane fade" id="tableTabPane" role="tabpanel"
+                                        aria-labelledby="table-tab">
+                                        {{-- Existing Table Content --}}
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <button type="button" id="btnAddRack"
+                                                class="btn btn-success d-flex align-items-center me-2"
+                                                data-bs-toggle="modal" data-bs-target="#addRackModal">
+                                                <i class="bi bi-plus-circle-fill d-none d-sm-inline me-2"></i>
+                                                <span class="d-none d-sm-inline">Add Rack</span>
+                                                <i class="bi bi-plus-circle-fill d-inline d-sm-none"></i>
+                                            </button>
+
+                                            <div class="input-group" style="max-width: 300px;">
+                                                <input type="text" id="rackSearch" class="form-control"
+                                                    placeholder="Search rack location...">
+                                                <span class="input-group-text">
+                                                    <i class="bi bi-search"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="table-responsive table-view">
+                                            <table id="rackTable"
+                                                class="table table-striped table-bordered table-hover align-middle display">
+                                                <thead>
+                                                    <tr>
+                                                        <th width="20%">Rack Location</th>
+                                                        <th width="10%">Warehouse</th>
+                                                        <th width="10%">Bay No.</th>
+                                                        <!-- <th>Description</th> -->
+                                                        <th width="10%">Quantity</th>
+                                                        <th width="10%">Quarantine</th>
+                                                        @if(auth()->user()->level == 1)
+                                                            <th width="10%">Site</th>
+                                                        @endif
+                                                        <!-- <th width="10%">Create Date</th> -->
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="rackTableBody">
+
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>
@@ -370,9 +374,7 @@
                             @error('rsdesc') <div class="text-danger small">{{ $message }}</div> @enderror
                         </div>
                         <div class="mb-3">
-                            <!--<label class="form-label d-block">Quarantine</label>-->
-                                    
-   
+
                         </div>
                     </div>
                     <div class="modal-footer">

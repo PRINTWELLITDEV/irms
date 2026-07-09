@@ -416,10 +416,10 @@ function renderRackMapGrid(locations, rsbaynum) {
         let percentage = (currentQty / originalQty) * 100;
         if (found?.isQuarantine == 1) {
             return "linear-gradient(180deg, rgb(231, 141, 141) 0%, rgb(184, 12, 12) 100%, rgb(124, 13, 13) 100%)" ;} // Quarantine
-        else if (found?.status === "WIP") {
-            return "linear-gradient(180deg, rgb(255,245,200) 0%, rgb(255,193,7) 100%)";} // WIP
+        else if (found?.isWIP) {
+            return "linear-gradient(180deg, rgb(255, 254, 175) 0%, rgb(255, 252, 62) 100%, rgb(187, 190, 0) 100%)";} // WIP
         else if (found?.isStickering) {
-            return "linear-gradient(180deg, rgb(255, 216, 172) 0%, rgb(255, 161, 39) 100%, rgb(255, 136, 0) 100%)" ;} // Stickering
+            return "linear-gradient(180deg, rgb(255, 198, 151) 0%, rgb(248, 147, 64) 100%, rgb(187, 84, 0) 100%)" ;} // Stickering
         else if (currentQty <= 0)
             return "linear-gradient(180deg, rgb(247, 255, 247) 0%, rgb(203, 255, 203) 100%)";
         else if (percentage >= 100)
@@ -505,7 +505,7 @@ function renderRackMapGrid(locations, rsbaynum) {
                         data-has-items="${found && found.jobs && found.jobs.length > 0 ? '1' : '0'}"
                         data-isquarantine="${found ? found.isQuarantine : 0}"
                         data-isstickering="${found ? (found.isStickering ? 1 : 0) : 0}"
-                        style="min-width:160px;max-width:120px;height:160px;vertical-align:middle;font-size:0.8em;background:${bgColor};${textColor};padding:4px;">
+                        style="min-width:160px;max-width:120px;height:160px;vertical-align:middle;font-size:0.8em;background:${bgColor};${textColor};padding:4px;border-radius:10px;">
                         ${
                             found
                                 ? `<div class="h6 fw-bold">${found.rsloc}</div>
@@ -568,8 +568,6 @@ function enableHorizontalScroll() {
         container.scrollLeft = scrollLeft - walk;
     });
 }
-
-
 
 $(document).on('click', '#saveBtn', function (e) {
     e.preventDefault(); // Stop any accidental form submission wrappers

@@ -192,7 +192,7 @@ class IrmsController extends Controller
                 ['icon' => 'fas fa-file-alt', 'label' => 'Reports', 'children' => [
                 ['label' => 'Stickering Report', 'url' => route('irms.stickering-report.preview'),'target' => '_blank', 'autoDownload' => false],
                 ['label' => 'Quarantine Report','url' => route('irms.quarantine-report.preview'),'target' => '_blank', 'autoDownload' => false],
-
+                ['label' => 'WIP Report', 'url' => route('irms.wip-report.preview'),'target' => '_blank', 'autoDownload' => false],
                 ]
             ],
         ],
@@ -316,7 +316,7 @@ class IrmsController extends Controller
                 ['icon' => 'fas fa-file-alt', 'label' => 'Reports', 'children' => [
                 ['label' => 'Stickering Report', 'url' => route('irms.stickering-report.preview'),'target' => '_blank', 'autoDownload' => false],
                 ['label' => 'Quarantine Report','url' => route('irms.quarantine-report.preview'),'target' => '_blank', 'autoDownload' => false],
-
+                ['label' => 'WIP Report', 'url' => route('irms.wip-report.preview'),'target' => '_blank', 'autoDownload' => false],
                 ]
             ],
         ],
@@ -419,6 +419,7 @@ class IrmsController extends Controller
                 ['icon' => 'fas fa-file-alt', 'label' => 'Reports', 'children' => [
                 ['label' => 'Stickering Report', 'url' => route('irms.stickering-report.preview'),'target' => '_blank', 'autoDownload' => false],
                 ['label' => 'Quarantine Report','url' => route('irms.quarantine-report.preview'),'target' => '_blank', 'autoDownload' => false],
+                ['label' => 'WIP Report', 'url' => route('irms.wip-report.preview'),'target' => '_blank', 'autoDownload' => false],
                 ]
             ],
         ],

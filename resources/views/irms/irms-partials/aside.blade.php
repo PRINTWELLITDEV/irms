@@ -81,7 +81,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ url('/irms/rack-locations?tab=map') }}" class="nav-link{{ request()->is('irms/rack-locations') ? ' active' : '' }}">
+                    <a href="{{ url('/irms/rack-locations') }}" class="nav-link{{ request()->is('irms/rack-locations') ? ' active' : '' }}">
 
                         <i class="nav-icon bi bi-grid-3x3"></i>
                         <p>Rack Locations</p>
@@ -95,7 +95,7 @@
                 </li>
                 <li class="nav-item">
                     <a href="{{ url('/irms/job-locations') }}" class="nav-link{{ request()->is('irms/job-locations') ? ' active' : '' }}">
-                        <i class="nav-icon fas fa-boxes"></i>
+                        <i class="nav-icon fa-solid fa-box"></i>
                         <p>Job Locations</p>
                     </a>
                 </li>

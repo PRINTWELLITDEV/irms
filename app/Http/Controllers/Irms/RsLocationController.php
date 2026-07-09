@@ -27,6 +27,7 @@ class RsLocationController extends Controller
             ->select('rsbaynum', 'rssite', 'rswhse')
             ->get();
 
+
         return view('irms.irms-layouts.rack-locations', compact('sites', 'warehouses', 'baynums'));
     }
 
@@ -147,6 +148,20 @@ class RsLocationController extends Controller
             ->unique()
             ->toArray();
 
+        $WIPRecords = DB::connection('sqlsrv')->select(
+            'EXEC dbo.sp_WIP_Report ?, ?, ?, ?',
+            [$rssite, $rswhse, $rsbaynum, null]
+        );
+
+        $stickeringLocations = collect($stickeringRecords)
+            ->pluck('rsloc')
+            ->unique()
+            ->toArray();
+
+        $WIPLocations = collect($WIPRecords)
+            ->pluck('rsloc')
+            ->unique()
+            ->toArray();
 
         // Group locations by rsloc to handle multiple jobs per location
         $grouped = [];
@@ -165,6 +180,7 @@ class RsLocationController extends Controller
                     'original_qty' => 0,
                     'isQuarantine' => $location->isQuarantine ?? 0,
                     'isStickering' => in_array($location->rsloc, $stickeringLocations),
+                    'isWIP' => in_array($location->rsloc, $WIPLocations),
                 ];
             }
 
@@ -218,27 +234,27 @@ class RsLocationController extends Controller
     }
 
     public function updateQuarantine(Request $request)
-{
-    $user = auth()->user();
-    $userSite = trim($user->rssite); // Trim payload to prevent DB string matches from failing
+    {
+        $user = auth()->user();
+        $userSite = trim($user->rssite); // Trim payload to prevent DB string matches from failing
 
-    // Execute stored procedure matching 4 strict parameters
-    DB::connection('sqlsrv')->statement(
-        'EXEC dbo.sp_update_rsloc ?, ?, ?, ?',
-        [
-            $userSite,
-            trim($request->rswhse),
-            trim($request->rsloc),
-            $request->isQuarantine == 1 ? 1 : 0
-        ]
-    );
+        // Execute stored procedure matching 4 strict parameters
+        DB::connection('sqlsrv')->statement(
+            'EXEC dbo.sp_update_rsloc ?, ?, ?, ?',
+            [
+                $userSite,
+                trim($request->rswhse),
+                trim($request->rsloc),
+                $request->isQuarantine == 1 ? 1 : 0
+            ]
+        );
 
-    // Explicitly return JSON instead of redirecting the background process
-    return response()->json([
-        'success' => true,
-        'message' => 'Quarantine status updated successfully.'
-    ]);
-}
+        // Explicitly return JSON instead of redirecting the background process
+        return response()->json([
+            'success' => true,
+            'message' => 'Quarantine status updated successfully.'
+        ]);
+    }
 
 
 }

@@ -227,7 +227,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         ${isOccupied ? 'disabled' : ''}>
                     </td>
                     <td><strong>${row.rsloc}</strong></td>
-                    <td><input type="text" class="form-control" value="" disabled></td>
+                    <td><input type="text" class="form-control pallet-tag" list="palletTagList" disabled></td>
                     <td class="position-relative"><input type="text" class="form-control text-end" value="" disabled></td>
                     <td class="text-end"><span class="badge bg-light text-dark">${qtyOnHand}</span></td>
                     <td class="text-center"><span class="badge bg-primary">${um}</span></td>
@@ -235,6 +235,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 </tr>
                 `);
                 });
+                
                 } else {
                     tbody.append(
                         '<tr><td colspan="8" class="text-center text-muted"><i class="bi bi-inbox me-2"></i>No Rack Locations found.</td></tr>'
@@ -259,6 +260,9 @@ document.addEventListener("DOMContentLoaded", function () {
             const $row = $(this).closest("tr");
             const enabled = $(this).is(":checked");
             $row.find('input[type="text"]').prop("disabled", !enabled);
+            $row.find(".pallet-tag").prop("disabled", !enabled);
+
+
 
             // Get Pallet Size and Date Received from summary/details
             let palletSize =
@@ -451,9 +455,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 const rsloc = $row.find("td").eq(2).text().trim();
 
                 // Fixed: Get pallet number from the correct input (4th column, index 3)
-                const rspallet_num =
+                /*const rspallet_num =
                     $row.find("td").eq(3).find('input[type="text"]').val() ||
-                    "";
+                    "";*/   
+                
+                const rspallet_num = $row.find(".pallet-tag").val() || "";
 
                 // Fixed: Get unit of measure from the correct column (7th column, index 6)
                 const um = $row.find("td").eq(6).find("span").text().trim();
@@ -617,8 +623,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     const um = $("#um").val();
                     
                     data.sort((a, b) => {
-                        const qtyA = Number(a.qty_onHand) || 0;
-                        const qtyB = Number(b.qty_onHand) || 0;
+                        // const qtyA = Number(a.qty_onHand) || 0;
+                        // const qtyB = Number(b.qty_onHand) || 0;
 
                         const groupA = qtyA > 0 ? 1 : 0; // occupied
                         const groupB = qtyB > 0 ? 1 : 0; // available
@@ -626,7 +632,12 @@ document.addEventListener("DOMContentLoaded", function () {
                         return (
                             groupA - groupB ||
                             qtyA - qtyB ||
-                            (a.rsloc || "").localeCompare(b.rsloc || "")
+                            (a.rsloc || "").localeCompare(b.rsloc || "", undefined,
+                                {
+                                    numeric:true,
+                                    sensitivity:"base"
+                                }
+                            )
                         );
                     });
 
@@ -647,6 +658,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                             const isOccupied = qtyOnHandNum > 0;
 
+                            //disable all occupied locations and show them in a different color (e.g., gray)
                             tbody.append(`
                             <tr class="${isOccupied ? 'table-secondary' : ''}">
                                 <td class="text-center">${idx + 1}</td>
@@ -657,7 +669,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                     ${isOccupied ? 'disabled' : ''}>
                                 </td>
                                 <td><strong>${row.rsloc}</strong></td>
-                                <td><input type="text" class="form-control" value="" disabled></td>
+                                <td><input type="text" class="form-control pallet-tag" list="palletTagList" disabled></td>
                                 <td class="position-relative"><input type="text" class="form-control text-end" value="" disabled></td>
                                 <td class="text-end"><span class="badge bg-light text-dark">${qtyOnHand}</span></td>
                                 <td class="text-center"><span class="badge bg-primary">${um}</span></td>
