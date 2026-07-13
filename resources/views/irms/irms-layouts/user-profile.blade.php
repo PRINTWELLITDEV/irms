@@ -6,7 +6,7 @@
 <main class="app-main">
     <div class="app-content-wrapper">
         <div class="app-content-header">
-            <div class="container-fluid">
+            <div class="container-lg">
                 <div class="row align-items-center">
                     <div class="col mb-3 d-flex align-items-center">
                         <h1 class="d-inline-block mb-0 me-3">Profile</h1>
@@ -21,7 +21,7 @@
         </div>
         
         <div class="app-content-body">
-            <div class="container-fluid">
+            <div class="container-lg">
                 <!-- Profile Header Card -->
                 <div class="card profile-header-card mb-4">
                     <div class="card-body p-4">

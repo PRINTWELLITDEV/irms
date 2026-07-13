@@ -7,7 +7,7 @@
 <main class="app-main">
     <div class="app-content-wrapper">
         <div class="app-content-header">
-            <div class="container-fluid">
+            <div class="container-lg">
                 <div class="row align-items-center">
                     <div class="col mb-3 d-flex align-items-center">
                         <h1 class="d-inline-block mb-0 me-3">Item Locations</h1>
@@ -22,7 +22,7 @@
         </div>
 
         <div class="app-content">
-            <div class="container-fluid">
+            <div class="container-lg">
                 <div class="row" id="item-list-view">
                     <div class="col">
                         <div class="card">

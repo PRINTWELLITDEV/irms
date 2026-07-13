@@ -19,7 +19,7 @@
     ])
 </head>
 
-<body class="@yield('body-class', 'layout-fixed sidebar-expand-lg sidebar-mini sidebar-collapse bg-body-tertiary app-loaded fixed-header fixed-footer')">
+<body class="@yield('body-class', 'fixed-header fixed-footer')">
 
     <div id="app-wrapper">
         {{-- Navbar --}}

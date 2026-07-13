@@ -392,5 +392,13 @@
     }
 }
 
+.sidebar-mini.sidebar-collapse .app-sidebar {
+    overflow: hidden;
+}   
+    
+.sidebar-mini.sidebar-collapse .app-sidebar:hover {
+    width: 4.6rem !important;
+}
+
 
 

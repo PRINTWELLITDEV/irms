@@ -6,7 +6,7 @@
     <main class="app-main">
         <div class="app-content-wrapper">
             <div class="dashboard-header">
-                <div class="container-fluid">
+                <div class="container-lg">
                     <div class="row align-items-center">
                         <div class="col-md-8">
                             <h1>
@@ -45,7 +45,7 @@
             </div>
 
             <div class="app-content">
-                <div class="container-fluid">
+                <div class="container-lg">
                     <!-- Stats Cards Row -->
                     @if($userLevel == 1)
                         <!-- Super Admin Stats -->

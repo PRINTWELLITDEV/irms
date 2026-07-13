@@ -21,7 +21,7 @@
     {{-- Page-specific CSS --}}
     @stack('styles')
 </head>
-<body class="layout-fixed fixed-header sidebar-mini sidebar-collapse sidebar-expand-lg bg-body-tertiary">
+<body class="layout-fixed fixed-header sidebar-mini sidebar-expand-lg bg-body-tertiary">
     <div class="app-wrapper">
         {{-- Navbar --}}
         @include('irms.irms-partials.nav')

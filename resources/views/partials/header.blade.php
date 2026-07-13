@@ -4,7 +4,7 @@
     $siteDesc = $siteDesc ?? null;
 @endphp
 <nav class="app-header navbar navbar-expand bg-body sticky-top">
-    <div class="container-fluid">
+    <div class="container-lg">
 
         {{-- =========================================================
         LEFT SIDE: BRAND, NAV LINKS, AND SIDEBAR TOGGLE

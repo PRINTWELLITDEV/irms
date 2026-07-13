@@ -5,7 +5,7 @@
 <main class="app-main" data-user-level="{{ auth()->user()->level }}">
     <div class="app-content-wrapper">
         <div class="app-content-header">
-            <div class="container-fluid">
+            <div class="container-lg">
                 <div class="row align-items-center">
                     <div class="col mb-3 d-flex align-items-center">
                         <h1 class="d-inline-block mb-0 me-3">Bay Locations</h1>
@@ -23,7 +23,7 @@
         </div>
 
         <div class="app-content">
-            <div class="container-fluid">
+            <div class="container-lg">
                 <div class="row">
                     <div class="col">
                         <div class="card mx-auto">

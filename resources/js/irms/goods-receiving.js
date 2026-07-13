@@ -7,6 +7,26 @@ document.addEventListener("DOMContentLoaded", function () {
         return str ? str.toString().toUpperCase() : "";
     };
 
+    // Validation for pallet tag number
+    // $(document).on("blur", ".pallet-tag", function () {
+    // const value = $(this).val().trim();
+
+    // const isValid =
+    //     /^\d+$/.test(value) || //Numbers only
+    //     /^WIP$/i.test(value) ||
+    //     /^FOR STICKERING$/i.test(value);
+
+    // if (value !== "" && !isValid) {
+    //     Swal.fire({
+    //         icon: "error",
+    //         title: "Invalid Pallet Number",
+    //         text: "Only numbers, WIP, or For Stickering are allowed."
+    //     });
+
+    //     $(this).val("").focus();
+    // }
+    // });
+
     // Receiving Form/Details toggle logic
     $("#receiving-details").hide();
     $("#goodsReceivingForm .btn-primary").on("click", function (e) {
@@ -194,27 +214,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                 .toFixed(2)
                                 .replace(/\.00$/, "");
                         }
-                        /*tbody.append(`
-                        <tr>
-                            <td class="text-center">${idx + 1}</td>
-                            <td class="text-center align-middle">
-                                <input type="checkbox" name="select_row[]" value="${
-                                    idx + 1
-                                }" class="big-checkbox">
-                            </td>
-                            <td><strong>${row.rsloc}</strong></td>
-                            <td><input type="text" class="form-control" value="" disabled></td>
-                            <td class="position-relative">
-                                <input type="text" class="form-control text-end" value="" disabled>
-                            </td>
-                            <td class="text-end"><span class="badge bg-light text-dark">${qtyOnHand}</span></td>
-                            <td class="text-center"><span class="badge bg-primary">${um}</span></td>
-                            <td class="text-center text-muted">-</td>
-                        </tr>
-                    `);
-                    });*/
-
-                    
+          
                 const isOccupied = qtyOnHandNum > 0;
 
                 tbody.append(`
@@ -459,7 +459,12 @@ document.addEventListener("DOMContentLoaded", function () {
                     $row.find("td").eq(3).find('input[type="text"]').val() ||
                     "";*/   
                 
-                const rspallet_num = $row.find(".pallet-tag").val() || "";
+                //const rspallet_num = $row.find(".pallet-tag").val() || "";
+
+
+                let rspallet_num = $row.find(".pallet-tag").val() || "";
+                if (rspallet_num.trim() === "For Stickering") {
+                      rspallet_num = "Stickering";}
 
                 // Fixed: Get unit of measure from the correct column (7th column, index 6)
                 const um = $row.find("td").eq(6).find("span").text().trim();
