@@ -414,12 +414,16 @@ function renderRackMapGrid(locations, rsbaynum) {
         
 
         let percentage = (currentQty / originalQty) * 100;
+        let palletNum = found?.jobs?.[0]?.rspallet_num?.trim().toUpperCase() || ""; //to get the rspallet_num to past it dwon in the bg color
+
         if (found?.isQuarantine == 1) {
             return "linear-gradient(180deg, rgb(231, 141, 141) 0%, rgb(184, 12, 12) 100%, rgb(124, 13, 13) 100%)" ;} // Quarantine
         else if (found?.isWIP) {
             return "linear-gradient(180deg, rgb(255, 254, 175) 0%, rgb(255, 252, 62) 100%, rgb(187, 190, 0) 100%)";} // WIP
         else if (found?.isStickering) {
             return "linear-gradient(180deg, rgb(255, 198, 151) 0%, rgb(248, 147, 64) 100%, rgb(187, 84, 0) 100%)" ;} // Stickering
+        else if (palletNum === "JIT") {
+            return "linear-gradient(180deg, rgb(255, 198, 151) 0%, rgb(248, 147, 64) 100%, rgb(187, 84, 0) 100%)"; }// JIT added by Jim Dominic for JIT rspallet_num
         else if (currentQty <= 0)
             return "linear-gradient(180deg, rgb(247, 255, 247) 0%, rgb(203, 255, 203) 100%)";
         else if (percentage >= 100)
