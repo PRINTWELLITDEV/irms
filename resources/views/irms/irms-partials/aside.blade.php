@@ -114,7 +114,23 @@
                         <p>Goods Dispatching</p>
                     </a>
                 </li>
+
+
+
+
+                @if(auth()->user()->hasQuantityMoveAccess())
+                    <!-- Added an additional navigation button for Moving Items providing users with direct access to the item movement functionality. -->
+                    <li class="nav-item">
+                        <a href="{{ url('/irms/relocate') }}" class="nav-link{{ request()->is('irms/relocate') ? ' active' : '' }}">
+                            <i class="nav-icon fas fa-dolly-flatbed"></i>                        
+                            <p>Quantity Move</p>
+                        </a>
+                    </li>
+                    @endif
                 @endif
+
+
+
                 @if(auth()->user()->level >= 1 && auth()->user()->level <= 3)
                 <li class="nav-header">Transactions</li>
                 <li class="nav-item">

@@ -292,7 +292,7 @@ class RsGoodsReceivingController extends Controller
         $item = $request->input('item');
         $pallet_size = $request->input('pallet_size');
 
-        $results = \DB::select('EXEC sp_get_rsloc_list @rssite = ?, @rswhse = ?, @rsbaynum = ?, @item = ?, @pallet_size = CAST(? AS DECIMAL(19,8))', [
+        $results = \DB::select('EXEC sp_get_rsloc_list @rssite = ?, @rswhse = ?, @rsbaynum = ?, @item = ?, @pallet_size = ?', [
             $rssite, $rswhse, $rsbaynum, $item, $pallet_size
         ]);
 

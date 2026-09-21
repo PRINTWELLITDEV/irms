@@ -81,4 +81,29 @@ class RsUser extends Authenticatable
             }
         });
     }
+
+
+    public function hasQuantityMoveAccess()
+{
+    // Superadmin always has access
+    if ($this->level == 1) {
+        return true;
+    }
+
+    $file = storage_path('app/navigation_permissions.json');
+
+    if (!file_exists($file)) {
+        return false;
+    }
+
+    $permissions = json_decode(
+        file_get_contents($file),
+        true
+    ) ?? [];
+
+    return in_array(
+        $this->userid,
+        $permissions['quantity_move'] ?? []
+    );
+}
 }

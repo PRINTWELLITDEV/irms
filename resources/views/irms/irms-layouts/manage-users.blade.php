@@ -442,6 +442,37 @@
                                         <input type="text" id="edit-position" name="position" class="form-control" maxlength="50" placeholder="Position">
                                     </div>
                                 </div>
+                                <!-- For QTy move access check box -->
+                                @if(auth()->user()->level == 1)
+                                    <div class="mb-3">
+                                        <label class="form-label fw-semibold">
+                                            <i class="bi bi-shield-check me-1"></i>
+                                            Navigation Access
+                                        </label>
+
+                                        <div class="border rounded p-3 bg-light">
+
+                                            <div class="form-check">
+                                                <input
+                                                    class="form-check-input"
+                                                    type="checkbox"
+                                                    name="navigation_access[]"
+                                                    value="quantity_move"
+                                                    id="edit-quantity-move"
+                                                >
+
+                                                <label
+                                                    class="form-check-label"
+                                                    for="edit-quantity-move"
+                                                >
+                                                    <i class="fas fa-dolly-flatbed me-1"></i>
+                                                    Quantity Move
+                                                </label>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     </div>

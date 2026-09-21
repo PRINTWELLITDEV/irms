@@ -485,7 +485,8 @@ class ComposerStaticInitc514d8f7b9fc5970bdd94287905ef584
         ),
         'Nette\\' =>
         array (
-            0 => __DIR__ . '/..' . '/nette/utils/src',
+            0 => __DIR__ . '/..' . '/nette/schema/src',
+            1 => __DIR__ . '/..' . '/nette/utils/src',
         ),
         'Monolog\\' =>
         array (
@@ -673,10 +674,12 @@ class ComposerStaticInitc514d8f7b9fc5970bdd94287905ef584
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
         'App\\Http\\Controllers\\HomeController' => __DIR__ . '/../..' . '/app/Http/Controllers/HomeController.php',
         'App\\Http\\Controllers\\Irms\\IrmsController' => __DIR__ . '/../..' . '/app/Http/Controllers/Irms/IrmsController.php',
+        'App\\Http\\Controllers\\Irms\\ReportController' => __DIR__ . '/../..' . '/app/Http/Controllers/Irms/ReportController.php',
         'App\\Http\\Controllers\\Irms\\RsBayLocController' => __DIR__ . '/../..' . '/app/Http/Controllers/Irms/RsBayLocController.php',
         'App\\Http\\Controllers\\Irms\\RsGoodsDispatchingController' => __DIR__ . '/../..' . '/app/Http/Controllers/Irms/RsGoodsDispatchingController.php',
         'App\\Http\\Controllers\\Irms\\RsGoodsReceivingController' => __DIR__ . '/../..' . '/app/Http/Controllers/Irms/RsGoodsReceivingController.php',
         'App\\Http\\Controllers\\Irms\\RsItemLocController' => __DIR__ . '/../..' . '/app/Http/Controllers/Irms/RsItemLocController.php',
+        'App\\Http\\Controllers\\Irms\\RsJobLocController' => __DIR__ . '/../..' . '/app/Http/Controllers/Irms/RsJobLocController.php',
         'App\\Http\\Controllers\\Irms\\RsLocationController' => __DIR__ . '/../..' . '/app/Http/Controllers/Irms/RsLocationController.php',
         'App\\Http\\Controllers\\Irms\\RsSiteController' => __DIR__ . '/../..' . '/app/Http/Controllers/Irms/RsSiteController.php',
         'App\\Http\\Controllers\\Irms\\RsTransController' => __DIR__ . '/../..' . '/app/Http/Controllers/Irms/RsTransController.php',
@@ -4091,6 +4094,7 @@ class ComposerStaticInitc514d8f7b9fc5970bdd94287905ef584
         'Nette\\Utils\\AssertionException' => __DIR__ . '/..' . '/nette/utils/src/Utils/exceptions.php',
         'Nette\\Utils\\Callback' => __DIR__ . '/..' . '/nette/utils/src/Utils/Callback.php',
         'Nette\\Utils\\DateTime' => __DIR__ . '/..' . '/nette/utils/src/Utils/DateTime.php',
+        'Nette\\Utils\\DateTimeImmutable' => __DIR__ . '/..' . '/nette/utils/src/Utils/DateTimeImmutable.php',
         'Nette\\Utils\\FileInfo' => __DIR__ . '/..' . '/nette/utils/src/Utils/FileInfo.php',
         'Nette\\Utils\\FileSystem' => __DIR__ . '/..' . '/nette/utils/src/Utils/FileSystem.php',
         'Nette\\Utils\\Finder' => __DIR__ . '/..' . '/nette/utils/src/Utils/Finder.php',
@@ -4107,6 +4111,9 @@ class ComposerStaticInitc514d8f7b9fc5970bdd94287905ef584
         'Nette\\Utils\\JsonException' => __DIR__ . '/..' . '/nette/utils/src/Utils/exceptions.php',
         'Nette\\Utils\\ObjectHelpers' => __DIR__ . '/..' . '/nette/utils/src/Utils/ObjectHelpers.php',
         'Nette\\Utils\\Paginator' => __DIR__ . '/..' . '/nette/utils/src/Utils/Paginator.php',
+        'Nette\\Utils\\Process' => __DIR__ . '/..' . '/nette/utils/src/Utils/Process.php',
+        'Nette\\Utils\\ProcessFailedException' => __DIR__ . '/..' . '/nette/utils/src/Utils/exceptions.php',
+        'Nette\\Utils\\ProcessTimeoutException' => __DIR__ . '/..' . '/nette/utils/src/Utils/exceptions.php',
         'Nette\\Utils\\Random' => __DIR__ . '/..' . '/nette/utils/src/Utils/Random.php',
         'Nette\\Utils\\Reflection' => __DIR__ . '/..' . '/nette/utils/src/Utils/Reflection.php',
         'Nette\\Utils\\ReflectionMethod' => __DIR__ . '/..' . '/nette/utils/src/Utils/ReflectionMethod.php',

@@ -16,6 +16,7 @@ use App\Http\Controllers\Irms\RsItemLocController;
 use App\Http\Controllers\Irms\RsJobLocController;
 use App\Http\Controllers\Irms\RsGoodsReceivingController;
 use App\Http\Controllers\Irms\RsGoodsDispatchingController;
+use App\Http\Controllers\Irms\RsGoodsRelocatingController;
 use App\Http\Controllers\Irms\RsTransController;
 use App\Http\Controllers\Irms\ReportController;
 use App\Http\Controllers\HomeController;
@@ -87,6 +88,8 @@ Route::prefix('irms')->middleware('auth')->group(function () {
     Route::get('/manage-users/user-list', [RsUserController::class, 'userlist']);
     Route::post('/manage-users/store', [RsUserController::class, 'store'])->name('rsusers.store');
     Route::put('/manage-users/update', [RsUserController::class, 'update'])->name('rsusers.update');
+    Route::get('/manage-users/user/{userid}', [RsUserController::class, 'show'])->name('rsusers.show');
+
 
     // Warehouse
     Route::get('/warehouse', [RsWhseController::class, 'index'])->name('warehouse.index');
@@ -132,6 +135,17 @@ Route::prefix('irms')->middleware('auth')->group(function () {
     Route::post('/dispatching/job-item-details', [RsGoodsDispatchingController::class, 'getJobItemDetails'])->name('goodsdispatching.jobitemdetails');
     Route::post('/dispatching/item-in-rsloc-list', [RsGoodsDispatchingController::class, 'getItemInRsLocList'])->name('goodsdispatching.iteminrsloclist');
     Route::post('/dispatching/process-goods-dispatch', [RsGoodsDispatchingController::class, 'processGoodsDispatch'])->name('goodsdispatching.processdispatch');
+   
+    // Goods Relocating
+    Route::get('/relocate', [RsGoodsRelocatingController::class, 'index'])->name('goodsrelocating.index');
+    Route::get('/goods-relocating/bays', [RsGoodsRelocatingController::class, 'getBays'])->name('irms.goods-relocating.bays');
+
+    Route::get('/goods-relocating/locations', [RsGoodsRelocatingController::class, 'getLocations'])->name('irms.goods-relocating.locations');
+    Route::get('/goods-relocating/pallets', [RsGoodsRelocatingController::class, 'getPallets'])->name('irms.goods-relocating.pallets');
+    Route::get('/goods-relocating/jobs', [RsGoodsRelocatingController::class, 'getJobs'])->name('irms.goods-relocating.jobs');
+    Route::get('/goods-relocating/item', [RsGoodsRelocatingController::class, 'getItem'])->name('irms.goods-relocating.item');
+    Route::post('/goods-relocating/move', [RsGoodsRelocatingController::class, 'moveItem'])->name('irms.goods-relocating.move');
+    Route::get('/irms/get-pallet-suggestions', [RsGoodsRelocatingController::class, 'getPalletSuggestions'])->name('irms.getPalletSuggestions');
 
     //Transactions
     // Route::get('/transactions', fn() => view('irms/irms-layouts/transactions'))->name('irms.transactions');

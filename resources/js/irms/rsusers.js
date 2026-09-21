@@ -77,9 +77,8 @@ $("#users-table tbody").on("click", "tr", function () {
 
     $("#viewUserModal").modal("show");
 });
-
-// When Edit button in view modal is clicked, show edit modal with values
 $("#btnEditUser").on("click", function () {
+
     const userid = $(this).data("userid");
     const name = $(this).data("name");
     const email = $(this).data("email");
@@ -92,7 +91,7 @@ $("#btnEditUser").on("click", function () {
     const profile = $(this).data("profile");
     const section = $(this).data("section");
 
-    // Set values in edit modal
+    // Set existing user information
     $("#edit-user-label-name").text(name || userid);
     $("#edit-user-profile-preview").attr("src", profile);
     $("#edit-rssite").val(site);
@@ -108,6 +107,36 @@ $("#btnEditUser").on("click", function () {
     $("#edit-department").val(department || "");
     $("#edit-position").val(position || "");
     $("#edit-section").val(section || "");
+
+    // Reset checkbox first
+    $("#edit-quantity-move").prop("checked", false);
+
+    // Get the user's current navigation permissions
+    $.get(
+        window.appUrl + "/irms/manage-users/user/" + encodeURIComponent(userid),
+        function (data) {
+
+            if (data.permissions) {
+
+                $("#edit-quantity-move").prop(
+                    "checked",
+                    data.permissions.quantity_move === true
+                );
+
+            }
+
+        }
+    ).fail(function () {
+
+        // If permission cannot be loaded,
+        // keep checkbox unchecked
+        $("#edit-quantity-move").prop("checked", false);
+
+        console.error(
+            "Unable to load navigation permissions for:",
+            userid
+        );
+    });
 
     // Hide view modal then show edit modal
     $("#viewUserModal").modal("hide");
