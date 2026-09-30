@@ -17,9 +17,13 @@ class RsGoodsRelocatingController extends Controller
 
     public function index()
     {
-        if (auth()->user()->level > 3) {
-            abort(401, 'Unauthorized');
+        //only allow users with quantity_move permission to access this page
+        //Author: Jim Dominic Pabalate
+        //Date Created: September 17, 2026
+        if (!auth()->user()->hasQuantityMoveAccess()) {
+            abort(403, 'Unauthorized');
         }
+
         $sites = IrmsSite::all();
         $warehouses = Rswhse::all();
         

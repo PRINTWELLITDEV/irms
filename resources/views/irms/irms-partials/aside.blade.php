@@ -2,6 +2,15 @@
     use App\Http\Controllers\Irms\IrmsController;
     $site_image = IrmsController::getSiteImage();
     $site_desc = IrmsController::getSiteDesc();
+
+    $user = auth()->user();
+    /**
+     * Function: Marketing Navigation Restriction
+     * Identifies Marketing users so only Item Inquiry is displayed.
+     * Author: Jim Dominic Pabalate
+     * Date Created: September 28, 2026
+     */
+    $isMarketing = strtolower(trim($user->department)) === 'marketing';
 @endphp
 
 <form id="logout-form" method="POST" action="{{ route('logout') }}" class="d-none">
@@ -33,6 +42,23 @@
     <div class="sidebar-wrapper">
         <nav class="mt-2">
             <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="navigation" aria-label="Main navigation" data-accordion="false" id="navigation">
+
+
+            @if($isMarketing)
+
+                    <!-- MARKETING USERS: ITEM INQUIRY ONLY -->
+                    <li class="nav-item">
+                        <a href="{{ url('/irms/item-inquiry') }}"
+                        class="nav-link{{ request()->is('irms/item-inquiry') ? ' active' : '' }}">
+                            <i class="nav-icon fas fa-search"></i>
+                            <p>Item Inquiry</p>
+                        </a>
+                    </li>
+
+            @else
+
+
+
                 @if(auth()->user()->level > 3 || auth()->user()->level == 0)
                     <li class="nav-item">
                         <a href="#" class="nav-link{{ request()->is('irms/no-access') ? ' active' : '' }}">
@@ -132,14 +158,28 @@
 
 
                 @if(auth()->user()->level >= 1 && auth()->user()->level <= 3)
-                <li class="nav-header">Transactions</li>
-                <li class="nav-item">
-                    <a href="{{ url('/irms/transactions') }}" class="nav-link{{ request()->is('irms/transactions') ? ' active' : '' }}">
-                        <i class="nav-icon fas fa-exchange-alt"></i>
-                        <p>Transactions</p>
-                    </a>
-                </li>
+                    <li class="nav-header">Reports</li>
+                    <li class="nav-item">
+                        <a href="{{ url('/irms/transactions') }}" class="nav-link{{ request()->is('irms/transactions') ? ' active' : '' }}">
+                            <i class="nav-icon fas fa-exchange-alt"></i>
+                            <p>Transactions</p>
+                        </a>
+                    </li>
                 @endif
+                
+                @if(auth()->user()->hasItemInquiryAccess())
+                    <li class="nav-item">
+                        <a href="{{ url('/irms/item-inquiry') }}" class="nav-link{{ request()->is('irms/item-inquiry') ? ' active' : '' }}">
+                            <i class="nav-icon fas fa-search"></i>
+                            <p>Item Inquiry</p>
+                        </a>
+                    </li>
+                @endif
+            @endif
+
+
+
+                
                 <!--@if(auth()->user()->level >= 1 && auth()->user()->level <= 3)
                 <li class="nav-header">Reports</li>
                     <a href="{{ url('/irms/stickering-report/preview') }}" class="nav-link{{ request()->is('irms/stickering-report') ? ' active' : '' }}">

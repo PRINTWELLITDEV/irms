@@ -11,8 +11,8 @@
     <title>{{ config('app.name', 'IRMS') }}</title>
     <link rel="icon" type="image/png" href="{{ asset('uploads/img/irms.png') }}">
     <link rel="dns-prefetch" href="//fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="{{ asset('css/nunito.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/bootstrap-icons.min.css') }}">
     <link href="aos-master/dist/aos.css" rel="stylesheet"> @vite([
         'resources/css/app.css',
         'resources/js/app.js'

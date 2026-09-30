@@ -3,6 +3,7 @@ import Swal from "sweetalert2";
 
 
 document.addEventListener('DOMContentLoaded', function () {
+    if (!document.getElementById('relocationForm')) return;
 
     const fromSite = document.getElementById('from_rssite');
     const fromWhse = document.getElementById('from_rswhse');
@@ -18,8 +19,41 @@ document.addEventListener('DOMContentLoaded', function () {
     const toPallet = document.getElementById('to_rspallet');
     const toQty = document.getElementById('qty_to_move');
     const docNo = document.getElementById('docno');
+    let fromLocations = [];
 
+function loadFromLocations() {
 
+    const suggestions =
+        document.getElementById('fromLocationSuggestions');
+
+    suggestions.innerHTML = '';
+
+    fromLocations = [];
+
+    fetch(
+        goodsRelocatingRoutes.locations + '?' +
+        new URLSearchParams({
+            rssite: fromSite.value,
+            rswhse: fromWhse.value,
+            rsbaynum: fromBay.value,
+            occupied_only: 1
+        })
+    )
+    .then(response => response.json())
+    .then(result => {
+
+        fromLocations = result;
+
+    })
+    .catch(error => {
+
+        console.error(
+            'Error loading locations:',
+            error
+        );
+
+    });
+}
 
 function setDisabled(element, disabled) {
     if (element) {
@@ -120,6 +154,7 @@ function initializeFields() {
                     let displayText = value;
 
                     // TO LOCATION display
+                    //restrict the location to show only the empty location or same item but has a storage 
                     if (select === toLoc) {
 
                         if (item.status === 'empty') {
@@ -130,6 +165,14 @@ function initializeFields() {
 
                             let availableQty = Number(item.available_qty || 0);
                             let locationLimit = Number(item.location_limit || 0);
+
+                            // Hide location if already at full capacity
+                            if (
+                                locationLimit > 0 &&
+                                availableQty >= locationLimit
+                            ) {
+                                return;
+                            }
 
                             let palletText = item.pallet_numbers
                                 ? ` - Pallet: ${item.pallet_numbers}`
@@ -222,37 +265,36 @@ function initializeFields() {
 
 
     fromBay.addEventListener('change', function () {
-    // Reset lower fields
+
         resetSelect(fromPallet, 'Choose Pallet No...');
         resetSelect(fromJob, 'Choose Job / CO...');
-         setDisabled(fromPallet, true);
-    setDisabled(fromJob, true);
 
-    if (!fromBay.value) {
+        setDisabled(fromPallet, true);
+        setDisabled(fromJob, true);
 
-        resetSelect(fromLoc, 'Choose Location...');
-        setDisabled(fromLoc, true);
+        // Clear location
+        fromLoc.value = '';
 
-        return;
-    }
+        document.getElementById(
+            'fromLocationSuggestions'
+        ).style.display = 'none';
 
-    // Enable Location
-    setDisabled(fromLoc, false);
+        if (!fromBay.value) {
 
-        load(
-            fromLoc,
-            goodsRelocatingRoutes.locations,
-            {
-                rssite: fromSite.value,
-                rswhse: fromWhse.value,
-                rsbaynum: fromBay.value,
-                occupied_only: 1
-            },
-            'Choose Occupied Location...'
-        );
+            setDisabled(fromLoc, true);
+
+            fromLocations = [];
+
+            return;
+        }
+
+        // Enable location input
+        setDisabled(fromLoc, false);
+
+        // Load locations for this bay
+        loadFromLocations();
 
     });
-
 
     fromLoc.addEventListener('change', function () {
 
@@ -293,6 +335,73 @@ function initializeFields() {
             'Choose Job / CO...'
         );
     });
+fromLoc.addEventListener('input', function () {
+
+    const search =
+        this.value.trim().toLowerCase();
+
+    const suggestions =
+        document.getElementById('fromLocationSuggestions');
+
+    suggestions.innerHTML = '';
+
+    if (!search) {
+
+        suggestions.style.display = 'none';
+        return;
+    }
+
+    const matches =
+        fromLocations.filter(item => {
+
+            const location =
+                String(item.rsloc || '').toLowerCase();
+
+            return location.includes(search);
+
+        });
+
+    if (matches.length === 0) {
+
+        suggestions.style.display = 'none';
+        return;
+    }
+
+    matches.forEach(item => {
+
+        const location = item.rsloc;
+
+        const button =
+            document.createElement('button');
+
+        button.type = 'button';
+
+        button.className =
+            'list-group-item list-group-item-action';
+
+        button.textContent =
+            location;
+
+        button.addEventListener('click', function () {
+
+            fromLoc.value = location;
+
+            suggestions.style.display = 'none';
+
+            // Trigger your existing location logic
+            fromLoc.dispatchEvent(
+                new Event('change')
+            );
+
+        });
+
+        suggestions.appendChild(button);
+
+    });
+
+    suggestions.style.display = 'block';
+
+});
 
 fromPallet.addEventListener('change', function () {
 
@@ -728,6 +837,24 @@ document.getElementById('moveItemBtn')
         confirmRelocation();
 
     });
+    document.addEventListener('click', function (event) {
+
+    const input =
+        document.getElementById('from_rsloc');
+
+    const suggestions =
+        document.getElementById(
+            'fromLocationSuggestions'
+        );
+
+    if (
+        !input.contains(event.target) &&
+        !suggestions.contains(event.target)
+    ) {
+        suggestions.style.display = 'none';
+    }
+
+});
 
 });
 

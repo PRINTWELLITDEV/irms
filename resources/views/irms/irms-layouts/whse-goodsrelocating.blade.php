@@ -131,15 +131,32 @@
                                             </div>
                                         </div>
                                         <div class="col-md-6">
-                                            <div class="form-floating">
-                                                <select name="rsloc" id="from_rsloc" class="form-select" required disabled>
-                                                    <option value="">Select bay first</option>
-                                                </select>
-                                                <label for="from_rsloc">
-                                                    <i class="bi bi-geo-alt text-warning me-1"></i>
-                                                    Location <span class="text-danger">*</span>
-                                                </label>
-                                            </div>
+                                            <div class="form-floating position-relative">
+
+    <input
+        type="text"
+        name="rsloc"
+        id="from_rsloc"
+        class="form-control"
+        placeholder="Type location..."
+        autocomplete="off"
+        required
+        disabled
+    >
+
+    <label for="from_rsloc">
+        <i class="bi bi-geo-alt text-warning me-1"></i>
+        Location <span class="text-danger">*</span>
+    </label>
+
+    <!-- Suggestions -->
+    <div
+        id="fromLocationSuggestions"
+        class="list-group position-absolute w-100 shadow"
+        style="z-index: 1050; display: none;"
+    ></div>
+
+</div>
                                         </div>
                                     </div>
 

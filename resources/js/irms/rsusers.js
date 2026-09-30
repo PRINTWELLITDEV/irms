@@ -110,6 +110,7 @@ $("#btnEditUser").on("click", function () {
 
     // Reset checkbox first
     $("#edit-quantity-move").prop("checked", false);
+    $("#edit-item-inquiry").prop("checked", false);
 
     // Get the user's current navigation permissions
     $.get(
@@ -122,6 +123,10 @@ $("#btnEditUser").on("click", function () {
                     "checked",
                     data.permissions.quantity_move === true
                 );
+                $("#edit-item-inquiry").prop(
+                    "checked",
+                    data.permissions.item_inquiry === true
+                );
 
             }
 
@@ -131,6 +136,7 @@ $("#btnEditUser").on("click", function () {
         // If permission cannot be loaded,
         // keep checkbox unchecked
         $("#edit-quantity-move").prop("checked", false);
+        $("#edit-item-inquiry").prop("checked", false);
 
         console.error(
             "Unable to load navigation permissions for:",

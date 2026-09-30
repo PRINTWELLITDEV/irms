@@ -15,6 +15,7 @@ import "./rsbayloc.js";
 import "./rsloc.js";
 import "./rsitemloc.js";
 import "./rstrans.js";
+import "./item-inquiry.js";
 
 // Import goods management scripts
 import "./goods-receiving.js";

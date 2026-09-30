@@ -69,7 +69,7 @@ class LoginController extends Controller
                     $request->session()->regenerate();
                     return response()->json([
                         'success' => true,
-                        'redirect' => route('dashboard')
+                        'redirect' => $this->getLoginRedirect($user)
                     ]);
                 }
                 return $this->doLogin($request, $user);
@@ -128,8 +128,40 @@ class LoginController extends Controller
         }
 
 
+        /**
+         * Function: Marketing Login Redirect
+         *
+         * Description:
+         * Redirects Marketing users to Item Inquiry after login.
+         *
+         * Author: Jim Dominic Pabalate
+         * Date Created: September 28, 2026
+         */
+        if (strtolower(trim($user->department)) === 'marketing') {
+            return redirect('/irms/item-inquiry');
+        }
+
         return redirect()->intended(route('dashboard'));
     }
+
+    /**
+     * Function: Marketing Login Redirect
+     *
+     * Description:
+     * Returns Item Inquiry as the default page for Marketing users.
+     *
+     * Author: Jim Dominic Pabalate
+     * Date Created: September 28, 2026
+     */
+    private function getLoginRedirect(RsUser $user)
+    {
+        if (strtolower(trim($user->department)) === 'marketing') {
+            return url('/irms/item-inquiry');
+        }
+
+        return route('dashboard');
+    }
+
 
     /**
      * Logout the user.

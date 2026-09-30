@@ -82,7 +82,11 @@ class RsUser extends Authenticatable
         });
     }
 
-
+/**
+ * Checks whether the user has permission to access Quantity Move.
+ * Author: Jim Dominic Pabalate
+ * Date Created: September 17, 2026
+ */
     public function hasQuantityMoveAccess()
 {
     // Superadmin always has access
@@ -104,6 +108,36 @@ class RsUser extends Authenticatable
     return in_array(
         $this->userid,
         $permissions['quantity_move'] ?? []
+    );
+}
+
+
+/**
+ * Checks whether the user has permission to access Item Inquiry.
+ * Author: Jim Dominic Pabalate
+ * Date Created: September 25, 2026
+ */
+public function hasItemInquiryAccess()
+{
+    // Superadmin always has access
+    if ($this->level == 1) {
+        return true;
+    }
+
+    $file = storage_path('app/navigation_permissions.json');
+
+    if (!file_exists($file)) {
+        return false;
+    }
+
+    $permissions = json_decode(
+        file_get_contents($file),
+        true
+    ) ?? [];
+
+    return in_array(
+        $this->userid,
+        $permissions['item_inquiry'] ?? []
     );
 }
 }

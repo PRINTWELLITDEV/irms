@@ -18,6 +18,7 @@ use App\Http\Controllers\Irms\RsGoodsReceivingController;
 use App\Http\Controllers\Irms\RsGoodsDispatchingController;
 use App\Http\Controllers\Irms\RsGoodsRelocatingController;
 use App\Http\Controllers\Irms\RsTransController;
+use App\Http\Controllers\Irms\ItemInquiryController;
 use App\Http\Controllers\Irms\ReportController;
 use App\Http\Controllers\HomeController;
 
@@ -73,7 +74,7 @@ Route::get('/irms', function () {
     return view('irms.irms-layouts.dashboard');
 })->name('/')->middleware('auth');
 
-Route::prefix('irms')->middleware('auth')->group(function () {
+Route::prefix('irms')->middleware(['auth', 'marketing.restriction'])->group(function () {
     // Dashboard
     Route::get('/', [IrmsController::class, 'index'])->name('dashboard');
     Route::get('/dashboard/refresh', [IrmsController::class, 'refreshDashboardData'])->name('dashboard.refresh');
@@ -151,11 +152,21 @@ Route::prefix('irms')->middleware('auth')->group(function () {
     // Route::get('/transactions', fn() => view('irms/irms-layouts/transactions'))->name('irms.transactions');
     Route::get('/transactions', [RsTransController::class, 'index'])->name('irms.transactions');
     Route::get('/transactions/transaction-list', [RsTransController::class, 'transactionList']);
+    
 
-    // User Profile (move this to the bottom and add a constraint)
-    Route::get('/{userid}', [RsUserProfileController::class, 'show'])->where('userid', '[A-Za-z0-9]+')->name('irms.userprofile');
-    Route::post('/user-profile/{userid}/update', [RsUserProfileController::class, 'update'])->name('user-profile.update');
-    Route::post('/user-profile/{userid}/change-password', [RsUserProfileController::class, 'changePassword'])->name('user-profile.change-password');
+    //ITEm-Inquiry
+    Route::get('/item-inquiry', [ItemInquiryController::class, 'index'])->name('irms.item-inquiry');
+    Route::get('/irms/item-inquiry/search', [ItemInquiryController::class, 'search'])->name('irms.item-inquiry.search');
+    Route::get('/item-inquiry/pdf/summary', [ItemInquiryController::class, 'downloadSummaryPdf'])->name('irms.item-inquiry.pdf.summary');
+    Route::get('/item-inquiry/pdf/detailed', [ItemInquiryController::class, 'downloadDetailedPdf'])->name('irms.item-inquiry.pdf.detailed');
+    Route::get('/item-inquiry/report-list', [ItemInquiryController::class, 'reportList'])->name('irms.item-inquiry.report-list');
+    Route::get('/item-inquiry/item-suggestions', [ItemInquiryController::class, 'itemSuggestions'])->name('irms.item-inquiry.item-suggestions');
+
+
+    // // User Profile (move this to the bottom and add a constraint)
+    // Route::get('/{userid}', [RsUserProfileController::class, 'show'])->where('userid', '[A-Za-z0-9]+')->name('irms.userprofile');
+    // Route::post('/user-profile/{userid}/update', [RsUserProfileController::class, 'update'])->name('user-profile.update');
+    // Route::post('/user-profile/{userid}/change-password', [RsUserProfileController::class, 'changePassword'])->name('user-profile.change-password');
 
     //Reports
     Route::get('/stickering-report/preview', [ReportController::class, 'stickeringPreview']) ->name('irms.stickering-report.preview');
@@ -165,6 +176,14 @@ Route::prefix('irms')->middleware('auth')->group(function () {
     Route::get('/quarantine-report/preview', [ReportController::class, 'quarantinePreview']) ->name('irms.quarantine-report.preview');
     Route::get('/wip-report/preview', [ReportController::class, 'wipPreview']) ->name('irms.wip-report.preview');
     Route::get('/wip-report/pdf', [ReportController::class, 'wipPdf'])->name('irms.wip-report.pdf');
+    
+});
+
+// Profile routes require login but are not subject to marketing.restriction.
+Route::prefix('irms')->middleware('auth')->group(function () {
+    Route::get('/{userid}', [RsUserProfileController::class, 'show'])->where('userid', '[A-Za-z0-9]+')->name('irms.userprofile');
+    Route::post('/user-profile/{userid}/update', [RsUserProfileController::class, 'update'])->name('user-profile.update');
+    Route::post('/user-profile/{userid}/change-password', [RsUserProfileController::class, 'changePassword'])->name('user-profile.change-password');
 });
 
 

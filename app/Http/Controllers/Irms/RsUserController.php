@@ -71,10 +71,17 @@ class RsUserController extends Controller
             $permissions['quantity_move'] ?? []
         );
 
+        $hasItemInquiry = in_array(
+            $userid,
+            $permissions['item_inquiry'] ?? []
+        );
+
         return response()->json([
             'user' => $user[0],
             'permissions' => [
-                'quantity_move' => $hasQuantityMove
+                'quantity_move' => $hasQuantityMove,
+                'item_inquiry' => $hasItemInquiry
+
             ]
         ]);
     }
@@ -224,183 +231,202 @@ class RsUserController extends Controller
     // }
 
     public function update(Request $request)
-{
-    // Only Superadmin can update users and navigation access
-    if (auth()->user()->level != 1) {
-        abort(403, 'Unauthorized');
-    }
+    {
+        // Only Superadmin can update users and navigation access
+        if (auth()->user()->level != 1) {
+            abort(403, 'Unauthorized');
+        }
 
-    $userid = $request->input('userid');
+        $userid = $request->input('userid');
 
-    $validated = $request->validate([
-        'rssite' => 'required|max:8',
-        'name' => 'nullable|max:255',
-        'email' => 'required|email|max:255',
-        'department' => 'nullable|max:255',
-        'section' => 'nullable|max:255',
-        'position' => 'nullable|max:255',
-        'gender' => 'nullable|max:10',
-        'profile_pic_url' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
-        'level' => 'nullable|integer',
-        'password' => 'nullable|max:255'
-    ]);
-
-    // Handle profile picture upload
-    if ($request->hasFile('profile_pic_url')) {
-
-        $file = $request->file('profile_pic_url');
-
-        $filename = uniqid() . '_' . $userid . '.' . $file->getClientOriginalExtension();
-
-        $file->move(
-            public_path('uploads/user-profile'),
-            $filename
-        );
-
-        $profile_pic_url = 'uploads/user-profile/' . $filename;
-
-        RsUser::where('userid', $userid)
-            ->update([
-                'profile_pic_url' => $profile_pic_url
-            ]);
-    }
-
-    $updated_by = auth()->user()->userid ?? 'system';
-
-    $level = $request->input('level');
-
-    $password = $request->input('password');
-
-    $hashedPassword = $password
-        ? bcrypt($password)
-        : null;
-
-    try {
-
-        /*
-        | UPDATE USER
-        */
-
-        \DB::statement('EXEC sp_update_user ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?', [
-            $validated['rssite'],
-            $userid,
-            $validated['name'],
-            $validated['email'],
-            $validated['department'],
-            $validated['section'],
-            $validated['position'],
-            $validated['gender'] ?? null,
-            $level,
-            $hashedPassword,
-            $updated_by
+        $validated = $request->validate([
+            'rssite' => 'required|max:8',
+            'name' => 'nullable|max:255',
+            'email' => 'required|email|max:255',
+            'department' => 'nullable|max:255',
+            'section' => 'nullable|max:255',
+            'position' => 'nullable|max:255',
+            'gender' => 'nullable|max:10',
+            'profile_pic_url' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
+            'level' => 'nullable|integer',
+            'password' => 'nullable|max:255'
         ]);
 
+        // Handle profile picture upload
+        if ($request->hasFile('profile_pic_url')) {
 
-        /*
-        | NAVIGATION ACCESS
-        */
+            $file = $request->file('profile_pic_url');
 
-        $permissionsFile = storage_path(
-            'app/navigation_permissions.json'
-        );
+            $filename = uniqid() . '_' . $userid . '.' . $file->getClientOriginalExtension();
 
-        // Create the file if it does not exist
-        if (!file_exists($permissionsFile)) {
+            $file->move(
+                public_path('uploads/user-profile'),
+                $filename
+            );
+
+            $profile_pic_url = 'uploads/user-profile/' . $filename;
+
+            RsUser::where('userid', $userid)
+                ->update([
+                    'profile_pic_url' => $profile_pic_url
+                ]);
+        }
+
+        $updated_by = auth()->user()->userid ?? 'system';
+
+        $level = $request->input('level');
+
+        $password = $request->input('password');
+
+        $hashedPassword = $password
+            ? bcrypt($password)
+            : null;
+
+        try {
+
+            /*
+            | UPDATE USER
+            */
+
+            \DB::statement('EXEC sp_update_user ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?', [
+                $validated['rssite'],
+                $userid,
+                $validated['name'],
+                $validated['email'],
+                $validated['department'],
+                $validated['section'],
+                $validated['position'],
+                $validated['gender'] ?? null,
+                $level,
+                $hashedPassword,
+                $updated_by
+            ]);
+
+
+            /*
+            | NAVIGATION ACCESS
+            */
+
+            $permissionsFile = storage_path(
+                'app/navigation_permissions.json'
+            );
+
+            // Create the file if it does not exist
+            if (!file_exists($permissionsFile)) {
+
+                file_put_contents(
+                    $permissionsFile,
+                    json_encode([
+                        'quantity_move' => [],
+                        'item_inquiry' => []
+
+                    ], JSON_PRETTY_PRINT)
+                );
+            }
+
+            // Read existing permissions
+            $permissions = json_decode(
+                file_get_contents($permissionsFile),
+                true
+            );
+
+            // Make sure the structure exists
+            if (!is_array($permissions)) {
+                $permissions = [];
+            }
+
+            if (!isset($permissions['quantity_move'])) {
+                $permissions['quantity_move'] = [];
+            }
+
+            if (!isset($permissions['item_inquiry'])) {
+                $permissions['item_inquiry'] = [];
+            }
+
+            /*
+            | CHECK QUANTITY MOVE
+            */
+
+            $navigationAccess = $request->input(
+                'navigation_access',
+                []
+            );
+
+            $hasQuantityMove = in_array(
+                'quantity_move',
+                $navigationAccess
+            );
+
+            $hasItemInquiry = in_array(
+                'item_inquiry',
+                $navigationAccess
+            );
+            /*
+            | REMOVE USER FIRST
+            */
+
+            $permissions['quantity_move'] = array_values(
+                array_diff(
+                    $permissions['quantity_move'],
+                    [$userid]
+                )
+            );
+
+            $permissions['item_inquiry'] = array_values(
+                array_diff(
+                    $permissions['item_inquiry'],
+                    [$userid]
+                )
+            );
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | ADD USER IF CHECKED
+            |--------------------------------------------------------------------------
+            */
+
+            if ($hasQuantityMove) {
+
+                $permissions['quantity_move'][] = $userid;
+
+            }
+            if ($hasItemInquiry) {
+
+                $permissions['item_inquiry'][] = $userid;
+
+            }
+
+            /*
+            |--------------------------------------------------------------------------
+            | SAVE JSON
+            |--------------------------------------------------------------------------
+            */
 
             file_put_contents(
                 $permissionsFile,
-                json_encode([
-                    'quantity_move' => []
-                ], JSON_PRETTY_PRINT)
-            );
-        }
-
-        // Read existing permissions
-        $permissions = json_decode(
-            file_get_contents($permissionsFile),
-            true
-        );
-
-        // Make sure the structure exists
-        if (!is_array($permissions)) {
-            $permissions = [];
-        }
-
-        if (!isset($permissions['quantity_move'])) {
-            $permissions['quantity_move'] = [];
-        }
-
-
-        /*
-        | CHECK QUANTITY MOVE
-        */
-
-        $navigationAccess = $request->input(
-            'navigation_access',
-            []
-        );
-
-        $hasQuantityMove = in_array(
-            'quantity_move',
-            $navigationAccess
-        );
-
-
-        /*
-        | REMOVE USER FIRST
-        */
-
-        $permissions['quantity_move'] = array_values(
-            array_diff(
-                $permissions['quantity_move'],
-                [$userid]
-            )
-        );
-
-
-        /*
-        |--------------------------------------------------------------------------
-        | ADD USER IF CHECKED
-        |--------------------------------------------------------------------------
-        */
-
-        if ($hasQuantityMove) {
-
-            $permissions['quantity_move'][] = $userid;
-
-        }
-
-
-        /*
-        |--------------------------------------------------------------------------
-        | SAVE JSON
-        |--------------------------------------------------------------------------
-        */
-
-        file_put_contents(
-            $permissionsFile,
-            json_encode(
-                $permissions,
-                JSON_PRETTY_PRINT
-            )
-        );
-
-
-        return redirect()
-            ->route('rsusers.index')
-            ->with(
-                'success',
-                'User updated successfully!'
+                json_encode(
+                    $permissions,
+                    JSON_PRETTY_PRINT
+                )
             );
 
-    } catch (\Exception $e) {
 
-        return redirect()
-            ->back()
-            ->withInput()
-            ->withErrors([
-                'error' => $e->getMessage()
-            ]);
+            return redirect()
+                ->route('rsusers.index')
+                ->with(
+                    'success',
+                    'User updated successfully!'
+                );
+
+        } catch (\Exception $e) {
+
+            return redirect()
+                ->back()
+                ->withInput()
+                ->withErrors([
+                    'error' => $e->getMessage()
+                ]);
+        }
     }
-}
 }

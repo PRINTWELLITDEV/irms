@@ -56,7 +56,7 @@ function handleLoginSubmit(e, form) {
                 position: 'top-end',
                 icon: 'success',
                 title: 'Login Successful!',
-                text: 'Redirecting to dashboard...',
+                text: 'Redirecting...',
                 showConfirmButton: false,
                 timer: 2000,
                 timerProgressBar: true
