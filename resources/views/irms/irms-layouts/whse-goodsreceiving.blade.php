@@ -370,7 +370,8 @@
                                     </tbody>
                                 </table>
                                     <datalist id="palletTagList">
-                                        <option value="For Stickering">
+                                        <!-- <option value="For Stickering"> -->
+                                        <option value="JIT">
                                         <option value="WIP">
                                     </datalist>
                             </div>

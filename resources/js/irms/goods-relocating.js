@@ -264,38 +264,98 @@ function initializeFields() {
     });
 
 
-    fromBay.addEventListener('change', function () {
+fromBay.addEventListener('change', function () {
 
-        resetSelect(fromPallet, 'Choose Pallet No...');
-        resetSelect(fromJob, 'Choose Job / CO...');
+    resetSelect(fromPallet, 'Choose Pallet No...');
+    resetSelect(fromJob, 'Choose Job / CO...');
 
-        setDisabled(fromPallet, true);
-        setDisabled(fromJob, true);
+    setDisabled(fromPallet, true);
+    setDisabled(fromJob, true);
 
-        // Clear location
+    const suggestions = document.getElementById(
+        'fromLocationSuggestions'
+    );
+
+    suggestions.style.display = 'none';
+
+    // If Bay No. is cleared
+    if (!fromBay.value) {
+
         fromLoc.value = '';
 
-        document.getElementById(
-            'fromLocationSuggestions'
-        ).style.display = 'none';
+        setDisabled(fromLoc, true);
 
-        if (!fromBay.value) {
+        fromLocations = [];
 
-            setDisabled(fromLoc, true);
+        return;
+    }
 
-            fromLocations = [];
+    // Enable location input
+    setDisabled(fromLoc, false);
 
+    // Automatically add Bay prefix
+    fromLoc.value = `${fromBay.value}-`;
+
+    // Load locations for this bay
+    loadFromLocations();
+
+    // Wait for locations to finish loading,
+    // then show suggestions automatically
+    setTimeout(() => {
+
+        const prefix = fromLoc.value.trim().toLowerCase();
+
+        const matches = fromLocations.filter(item => {
+
+            const location =
+                String(item.rsloc || '').toLowerCase();
+
+            return location.startsWith(prefix);
+
+        });
+
+        suggestions.innerHTML = '';
+
+        if (matches.length === 0) {
+            suggestions.style.display = 'none';
             return;
         }
 
-        // Enable location input
-        setDisabled(fromLoc, false);
+        matches.forEach(item => {
 
-        // Load locations for this bay
-        loadFromLocations();
+            const location = item.rsloc;
 
-    });
+            const button = document.createElement('button');
 
+            button.type = 'button';
+
+            button.className =
+                'list-group-item list-group-item-action';
+
+            button.textContent = location;
+
+            button.addEventListener('click', function () {
+
+                fromLoc.value = location;
+
+                suggestions.style.display = 'none';
+
+                // Trigger existing location logic
+                fromLoc.dispatchEvent(
+                    new Event('change')
+                );
+
+            });
+
+            suggestions.appendChild(button);
+
+        });
+
+        suggestions.style.display = 'block';
+
+    }, 300);
+
+});
     fromLoc.addEventListener('change', function () {
 
         resetSelect(fromPallet, 'No Pallet / Choose Pallet...');

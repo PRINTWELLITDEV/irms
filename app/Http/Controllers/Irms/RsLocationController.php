@@ -158,6 +158,17 @@ class RsLocationController extends Controller
             ->unique()
             ->toArray();
 
+        // JIT
+        $JITRecords = DB::connection('sqlsrv')->select(
+            'EXEC dbo.sp_JIT_Report ?, ?, ?, ?',
+            [$rssite, $rswhse, $rsbaynum, null]
+        );
+
+        $JITLocations = collect($JITRecords)
+            ->pluck('rsloc')
+            ->unique()
+            ->toArray();
+
         // Group locations by rsloc to handle multiple jobs per location
         $grouped = [];
         foreach ($locations as $location) {
@@ -176,6 +187,7 @@ class RsLocationController extends Controller
                     'isQuarantine' => $location->isQuarantine ?? 0,
                     'isStickering' => in_array($location->rsloc, $stickeringLocations),
                     'isWIP' => in_array($location->rsloc, $WIPLocations),
+                    'isJit' => in_array($location->rsloc, $JITLocations),
                 ];
             }
 
