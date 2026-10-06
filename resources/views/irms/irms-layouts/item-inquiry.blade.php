@@ -61,6 +61,8 @@
                                                 id="co"
                                                 class="form-control"
                                                 placeholder="e.g. F2506-0720">
+                                                <div id="coSuggestions" class="list-group position-absolute w-100" style="z-index: 1050; display: none;"></div>
+
                                             <small class="text-muted">
                                                 <i class="bi bi-info-circle me-1"></i>
                                                 Matches results automatically as you type
@@ -160,6 +162,7 @@
         pdfSummary:  @json(route('irms.item-inquiry.pdf.summary')),
         pdfDetailed: @json(route('irms.item-inquiry.pdf.detailed')),
         itemSuggestions: @json(route('irms.item-inquiry.item-suggestions')),
+        coSuggestions: @json(route('irms.item-inquiry.co-suggestions')),
 
     };
 </script>

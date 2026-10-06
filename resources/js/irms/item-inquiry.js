@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const item = document.getElementById('item');
     const co = document.getElementById('co');
     const itemSuggestions = document.getElementById('itemSuggestions');
-
+    const coSuggestions = document.getElementById('coSuggestions');
     const btnReset = document.getElementById('btnReset');
 
     const summaryTable = document.getElementById('itemInquirySummaryTable');
@@ -27,7 +27,77 @@ document.addEventListener('DOMContentLoaded', function () {
 // ==========================================================
 
 let itemSuggestionTimer = null;
+let coSuggestionTimer = null;
+co.addEventListener('input', function () {
 
+    const search = this.value.trim();
+
+    clearTimeout(coSuggestionTimer);
+
+    // Hide suggestions if less than 2 characters
+    if (search.length < 2) {
+        coSuggestions.innerHTML = '';
+        coSuggestions.style.display = 'none';
+        return;
+    }
+
+    // Wait before sending request
+    coSuggestionTimer = setTimeout(function () {
+
+        $.get(routes.coSuggestions, {
+            term: search,
+            item: item.value.trim()
+        })
+        .done(function (cos) {
+
+            coSuggestions.innerHTML = '';
+
+            if (!cos || cos.length === 0) {
+                coSuggestions.style.display = 'none';
+                return;
+            }
+
+            cos.forEach(function (coNumber) {
+
+                const option = document.createElement('button');
+
+                option.type = 'button';
+                option.className =
+                    'list-group-item list-group-item-action';
+
+                option.textContent = coNumber;
+
+                option.addEventListener('click', function () {
+
+                    // Put selected CO into input
+                    co.value = coNumber;
+
+                    // Hide suggestions
+                    coSuggestions.innerHTML = '';
+                    coSuggestions.style.display = 'none';
+
+                    // Trigger existing search function
+                    onFilterChange();
+
+                });
+
+                coSuggestions.appendChild(option);
+
+            });
+
+            coSuggestions.style.display = 'block';
+
+        })
+        .fail(function () {
+
+            coSuggestions.innerHTML = '';
+            coSuggestions.style.display = 'none';
+
+        });
+
+    }, 300);
+
+});
 item.addEventListener('input', function () {
 
     const search = this.value.trim();

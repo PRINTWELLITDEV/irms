@@ -153,7 +153,27 @@ class ItemInquiryController extends Controller
                 ->pluck('item')
         );
     }
+public function coSuggestions(Request $request)
+{
+    $term = trim($request->get('term', ''));
+    $item = trim($request->get('item', ''));
 
+    if ($term === '' || $item === '') {
+        return response()->json([]);
+    }
+
+    $cos = DB::connection('sqlsrv')
+        ->table('rsitemloc')
+        ->where('item', $item)
+        ->where('job', 'LIKE', '%' . $term . '%')
+        ->select('job')
+        ->distinct()
+        ->orderBy('job')
+        ->limit(20)
+        ->pluck('job');
+
+    return response()->json($cos);
+}
     /*
     GET DETAILED DATA
     */
