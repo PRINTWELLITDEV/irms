@@ -556,19 +556,18 @@ class RsGoodsRelocatingController extends Controller
     }
 
     // Get Bays
-    public function getBays(Request $request)
-    {
-        $bays = DB::table('rsbayloc')
-            ->select('rsbaynum')
-            // ->where('rssite', $request->rssite)
-            ->where('rswhse', $request->rswhse)
-            ->distinct()
-            ->orderBy('rsbaynum')
-            ->get();
+public function getBays(Request $request)
+{
+    $bays = DB::table('rsbayloc')
+        ->select('rsbaynum')
+        ->where('rssite', $request->rssite)
+        ->where('rswhse', $request->rswhse)
+        ->distinct()
+        ->orderBy('rsbaynum')
+        ->get();
 
-        return response()->json($bays);
-    }
-
+    return response()->json($bays);
+}
     // public function getLocations(Request $request)
     // {
     //     $query = DB::table('rslocation')
@@ -617,19 +616,22 @@ class RsGoodsRelocatingController extends Controller
         // FROM LOCATION========
         // Only show locations that contain inventory
         if ($request->occupied_only == 1) {
+    $query->whereExists(function ($subquery) use ($request) {
+        $subquery->select(DB::raw(1))
+            ->from('rsitemloc')
+            ->whereColumn('rsitemloc.rssite', 'rslocation.rssite')
+            ->whereColumn('rsitemloc.rswhse', 'rslocation.rswhse')
+            ->whereColumn('rsitemloc.rsbaynum', 'rslocation.rsbaynum')
+            ->whereColumn('rsitemloc.rsloc', 'rslocation.rsloc')
+            ->where('rsitemloc.qty', '>', 0);
 
-            $query->whereExists(function ($subquery) {
-
-                $subquery->select(DB::raw(1))
-                    ->from('rsitemloc')
-                    ->whereColumn('rsitemloc.rssite', 'rslocation.rssite')
-                    ->whereColumn('rsitemloc.rswhse', 'rslocation.rswhse')
-                    ->whereColumn('rsitemloc.rsbaynum', 'rslocation.rsbaynum')
-                    ->whereColumn('rsitemloc.rsloc', 'rslocation.rsloc')
-                    ->where('rsitemloc.qty', '>', 0);
-
-            });
+        // FLOOR movement:
+        // Only return locations containing the selected pallet.
+        if ($request->filled('rspallet')) {
+            $subquery->where('rsitemloc.rspallet_num', $request->rspallet);
         }
+    });
+}
 
         // TO LOCATION=================
         // Only show empty locations locations containing the SAME item
@@ -744,20 +746,29 @@ class RsGoodsRelocatingController extends Controller
     }
 
     // Get Pallets
-    public function getPallets(Request $request)
-    {
-        $pallets = DB::table('rsitemloc')
-            ->select('rspallet_num')
-            ->where('rssite', $request->rssite)
-            ->where('rswhse', $request->rswhse)
-            ->where('rsloc', $request->rsloc)
-            ->whereNotNull('rspallet_num')
-            ->distinct()
-            ->orderBy('rspallet_num')
-            ->get();
+// Get Pallets
+public function getPallets(Request $request)
+{
+    $query = DB::table('rsitemloc')
+        ->select('rspallet_num')
+        ->where('rssite', $request->rssite)
+        ->where('rswhse', $request->rswhse)
+        ->where('rsbaynum', $request->rsbaynum)
+        ->whereNotNull('rspallet_num')
+        ->where('rspallet_num', '!=', '');
 
-        return response()->json($pallets);
+    // Normal movement:
+    // If location is provided, only get pallets from that location.
+    if ($request->filled('rsloc')) {
+        $query->where('rsloc', $request->rsloc);
     }
+
+    return response()->json(
+        $query->distinct()
+            ->orderBy('rspallet_num')
+            ->get()
+    );
+}
 
 
     // Get Job / CO
@@ -831,3 +842,27 @@ class RsGoodsRelocatingController extends Controller
         return response()->json($item);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

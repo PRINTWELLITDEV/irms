@@ -446,6 +446,70 @@
         .relocate-steps { font-size: 0.85rem; }
         .relocate-step-line { width: 28px; margin: 0 0.5rem; }
     }
+.guide-highlight {
+    border: 2px solid #0d6efd !important;
+    background-color: #f3f8ff !important;
+    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.12) !important;
+    animation: guidePulse 2s ease-in-out infinite;
+    transition: border-color 0.2s ease,
+                background-color 0.2s ease,
+                box-shadow 0.2s ease;
+}
+
+@keyframes guidePulse {
+    0% {
+        box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.10);
+    }
+
+    50% {
+        box-shadow: 0 0 0 5px rgba(13, 110, 253, 0.20);
+    }
+
+    100% {
+        box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.10);
+    }
+}
+
+/* Highlight the label of the active field */
+label.guide-label {
+    color: #0d6efd;
+    font-weight: 600;
+    transition: color 0.2s ease;
+}
+
+/* Respect users who prefer less motion */
+@media (prefers-reduced-motion: reduce) {
+    .guide-highlight {
+        animation: none;
+    }
+}
+
+/* Green check on filled INPUT fields (e.g. Location) */
+input.guide-done {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23198754' stroke-linecap='round' stroke-linejoin='round' stroke-width='2.2' d='M3 8.5l3.5 3.5L13 4'/%3e%3c/svg%3e") !important;
+    background-repeat: no-repeat !important;
+    background-position: right .75rem center !important;
+    background-size: 18px 18px !important;
+    padding-right: 2.5rem !important;
+}
+
+/* Green check on filled SELECT fields (placed left of the dropdown arrow) */
+select.guide-done {
+    background-image:
+        url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23198754' stroke-linecap='round' stroke-linejoin='round' stroke-width='2.2' d='M3 8.5l3.5 3.5L13 4'/%3e%3c/svg%3e"),
+        url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e") !important;
+    background-repeat: no-repeat, no-repeat !important;
+    background-position: right 2.25rem center, right .75rem center !important;
+    background-size: 18px 18px, 16px 12px !important;
+    padding-right: 4rem !important;
+}
+/* Green border + soft shadow on filled fields */
+input.guide-done,
+select.guide-done {
+    border: 1.5px solid #198754 !important;
+    box-shadow: 0 0 0 .2rem rgba(25, 135, 84, .18) !important;
+    transition: border-color .2s ease, box-shadow .2s ease;
+}
 </style>
 
 <script>
