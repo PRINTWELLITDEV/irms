@@ -133,30 +133,29 @@
                                         <div class="col-md-6">
                                             <div class="form-floating position-relative">
 
-    <input
-        type="text"
-        name="rsloc"
-        id="from_rsloc"
-        class="form-control"
-        placeholder="Type location..."
-        autocomplete="off"
-        required
-        disabled
-    >
+                                                <input
+                                                    type="text"
+                                                    name="rsloc"
+                                                    id="from_rsloc"
+                                                    class="form-control"
+                                                    placeholder="Type location..."
+                                                    autocomplete="off"
+                                                    required
+                                                    disabled>
 
-    <label for="from_rsloc">
-        <i class="bi bi-geo-alt text-warning me-1"></i>
-        Location <span class="text-danger">*</span>
-    </label>
+                                                <label for="from_rsloc">
+                                                    <i class="bi bi-geo-alt text-warning me-1"></i>
+                                                    Location <span class="text-danger">*</span>
+                                                </label>
 
-    <!-- Suggestions -->
-    <div
-        id="fromLocationSuggestions"
-        class="list-group position-absolute w-100 shadow"
-        style="z-index: 1050; display: none;"
-    ></div>
+                                                <!-- Suggestions -->
+                                                <div
+                                                    id="fromLocationSuggestions"
+                                                    class="list-group position-absolute w-100 shadow"
+                                                    style="z-index: 1050; display: none;"
+                                                ></div>
 
-</div>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -446,70 +445,70 @@
         .relocate-steps { font-size: 0.85rem; }
         .relocate-step-line { width: 28px; margin: 0 0.5rem; }
     }
-.guide-highlight {
-    border: 2px solid #0d6efd !important;
-    background-color: #f3f8ff !important;
-    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.12) !important;
-    animation: guidePulse 2s ease-in-out infinite;
-    transition: border-color 0.2s ease,
-                background-color 0.2s ease,
-                box-shadow 0.2s ease;
-}
-
-@keyframes guidePulse {
-    0% {
-        box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.10);
-    }
-
-    50% {
-        box-shadow: 0 0 0 5px rgba(13, 110, 253, 0.20);
-    }
-
-    100% {
-        box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.10);
-    }
-}
-
-/* Highlight the label of the active field */
-label.guide-label {
-    color: #0d6efd;
-    font-weight: 600;
-    transition: color 0.2s ease;
-}
-
-/* Respect users who prefer less motion */
-@media (prefers-reduced-motion: reduce) {
     .guide-highlight {
-        animation: none;
+        border: 2px solid #0d6efd !important;
+        background-color: #f3f8ff !important;
+        box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.12) !important;
+        animation: guidePulse 2s ease-in-out infinite;
+        transition: border-color 0.2s ease,
+                    background-color 0.2s ease,
+                    box-shadow 0.2s ease;
     }
-}
 
-/* Green check on filled INPUT fields (e.g. Location) */
-input.guide-done {
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23198754' stroke-linecap='round' stroke-linejoin='round' stroke-width='2.2' d='M3 8.5l3.5 3.5L13 4'/%3e%3c/svg%3e") !important;
-    background-repeat: no-repeat !important;
-    background-position: right .75rem center !important;
-    background-size: 18px 18px !important;
-    padding-right: 2.5rem !important;
-}
+    @keyframes guidePulse {
+        0% {
+            box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.10);
+        }
 
-/* Green check on filled SELECT fields (placed left of the dropdown arrow) */
-select.guide-done {
-    background-image:
-        url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23198754' stroke-linecap='round' stroke-linejoin='round' stroke-width='2.2' d='M3 8.5l3.5 3.5L13 4'/%3e%3c/svg%3e"),
-        url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e") !important;
-    background-repeat: no-repeat, no-repeat !important;
-    background-position: right 2.25rem center, right .75rem center !important;
-    background-size: 18px 18px, 16px 12px !important;
-    padding-right: 4rem !important;
-}
-/* Green border + soft shadow on filled fields */
-input.guide-done,
-select.guide-done {
-    border: 1.5px solid #198754 !important;
-    box-shadow: 0 0 0 .2rem rgba(25, 135, 84, .18) !important;
-    transition: border-color .2s ease, box-shadow .2s ease;
-}
+        50% {
+            box-shadow: 0 0 0 5px rgba(13, 110, 253, 0.20);
+        }
+
+        100% {
+            box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.10);
+        }
+    }
+
+    /* Highlight the label of the active field */
+    label.guide-label {
+        color: #0d6efd;
+        font-weight: 600;
+        transition: color 0.2s ease;
+    }
+
+    /* Respect users who prefer less motion */
+    @media (prefers-reduced-motion: reduce) {
+        .guide-highlight {
+            animation: none;
+        }
+    }
+
+    /* Green check on filled INPUT fields (e.g. Location) */
+    input.guide-done {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23198754' stroke-linecap='round' stroke-linejoin='round' stroke-width='2.2' d='M3 8.5l3.5 3.5L13 4'/%3e%3c/svg%3e") !important;
+        background-repeat: no-repeat !important;
+        background-position: right .75rem center !important;
+        background-size: 18px 18px !important;
+        padding-right: 2.5rem !important;
+    }
+
+    /* Green check on filled SELECT fields (placed left of the dropdown arrow) */
+    select.guide-done {
+        background-image:
+            url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23198754' stroke-linecap='round' stroke-linejoin='round' stroke-width='2.2' d='M3 8.5l3.5 3.5L13 4'/%3e%3c/svg%3e"),
+            url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e") !important;
+        background-repeat: no-repeat, no-repeat !important;
+        background-position: right 2.25rem center, right .75rem center !important;
+        background-size: 18px 18px, 16px 12px !important;
+        padding-right: 4rem !important;
+    }
+    /* Green border + soft shadow on filled fields */
+    input.guide-done,
+    select.guide-done {
+        border: 1.5px solid #198754 !important;
+        box-shadow: 0 0 0 .2rem rgba(25, 135, 84, .18) !important;
+        transition: border-color .2s ease, box-shadow .2s ease;
+    }
 </style>
 
 <script>
@@ -522,50 +521,7 @@ select.guide-done {
         move: "{{ route('irms.goods-relocating.move') }}"
     };
 
-    // UX-only helpers: enable dependent dropdowns as their prerequisite fills in,
-    // and surface a live "quantity available" hint. These do not replace the
-    // existing controller logic that populates each <select>'s <option> list —
-    // they only toggle the disabled state and mirror the on-hand quantity.
-    document.addEventListener('DOMContentLoaded', function () {
-        const enableWhen = (triggerEl, targetEl) => {
-            if (!triggerEl || !targetEl) return;
-            triggerEl.addEventListener('change', function () {
-                targetEl.disabled = !this.value;
-                if (!this.value) targetEl.value = '';
-            });
-        };
-
-        enableWhen(document.getElementById('from_rswhse'), document.getElementById('from_rsbaynum'));
-        enableWhen(document.getElementById('from_rsbaynum'), document.getElementById('from_rsloc'));
-        enableWhen(document.getElementById('from_rsloc'), document.getElementById('from_rspallet'));
-        enableWhen(document.getElementById('from_rspallet'), document.getElementById('from_jobco'));
-        enableWhen(document.getElementById('to_rswhse'), document.getElementById('to_rsbaynum'));
-        enableWhen(document.getElementById('to_rsbaynum'), document.getElementById('to_rsloc'));
-
-        const qtyOnHand = document.getElementById('from_qty');
-        const qtyToMove = document.getElementById('qty_to_move');
-        const qtyHint = document.getElementById('qtyAvailableHint');
-        const um = document.getElementById('from_um');
-
-        if (qtyOnHand && qtyToMove && qtyHint) {
-            const refreshHint = () => {
-                const val = qtyOnHand.value;
-                if (val) {
-                    qtyToMove.max = val;
-                    qtyHint.textContent = 'Available: ' + val + (um && um.value ? ' ' + um.value : '') + ' at the source location.';
-                } else {
-                    qtyToMove.removeAttribute('max');
-                    qtyHint.textContent = 'Select a source pallet to see quantity available.';
-                }
-            };
-            // from_qty is populated by the existing controller script (e.g. on pallet
-            // change via AJAX); observe it so the hint stays in sync without needing
-            // to touch that logic.
-            new MutationObserver(refreshHint).observe(qtyOnHand, { attributes: true, attributeFilter: ['value'] });
-            qtyOnHand.addEventListener('input', refreshHint);
-            qtyOnHand.addEventListener('change', refreshHint);
-        }
-    });
+   
 </script>
 
 @endsection
