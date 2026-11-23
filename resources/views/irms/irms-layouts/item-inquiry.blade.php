@@ -51,8 +51,9 @@
                                             </small>
                                         </div>
                                     </div>
+
                                     <div class="col-md-4">
-                                            <div class="position-relative">
+                                        <div class="position-relative">
                                             <label for="co" class="form-label">CO</label>
                                             <span class="text-danger">*</span>
 
@@ -60,29 +61,44 @@
                                                 type="text"
                                                 id="co"
                                                 class="form-control"
-                                                placeholder="e.g. F2506-0720">
-                                                <div id="coSuggestions" class="list-group position-absolute w-100" style="z-index: 1050; display: none;"></div>
+                                                placeholder="Pick from the list or type a CO"
+                                                autocomplete="off">
+
+                                            <div
+                                                id="coSuggestions"
+                                                class="list-group position-absolute w-100 shadow-sm"
+                                                style="z-index: 1050; display: none;">
+                                            </div>
 
                                             <small class="text-muted">
                                                 <i class="bi bi-info-circle me-1"></i>
-                                                Matches results automatically as you type
+                                                Click a CO below or type one to search.
                                             </small>
                                         </div>
-
                                     </div>
+
                                     <div class="col-lg-2 col-md-12">
-
-
-                                         <button
+                                        <button
                                             type="button"
                                             id="btnReset"
                                             class="btn btn-outline-secondary w-100">
                                             <i class="bi bi-arrow-counterclockwise me-1"></i>
                                             Clear
                                         </button>
-
                                     </div>
 
+                                </div>
+
+                                <!-- CO LIST (appears after an item is selected) -->
+                                <div id="coListPanel" class="border-top mt-3 pt-3 d-none">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <div class="fw-semibold">
+                                            CO numbers for <span id="coListItem"></span>
+                                            <span id="coListCount" class="text-muted fw-normal"></span>
+                                        </div>
+                                        <small class="text-muted">Click one to view its summary</small>
+                                    </div>
+                                    <div id="coListChips" class="d-flex flex-wrap gap-2"></div>
                                 </div>
 
                             </div>
@@ -98,18 +114,16 @@
 
                             <div class="card-header d-flex justify-content-between align-items-center">
                                 <h6 class="mb-0 fw-bold" style="font-size: 25px;">Summary</h6>
-                                    
-                                    <button type="button"
-                                            id="btnDownloadSummary"
-                                            class="btn btn-success btn-sm d-none">
-                                        <i class="bi bi-file-earmark-pdf me-1"></i>
-                                        Download Summary
-                                    </button>
+
+                                <button type="button"
+                                        id="btnDownloadSummary"
+                                        class="btn btn-success btn-sm d-none">
+                                    <i class="bi bi-file-earmark-pdf me-1"></i>
+                                    Download Summary
+                                </button>
                             </div>
 
                             <div class="card-body">
-
-                              
 
                                 <!-- Summary table -->
                                 <div id="summaryReport" class="table-responsive">
@@ -126,7 +140,6 @@
                                                 <th>Qty</th>
                                                 <th>Status</th>
                                                 <th>Bay No.</th>
-
                                             </tr>
                                         </thead>
                                         <tbody id="itemInquirySummaryTable">
@@ -136,15 +149,9 @@
                                                 </td>
                                             </tr>
                                         </tbody>
-
                                     </table>
-
                                 </div>
 
-                               
-
-
-                             
                             </div>
                         </div>
                     </div>
@@ -155,39 +162,41 @@
 
     </div>
 </main>
+
 <script>
     //TO PASS THE LARAVEL ROUTES TO JAVASCRIPT
     window.itemInquiryRoutes = {
-        reportList:  @json(route('irms.item-inquiry.report-list')),
-        pdfSummary:  @json(route('irms.item-inquiry.pdf.summary')),
-        pdfDetailed: @json(route('irms.item-inquiry.pdf.detailed')),
+        reportList:      @json(route('irms.item-inquiry.report-list')),
+        pdfSummary:      @json(route('irms.item-inquiry.pdf.summary')),
+        pdfDetailed:     @json(route('irms.item-inquiry.pdf.detailed')),
         itemSuggestions: @json(route('irms.item-inquiry.item-suggestions')),
-        coSuggestions: @json(route('irms.item-inquiry.co-suggestions')),
-
+        coSuggestions:   @json(route('irms.item-inquiry.co-suggestions')),
+        coList:          @json(route('irms.item-inquiry.co-list')),
     };
 </script>
+
 <style>
-        #item-inquiry-summary-table tbody tr:not([colspan]) {
+    #item-inquiry-summary-table tbody tr:not([colspan]) {
         cursor: pointer;
-        }
-        #item-inquiry-summary-table tbody tr.detail-shown {
-            background-color: rgba(13, 110, 253, 0.06);
-        }
-        .detail-panel {
-    background-color: #f8f9fc;
-    border-left: 3px solid #0d6efd;
-}
-.detail-inner-table thead th {
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: .03em;
-    color: #6c757d;
-}
-.detail-inner-table td {
-    font-size: 0.875rem;
-}
-#item-inquiry-summary-table tbody tr.detail-shown .row-expand-icon {
-    color: #0d6efd;
-}
-        </style>
+    }
+    #item-inquiry-summary-table tbody tr.detail-shown {
+        background-color: rgba(13, 110, 253, 0.06);
+    }
+    .detail-panel {
+        background-color: #f8f9fc;
+        border-left: 3px solid #0d6efd;
+    }
+    .detail-inner-table thead th {
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: .03em;
+        color: #6c757d;
+    }
+    .detail-inner-table td {
+        font-size: 0.875rem;
+    }
+    #item-inquiry-summary-table tbody tr.detail-shown .row-expand-icon {
+        color: #0d6efd;
+    }
+</style>
 @endsection

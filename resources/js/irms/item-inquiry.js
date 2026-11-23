@@ -16,6 +16,12 @@ document.addEventListener('DOMContentLoaded', function () {
     const summaryTable = document.getElementById('itemInquirySummaryTable');
     const btnDownloadSummary = document.getElementById('btnDownloadSummary');
 
+    // CO list panel (shown after an item is selected)
+    const coListPanel = document.getElementById('coListPanel');
+    const coListItem = document.getElementById('coListItem');
+    const coListCount = document.getElementById('coListCount');
+    const coListChips = document.getElementById('coListChips');
+
     let summaryDT = null;
 
 
@@ -91,6 +97,29 @@ document.addEventListener('DOMContentLoaded', function () {
             font-style: italic;
             pointer-events: none;
         }
+
+        /* CO list chips */
+        .co-chip {
+            border: 1px solid #ced4da;
+            border-radius: 6px;
+            background: #fff;
+            padding: 4px 10px;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: background-color .12s ease, border-color .12s ease;
+        }
+        .co-chip:hover {
+            background-color: #e8f5ee;
+            border-color: #198754;
+        }
+        .co-chip.active {
+            background-color: #d1e7dd;
+            border-color: #198754;
+            color: #0f5132;
+        }
+        .co-chip .co-rows {
+            color: #6c757d;
+        }
     `;
     document.head.appendChild(verifiedStyle);
 
@@ -142,8 +171,9 @@ document.addEventListener('DOMContentLoaded', function () {
     // - Escape or clicking outside closes the list
     // - Selecting a suggestion marks the input as verified
     // - Typing again removes the verified state
+    // - onSelect (optional) runs after a suggestion is selected
     // ==========================================================
-    function setupAutocomplete({ input, box, url, getParams }) {
+    function setupAutocomplete({ input, box, url, getParams, onSelect }) {
 
         let timer = null;
         let activeIndex = -1;
@@ -189,6 +219,9 @@ document.addEventListener('DOMContentLoaded', function () {
             input.value = value;
             markVerified(input);
             hideBox();
+
+            if (onSelect) onSelect(value);
+
             onFilterChange();
         }
 
@@ -285,19 +318,118 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    // ITEM autocomplete: after selecting an item, load its CO list
     setupAutocomplete({
         input: item,
         box: itemSuggestions,
         url: routes.itemSuggestions,
-        getParams: function () { return {}; }
+        getParams: function () { return {}; },
+        onSelect: function (value) {
+            co.value = '';
+            clearVerified(co);
+            loadCoList(value);
+        }
     });
 
+    // CO autocomplete (manual typing still works)
     setupAutocomplete({
         input: co,
         box: coSuggestions,
         url: routes.coSuggestions,
         getParams: function () { return { item: item.value.trim() }; }
     });
+
+
+    // ==========================================================
+    // CO LIST (all CO numbers of the selected item)
+    // ==========================================================
+    let coListRequestId = 0;
+
+    function hideCoList() {
+        coListRequestId++;
+        coListChips.innerHTML = '';
+        coListCount.textContent = '';
+        coListPanel.classList.add('d-none');
+    }
+
+    function loadCoList(itemCode) {
+
+        const myId = ++coListRequestId;
+
+        coListItem.textContent = itemCode;
+        coListCount.textContent = '';
+        coListChips.innerHTML = '<span class="text-muted small">Loading CO numbers...</span>';
+        coListPanel.classList.remove('d-none');
+
+        $.get(routes.coList, { item: itemCode })
+            .done(function (results) {
+
+                // Ignore responses that arrived after the user changed the item
+                if (myId !== coListRequestId) return;
+
+                coListChips.innerHTML = '';
+
+                if (!results || results.length === 0) {
+                    coListChips.innerHTML = '<span class="text-muted small">No CO numbers found for this item.</span>';
+                    return;
+                }
+
+                coListCount.textContent = '(' + results.length + ' found)';
+
+                results.forEach(function (r) {
+
+                    const chip = document.createElement('button');
+                    chip.type = 'button';
+                    chip.className = 'co-chip';
+                    chip.dataset.co = r.co;
+
+                    chip.appendChild(document.createTextNode(r.co + ' '));
+
+                    const rows = document.createElement('span');
+                    rows.className = 'co-rows';
+                    rows.textContent = '\u00B7 ' + r.row_count + (Number(r.row_count) === 1 ? ' row' : ' rows');
+                    chip.appendChild(rows);
+
+                    chip.addEventListener('click', function () {
+
+                        co.value = r.co;
+                        markVerified(co);
+                        coSuggestions.style.display = 'none';
+
+                        coListChips.querySelectorAll('.co-chip').forEach(function (c) {
+                            c.classList.toggle('active', c === chip);
+                        });
+
+                        onFilterChange();
+                    });
+
+                    coListChips.appendChild(chip);
+                });
+
+                syncActiveChip();
+            })
+            .fail(function () {
+
+                if (myId !== coListRequestId) return;
+
+                coListChips.innerHTML = '<span class="text-danger small">Failed to load CO numbers.</span>';
+            });
+    }
+
+    // Highlight the chip that matches the CO field
+    function syncActiveChip() {
+        const current = co.value.trim();
+
+        coListChips.querySelectorAll('.co-chip').forEach(function (c) {
+            c.classList.toggle('active', current !== '' && c.dataset.co === current);
+        });
+    }
+
+    // Typing in Item again means the old CO list no longer applies
+    item.addEventListener('input', hideCoList);
+
+    // Keep the active chip in sync when the CO is typed manually
+    co.addEventListener('input', syncActiveChip);
 
 
     // ==========================================================
@@ -701,6 +833,7 @@ document.addEventListener('DOMContentLoaded', function () {
         itemSuggestions.style.display = 'none';
         coSuggestions.style.display = 'none';
 
+        hideCoList();
         resetReport();
 
         item.focus();

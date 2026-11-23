@@ -174,6 +174,32 @@ public function coSuggestions(Request $request)
 
     return response()->json($cos);
 }
+/*CO LIST - all CO numbers of the selected item*/
+public function coList(Request $request)
+{
+    $site = $this->getUserSite();
+
+    $item = trim($request->input('item', ''));
+
+    if ($item === '') {
+        return response()->json([]);
+    }
+
+    $query = DB::table('rsitemloc')
+        ->select('job as co', DB::raw('COUNT(*) as row_count'))
+        ->where('item', $item)
+        ->whereNotNull('job')
+        ->where('job', '<>', '');
+
+    if ($site !== null) {
+        $query->where('rssite', $site);
+    }
+
+    return response()->json(
+        $query->groupBy('job')->orderBy('job')->get()
+    );
+}
+
     /*
     GET DETAILED DATA
     */

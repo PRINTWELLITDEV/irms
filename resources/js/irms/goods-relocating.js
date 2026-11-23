@@ -278,11 +278,25 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function findLocation(value) {
-        const search = String(value || '').trim().toLowerCase();
+        const search = normalizeLocation(value);
+
         return fromLocations.find(
-            item => String(item.rsloc || '').toLowerCase() === search
+            item => normalizeLocation(item.rsloc) === search
         );
     }
+
+
+function formatLocation(value) {
+    // Remove existing hyphens and other special characters
+    const cleaned = String(value || '')
+        .toUpperCase()
+        .replace(/[^A-Z0-9]/g, '');
+
+    // Automatically insert hyphens after each location segment
+    const parts = cleaned.match(/.{1,2}/g) || [];
+
+    return parts.join('-');
+}
 
     // ------------------------------------------------------------------
     // JOB LOADER (auto-select when there is only one)
@@ -415,26 +429,31 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // Typing in the location box filters the suggestions
-    fromLoc.addEventListener('input', function () {
-        const search = this.value.trim().toLowerCase();
+    // Normalize location text so users do not need to type hyphens.
+    function normalizeLocation(value) {
+        return String(value || '')
+            .toLowerCase()
+            .replace(/[^a-z0-9]/g, '');
+    }
 
-        // Typing a new location invalidates the pallet / job below it (normal only)
+    // FROM LOCATION: filter suggestions without requiring hyphens.
+    fromLoc.addEventListener('input', function () {
+        const search = normalizeLocation(this.value);
+
+        // A changed location invalidates the selections below it.
         if (!isFloorBay()) {
             resetFrom('pallet');
         } else {
             resetFrom('job');
         }
 
-        if (!search) {
-            renderSuggestions(fromLocations);
-            return;
-        }
+        const filteredLocations = !search
+            ? fromLocations
+            : fromLocations.filter(item =>
+                normalizeLocation(item.rsloc).includes(search)
+            );
 
-        renderSuggestions(
-            fromLocations.filter(item =>
-                String(item.rsloc || '').toLowerCase().includes(search)
-            )
-        );
+        renderSuggestions(filteredLocations);
     });
 
     fromLoc.addEventListener('focus', function () {

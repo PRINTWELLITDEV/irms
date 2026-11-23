@@ -162,6 +162,8 @@ Route::prefix('irms')->middleware(['auth', 'marketing.restriction'])->group(func
     Route::get('/item-inquiry/report-list', [ItemInquiryController::class, 'reportList'])->name('irms.item-inquiry.report-list');
     Route::get('/item-inquiry/item-suggestions', [ItemInquiryController::class, 'itemSuggestions'])->name('irms.item-inquiry.item-suggestions');
     Route::get('/item-inquiry/co-suggestions', [ItemInquiryController::class, 'coSuggestions'])->name('irms.item-inquiry.co-suggestions');
+    Route::get('item-inquiry/co-list', [ItemInquiryController::class, 'coList'])
+    ->name('irms.item-inquiry.co-list');
 
 
     // // User Profile (move this to the bottom and add a constraint)

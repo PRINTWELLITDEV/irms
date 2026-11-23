@@ -173,10 +173,6 @@ class RsGoodsRelocatingController extends Controller
         }
 
 
-
-
-
-
             // CHECK QUANTITY
 
             $qtyToMove = (float) $request->qty_to_move;
@@ -556,18 +552,18 @@ class RsGoodsRelocatingController extends Controller
     }
 
     // Get Bays
-public function getBays(Request $request)
-{
-    $bays = DB::table('rsbayloc')
-        ->select('rsbaynum')
-        ->where('rssite', $request->rssite)
-        ->where('rswhse', $request->rswhse)
-        ->distinct()
-        ->orderBy('rsbaynum')
-        ->get();
+    public function getBays(Request $request)
+    {
+        $bays = DB::table('rsbayloc')
+            ->select('rsbaynum')
+            ->where('rssite', $request->rssite)
+            ->where('rswhse', $request->rswhse)
+            ->distinct()
+            ->orderBy('rsbaynum')
+            ->get();
 
-    return response()->json($bays);
-}
+        return response()->json($bays);
+    }
     // public function getLocations(Request $request)
     // {
     //     $query = DB::table('rslocation')
@@ -602,210 +598,209 @@ public function getBays(Request $request)
     //     );
     // }
     
-public function getLocations(Request $request)
-{
-    $query = DB::table('rslocation')
-        ->select('rsloc', 'qty')
-        ->where('rssite', $request->rssite)
-        ->where('rswhse', $request->rswhse)
-        ->where('rsbaynum', $request->rsbaynum)
-        ->distinct();
-
-    // FROM LOCATION:
-    // Only show locations containing inventory.
-    if ($request->occupied_only == 1) {
-        $query->whereExists(function ($subquery) use ($request) {
-            $subquery->select(DB::raw(1))
-                ->from('rsitemloc')
-                ->whereColumn('rsitemloc.rssite', 'rslocation.rssite')
-                ->whereColumn('rsitemloc.rswhse', 'rslocation.rswhse')
-                ->whereColumn('rsitemloc.rsbaynum', 'rslocation.rsbaynum')
-                ->whereColumn('rsitemloc.rsloc', 'rslocation.rsloc')
-                ->where('rsitemloc.qty', '>', 0);
-
-            // FLOOR movement: only locations containing the selected pallet.
-            if ($request->filled('rspallet')) {
-                $subquery->where(
-                    'rsitemloc.rspallet_num',
-                    $request->rspallet
-                );
-            }
-        });
-    }
-
-    // TO LOCATION:
-    // Show empty locations and locations containing the same item.
-    if ($request->to_location == 1 && $request->filled('item')) {
-        $item = $request->item;
-
-        // Exclude the selected FROM LOCATION.
-        if ($request->filled('from_rsloc')) {
-            $query->where('rsloc', '!=', $request->from_rsloc);
-        }
-
-        $locations = $query
-            ->orderBy('rsloc')
-            ->get();
-
-        if ($locations->isEmpty()) {
-            return response()->json([]);
-        }
-
-        // Fetch inventory for the entire destination bay in one query.
-        $inventoryRows = DB::table('rsitemloc')
-            ->select(
-                'rsloc',
-                'item',
-                'qty',
-                'rspallet_num',
-                'job'
-            )
+    public function getLocations(Request $request)
+    {
+        $query = DB::table('rslocation')
+            ->select('rsloc', 'qty')
             ->where('rssite', $request->rssite)
             ->where('rswhse', $request->rswhse)
             ->where('rsbaynum', $request->rsbaynum)
-            ->where('qty', '>', 0)
-            ->get();
+            ->distinct();
 
-        // Group inventory by location.
-        $inventoryByLocation = [];
+        // FROM LOCATION:
+        // Only show locations containing inventory.
+        if ($request->occupied_only == 1) {
+            $query->whereExists(function ($subquery) use ($request) {
+                $subquery->select(DB::raw(1))
+                    ->from('rsitemloc')
+                    ->whereColumn('rsitemloc.rssite', 'rslocation.rssite')
+                    ->whereColumn('rsitemloc.rswhse', 'rslocation.rswhse')
+                    ->whereColumn('rsitemloc.rsbaynum', 'rslocation.rsbaynum')
+                    ->whereColumn('rsitemloc.rsloc', 'rslocation.rsloc')
+                    ->where('rsitemloc.qty', '>', 0);
 
-        foreach ($inventoryRows as $row) {
-            $inventoryByLocation[$row->rsloc][] = $row;
+                // FLOOR movement: only locations containing the selected pallet.
+                if ($request->filled('rspallet')) {
+                    $subquery->where(
+                        'rsitemloc.rspallet_num',
+                        $request->rspallet
+                    );
+                }
+            });
         }
 
-        // Collect jobs belonging to the selected item in destination locations.
-        $matchingJobs = [];
+        // TO LOCATION:
+        // Show empty locations and locations containing the same item.
+        if ($request->to_location == 1 && $request->filled('item')) {
+            $item = $request->item;
 
-        foreach ($inventoryRows as $row) {
-            if (
-                $row->item == $item &&
-                $row->job !== null &&
-                $row->job !== ''
-            ) {
-                $matchingJobs[$row->job] = $row->job;
+            // Exclude the selected FROM LOCATION.
+            if ($request->filled('from_rsloc')) {
+                $query->where('rsloc', '!=', $request->from_rsloc);
             }
-        }
 
-        // Resolve pallet-size limits in bulk for this item.
-        $limitsByJob = [];
-
-        $connections = [
-            'PI-SP'    => 'pisp_con',
-            'FP-SP'    => 'fpsp_con',
-            'PIGRP-SP' => 'pigrpsp_con',
-        ];
-
-        $connection = $connections[$request->rssite] ?? null;
-
-        if ($connection && !empty($matchingJobs)) {
-            $jobDetails = DB::connection($connection)
-                ->table('job as j')
-                ->join('item as i', 'i.item', '=', 'j.item')
-                ->select('j.job', 'i.Uf_Item_PalletSize')
-                ->whereIn('j.job', array_values($matchingJobs))
-                ->where('j.suffix', 0)
-                ->where('j.item', $item)
+            $locations = $query
+                ->orderBy('rsloc')
                 ->get();
 
-            foreach ($jobDetails as $detail) {
-                $limitsByJob[$detail->job] =
-                    (float) ($detail->Uf_Item_PalletSize ?? 0);
-            }
-        }
-
-        // Build the response without querying the database per location.
-        $result = [];
-
-        foreach ($locations as $location) {
-            $rows = $inventoryByLocation[$location->rsloc] ?? [];
-
-            // No positive-quantity inventory: empty location.
-            if (empty($rows)) {
-                $location->status = 'empty';
-                $location->available_qty = 0;
-                $location->location_limit = 0;
-                $location->pallet_numbers = '';
-
-                $result[] = $location;
-                continue;
+            if ($locations->isEmpty()) {
+                return response()->json([]);
             }
 
-            // Find inventory for the selected item.
-            $sameItemRows = array_values(array_filter(
-                $rows,
-                fn ($row) => $row->item == $item
-            ));
-
-            // Hide locations that contain only different items.
-            if (empty($sameItemRows)) {
-                continue;
-            }
-
-            $location->status = 'same_item';
-
-            $location->available_qty = array_sum(
-                array_map(
-                    fn ($row) => (float) $row->qty,
-                    $sameItemRows
+            // Fetch inventory for the entire destination bay in one query.
+            $inventoryRows = DB::table('rsitemloc')
+                ->select(
+                    'rsloc',
+                    'item',
+                    'qty',
+                    'rspallet_num',
+                    'job'
                 )
-            );
+                ->where('rssite', $request->rssite)
+                ->where('rswhse', $request->rswhse)
+                ->where('rsbaynum', $request->rsbaynum)
+                ->where('qty', '>', 0)
+                ->get();
 
-            // Keep unique, non-empty pallet numbers.
-            $pallets = [];
+            // Group inventory by location.
+            $inventoryByLocation = [];
 
-            foreach ($sameItemRows as $row) {
-                $pallet = trim((string) $row->rspallet_num);
+            foreach ($inventoryRows as $row) {
+                $inventoryByLocation[$row->rsloc][] = $row;
+            }
 
-                if ($pallet !== '') {
-                    $pallets[$pallet] = $pallet;
+            // Collect jobs belonging to the selected item in destination locations.
+            $matchingJobs = [];
+
+            foreach ($inventoryRows as $row) {
+                if (
+                    $row->item == $item &&
+                    $row->job !== null &&
+                    $row->job !== ''
+                ) {
+                    $matchingJobs[$row->job] = $row->job;
                 }
             }
 
-            $location->pallet_numbers = implode(', ', array_values($pallets));
+            // Resolve pallet-size limits in bulk for this item.
+            $limitsByJob = [];
 
-            // Match the existing behavior: use the first matching item's job.
-            $job = $sameItemRows[0]->job;
+            $connections = [
+                'PI-SP'    => 'pisp_con',
+                'FP-SP'    => 'fpsp_con',
+                'PIGRP-SP' => 'pigrpsp_con',
+            ];
 
-            $location->location_limit =
-                $limitsByJob[$job] ?? 0;
+            $connection = $connections[$request->rssite] ?? null;
 
-            $result[] = $location;
+            if ($connection && !empty($matchingJobs)) {
+                $jobDetails = DB::connection($connection)
+                    ->table('job as j')
+                    ->join('item as i', 'i.item', '=', 'j.item')
+                    ->select('j.job', 'i.Uf_Item_PalletSize')
+                    ->whereIn('j.job', array_values($matchingJobs))
+                    ->where('j.suffix', 0)
+                    ->where('j.item', $item)
+                    ->get();
+
+                foreach ($jobDetails as $detail) {
+                    $limitsByJob[$detail->job] =
+                        (float) ($detail->Uf_Item_PalletSize ?? 0);
+                }
+            }
+
+            // Build the response without querying the database per location.
+            $result = [];
+
+            foreach ($locations as $location) {
+                $rows = $inventoryByLocation[$location->rsloc] ?? [];
+
+                // No positive-quantity inventory: empty location.
+                if (empty($rows)) {
+                    $location->status = 'empty';
+                    $location->available_qty = 0;
+                    $location->location_limit = 0;
+                    $location->pallet_numbers = '';
+
+                    $result[] = $location;
+                    continue;
+                }
+
+                // Find inventory for the selected item.
+                $sameItemRows = array_values(array_filter(
+                    $rows,
+                    fn ($row) => $row->item == $item
+                ));
+
+                // Hide locations that contain only different items.
+                if (empty($sameItemRows)) {
+                    continue;
+                }
+
+                $location->status = 'same_item';
+
+                $location->available_qty = array_sum(
+                    array_map(
+                        fn ($row) => (float) $row->qty,
+                        $sameItemRows
+                    )
+                );
+
+                // Keep unique, non-empty pallet numbers.
+                $pallets = [];
+
+                foreach ($sameItemRows as $row) {
+                    $pallet = trim((string) $row->rspallet_num);
+
+                    if ($pallet !== '') {
+                        $pallets[$pallet] = $pallet;
+                    }
+                }
+
+                $location->pallet_numbers = implode(', ', array_values($pallets));
+
+                // Match the existing behavior: use the first matching item's job.
+                $job = $sameItemRows[0]->job;
+
+                $location->location_limit =
+                    $limitsByJob[$job] ?? 0;
+
+                $result[] = $location;
+            }
+
+            return response()->json(array_values($result));
         }
 
-        return response()->json(array_values($result));
+        // Default location listing.
+        return response()->json(
+            $query->orderBy('rsloc')->get()
+        );
     }
-
-    // Default location listing.
-    return response()->json(
-        $query->orderBy('rsloc')->get()
-    );
-}
 
 
     // Get Pallets
-// Get Pallets
-public function getPallets(Request $request)
-{
-    $query = DB::table('rsitemloc')
-        ->select('rspallet_num')
-        ->where('rssite', $request->rssite)
-        ->where('rswhse', $request->rswhse)
-        ->where('rsbaynum', $request->rsbaynum)
-        ->whereNotNull('rspallet_num')
-        ->where('rspallet_num', '!=', '');
+    public function getPallets(Request $request)
+    {
+        $query = DB::table('rsitemloc')
+            ->select('rspallet_num')
+            ->where('rssite', $request->rssite)
+            ->where('rswhse', $request->rswhse)
+            ->where('rsbaynum', $request->rsbaynum)
+            ->whereNotNull('rspallet_num')
+            ->where('rspallet_num', '!=', '');
 
-    // Normal movement:
-    // If location is provided, only get pallets from that location.
-    if ($request->filled('rsloc')) {
-        $query->where('rsloc', $request->rsloc);
+        // Normal movement:
+        // If location is provided, only get pallets from that location.
+        if ($request->filled('rsloc')) {
+            $query->where('rsloc', $request->rsloc);
+        }
+
+        return response()->json(
+            $query->distinct()
+                ->orderBy('rspallet_num')
+                ->get()
+        );
     }
-
-    return response()->json(
-        $query->distinct()
-            ->orderBy('rspallet_num')
-            ->get()
-    );
-}
 
 
     // Get Job / CO

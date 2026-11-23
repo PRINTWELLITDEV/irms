@@ -1,6 +1,6 @@
 @extends('irms/irms-partials.app')
 
-@section('title', 'Warehouse Goods Relocating')
+@section('title', 'IRMS Quantity Move')
 
 @section('content')
 
@@ -14,11 +14,9 @@
                         <div class="d-flex align-items-center flex-wrap gap-3">
                             <div>
                                 <h1 class="d-inline-block mb-0">
-                                    Warehouse Goods Relocating
+                                    Quantity Move
                                 </h1>
-                                <p class="text-muted mb-0 mt-1">
-                                    Move stock from one location to another in two quick steps.
-                                </p>
+                           
                             </div>
                             @if(session('success'))
                                 <div id="success-alert" class="alert alert-success py-2 px-3 mb-0 d-flex align-items-center">
